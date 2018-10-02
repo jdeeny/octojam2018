@@ -1,0 +1,10 @@
+# This is for data that goes at the end of RAM
+: entity_table
+:calc table_end { HERE + entity_table_bytes }
+:org table_end
+
+: input_tables
+:calc table_end { HERE + input_table_total_bytes }
+:org table_end
+
+0 # put a byte here so we can see how big the whole program is

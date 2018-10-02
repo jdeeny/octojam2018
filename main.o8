@@ -1,0 +1,3 @@
+: main
+    hires
+    jump gameloop

@@ -1,0 +1,14 @@
+:calc entity_bytes { 1 }
+:calc entity_count { 64 }
+:calc entity_table_bytes { entity_bytes * entity_count }
+
+# could use a bitset but is it really faster?
+#:calc entity_bitset_bytes { ceil ( entity_count / 8 ) }
+#:calc bitset_end { HERE + entity_bitset_bytes }
+#: entity_bitset
+#:org bitset_end
+
+
+: process_entities
+    # for each byte in table
+    # if byte is 0, there are no entities in this set of 8

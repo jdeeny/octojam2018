@@ -1,0 +1,10 @@
+
+# Input Table
+# For each key:
+#   2B jump to handler
+#   2B pointer to help text
+
+:calc input_entry_bytes { 2 + 2 }
+:calc input_table_bytes { input_entry_bytes * 16 }
+:calc input_tables { 3 }
+:calc input_table_total_bytes { input_tables * input_table_bytes }
