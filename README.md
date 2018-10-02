@@ -6,6 +6,7 @@ octo jamming in 2018
 - Graphics
 - Input
 - Audio
+- Status effects
 - Map Rendering
 - Map Generation
 - Enemy pathfinding, AI
