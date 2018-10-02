@@ -1,2 +1,81 @@
 : audio_handler
   ;
+
+  : static-screen-music-player-2
+          # we have the song now; progress it
+          i += v8
+          load v0
+          if v0 != 0xFF begin
+                  jump0 grab-static-note
+          else
+              v8 := 0
+          end
+  ;
+
+
+  : sustain-note
+  	audio
+      vf := 6
+  	delay  := vf
+  	vf     := 60
+  	buzzer := vf
+  	loop
+  		vf := delay
+  		if vf != 0 then
+  	again
+      v8 += 1
+  ;
+  : quick-sfx
+      audio
+      vf := 6
+  	delay  := vf
+  	vf     := 12
+  	buzzer := vf
+  ;
+  : grab-static-note
+      i := --- jump sustain-note # 0x00
+      i := C-3 jump sustain-note # 0x04
+      i := C$3 jump sustain-note # 0x08
+      i := D-3 jump sustain-note # 0x0C
+      i := D$3 jump sustain-note # 0x10
+      i := E-3 jump sustain-note # 0x14
+      i := F-3 jump sustain-note # 0x18
+      i := F$3 jump sustain-note # 0x1C
+      i := G-3 jump sustain-note # 0x20
+      i := G$3 jump sustain-note # 0x24
+      i := A-3 jump sustain-note # 0x28
+      i := A$3 jump sustain-note # 0x2C
+      i := B-3 jump sustain-note # 0x30
+      i := C-4 jump sustain-note # 0x34
+      i := C$4 jump sustain-note # 0x38
+      i := D-4 jump sustain-note # 0x3C
+      i := D$4 jump sustain-note # 0x40
+      i := E-4 jump sustain-note # 0x44
+      i := F-4 jump sustain-note # 0x48
+      i := F$4 jump sustain-note # 0x4C
+      i := G-4 jump sustain-note # 0x50
+      i := G$4 jump sustain-note # 0x54
+      i := A-4 jump sustain-note # 0x58
+      i := A$4 jump sustain-note # 0x5C
+      i := B-4 jump sustain-note # 0x60
+      i := C-5 jump sustain-note # 0x64
+      i := C$5 jump sustain-note # 0x68
+      i := D-5 jump sustain-note # 0x6C
+      i := D$5 jump sustain-note # 0x70
+      i := E-5 jump sustain-note # 0x74
+      i := F-5 jump sustain-note # 0x78
+      i := F$5 jump sustain-note # 0x7C
+      i := G-5 jump sustain-note # 0x80
+      i := G$5 jump sustain-note # 0x84
+      i := A-5 jump sustain-note # 0x88
+      i := A$5 jump sustain-note # 0x8C
+      i := B-5 jump sustain-note # 0x90
+  ;
+  : play-sfx
+      i := sfx-crash jump quick-sfx # 0x00
+      i := sfx-vuvu jump quick-sfx  # 0x04 (vuvuzela)
+  ;
+  : song-table-static
+      i := song_a # 0
+      jump static-screen-music-player-2
+  ;
