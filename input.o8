@@ -1,10 +1,20 @@
 
 # Input Table
 # For each key:
-#   2B jump to handler
-#   2B pointer to help text
+#   1B  key number
+#   2B  jump to handler
+#   2B  pointer to help text
 
 :calc input_entry_bytes { 2 + 2 }
 :calc input_table_bytes { input_entry_bytes * 16 }
 :calc input_tables { 3 }
 :calc input_table_total_bytes { input_tables * input_table_bytes }
+
+
+: input_handler
+  i := input_table    # maybe change this with code modification?
+: input_handler_loop
+  load v4     # Load v0 = key, v1-2 = handler v3-4 = help
+  if v0 == 16 then return
+  # if key v0 then launch the handler
+  jump input_handler_loop

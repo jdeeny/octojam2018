@@ -1,23 +1,24 @@
 : main
-  # load initial gamestate, which determines active systems, keymap, and ?
   hires
+  # load initial gamestate, which determines active systems, keymap, and ?
 
 
+  vF := 1
+  delay := vF
 : gameloop
-    : set_delay_timer
-
-    # process real time systems
-        # user input
-        # sound
+  # Process real time systems
+  input_handler
+  audio_handler
 
 
+: systemloop
+  # Process other systems
+  system_handler
 
+  vF := delay
+  if vF != 0 then jump systemloop
 
-    # while frame not over
-        # Process one chunk of system work
-            # stuff like moving enemies
-            # if graphics update to do, do one chunk of graphics work
-            # these might be prioritized
-
-    # frame is over, do another loop
-    jump gameloop
+: framedelay
+  vF := 1
+  delay := vF
+jump gameloop

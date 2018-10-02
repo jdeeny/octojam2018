@@ -9,6 +9,11 @@
 #:org bitset_end
 
 
+# search entities for one that matches a system
 : process_entities
     # for each byte in table
     # if byte is 0, there are no entities in this set of 8
+
+
+: system_handler
+  ;
