@@ -3,8 +3,11 @@
 :calc table_end { HERE + entity_table_bytes }
 :org table_end
 
-: input_tables
+: input_table
 :calc table_end { HERE + input_table_total_bytes }
+0 0 0 0 0
+1 0 0 0 0
+16 0 0 0 0
 :org table_end
 
 0 # put a byte here so we can see how big the whole program is

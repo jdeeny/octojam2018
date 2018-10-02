@@ -16,5 +16,10 @@
 : input_handler_loop
   load v4     # Load v0 = key, v1-2 = handler v3-4 = help
   if v0 == 16 then return
-  # if key v0 then launch the handler
+  if v0 key then do_stuff
   jump input_handler_loop
+
+: do_stuff
+  vF := vF
+  :breakpoint key_down
+  ;
