@@ -1,0 +1,94 @@
+##/ trampoline.l8 /##
+#####################
+
+
+:macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } } # Convenience macro, splits a 16-bit const value
+
+# Allocates space for the trampoline
+:macro Trampoline: label {
+  : label jump label
+}
+
+:macro Trampoline-Set-I-Const label target {
+	  hilo target
+	  :calc hi { 0xA0 | hi }
+	  v0 := hi
+	  v1 := lo
+	  i := label
+	  save v1
+	}
+
+:macro Trampoline-Set-I-v0v1 label {
+		vF := 0xA0
+	  v0 |= vF
+	  i := label
+	  save v1
+	}
+
+:macro Trampoline-Set-I-v2v3 label {
+		vF := 0xA0
+	  v2 |= vF
+	  i := label
+	  save v2 - v3
+	}
+
+
+# Sets the trampoline to jump to target-reg-hi and target-reg-lo
+:macro Trampoline-Set-Jump label target-reg-hi target-reg-lo {
+  target-reg-hi += 0x10
+  i := label
+  save target-reg-hi - target-reg-lo
+}
+
+# Slightly faster if using a constant target
+:macro Trampoline-Set-Jump-Const label target reg-hi reg-lo {
+  hilo target
+  :calc hi { 0x10 | hi }
+  reg-hi := hi
+  reg-lo := lo
+  i := label
+  save reg-hi - reg-lo
+}
+
+# Makes the trampoline a `Call`
+:macro Trampoline-Set-Call-Const label target reg-hi reg-lo {
+  hilo target
+  :calc hi { 0x20 | hi }
+  reg-hi := hi
+  reg-lo := lo
+  i := label
+  save reg-hi - reg-lo
+}
+
+# Makes the trampoline a no-op
+:macro Trampoline-Set-Nop label reg-hi reg-lo {
+  i := label
+  reg-hi := 0x8F    # Set instruction to VF := VF
+  reg-lo := 0xF0
+  save reg-hi - reg-lo
+}
+
+
+
+
+## Other Self-Modifying tools
+
+# Create a target to be modified by the macros below.
+:macro DataTarget: target-label {
+  :next target-label
+}
+
+# Changes 1 byte in memory, intended to be used
+# with self-modifying code
+:macro Modify-Target target-label reg-in {
+  i := target-label
+  save reg-in - reg-in
+}
+
+# Changes 1 byte in memory, intended to be used
+# with self-modifying code
+:macro Modify-Target-Imm target-label u8imm {
+  i := target-label
+  SCRATCH := u8imm
+  save SCRATCH - SCRATCH
+}

@@ -1,0 +1,86 @@
+
+##/ mem.o8 /##
+##############
+
+# Set I = address in registers
+:macro reg-set-i-macro reg-hi reg-lo target {
+	i := target
+	save reg-hi - reg-lo
+	0xF0 0x00 : target 0x00 0x00
+	;
+}
+
+
+#: reg_load_i_PASS01 reg-set-i-macro PASS0 PASS1 reg_load_i_PASS01_target
+#:macro reg_load_i { reg_load_i_PASS01 }  # Macro for deprecated version
+: reg_set_i_v23 reg-set-i-macro v2 V3 reg_set_i_v23_target
+
+
+# Swap two registers without using a third
+:macro reg_swap rega regb {
+	rega ^= regb
+	regb ^= rega
+	rega ^= regb
+}
+
+# Set lhs equal to rhs
+# lhs must be registers, but rhs can be registers or literals
+:macro reg_set_u16 lhs_hi lhs_lo rhs_hi rhs_lo {
+	lhs_hi := rhs_hi
+	lhs_lo := rhs_lo
+}
+
+# Set 16-bit lhs equal to zero-extended 8-bit rhs
+# lhs must be registers, but rhs can be registers or literals
+:macro reg_set_u16_u8 lhs_hi lhs_lo rhs {
+	lhs_hi := 0
+	lhs_lo := rhs
+}
+
+:macro reg_set_u16_u16imm lhs_hi lhs_lo rhs {
+	hilo rhs
+	reg_set_u16 lhs_hi lhs_lo hi lo
+}
+
+:macro reg_and_u16 lhs-hi lhs-lo rhs-hi rhs-lo {
+	lhs-hi &= rhs-hi
+	lhs-lo &= rhs-lo
+}
+
+:macro reg_or_u16 lhs-hi lhs-lo rhs-hi rhs-lo {
+	lhs-hi |= rhs-hi
+	lhs-lo |= rhs-lo
+}
+
+
+# Shift a register n times to the right, saving the shifted out bits in the MSBs of dest
+:macro reg_split_right src shift-countdown dest {
+	loop while shift-countdown != 0
+		dest >>= dest
+		src >>= src
+		if vF != 0 then dest += 0x80
+		shift-countdown += -1
+	again
+}
+
+# given a size in vD/vE, de
+# Loads registers some offset from current I
+# mem_load_offset <offset byte literal> <first dest register> <last dest register>
+:macro mem_load_offset offset outreg-first outreg-last {
+	SCRATCH := offset
+	i += SCRATCH
+	load outreg-first - outreg-last
+}
+
+# Saves registers some offset from current I
+# mem_save_offset <offset byte literal> <first source register> <last source register>
+:macro mem_save_offset offset inreg-first inreg-last {
+	SCRATCH := offset
+	i += SCRATCH
+	save inreg-first - inreg-last
+}
+
+
+:macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } }
+
+:macro tobytes value { hilo value :byte hi :byte lo }

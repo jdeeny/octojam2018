@@ -1,11 +1,14 @@
 : main
   hires
+
+  # initialize stuff here
+
   # load initial gamestate, which determines active systems, keymap, and ?
 
-
+: gameloop
   vF := 1
   delay := vF
-: gameloop
+
   # Process real time systems
   input_handler
   audio_handler
@@ -19,6 +22,4 @@
   if vF != 0 then jump systemloop
 
 : framedelay
-  vF := 1
-  delay := vF
 jump gameloop
