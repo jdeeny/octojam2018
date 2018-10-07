@@ -1,0 +1,7 @@
+
+
+: word def def def ;
+
+:inline word def def ;
+
+:octo word;

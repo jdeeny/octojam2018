@@ -1,0 +1,10 @@
+[package]
+name = "tetrac"
+version = "0.1.0"
+authors = ["jdeeny <jdeeny@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+nom = "4.1.0"
+clap = "2.32.0"
+derive_more = "0.12.0"
