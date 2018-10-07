@@ -1,0 +1,91 @@
+#####
+# Tetra Interpreter
+###
+
+:macro TETRA_NEXT { jump tetra_decode }
+
+# Tetra data is put on the same stack that is used in the rest of the program, but
+# it employs a second stack, the Tetra Call Stack, to store call data for the
+# interpreter. Currently, this stack is 256 bytes, but that may not be appropriate (too much?).
+# TODO: Analyze stack usage
+
+:alias TETRA_SP vD
+
+:calc TETRA_CALLSTACK_SIZE { ( SEG_TETRA_CALLSTACK_END - SEG_TETRA_CALLSTACK_START ) + 1 }
+:macro tetra_callstack_decr_sp bytes { stack_decr_sp TETRA_SP bytes }
+:macro tetra_callstack_incr_sp bytes { stack_incr_sp TETRA_SP bytes }
+: tetra_callstack_load_sp stack_load_sp TETRA_SP SEG_TETRA_CALLSTACK_START ;
+:macro tetra_callstack_push firstreg lastreg bytes { stack_push TETRA_SP tetra_callstack_load_sp firstreg lastreg bytes }
+:macro tetra_callstack_pop firstreg lastreg bytes { stack_pop TETRA_SP tetra_callstack_load_sp firstreg lastreg bytes }
+: tetra-stack-init stack_init TETRA_SP ;
+
+
+: tetra_init
+  tetra-stack-init
+  ;
+
+
+# Given a memory location, initialize the interpreter and execute the tetra
+# code located there.
+# PASS0/PASS1 = location of byte code
+: tetra_exec
+  # Initialize callstack
+  tetra-stack-init  # There is nothing on the stack because this is the first word executed
+  # Set PASS0,1 to point at bytecode (already there right?)
+  # Call decoder to process the bytecode
+  tetra_decode
+
+
+#####
+# tetra_decode
+###
+# Decode a tetra word and advance to the next
+# input: v0 = dictionary entry
+###
+: tetra_decode_table
+: tetra_decode_table_native
+: tetra_decode_table_tetra
+: tetra_decode_table_literal
+
+# Offsets into the table, these are used in the dictionary defs
+:calc TETRA_DEF_NATIVE { tetra_decode_table_native - tetra_decode_table }
+:calc TETRA_DEF_TETRA { tetra_decode_table_tetra - tetra_decode_table }
+:calc TETRA_DEF_LITERAL { tetra_decode_table_literal - tetra_decode_table }
+
+:calc TETRA_CALLFRAME_BYTES { 2 }  # 16-bit address of the current tetra symbol
+
+: tetra_load_next
+  :breakpoint !load_next!
+  ;
+
+: tetra_decode
+  # load next word into v0
+  tetra_load_next
+
+  i := tetra_dictionary
+  i += v0
+  i += v0
+  i += v0       # Index into table (v0 * 3)
+  load v0 - v2  # Fetch definition. v0 = type, v1 = loc-hi, v2 = loc-lo
+
+  # Switch on type of word using jumptable
+  jump0 tetra_decode_table
+
+
+: tetra_native_return
+  tetra_callstack_decr_sp TETRA_CALLFRAME_BYTES   # Drop this stack frame
+  jump tetra_decode
+
+: test_func
+  vF := vF
+  :breakpoint in_native_func
+  ;
+
+
+: test_tetra_word 1 1 0
+
+: tetra_dictionary
+: tetra_dict_test_func TETRA_DEF_NATIVE hilo test_func :byte hi :byte lo
+: tetra_dict_test_literal TETRA_DEF_LITERAL 0xAA 0x55
+: tetra_dict_test_tetra TETRA_DEF_TETRA hilo test_tetra_word :byte hi :byte lo
+: tetra_return TETRA_DEF_NATIVE hilo tetra_native_return :byte hi :byte lo

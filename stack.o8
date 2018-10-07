@@ -1,0 +1,91 @@
+
+##/ stack.o8 /##
+################
+
+#####
+# 8-bit data stack
+###
+#
+# Function `stack-init`
+#  Initializes the stack data structures
+# The macro `push <firstreg lastreg bytes>` is used to push a contiguous set of registers onto the stack
+# The macro `pop <firstreg lastreg bytes>` is used to pop a contiguous set of registers off the stack
+#
+# To keep the stack fairly fast the stack pointer is stored in a register, macros are used, and the stack
+# is 8-bit and can only hold 255 items.
+#
+###
+
+:calc stack_code_begins { HERE }
+# Define the Stack Segment
+:org SEG_STACK_START
+: mm_stack
+:org SEG_STACK_END
+: mm_stack_end
+
+# Define the Tetra CallStack Segment
+:org SEG_TETRA_CALLSTACK_START
+: tetra_callstack
+:org SEG_TETRA_CALLSTACK_END
+: tetra_callstack_end
+
+:org stack_code_begins
+
+
+# Versatile macros that are specified for use with a specific stack
+# TODO: Make non-debug versions / functions not macros for size
+:macro stack_decr_sp sp-reg bytes {
+	vF := bytes
+	sp-reg -= vF
+	assert-neq vF 0 ASSERT-FAIL:_Stack_Underflow
+}
+
+:macro stack_incr_sp sp-reg bytes {
+	SCRATCH := bytes
+	sp-reg += SCRATCH
+	assert-neq vF 1 ASSERT-FAIL:_Stack_Overflow
+}
+
+:macro stack_load_sp sp-reg stack-start {
+	i := long stack-start
+	i += sp-reg
+}
+
+:macro stack_push sp-reg stack-load-func firstreg lastreg bytes {
+	stack-load-func
+	save firstreg - lastreg
+	stack_incr_sp sp-reg bytes
+}
+
+:macro stack_pop sp-reg stack-load-func firstreg lastreg bytes {
+	stack_decr_sp sp-reg bytes
+	stack-load-func
+	load firstreg - lastreg
+}
+
+:macro stack_peek sp-reg stack-load-func firstreg lastreg bytes {
+	stack_decr_sp sp-reg bytes
+	stack-load-func
+	load firstreg - lastreg
+		stack_incr_sp sp-reg bytes
+}
+
+:macro stack_drop sp-reg bytes {
+	stack_decr_sp sp-reg bytes
+}
+
+:macro stack_init sp-reg {
+	sp-reg := 0
+	# TODO: Debug fill stack with canary
+}
+
+# Macros for the 256-byte data stack
+:calc MM_STACK_SIZE { ( SEG_STACK_END - SEG_STACK_START ) + 1 }
+:macro mm_decr_sp bytes { stack_decr_sp SP bytes }
+:macro mm_incr_sp bytes { stack_incr_sp SP bytes }
+: mm_load_sp stack_load_sp SP SEG_STACK_START ;
+:macro push firstreg lastreg bytes { stack_push SP mm_load_sp firstreg lastreg bytes }
+:macro pop firstreg lastreg bytes { stack_pop SP mm_load_sp firstreg lastreg bytes }
+:macro stackpeek firstreg lastreg bytes { stack_peek SP mm_load_sp firstreg lastreg bytes }
+:macro stackdrop bytes { stack_drop SP bytes }
+: stack-init stack_init SP ;

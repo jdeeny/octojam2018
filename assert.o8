@@ -1,0 +1,67 @@
+
+
+##/ assert.o8 /##
+#################
+
+
+# Stop execution
+:macro assert reason { :breakpoint reason vF := vF }
+
+
+# Stop execution if the condition isn't true
+# lhs must be a register, rhs can be a register or 8-bit literal
+# ``` assert-eq v0 7
+# 		assert-neq v5 0x55
+# ```
+:macro assert-eq lhs rhs fail-reason { if lhs != rhs then assert fail-reason }
+:macro assert-neq lhs rhs fail-reason { if lhs == rhs then assert fail-reason }
+
+
+:macro assert-neq0-u16 lhs-hi lhs-lo fail-reason { SCRATCH := lhs-hi SCRATCH |= lhs-lo if SCRATCH == 0 then assert fail-reason }
+
+
+#####
+# assert-mem
+###
+# Checks to see if a location in RAM is a series of bytes.
+# Use assert-mem to point to the correct location, and is for
+# each byte:
+# ``` assert-mem area-of-interest show-this-breakpoint-message
+#			is 0x33
+#			is 0
+# ```
+# This will clobber v0.
+#
+# Use `assert-mem` for constant addresses, `assert-mem-at-PASSxx` for register
+# indirect.
+:macro assert-mem-builder fail-reason {
+  :calc assert-mem-skip-loc { HERE + 4 }
+  jump assert-mem-skip-loc									# Jump over the return instruction
+  :calc assert-mem-fail-loc { HERE }
+  :breakpoint fail-reason
+  ;
+}
+
+
+:macro assert-mem test-location fail-reason  {
+  i := long test-location
+  assert-mem-builder fail-reason
+}
+
+
+:macro assert-mem-at-PASS01 fail-reason {
+  reg_load_i_PASS01
+  assert-mem-builder fail-reason
+}
+
+
+:macro assert-mem-at-PASS23 fail-reason {
+  reg_load_i_PASS23
+  assert-mem-builder
+}
+
+
+
+
+# assert-mem-fail-loc is set by the previous assert-mem invocation
+:macro is val {	load v0 if v0 != val then assert-mem-fail-loc }
