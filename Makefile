@@ -4,7 +4,7 @@ GEN:=build/
 # Final Output
 OUTPUT:=$(GEN)octojam2018.o8
 
-SRC:=config.o8 mem.o8 assert.o8 stack.o8 trampoline.o8 tetra.o8 main.o8 input.o8 ecs.o8 audio.o8 data.o8
+SRC:=src/config.o8 src/mem.o8 src/assert.o8 src/stack.o8 src/trampoline.o8 src/tetra.o8 src/main.o8 src/input.o8 src/ecs.o8 src/audio.o8 src/data.o8
 
 default: gen
 
