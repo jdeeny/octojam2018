@@ -43,16 +43,29 @@
 # input: v0 = dictionary entry
 ###
 : tetra_decode_table
-: tetra_decode_table_native
-: tetra_decode_table_tetra
-: tetra_decode_table_literal
 
-# Offsets into the table, these are used in the dictionary defs
+: tetra_decode_table_native     # v1, v2 = address of function to call
+  # push location of next word
+  # jump v1v2
+  # the function will jump to tetra_decode
+
+: tetra_decode_table_tetra      # v1, v2 = address of tetra bytestream
+
+  # push location of next word
+  # set tetra decode pointer to v1v2
+  jump tetra_decode # execute the new word
+
+: tetra_decode_table_literal
+  # push literal on stack
+  # advance to next word (replace data on callstack)
+  jump tetra_decode
+
+# Offsets into the table, these are used in the dictionary defs (and jumping into the table)
 :calc TETRA_DEF_NATIVE { tetra_decode_table_native - tetra_decode_table }
 :calc TETRA_DEF_TETRA { tetra_decode_table_tetra - tetra_decode_table }
 :calc TETRA_DEF_LITERAL { tetra_decode_table_literal - tetra_decode_table }
 
-:calc TETRA_CALLFRAME_BYTES { 2 }  # 16-bit address of the current tetra symbol
+:calc TETRA_CALLFRAME_BYTES { 2 }  # How many bytes of the stack are used for each tetra call
 
 : tetra_load_next
   :breakpoint !load_next!
@@ -82,9 +95,9 @@
   ;
 
 
-: test_tetra_word 1 1 0
+: test_tetra_word 1 1 0 4
 
-: tetra_dictionary
+: tetra_dictionary      # Dictionary entries are 3 bytes each
 : tetra_dict_test_func TETRA_DEF_NATIVE hilo test_func :byte hi :byte lo
 : tetra_dict_test_literal TETRA_DEF_LITERAL 0xAA 0x55
 : tetra_dict_test_tetra TETRA_DEF_TETRA hilo test_tetra_word :byte hi :byte lo
