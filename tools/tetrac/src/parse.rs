@@ -6,9 +6,9 @@ use derive_more::{ From, Into };
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParsedDefinition{
-    Tetra(Vec<Word>),
-    OctoCall(Word),
-    OctoAddr(Word)
+    Tetra(Vec<WordOrLiteral>),
+    OctoCall(WordOrLiteral),
+    OctoAddr(WordOrLiteral)
 }
 
 #[derive(From, Into, Debug, Clone, PartialEq, Eq, Hash)]
@@ -17,58 +17,80 @@ pub struct ParsedDictEntry {
     value: ParsedDefinition,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum WordOrLiteral{
+    W(Word),
+    L(usize),
+}
 
 /*pub fn parse_tetra(source: &str) -> Result<Vec<ParsedDictEntry>, u32> {
     tetra_source(source)
 }
 */
 
-named!(pub(crate) tetra_source<&str, Vec<ParsedDictEntry>>,
-    ws!(many0!(dict_entry))
+named!(pub tetra_source<&str, Vec<ParsedDictEntry>>,
+        many0!(
+            do_parse!(
+                opt!(many0!(comment)) >>
+                line: dict_entry >>
+                opt!(many0!(comment)) >>
+                (line)
+            )
+        )
 );
 
 named!(dict_entry<&str, ParsedDictEntry>,
-    alt_complete!(dict_entry_tetra | dict_entry_octocall | dict_entry_octoaddress )
+    alt_complete!(dict_entry_octocall | dict_entry_octoaddress | dict_entry_tetra )
 );
 
 named!(dict_entry_tetra<&str, ParsedDictEntry>,
-    do_parse!(
-        ws!(tag!(":")) >>
-        name: word >>
-        value: ws!(many1!(word)) >>
-        tag!(";") >>
-        ( ParsedDictEntry{ key: name, value: ParsedDefinition::Tetra(value) } )
+    ws!(
+        do_parse!(
+            tag!(":") >>
+            name: word >>
+            value: many1!(word_or_literal) >>
+            tag!(";") >>
+            ( ParsedDictEntry{ key: name, value: ParsedDefinition::Tetra(value) } )
+        )
     )
 );
 
 named!(dict_entry_octocall<&str, ParsedDictEntry>,
-    do_parse!(
-        ws!(tag!(":")) >>
-        name: word >>
-        ws!(tag_no_case!("octo")) >>
-        value: ws!(word) >>
-        tag!(";") >>
-        ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoCall(value) } )
+    ws!(
+        do_parse!(
+            tag!(":") >>
+            name: word >>
+            tag_no_case!("octo") >>
+            value: word_or_literal >>
+            tag!(";") >>
+            ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoCall(value) } )
+        )
     )
 );
 
 named!(dict_entry_octoaddress<&str, ParsedDictEntry>,
-    do_parse!(
-        ws!(tag!(":")) >>
-        name: word >>
-        ws!(tag_no_case!("data")) >>
-        value: ws!(word) >>
-        tag!(";") >>
-        ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoAddr(value) } )
+    ws!(
+        do_parse!(
+            tag!(":") >>
+            name: word >>
+            tag_no_case!("addr") >>
+            value: word_or_literal >>
+            tag!(";") >>
+            ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoAddr(value) } )
+        )
     )
 );
 
 
-
 named!(word<&str, Word>,
-    do_parse!(
-        value: ws!(is_not!(" \r\n\t")) >>
-        (Word(String::from(value)))
+        do_parse!( value: is_not_s!(" \r\n\t:;") >> (Word(String::from(value))) )
+);
+
+
+named!(word_or_literal<&str, WordOrLiteral>,
+    alt_complete!(
+        do_parse!( value: literal >> (WordOrLiteral::L(value)) ) |
+        do_parse!( value: word >> (WordOrLiteral::W(value)) )
     )
 );
 
@@ -78,11 +100,11 @@ fn from_hex(input: &str) -> Result<usize, std::num::ParseIntError> {
 }
 
 fn from_dec(input: &str) -> Result<usize, std::num::ParseIntError> {
-  usize::from_str_radix(input, 16)
+  usize::from_str_radix(input, 10)
 }
 
 fn from_bin(input: &str) -> Result<usize, std::num::ParseIntError> {
-  usize::from_str_radix(input, 10)
+  usize::from_str_radix(input, 2)
 }
 
 named!(dec_literal<&str, usize>,
@@ -106,7 +128,7 @@ named!(bin_literal<&str, usize>,
 );
 
 named!(literal<&str, usize>,
-    alt!( hex_literal | dec_literal | bin_literal)
+    alt!( hex_literal | bin_literal | dec_literal )
 );
 
 fn is_hex_digit(c: char) -> bool {
@@ -118,3 +140,18 @@ fn is_dec_digit(c: char) -> bool {
 fn is_bin_digit(c: char) -> bool {
   c.is_digit(2)
 }
+
+
+named!(comment<&str, ()>,
+    ws!(
+        value!((),
+            delimited!(
+                tag!("#"),
+                opt!(
+                    many_till!(take!(1), alt_complete!(tag!("\n") | eof!()))
+                ),
+                alt_complete!(tag!("\n") | eof!())
+            )
+        )
+    )
+);

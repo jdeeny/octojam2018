@@ -1,7 +1,11 @@
 
+# A comment
 
-: word def def def ;
+: word def def def ;  # A comment
 
-:inline word def def ;
+: word2 0b1010 0xAA 0x55 ;
 
-:octo word;
+: word3 octo octo_name ;
+: word4 addr octo_addr ;
+
+#
