@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::ops::Add;
 use std::io::prelude::*;
 use std::fs::File;
@@ -34,7 +35,9 @@ pub struct DictEntry {
 
 fn main() {
 
-    let mut source = File::open("testfile.t4").unwrap();
+    let mut source = File::open("build/tetra_input.t4").unwrap();
+    let mut header_dest = File::create("build/tetra_header.o8").unwrap();
+    let mut data_dest = File::create("build/tetra_data.o8").unwrap();
 
     let mut dictionary: HashMap<Word, Definition> = HashMap::new();
 
@@ -72,13 +75,14 @@ fn main() {
     }
 
 
-    dump_tetra_header();
+    dump_tetra_header(&mut header_dest);
+    dump_dict_consts(&mut header_dest, &dictionary);
 
     // Output the dictionary definitions
-    dump_dict(&dictionary);
+    dump_dict(&mut data_dest, &dictionary);
 
     // Dump the dictionary table
-    dump_dict_table(&dictionary);
+    dump_dict_table(&mut data_dest, &dictionary);
 
 }
 
@@ -88,38 +92,48 @@ fn define(dictionary: &mut HashMap<Word, Definition>, word: &Word, definition: &
     dictionary.insert(word.clone(), definition.clone());
 }
 
-
-fn dump_dict_table(dictionary: &HashMap<Word, Definition>) {
-    println!("\n\n: TETRA_DICT   # Begin Dictionary Table  Entries: 1B Type, 2B Data");
+fn dump_dict_consts(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
+    writeln!(out, "\n\n: TETRA_DICT_CONSTANTS  # Indexes into the table");
     for (i, (key, value)) in dictionary.iter().enumerate() {
         let Word(name) = key;
         let name = name.to_uppercase();
         let s = format!(":calc {}  {{ {} }}", name, i);
-        println!("{:30}# {} {:?} - {:?}", s, i, key, value);
-        dump_tetra_table(&name, &value);
+        writeln!(out, "{:30}# {} {:?} - {:?}", s, i, key, value);
+    }
+
+}
+
+fn dump_dict_table(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
+    writeln!(out, "\n\n: TETRA_DICT   # Begin Dictionary Table  Entries: 1B Type, 2B Data");
+    for (i, (key, value)) in dictionary.iter().enumerate() {
+        let Word(name) = key;
+        let name = name.to_uppercase();
+        let s = format!(":calc {}  {{ {} }}", name, i);
+        writeln!(out, "{:30}# {} {:?} - {:?}", s, i, key, value);
+        dump_tetra_table(out, &name, &value);
     }
 }
 
-fn dump_dict(dictionary: &HashMap<Word, Definition>) {
-    println!("\n\n# Begin Tetra Dictionary Entries");
+fn dump_dict(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
+    writeln!(out, "\n\n# Begin Tetra Dictionary Entries");
     for (key, value) in dictionary {
         let Word(name) = key;
         let name = name.to_uppercase();
 //        let s = format!(":calc {} {{ {} }}", name, i);
 //        println!("{:30} # {} {:?} - {:?}", s, i, key, value);
-        dump_tetra_definition(&name, &value);
+        dump_tetra_definition(out, &name, &value);
     }
 }
 
 
-fn dump_tetra_table(name: &str, def: &Definition) {
+fn dump_tetra_table(out: &mut Write, name: &str, def: &Definition) {
     let defname = String::from("T4_") + name;
     match def {
 
-        Definition::Tetra(_)    => { println!("DEF_TETRA   T4_DUMP_U16   {}", defname); },
-        Definition::OctoCall(_) => { println!("DEF_CALL    T4_DUMP_U16   {}", name); },
-        Definition::OctoAddr(_) => { println!("DEF_ADDR    T4_DUMP_U16   {}", name); },
-        Definition::Literal(n)  => { println!("DEF_LITERAL {} {}", n >> 8, n & 0xFF ); },
+        Definition::Tetra(_)    => { writeln!(out, "DEF_TETRA   T4_DUMP_U16   {}", defname); },
+        Definition::OctoCall(_) => { writeln!(out, "DEF_CALL    T4_DUMP_U16   {}", name); },
+        Definition::OctoAddr(_) => { writeln!(out, "DEF_ADDR    T4_DUMP_U16   {}", name); },
+        Definition::Literal(n)  => { writeln!(out, "DEF_LITERAL {} {}", n >> 8, n & 0xFF ); },
 
     }
 
@@ -127,32 +141,32 @@ fn dump_tetra_table(name: &str, def: &Definition) {
 
 
 
-fn dump_tetra_definition(name: &str, def: &Definition) {
+fn dump_tetra_definition(out: &mut Write, name: &str, def: &Definition) {
     let defname = String::from("T4_") + name;
     match def {
         Definition::Tetra(d)    => {
-            print!(": {}", defname);
+            write!(out, ": {}", defname);
             for w in d {
                 match w {
-                    WordOrLiteral::W(Word(word)) => { print!(" {}", word); }
-                    WordOrLiteral::L(l)      => { print!(" T4_LIT_{}", l); },
+                    WordOrLiteral::W(Word(word)) => { write!(out, " {}", word); }
+                    WordOrLiteral::L(l)      => { write!(out, " T4_LIT_{}", l); },
                 }
             }
-            println!("");
+            writeln!(out, "");
         },
         _ => {},
     }
 
 }
 
-fn dump_tetra_header() {
+fn dump_tetra_header(out: &mut Write) {
     // Constants for the table
-    println!(":calc DEF_TETRA   {{ 0 }}");
-    println!(":calc DEF_CALL    {{ 1 }}");
-    println!(":calc DEF_ADDR    {{ 2 }}");
-    println!(":calc DEF_LITERAL {{ 3 }}");
+    writeln!(out, ":calc DEF_TETRA   {{ 0 }}");
+    writeln!(out, ":calc DEF_CALL    {{ 1 }}");
+    writeln!(out, ":calc DEF_ADDR    {{ 2 }}");
+    writeln!(out, ":calc DEF_LITERAL {{ 3 }}");
 
     // Macro that dumps the value of an identifier into the source as two bytes
-    println!(":macro T4_DUMP_U16 val {{ :calc hi {{ val >> 8 }} :calc lo {{ val & 0xFF }} :byte hi :byte lo }}");
+    writeln!(out, ":macro T4_DUMP_U16 val {{ :calc hi {{ val >> 8 }} :calc lo {{ val & 0xFF }} :byte hi :byte lo }}");
 
 }
