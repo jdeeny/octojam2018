@@ -47,7 +47,6 @@ fn main() {
     for entry in parsed {
         let key = entry.key;
         let value = entry.value;
-
         define(&mut dictionary, &key, &value);
     }
 
@@ -66,9 +65,10 @@ fn main() {
     }
 
     for l in literals {
-        println!("llll");
-        let name = format!("T4_LITERAL_{}", l);
-        define(&mut dictionary, &Word(name), &Definition::Literal(l));
+        let name = format!("T4_LIT_{}", l);
+        if dictionary.get(&Word(name.clone()))  == None {
+            define(&mut dictionary, &Word(name), &Definition::Literal(l));
+        }
     }
 
 
@@ -135,7 +135,7 @@ fn dump_tetra_definition(name: &str, def: &Definition) {
             for w in d {
                 match w {
                     WordOrLiteral::W(Word(word)) => { print!(" {}", word); }
-                    WordOrLiteral::L(l)      => { print!(" T4_LITERAL_{}", l); },
+                    WordOrLiteral::L(l)      => { print!(" T4_LIT_{}", l); },
                 }
             }
             println!("");
