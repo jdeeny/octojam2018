@@ -1,4 +1,4 @@
-
+use std::ops::Add;
 use std::io::prelude::*;
 use std::fs::File;
 use std::collections::HashMap;
@@ -23,7 +23,6 @@ pub struct DictEntry {
 }
 
 fn main() {
-    println!("Hello, world!");
 
     let mut source = File::open("testfile.t4").unwrap();
 
@@ -31,9 +30,15 @@ fn main() {
     let mut reverse_dictionary: HashMap<Definition, Word>  = HashMap::new();
 
     let mut buffer = String::new();
-    let result = source.read_to_string(&mut buffer);
+    let _ = source.read_to_string(&mut buffer);
+
+    buffer = buffer + ":bandaid shit #  \n\n";
+
+    println!("{:?} \n  -->", buffer);
+
 
     let parsed = parse::tetra_source(&buffer);
+
 
     println!("{:?}", parsed);
 

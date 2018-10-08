@@ -30,17 +30,24 @@ pub enum WordOrLiteral{
 
 named!(pub tetra_source<&str, Vec<ParsedDictEntry>>,
         many0!(
+            complete!(
             do_parse!(
-                opt!(many0!(comment)) >>
+                many0!(is_a!(" \r\t\n")) >>
+                many0!(comment) >>
+                many0!(is_a!(" \r\t\n")) >>
                 line: dict_entry >>
-                opt!(many0!(comment)) >>
+                many0!(is_a!(" \r\t\n")) >>
+                many0!(comment) >>
+                many0!(is_a!(" \r\t\n")) >>
                 (line)
             )
-        )
+        ))
 );
 
 named!(dict_entry<&str, ParsedDictEntry>,
-    alt_complete!(dict_entry_octocall | dict_entry_octoaddress | dict_entry_tetra )
+    ws!(
+        alt_complete!(dict_entry_octocall | dict_entry_octoaddress | dict_entry_tetra )
+    )
 );
 
 named!(dict_entry_tetra<&str, ParsedDictEntry>,
@@ -83,7 +90,7 @@ named!(dict_entry_octoaddress<&str, ParsedDictEntry>,
 
 
 named!(word<&str, Word>,
-        do_parse!( value: is_not_s!(" \r\n\t:;") >> (Word(String::from(value))) )
+        complete!(do_parse!( value: is_not_s!(" \r\n\t:;") >> (Word(String::from(value))) ))
 );
 
 
@@ -128,7 +135,7 @@ named!(bin_literal<&str, usize>,
 );
 
 named!(literal<&str, usize>,
-    alt!( hex_literal | bin_literal | dec_literal )
+    alt_complete!( hex_literal | bin_literal | dec_literal )
 );
 
 fn is_hex_digit(c: char) -> bool {
@@ -143,15 +150,16 @@ fn is_bin_digit(c: char) -> bool {
 
 
 named!(comment<&str, ()>,
-    ws!(
-        value!((),
-            delimited!(
-                tag!("#"),
-                opt!(
-                    many_till!(take!(1), alt_complete!(tag!("\n") | eof!()))
-                ),
-                alt_complete!(tag!("\n") | eof!())
+    value!((),
+        alt_complete!(
+            terminated!(
+                preceded!(tag!("#"), is_not!("\n")),
+                alt_complete!(eof!() | tag!("\n"))
+            ) |
+            terminated!(tag!("#"),
+                alt_complete!(eof!() | tag!("\n"))
             )
+
         )
     )
 );
