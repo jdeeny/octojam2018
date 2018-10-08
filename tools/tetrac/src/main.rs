@@ -53,6 +53,25 @@ fn main() {
 
 
 
+    //search for literals
+    let mut literals = Vec::<usize>::new();
+    for def in dictionary.values() {
+        if let Definition::Tetra(def) = def {
+            for word in def.iter() {
+                if let WordOrLiteral::L(l) = word {
+                    literals.push(*l);
+                }
+            }
+        }
+    }
+
+    for l in literals {
+        println!("llll");
+        let name = format!("T4_LITERAL_{}", l);
+        define(&mut dictionary, &Word(name), &Definition::Literal(l));
+    }
+
+
     dump_tetra_header();
 
     // Output the dictionary definitions
@@ -116,7 +135,7 @@ fn dump_tetra_definition(name: &str, def: &Definition) {
             for w in d {
                 match w {
                     WordOrLiteral::W(Word(word)) => { print!(" {}", word); }
-                    _ => { print!(" literal"); },
+                    WordOrLiteral::L(l)      => { print!(" T4_LITERAL_{}", l); },
                 }
             }
             println!("");
