@@ -5,7 +5,12 @@
 
 : word2 0b1010 0xAA 0x55 ;
 
+: wordx 0x123 ;
+
 : word3 octo octo_name ;
 : word4 addr octo_addr ;
+
+: simple word4 ;
+: pointsimple word4 ;
 
 #

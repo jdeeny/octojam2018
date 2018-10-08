@@ -1,34 +1,7 @@
 use nom::*;
+use crate::{ Word, DictEntry, WordOrLiteral, Definition };
 
-use crate::{ Word };
-
-use derive_more::{ From, Into };
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum ParsedDefinition{
-    Tetra(Vec<WordOrLiteral>),
-    OctoCall(WordOrLiteral),
-    OctoAddr(WordOrLiteral)
-}
-
-#[derive(From, Into, Debug, Clone, PartialEq, Eq, Hash)]
-pub struct ParsedDictEntry {
-    key: Word,
-    value: ParsedDefinition,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum WordOrLiteral{
-    W(Word),
-    L(usize),
-}
-
-/*pub fn parse_tetra(source: &str) -> Result<Vec<ParsedDictEntry>, u32> {
-    tetra_source(source)
-}
-*/
-
-named!(pub tetra_source<&str, Vec<ParsedDictEntry>>,
+named!(pub tetra_source<&str, Vec<DictEntry>>,
         many0!(
             complete!(
             do_parse!(
@@ -44,25 +17,25 @@ named!(pub tetra_source<&str, Vec<ParsedDictEntry>>,
         ))
 );
 
-named!(dict_entry<&str, ParsedDictEntry>,
+named!(dict_entry<&str, DictEntry>,
     ws!(
         alt_complete!(dict_entry_octocall | dict_entry_octoaddress | dict_entry_tetra )
     )
 );
 
-named!(dict_entry_tetra<&str, ParsedDictEntry>,
+named!(dict_entry_tetra<&str, DictEntry>,
     ws!(
         do_parse!(
             tag!(":") >>
             name: word >>
             value: many1!(word_or_literal) >>
             tag!(";") >>
-            ( ParsedDictEntry{ key: name, value: ParsedDefinition::Tetra(value) } )
+            ( DictEntry{ key: name, value: Definition::Tetra(value) } )
         )
     )
 );
 
-named!(dict_entry_octocall<&str, ParsedDictEntry>,
+named!(dict_entry_octocall<&str, DictEntry>,
     ws!(
         do_parse!(
             tag!(":") >>
@@ -70,12 +43,12 @@ named!(dict_entry_octocall<&str, ParsedDictEntry>,
             tag_no_case!("octo") >>
             value: word_or_literal >>
             tag!(";") >>
-            ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoCall(value) } )
+            ( DictEntry{ key: name, value: Definition::OctoCall(value) } )
         )
     )
 );
 
-named!(dict_entry_octoaddress<&str, ParsedDictEntry>,
+named!(dict_entry_octoaddress<&str, DictEntry>,
     ws!(
         do_parse!(
             tag!(":") >>
@@ -83,7 +56,7 @@ named!(dict_entry_octoaddress<&str, ParsedDictEntry>,
             tag_no_case!("addr") >>
             value: word_or_literal >>
             tag!(";") >>
-            ( ParsedDictEntry{ key: name, value: ParsedDefinition::OctoAddr(value) } )
+            ( DictEntry{ key: name, value: Definition::OctoAddr(value) } )
         )
     )
 );
