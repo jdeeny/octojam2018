@@ -1,0 +1,216 @@
+
+
+##/ math.o8 /##
+###############
+
+
+#####
+# Math Macros
+###
+
+
+:macro SUB_OVERFLOW { vF == 0 }
+:macro ADD_OVERFLOW { vF != 0 }
+:macro SUB_NOT_OVERFLOW { vF != 0 }
+:macro ADD_NOT_OVERFLOW { vF == 0 }
+:macro SHIFT_WAS_BIT { vF != 0 }
+:macro SHIFT_WAS_NOT_BIT { vF == 0 }
+
+
+
+
+:macro math_add_u16_u8 outreg_hi outreg_lo inreg_lo {
+  outreg_lo += inreg_lo
+  outreg_hi += vF
+}
+
+
+:macro math_add_u16_u8imm outreg_hi outreg_lo in_imm {
+  SCRATCH := in_imm
+  outreg_lo += SCRATCH
+  outreg_hi += vF
+}
+
+
+:macro math_add_u16 outreg_hi outreg_lo inreg_hi inreg_lo {
+  outreg_lo += inreg_lo
+  outreg_hi += vF
+  outreg_hi += inreg_hi
+}
+
+
+:macro math_add_u16_u16imm outreg_hi outreg_lo in_imm {
+  hilo in_imm
+  math_add_u16 outreg_hi outreg_lo hi lo
+}
+
+
+:macro math_sub_u16 outreg_hi outreg_lo inreg_hi inreg_lo {
+  outreg_lo -= inreg_lo
+  if vF == 0 then outreg_hi += -1
+  outreg_hi -= inreg_hi
+}
+
+
+# reverse subtract
+:macro math_subr_u16 outreg_hi outreg_lo inreg_hi inreg_lo {
+  outreg_lo =- inreg_lo
+  if vF == 0 then outreg_hi += -1
+  outreg_hi =- inreg_hi
+}
+
+
+
+
+:macro math_sub_u16_u8 outreg_hi outreg_lo inreg_lo {
+  outreg_lo -= inreg_lo
+  if vF == 0 then outreg_hi += -1
+}
+
+
+:macro math_sub_u16_u8imm outreg_hi outreg_lo in_imm {
+  SCRATCH := in_imm
+  outreg_lo -= SCRATCH
+  if vF == 0 then outreg_hi += -1
+}
+
+
+
+
+:macro math_div8_u8 inreg outreg {
+  outreg >>= inreg
+  outreg >>= outreg
+  outreg >>= outreg
+}
+
+
+:macro math_div16_u8 inreg outreg {
+  outreg >>= inreg
+  outreg >>= outreg
+  outreg >>= outreg
+  outreg >>= outreg
+}
+
+
+:macro math_div8_u16 inreg_hi inreg_lo outreg_hi outreg_lo {
+  math_div8_u8 inreg_lo outreg_lo
+  outreg_hi >>= inreg_hi
+  if vF == 1 then outreg_lo += 0x20
+  outreg_hi >>= outreg_hi
+  if vF == 1 then outreg_lo += 0x40
+  outreg_hi >>= outreg_hi
+  if vF == 1 then outreg_lo += 0x80
+}
+
+
+:macro math_mul6_u8 inreg outreg {
+  outreg <<= inreg
+  outreg += inreg
+  outreg <<= outreg
+}
+
+
+:macro math_mul8_u8 inreg outreg {
+  outreg <<= inreg
+  outreg <<= outreg
+  outreg <<= outreg
+}
+
+
+:macro math_mul8_u16 inreg_hi inreg_lo outreg_hi outreg_lo {
+  math_mul8_u8 inreg_hi outreg_hi
+  outreg_lo <<= inreg_lo
+  if vF == 1 then outreg_hi += 0x04
+  outreg_lo <<= outreg_lo
+  if vF == 1 then outreg_hi += 0x02
+  outreg_lo <<= outreg_lo
+  if vF == 1 then outreg_hi += 0x01
+}
+
+
+:macro math_or_u16 outreg-hi outreg-lo inreg-hi inreg-lo {
+  outreg-hi |= inreg-hi
+  outreg-lo |= inreg-lo
+}
+
+
+
+
+:macro math_and_u8_literal outreg literal {
+  SCRATCH := literal
+  outreg &= SCRATCH
+}
+
+
+:macro math_shiftleft_u16_1 reg_hi reg_lo temp {
+  reg_lo <<= reg_lo
+  temp := vF
+  reg_hi <<= reg_hi
+  reg_hi |= temp
+}
+
+
+:macro math_shiftright_u16_1 reg_hi reg_lo temp {
+  reg_hi >>= reg_hi
+  temp := vf
+  reg_lo >>= reg_lo
+  if temp == 1 then reg_lo += 0x80
+}
+
+
+
+
+:macro math_jump_eq_u16 lhs_hi lhs_lo rhs_hi rhs_lo target fallthrough-label {
+  if lhs_hi != rhs_hi then jump fallthrough-label
+  if lhs_lo == rhs_lo then jump target
+  : fallthrough-label
+}
+
+
+
+
+:macro math_jump_eq0_u16 lhs_hi lhs_lo target {
+  SCRATCH := lhs_hi
+  SCRATCH |= lhs_lo
+  if SCRATCH == 0 then jump target
+}
+
+
+
+
+# Jump to target if lhs > rhs
+:macro math_jump_gt_u16 lhs-hi lhs-lo rhs-hi rhs-lo temp-hi temp-lo target {
+  reg_set_u16 temp-hi temp-lo rhs-hi rhs-lo
+  math_sub_u16 temp-hi temp-lo lhs-hi lhs-lo
+  if vF == 0 then jump target
+}
+
+
+# Jump to target if lhs < rhs
+:macro math_jump_lt_u16 lhs-hi lhs-lo rhs-hi rhs-lo temp-hi temp-lo target {
+  temp-hi := lhs-hi
+  temp-lo := lhs-lo
+  temp-lo -= rhs-lo
+  temp-lo := vf
+  #if vf == 0 then temp-hi += -1
+  temp-hi -= rhs-hi
+  if vf == 0 then jump target
+  temp-lo |= temp-hi
+  if temp-lo == 0 then jump target
+}
+
+
+# Jump to target is lhs >= rhs
+:macro math_jump_gte_u16 lhs-hi lhs-lo rhs-hi rhs-lo temp-hi temp-lo target {
+  reg_set_u16 temp-hi temp-lo rhs-hi rhs-lo
+  math_subr_u16 temp-hi temp-lo lhs-hi lhs-lo
+  if vF == 1 then jump target
+}
+
+
+# Jump to target is lhs <= rhs
+:macro math_jump_lte_u16 lhs-hi lhs-lo rhs-hi rhs-lo temp-hi temp-lo target {
+  reg_set_u16 temp-hi temp-lo lhs-hi lhs-lo
+  math_subr_u16 temp-hi temp-lo rhs-hi rhs-lo
+  if vF == 1 then jump target
+}

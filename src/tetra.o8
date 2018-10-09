@@ -2,7 +2,7 @@
 # Tetra Interpreter
 ###
 
-:macro TETRA_NEXT { jump tetra_decode }
+:macro TETRA_NEXT { jump tetra_next }
 
 # Tetra data is put on the same stack that is used in the rest of the program, but
 # it employs a second stack, the Tetra Call Stack, to store call data for the
@@ -28,12 +28,10 @@
 # Given a memory location, initialize the interpreter and execute the tetra
 # code located there.
 # PASS0/PASS1 = location of byte code
-: tetra_exec
-  # Initialize callstack
-  tetra-stack-init  # There is nothing on the stack because this is the first word executed
-  # Set PASS0,1 to point at bytecode (already there right?)
-  # Call decoder to process the bytecode
+:macro tetra_exec hi lo {
+  tetra_callstack_push hi lo 2
   tetra_decode
+}
 
 
 #####
@@ -53,12 +51,12 @@
 
   # push location of next word
   # set tetra decode pointer to v1v2
-  jump tetra_decode # execute the new word
+  jump tetra_next # execute the new word
 
 : tetra_decode_table_literal
   # push literal on stack
   # advance to next word (replace data on callstack)
-  jump tetra_decode
+  jump tetra_next
 
 # Offsets into the table, these are used in the dictionary defs (and jumping into the table)
 :calc TETRA_DEF_NATIVE { tetra_decode_table_native - tetra_decode_table }
@@ -67,20 +65,20 @@
 
 :calc TETRA_CALLFRAME_BYTES { 2 }  # How many bytes of the stack are used for each tetra call
 
-: tetra_load_next
+: tetra_next
   :breakpoint !load_next!
-  ;
+  tetra_callstack_pop v0 v1 2
+  math_add_u16_u8imm v1 v0 1  # advance to next
+  tetra_callstack_push v0 v1 2
 
 : tetra_decode
-  # load next word into v0
-  tetra_load_next
-
+  :breakpoint decode
+  # symbol is loaded into v0
   i := tetra_dictionary
   i += v0
   i += v0
   i += v0       # Index into table (v0 * 3)
   load v0 - v2  # Fetch definition. v0 = type, v1 = loc-hi, v2 = loc-lo
-
   # Switch on type of word using jumptable
   jump0 tetra_decode_table
 
@@ -89,13 +87,13 @@
 :macro impl_tetra_native_nop {
   : tetra_native_nop    # --
   # Do stuff here if not nop
-  jump tetra_decode
+  jump tetra_next
 }
 
 :macro impl_tetra_native_return {
 : tetra_native_return
   tetra_callstack_decr_sp TETRA_CALLFRAME_BYTES   # Drop this stack frame
-  jump tetra_decode
+  return
 }
 
 :macro impl_tetra_native_add {
@@ -103,7 +101,7 @@
   pop v0 v1 2
   v0 += v1
   push v0 v0 1
-  jump tetra_decode
+  jump tetra_next
 }
 
 :macro impl_tetra_native_sub {
@@ -111,7 +109,7 @@
   pop v0 v1 2
   v0 -= v1
   push v0 v0 1
-  jump tetra_decode
+  jump tetra_next
 }
 :macro impl_tetra_native_load {
 : tetra_native_load # hi, lo -- *(hilo)
@@ -119,12 +117,12 @@
   reg_set_i_v01
   load v0 - v0
   push v0 v0 1
-  jump tetra_decode
+  jump tetra_next
 }
 :macro impl_tetra_native_store {
 : tetra_native_store  # x, hi, lo --    [*(hilo) := x]
   pop v0 v2 3
   reg_set_i_v01
   save v2 - v2
-  jump tetra_decode
+  jump tetra_next
 }
