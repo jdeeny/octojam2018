@@ -18,7 +18,8 @@
 
 : systemloop
   # Process other systems
-  system_handler
+  #do_movement
+  #do_display
 
   vF := delay
   if vF != 0 then jump systemloop

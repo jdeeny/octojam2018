@@ -2,6 +2,10 @@
 ##/ mem.o8 /##
 ##############
 
+:macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } }
+
+:macro tobytes value { hilo value :byte hi :byte lo }
+
 # Set I = address in registers
 
 :macro reg-set-i-macro reg-hi reg-lo target {
@@ -14,8 +18,8 @@
 
 #: reg_load_i_PASS01 reg-set-i-macro PASS0 PASS1 reg_load_i_PASS01_target
 #:macro reg_load_i { reg_load_i_PASS01 }  # Macro for deprecated version
-: reg_set_i_v01 reg-set-i-macro v2 V3 reg_set_i_v01_target
-: reg_set_i_v23 reg-set-i-macro v2 V3 reg_set_i_v23_target
+: reg_set_i_v01 reg-set-i-macro v0 v1 reg_set_i_v01_target
+: reg_set_i_v23 reg-set-i-macro v2 v3 reg_set_i_v23_target
 
 
 # Swap two registers without using a third
@@ -81,8 +85,3 @@
 	i += SCRATCH
 	save inreg-first - inreg-last
 }
-
-
-:macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } }
-
-:macro tobytes value { hilo value :byte hi :byte lo }

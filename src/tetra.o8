@@ -116,15 +116,15 @@
 :macro impl_tetra_native_load {
 : tetra_native_load # hi, lo -- *(hilo)
   pop v0 v1 2
-  reg_set_i_v0v1
-  load v0 v0
+  reg_set_i_v01
+  load v0 - v0
   push v0 v0 1
   jump tetra_decode
 }
 :macro impl_tetra_native_store {
 : tetra_native_store  # x, hi, lo --    [*(hilo) := x]
   pop v0 v2 3
-  reg_set_i_v0v1
-  save v2 v2
+  reg_set_i_v01
+  save v2 - v2
   jump tetra_decode
 }

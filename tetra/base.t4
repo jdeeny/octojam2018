@@ -1,3 +1,6 @@
 : tetra_return octo tetra_native_return ;
 
 : + octo tetra_native_add ;
+: - octo tetra_native_sub ;
+: LOAD octo tetra_native_load ;
+: STORE octo tetra_native_store ;

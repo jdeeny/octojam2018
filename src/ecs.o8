@@ -13,7 +13,3 @@
 : process_entities
     # for each byte in table
     # if byte is 0, there are no entities in this set of 8
-
-
-: system_handler
-  ;

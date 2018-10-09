@@ -142,10 +142,11 @@ fn dump_tetra_table(out: &mut Write, name: &str, def: &Definition) {
     let defname = String::from("T4_") + name;
     match def {
 
-        Definition::Tetra(_)    => { writeln!(out, "DEF_TETRA   T4_DUMP_U16   {}", defname); },
-        Definition::OctoCall(_) => { writeln!(out, "DEF_CALL    T4_DUMP_U16   {}", name); },
-        Definition::OctoAddr(_) => { writeln!(out, "DEF_ADDR    T4_DUMP_U16   {}", name); },
+        Definition::Tetra(_)    => { writeln!(out, "DEF_TETRA   tobytes   {}", defname); },
+        Definition::OctoCall(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_CALL    tobytes   {}", addr); },
+        Definition::OctoAddr(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_ADDR    tobytes   {}", addr); },
         Definition::Literal(n)  => { writeln!(out, "DEF_LITERAL {} {}", n >> 8, n & 0xFF ); },
+        _ => {},
 
     }
 
@@ -177,8 +178,4 @@ fn dump_tetra_header(out: &mut Write) {
     writeln!(out, ":calc DEF_CALL    {{ 1 }}");
     writeln!(out, ":calc DEF_ADDR    {{ 2 }}");
     writeln!(out, ":calc DEF_LITERAL {{ 3 }}");
-
-    // Macro that dumps the value of an identifier into the source as two bytes
-    writeln!(out, ":macro T4_DUMP_U16 val {{ :calc hi {{ val >> 8 }} :calc lo {{ val & 0xFF }} :byte hi :byte lo }}");
-
 }

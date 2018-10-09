@@ -2,8 +2,6 @@
 #####################
 
 
-:macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } } # Convenience macro, splits a 16-bit const value
-
 # Allocates space for the trampoline
 :macro Trampoline: label {
   : label jump label
