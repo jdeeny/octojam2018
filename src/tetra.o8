@@ -73,6 +73,7 @@
 
 : tetra_decode
   :breakpoint decode
+
   # symbol is loaded into v0
   i := tetra_dictionary
   i += v0
@@ -124,5 +125,29 @@
   pop v0 v2 3
   reg_set_i_v01
   save v2 - v2
+  jump tetra_next
+}
+:macro impl_tetra_native_eq {
+: tetra_native_eq  # a, b -- a==b?
+  pop v0 v1 2
+  v0 ^= v1
+  v1 := 0xFF
+  v0 ^= v1
+  push v0 v0 1
+  jump tetra_next
+}
+:macro impl_tetra_native_neq {
+: tetra_native_neq  # a, b -- a!=b?
+  pop v0 v1 2
+  v0 ^= v1
+  push v0 v0 1
+  jump tetra_next
+}
+:macro impl_tetra_native_not {
+: tetra_native_not  # a -- ~a
+  pop v0 v0 1
+  v1 := 0xFF
+  v0 ^= v1
+  push v0 v0 1
   jump tetra_next
 }

@@ -1,4 +1,4 @@
-: tetra_return octo tetra_native_return ;
+: RETURN octo tetra_native_return ;
 
 : + octo tetra_native_add ;
 : - octo tetra_native_sub ;
