@@ -1,6 +1,6 @@
 :calc INPUT_TABLE_END { 0xFF }
 
-: tetra_exec_v0v1 tetra_exec v0 v1 
+: tetra_exec_v0v1 tetra_exec v0 v1
 
 : input_state 0
 : input_handler
@@ -8,11 +8,11 @@
   v0 := 0
   save v0 - v0
 : input_handler_loop
-  i := input_table
+  i := input_table # <-- to be modified to point to the current state's input table
   i += v0
   load v2     # Load = v0v1 = address of tetra code; v2 = key
   if v2 == INPUT_TABLE_END then return
-  if v2 key then tetra_exec_v0v1
+  if v2 key then :breakpoint keyv2 tetra_exec_v0v1
   i := input_state
   load v0 - v0
   v0 += 3

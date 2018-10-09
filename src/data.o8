@@ -16,11 +16,11 @@
 
 ## Input
 : input_table
-tobytes PLAYER_LEFT OCTO_KEY_A
-tobytes PLAYER_RIGHT OCTO_KEY_D
-tobytes PLAYER_UP OCTO_KEY_W
-tobytes PLAYER_DOWN OCTO_KEY_S
-0 0 INPUT_TABLE_END
+tobytes PLAYER_LEFT :byte OCTO_KEY_A
+tobytes PLAYER_RIGHT :byte OCTO_KEY_D
+tobytes PLAYER_UP :byte OCTO_KEY_W
+tobytes PLAYER_DOWN :byte OCTO_KEY_S
+0 0 :byte INPUT_TABLE_END
 : input_table_end
 
 
