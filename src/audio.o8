@@ -117,43 +117,43 @@
 
 
 ## These constants point into the jumptable and can be used in songs
-:const --- 0x00
-:const C-3 0x04
-:const C$3 0x08
-:const D-3 0x0C
-:const D$3 0x10
-:const E-3 0x14
-:const F-3 0x18
-:const F$3 0x1C
-:const G-3 0x20
-:const G$3 0x24
-:const A-3 0x28
-:const A$3 0x2C
-:const B-3 0x30
-:const C-4 0x34
-:const C$4 0x38
-:const D-4 0x3C
-:const D$4 0x40
-:const E-4 0x44
-:const F-4 0x48
-:const F$4 0x4C
-:const G-4 0x50
-:const G$4 0x54
-:const A-4 0x58
-:const A$4 0x5C
-:const B-4 0x60
-:const C-5 0x64
-:const C$5 0x68
-:const D-5 0x6C
-:const D$5 0x70
-:const E-5 0x74
-:const F-5 0x78
-:const F$5 0x7C
-:const G-5 0x80
-:const G$5 0x84
-:const A-5 0x88
-:const A$5 0x8C
-:const B-5 0x90
+:macro --- { :byte 0x00 }
+:macro C-3 { :byte 0x04 }
+:macro C$3 { :byte 0x08 }
+:macro D-3 { :byte 0x0C }
+:macro D$3 { :byte 0x10 }
+:macro E-3 { :byte 0x14 }
+:macro F-3 { :byte 0x18 }
+:macro F$3 { :byte 0x1C }
+:macro G-3 { :byte 0x20 }
+:macro G$3 { :byte 0x24 }
+:macro A-3 { :byte 0x28 }
+:macro A$3 { :byte 0x2C }
+:macro B-3 { :byte 0x30 }
+:macro C-4 { :byte 0x34 }
+:macro C$4 { :byte 0x38 }
+:macro D-4 { :byte 0x3C }
+:macro D$4 { :byte 0x40 }
+:macro E-4 { :byte 0x44 }
+:macro F-4 { :byte 0x48 }
+:macro F$4 { :byte 0x4C }
+:macro G-4 { :byte 0x50 }
+:macro G$4 { :byte 0x54 }
+:macro A-4 { :byte 0x58 }
+:macro A$4 { :byte 0x5C }
+:macro B-4 { :byte 0x60 }
+:macro C-5 { :byte 0x64 }
+:macro C$5 { :byte 0x68 }
+:macro D-5 { :byte 0x6C }
+:macro D$5 { :byte 0x70 }
+:macro E-5 { :byte 0x74 }
+:macro F-5 { :byte 0x78 }
+:macro F$5 { :byte 0x7C }
+:macro G-5 { :byte 0x80 }
+:macro G$5 { :byte 0x84 }
+:macro A-5 { :byte 0x88 }
+:macro A$5 { :byte 0x8C }
+:macro B-5 { :byte 0x90 }
 
 
 : note_jumptable
