@@ -1,0 +1,3 @@
+: tetra_return octo tetra_native_return ;
+
+: + octo tetra_native_add ;

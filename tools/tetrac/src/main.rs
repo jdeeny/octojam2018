@@ -101,10 +101,22 @@ fn dump_dict_consts(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
         writeln!(out, "{:30}# {} {:?} - {:?}", s, i, key, value);
     }
 
+    writeln!(out, "\n\n# Instantiations of native tetra words");
+    for (Word(key), value) in dictionary {
+        if let Definition::OctoCall(target) = value {
+            match target {
+                WordOrLiteral::W(Word(w)) => {
+                    writeln!(out, "impl_{}", w);
+                },
+                WordOrLiteral::L(l) => {},
+            }
+        }
+    }
+
 }
 
 fn dump_dict_table(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
-    writeln!(out, "\n\n: TETRA_DICT   # Begin Dictionary Table  Entries: 1B Type, 2B Data");
+    writeln!(out, "\n\n: tetra_dictionary   # Begin Dictionary Table  Entries: 1B Type, 2B Data");
     for (i, (key, value)) in dictionary.iter().enumerate() {
         let Word(name) = key;
         let name = name.to_uppercase();
