@@ -15,13 +15,15 @@
 : entity_table_end
 
 ## Input
+:macro input_table_entry TETRA_TARGET KEY_CODE { tobytes TETRA_TARGET :byte KEY_CODE }
+:macro input_table_end { :byte 0 :byte 0 :byte INPUT_TABLE_END }
 : input_table
-tobytes PLAYER_LEFT :byte OCTO_KEY_A
-tobytes PLAYER_RIGHT :byte OCTO_KEY_D
-tobytes PLAYER_UP :byte OCTO_KEY_W
-tobytes PLAYER_DOWN :byte OCTO_KEY_S
-0 0 :byte INPUT_TABLE_END
-: input_table_end
+input_table_entry   PLAYER_LEFT     OCTO_KEY_A
+input_table_entry   PLAYER_RIGHT    OCTO_KEY_D
+input_table_entry   PLAYER_UP       OCTO_KEY_W
+input_table_entry   PLAYER_DOWN     OCTO_KEY_S
+input_table_entry   PLAYER_DOWN     OCTO_KEY_S
+input_table_end
 
 
 
