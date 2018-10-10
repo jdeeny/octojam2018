@@ -1,0 +1,10 @@
+: DIR_NE 0 ;
+: DIR_E 1 ;
+: DIR_SE 2 ;
+: DIR_SW 3 ;
+: DIR_W 4 ;
+: DIR_NW 5 ;
+
+
+# Can unit move this direction?  ( dir -- bool )
+: PASSABLE? FALSE ;

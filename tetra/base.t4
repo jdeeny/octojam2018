@@ -4,3 +4,6 @@
 : - octo tetra_native_sub ;
 : LOAD octo tetra_native_load ;
 : STORE octo tetra_native_store ;
+
+: FALSE 0 ;
+: TRUE 1 ;
