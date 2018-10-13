@@ -2,9 +2,10 @@
 :macro input_table_entry TETRA_TARGET KEY_CODE { tobytes TETRA_TARGET :byte KEY_CODE }
 :macro input_table_end { :byte 0 :byte 0 :byte INPUT_TABLE_END }
 : input_table
-input_table_entry   PLAYER_LEFT     OCTO_KEY_A
-input_table_entry   PLAYER_RIGHT    OCTO_KEY_D
-input_table_entry   PLAYER_UP       OCTO_KEY_W
-input_table_entry   PLAYER_DOWN     OCTO_KEY_S
-input_table_entry   PLAYER_DOWN     OCTO_KEY_S
+input_table_entry   T4_PLAYER_LEFT     OCTO_KEY_A
+input_table_entry   T4_PLAYER_RIGHT    OCTO_KEY_D
+input_table_entry   T4_PLAYER_UP       OCTO_KEY_W
+input_table_entry   T4_PLAYER_DOWN     OCTO_KEY_S
+input_table_entry   T4_PLAY_MUSIC     OCTO_KEY_1
+input_table_entry   T4_STOP_MUSIC      OCTO_KEY_2
 input_table_end

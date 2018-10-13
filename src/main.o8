@@ -14,7 +14,7 @@ audio_play_music
   delay := vF
 
   # Process real time systems
-  #input_handler
+  input_handler
   audio_handler
 
 

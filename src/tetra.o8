@@ -30,6 +30,8 @@
 # PASS0/PASS1 = location of byte code
 :macro tetra_exec hi lo {
   tetra_callstack_push hi lo 2
+  reg_set_i_v01
+  load v0 - v0
   tetra_decode
 }
 
@@ -151,4 +153,8 @@
   v0 ^= v1
   push v0 v0 1
   jump tetra_next
+}
+:macro impl_audio_play_music {
+}
+:macro impl_audio_stop_music {
 }
