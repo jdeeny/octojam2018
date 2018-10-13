@@ -2,6 +2,23 @@
 # Tetra Interpreter
 ###
 
+
+
+
+:calc ESCAPE_
+
+
+
+
+
+
+
+
+
+
+
+
+
 :macro TETRA_NEXT { jump tetra_next }
 
 # Tetra data is put on the same stack that is used in the rest of the program, but
@@ -70,11 +87,15 @@
 : tetra_next
   :breakpoint !load_next!
   tetra_callstack_pop v0 v1 2
-  math_add_u16_u8imm v1 v0 1  # advance to next
+  math_add_u16_u8imm v0 v1 2  # advance to next
   tetra_callstack_push v0 v1 2
-
 : tetra_decode
   :breakpoint decode
+  reg_set_i_v01
+  load v2 - v3
+  if v2 == 0 then jump tetra_decode_literal
+  tetra_callstack_push v2 v3 2
+
 
   # symbol is loaded into v0
   i := long tetra_dictionary

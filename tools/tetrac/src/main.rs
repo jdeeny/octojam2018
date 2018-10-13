@@ -2,96 +2,166 @@ use std::io::Write;
 use std::ops::Add;
 use std::io::prelude::*;
 use std::fs::File;
-use std::collections::HashMap;
+use std::collections::{HashMap, BTreeMap};
 
 use derive_more::{ From, Into };
 mod parse;
 
 
-#[derive(From, Into, Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Word(String);
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum WordOrLiteral{
-    W(Word),
-    L(usize),
+#[derive(Ord, PartialOrd, Eq, PartialEq, Clone)]
+pub struct Word {
+    pub name: String,
+    pub def: Vec<DefPiece>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum Definition{
-    Tetra(Vec<WordOrLiteral>),
-    OctoCall(WordOrLiteral),
-    OctoAddr(WordOrLiteral),
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Ord, PartialOrd)]
+pub enum DefPiece {
+    Tetra(String),
     Literal(usize),
+    Token(usize),
+    OctoCall(String),
+    OctoAddr(String),
 }
 
-#[derive(From, Into, Debug, Clone, PartialEq, Eq, Hash)]
-pub struct DictEntry {
-    pub key: Word,
-    pub value: Definition,
+pub struct Escape {
+    value: usize,
+    name: String,
 }
-
-
 
 fn main() {
+
+    let escapes = vec!( Escape{ value: 0xFF, name: String::from("TETRA_ESCAPE_LIT8") },
+                        Escape{ value: 0xFE, name: String::from("TETRA_ESCAPE_TETRAPTR") },
+                        Escape{ value: 0xFD, name: String::from("TETRA_ESCAPE_OCTOCALL") },
+                        Escape{ value: 0xFC, name: String::from("TETRA_ESCAPE_OCTODATA") },
+    );
+
 
     let mut source = File::open("build/tetra_input.t4").unwrap();
     let mut header_dest = File::create("build/tetra_header.o8").unwrap();
     let mut data_dest = File::create("build/tetra_data.o8").unwrap();
 
-    let mut dictionary: HashMap<Word, Definition> = HashMap::new();
+    let mut uses: HashMap<String, usize> = HashMap::new();
+
+    let mut dictionary: HashMap<String, Word> = HashMap::new();
+
+    let mut tokens: BTreeMap<String, usize> = BTreeMap::new();
 
     let mut buffer = String::new();
     let _ = source.read_to_string(&mut buffer);
 
     buffer = buffer + ":bandaid shit #  \n\n";
 
+
+
     let (_, parsed) = parse::tetra_source(&buffer).unwrap();
-    for entry in parsed {
-        let key = entry.key;
-        let value = entry.value;
-        define(&mut dictionary, &key, &value);
-    }
 
 
-
-    //search for literals
-    let mut literals = Vec::<usize>::new();
-    for def in dictionary.values() {
-        if let Definition::Tetra(def) = def {
-            for word in def.iter() {
-                if let WordOrLiteral::L(l) = word {
-                    literals.push(*l);
-                }
+    // count the uses
+    for entry in &parsed {
+        for w in entry.def.clone() {
+            if let DefPiece::Tetra(def) = w {
+                *uses.entry(String::from(def)).or_insert(0) += 1;
             }
+
         }
     }
 
-    for l in literals {
-        let name = format!("T4_LIT_{}", l);
-        if dictionary.get(&Word(name.clone()))  == None {
-            define(&mut dictionary, &Word(name), &Definition::Literal(l));
-        }
+    let mut sorted_uses: Vec<(String, usize)> =  Vec::new();
+    for (uses, word) in uses {
+        sorted_uses.push((uses,word));
+    }
+    sorted_uses.sort_by_key(|v| v.1);
+
+    let mut token_count = 0;
+
+    for (word, count) in sorted_uses {
+        tokens.insert(word.clone(), token_count);
+        token_count += 1;
+        if token_count == 0xFD { break; }
     }
 
 
-    dump_tetra_header(&mut header_dest);
-    dump_dict_consts(&mut header_dest, &dictionary);
+    for w in &parsed {
+        dictionary.insert(w.name.clone(), w.clone());
+        //define(&mut dictionary, &mut tokens, &k, &v);
+    }
 
-    // Output the dictionary definitions
-    dump_dict(&mut data_dest, &dictionary);
 
-    // Dump the dictionary table
-    dump_dict_table(&mut data_dest, &dictionary);
+    dump_tetra_header(&mut header_dest, &escapes);
+    dump_token_consts(&mut header_dest, &tokens);
 
+    dump_dict_entries(&mut data_dest, &dictionary);
+    dump_token_table(&mut data_dest, &dictionary, &tokens);
 }
 
 
-fn define(dictionary: &mut HashMap<Word, Definition>, word: &Word, definition: &Definition) {
-    assert!(dictionary.get(word) == None);
-    dictionary.insert(word.clone(), definition.clone());
+
+fn dump_tetra_header(out: &mut Write, escapes: &Vec<Escape>) {
+    for e in escapes {
+        writeln!(out, ":calc {} {{ {:16} }}", e.name, e.value);
+
+    }
 }
 
+fn dump_token_consts(out: &mut Write, tokens: &BTreeMap<String, usize>) {
+    for (name, val) in tokens {
+        writeln!(out, ":calc {} {{ {} }}", name, val);
+    }
+}
+
+/*fn dump_tetra_table(out: &mut Write, name: &str, def: &Definition) {
+    let defname = String::from("T4_") + name;
+    match def {
+
+        Definition::Tetra(_)    => { writeln!(out, "DEF_TETRA   tobytes   {}", defname); },
+        Definition::OctoCall(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_CALL    tobytes   {}", addr); },
+        Definition::OctoAddr(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_ADDR    tobytes   {}", addr); },
+        Definition::Literal(n)  => { writeln!(out, "DEF_LITERAL {} {}", n >> 8, n & 0xFF ); },
+        _ => {},
+
+    }
+
+}*/
+
+
+fn dump_dict_entries(out: &mut Write, dictionary: &HashMap<String, Word>) {
+    writeln!(out, "\n\n# Begin Tetra Dictionary Entries");
+    for (name, value) in dictionary {
+        let name = name.to_uppercase();
+        dump_tetra_definition(out, &name, &value);
+    }
+}
+
+
+
+fn dump_tetra_definition(out: &mut Write, name: &str, word: &Word) {
+    let defname = String::from("T4_") + name;
+
+    write!(out, ": {}", defname);
+    for piece in word.def.clone() {
+        match piece {
+            DefPiece::Token(n) => { write!(out, " 0x{:16}", n); },
+            DefPiece::Tetra(s) => { write!(out, " TETRA_ESCAPE_TETRAPTR {}", s); },
+            DefPiece::Literal(n) => { write!(out, "TETRA_ESCAPE_LIT8 0x{:16}", n); },
+            DefPiece::OctoCall(addr) => { write!(out, "TETRA_ESCAPE_OCTOCALL tobytes {}", addr); },
+            DefPiece::OctoAddr(addr) => { write!(out, "TETRA_ESCAPE_OCTODATA tobytes {}", addr); },
+        }
+    }
+    write!(out, " EXIT");
+    writeln!(out, "");
+}
+
+
+fn dump_token_table(out: &mut Write, dictionary: &HashMap<String, Word>, tokens: &BTreeMap<String, usize>) {
+    writeln!(out, "\n\n: tetra_dictionary   # Begin Dictionary Table  2Bytes each");
+    for (name, val) in tokens {
+        writeln!(out, "0x{:16} 0x{:16} # {} ", val >> 8, val & 0xFF, name);
+    }
+}
+
+
+/*
 fn dump_dict_consts(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
     writeln!(out, "\n\n: TETRA_DICT_CONSTANTS  # Indexes into the table");
     for (i, (key, value)) in dictionary.iter().enumerate() {
@@ -115,16 +185,6 @@ fn dump_dict_consts(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
 
 }
 
-fn dump_dict_table(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
-    writeln!(out, "\n\n: tetra_dictionary   # Begin Dictionary Table  Entries: 1B Type, 2B Data");
-    for (i, (key, value)) in dictionary.iter().enumerate() {
-        let Word(name) = key;
-        let name = name.to_uppercase();
-        let s = format!(":calc {}  {{ {} }}", name, i);
-        writeln!(out, "{:30}# {} {:?} - {:?}", s, i, key, value);
-        dump_tetra_table(out, &name, &value);
-    }
-}
 
 fn dump_dict(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
     writeln!(out, "\n\n# Begin Tetra Dictionary Entries");
@@ -138,40 +198,7 @@ fn dump_dict(out: &mut Write, dictionary: &HashMap<Word, Definition>) {
 }
 
 
-fn dump_tetra_table(out: &mut Write, name: &str, def: &Definition) {
-    let defname = String::from("T4_") + name;
-    match def {
 
-        Definition::Tetra(_)    => { writeln!(out, "DEF_TETRA   tobytes   {}", defname); },
-        Definition::OctoCall(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_CALL    tobytes   {}", addr); },
-        Definition::OctoAddr(WordOrLiteral::W(Word(addr))) => { writeln!(out, "DEF_ADDR    tobytes   {}", addr); },
-        Definition::Literal(n)  => { writeln!(out, "DEF_LITERAL {} {}", n >> 8, n & 0xFF ); },
-        _ => {},
-
-    }
-
-}
-
-
-
-fn dump_tetra_definition(out: &mut Write, name: &str, def: &Definition) {
-    let defname = String::from("T4_") + name;
-    match def {
-        Definition::Tetra(d)    => {
-            write!(out, ": {}", defname);
-            for w in d {
-                match w {
-                    WordOrLiteral::W(Word(word)) => { write!(out, " {}", word); }
-                    WordOrLiteral::L(l)      => { write!(out, " T4_LIT_{}", l); },
-                }
-            }
-            write!(out, " EXIT");
-            writeln!(out, "");
-        },
-        _ => {},
-    }
-
-}
 
 fn dump_tetra_header(out: &mut Write) {
     // Constants for the table
@@ -180,3 +207,4 @@ fn dump_tetra_header(out: &mut Write) {
     writeln!(out, ":calc DEF_ADDR    {{ 2 }}");
     writeln!(out, ":calc DEF_LITERAL {{ 3 }}");
 }
+*/

@@ -1,7 +1,7 @@
 use nom::*;
-use crate::{ Word, DictEntry, WordOrLiteral, Definition };
+use crate::{ Word, DefPiece } ;//, DictEntry, WordOrLiteral, Definition };
 
-named!(pub tetra_source<&str, Vec<DictEntry>>,
+named!(pub tetra_source<&str, Vec<Word>>,
         many0!(
             complete!(
             do_parse!(
@@ -17,62 +17,62 @@ named!(pub tetra_source<&str, Vec<DictEntry>>,
         ))
 );
 
-named!(dict_entry<&str, DictEntry>,
+named!(dict_entry<&str, Word>,
     ws!(
         alt_complete!(dict_entry_octocall | dict_entry_octoaddress | dict_entry_tetra )
     )
 );
 
-named!(dict_entry_tetra<&str, DictEntry>,
+named!(dict_entry_tetra<&str, Word>,
     ws!(
         do_parse!(
             tag!(":") >>
             name: word >>
-            value: many1!(word_or_literal) >>
+            value: many1!(word) >>
             tag!(";") >>
-            ( DictEntry{ key: name, value: Definition::Tetra(value) } )
+            ( Word { name: name, def: value.iter().map(|v| DefPiece::Tetra(v.clone())).collect() } )
         )
     )
 );
 
-named!(dict_entry_octocall<&str, DictEntry>,
+named!(dict_entry_octocall<&str, Word>,
     ws!(
         do_parse!(
             tag!(":") >>
             name: word >>
             tag_no_case!("octo") >>
-            value: word_or_literal >>
+            value: word >>
             tag!(";") >>
-            ( DictEntry{ key: name, value: Definition::OctoCall(value) } )
+            ( Word{ name: name, def: vec!(DefPiece::OctoCall(value)) } )
         )
     )
 );
 
-named!(dict_entry_octoaddress<&str, DictEntry>,
+named!(dict_entry_octoaddress<&str, Word>,
     ws!(
         do_parse!(
             tag!(":") >>
             name: word >>
             tag_no_case!("addr") >>
-            value: word_or_literal >>
+            value: word >>
             tag!(";") >>
-            ( DictEntry{ key: name, value: Definition::OctoAddr(value) } )
+            ( Word{ name: name, def: vec!(DefPiece::OctoAddr(value)) } )
         )
     )
 );
 
 
-named!(word<&str, Word>,
-        complete!(do_parse!( value: is_not_s!(" \r\n\t:;") >> (Word(String::from(value))) ))
+named!(word<&str, String>,
+        complete!(do_parse!( value: is_not_s!(" \r\n\t:;") >> (String::from(value)) ))
 );
 
 
-named!(word_or_literal<&str, WordOrLiteral>,
+/*named!(word_or_literal<&str, WordOrLiteral>,
     alt_complete!(
         do_parse!( value: literal >> (WordOrLiteral::L(value)) ) |
         do_parse!( value: word >> (WordOrLiteral::W(value)) )
     )
-);
+);*/
 
 
 fn from_hex(input: &str) -> Result<usize, std::num::ParseIntError> {
