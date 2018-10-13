@@ -1,0 +1,6 @@
+[melee]
+range: 1
+damage:
+
+Hit: "The %enemyname hits you with its %attackwith."
+Miss: "The %enemyname's %attackwith just missed you."

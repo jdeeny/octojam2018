@@ -75,7 +75,7 @@
   :breakpoint decode
 
   # symbol is loaded into v0
-  i := tetra_dictionary
+  i := long tetra_dictionary
   i += v0
   i += v0
   i += v0       # Index into table (v0 * 3)
@@ -91,11 +91,12 @@
   jump tetra_next
 }
 
-:macro impl_tetra_native_return {
-: tetra_native_return
+:macro impl_tetra_native_exit {
+: tetra_native_exit
   tetra_callstack_decr_sp TETRA_CALLFRAME_BYTES   # Drop this stack frame
   return
 }
+
 
 :macro impl_tetra_native_add {
 : tetra_native_add    # a, b -- a+b

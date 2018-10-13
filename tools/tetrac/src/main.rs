@@ -165,7 +165,7 @@ fn dump_tetra_definition(out: &mut Write, name: &str, def: &Definition) {
                     WordOrLiteral::L(l)      => { write!(out, " T4_LIT_{}", l); },
                 }
             }
-            write!(out, " RETURN");
+            write!(out, " EXIT");
             writeln!(out, "");
         },
         _ => {},

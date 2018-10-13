@@ -1,197 +1,253 @@
-:const AUDIO_STOPPED 0      # No audio
-:const AUDIO_SUSTAIN 1      # Playing a sustained note (looping audio buffer)
-:const AUDIO_SAMPLE 2       # Playing a sample waveform (long buffer that is streamed)
-
-:const AUDIO_SONGFLAG 0x80  # A song is playing
+: audio_state 0
+: audio_state_sustain 0
 
 
-# Begin playing a song
-: audio_play_music # TODO: song select
-  # Modify code in the audio_handler to load the songbuffer
-  #Trampoline-Set-I-Const audio_tramp_i:=audio_buffer song_a
+# State machine
+: audio_handler
   i := audio_state
-  v0 := 0#AUDIO_SONG_A
-  save v0
+  load v0 - v1
+  #:breakpoint v0=jumptable_loc
+  jump0 audio_handler_jumptable
+: audio_handler_jumptable
+: audio_handler_jumptable_stopped
+  return
+: audio_handler_jumptable_music
+  v1 += -1
+  save v0 - v1
+  if v1 == 0 then jump audio_handler_next_note
+: audio_handler_play_note
+  #:breakpoint dobuzzer
+  vF := 2
+  buzzer := vF
+  return
+
+: audio_handler_next_note
+  0xF0 0x00 : music_data_ptr 0x00 0x00  # Set I := long 0x0000 (to be overwritten)
+  #:breakpoint i=musicdata
+  load v0 - v1 # v0 = note, v1 = sustain
+  #:breakpoint v0=note,v1=sustain
+  if v0 == 0xFF then jump audio_stop_music
+  i := audio_state_sustain
+  save v1 - v1
+  jump0 note_jumptable
+: audio_handler_next_note_return
+  #:breakpoint i=notedata
+  audio
+  i := music_data_ptr
+  load v0 - v1
+  math_add_u16_u8imm v0 v1 2
+  save v0 - v1
+  jump audio_handler_play_note
+
+
+# States
+:calc AUDIO_STOPPED { audio_handler_jumptable_stopped - audio_handler_jumptable }
+:calc AUDIO_MUSIC { audio_handler_jumptable_music - audio_handler_jumptable }
+#:calc AUDIO_SFX { audio_handler_jumptable_sfx - audio_handler_jumptable }
+#:calc AUDIO_SFX_AND_MUSIC { audio_handler_jumptable_sfx_and_music - audio_handler_jumptable }
+
+
+: audio_play_music
+  # Set the song
+  i := music_data_ptr
+  v0 := 0xF0
+  v1 := 0x00
+  save v0 - v1
+  i := audio_state
+  v0 := AUDIO_MUSIC
+  v1 := 1
+  save v0 - v1
   ;
 
-# Higher numbers = slower song, this sets the target of the counter
-# This is set automatically during song load, but it could be messed with lives
-:macro audio_set_tempo_reg speed_reg { i := audio_state_tempo save speed_reg - speed_reg }
-:macro audio_set_tempo_const speed_const temp_reg { temp_reg := speed_const audio_set_tempo_reg temp_reg }
-
-# Stop music
 : audio_stop_music
   i := audio_state
   v0 := AUDIO_STOPPED
-  save v0
+  save v0 - v0
   ;
 
-# Play a waveform sample
-: audio_play_sample
-  ;
-
-: audio_handler
-  # check audio state
-  i := audio_state
-  load v0 - v2  # v0 = state, v1 = note, v2 = sustain_count
-  if v0 == 0 then return
-  #if v1 == 0 then jump load_next_note
-  v2 += -1
-  save v0 - v2
-
-  # load buffer
-#  Trampoline: audio_tramp_i:=samplebuffer # Set i to the location of the current sample. This is modified when a song starts
-#  i += v1
-
-  # load buffer
+## Play a waveform sample
+#: audio_play_sample
+#  ;
+#
+#
+#  # Audio state is either STOPPED, SONG_x | note
+#  # State 1B | Index
+#  : audio_state 0
+#  : audio_state_song_idx 0
+#  : audio_state_note_pointer_hi 0
+#  : audio_state_note_pointer_lo 0
+#  : audio_state_tempo 0
+#  : audio_state_tempo_counter 0
+#  : audio_state_sustain_counter 0
+#
+#
+#: audio_handler
+#  # check audio state
+#  i := audio_state
+#  load v0 - v5  # v0 = state, v1=tempo, v2=note_ptr_hi, v3=note_ptr_lo, v4 = tempo_counter, v5=sustain_counter
+#  jump0 audio_handler_jumptable
+#: audio_handler_jumptable
+#: audio_handler_jumptable_stopped
+#  return
+#: audio_handler_jumptable_music
+#
+#  v4 += -1
+#  if v4 == 0 then v4 := v1
+#  if v4 != v1 then jump audio_handler_end
+#  buzzer := v4
+#  v6 += -1
+#  if v6 != 0 then jump audio_handler_end
+#  math_add_u16_u8imm v2 v3 2
+#  reg_set_i_v23  # i = note_pointer
+#  load v4 - v5
+#  if v4 == 0xFF then jump audio_stop_music
+#  save v3
+#  v0 := v4
+#  v4 := v1
+#  save v4 - v5
+#  :breakpoint audio-state-nonzero
+#  jump0 note_jumptable
 #  audio
-
-  #play
-#  vF := 60
-#  buzzer := vF
-  ;
-
-
-:calc MUSIC_MAX_SUSTAIN { 255 }
-:calc WHOLE_NOTE { MUSIC_MAX_SUSTAIN }
-:calc HALF_NOTE { WHOLE_NOTE / 2 }
-:calc QUARTER_NOTE { WHOLE_NOTE / 4 }
-:calc EIGHTH_NOTE { WHOLE_NOTE / 8 }
-:calc SIXTEENTH_NOTE { WHOLE_NOTE / 16 }
-
-
-
-: music_next_note
-  Trampoline: music_tramp_i:=songbuffer   # this points to the next note already
-  load v1 # note, sustain
-
-  :calc music_trap_half { music_tramp_i:=songbuffer + 2 }
-  reg_set_i_v23
-  v3 += 1
-  if vF != 0 then v2 += 1
-
-  Trampoline-Set-I-v2v3  music_tramp_i:=songbuffer
-
-  ;
-
-: music_note_sustain
-	audio
-    vf := 6
-	delay  := vf
-	vf     := 60
-	buzzer := vf
-	loop
-		vf := delay
-		if vf != 0 then
-	again
-    v8 += 1
-;
-
-#: quick-sfx
-#    audio
+#  buzzer := v4
+#  jump audio_handler_end
+#: audio_handler_jumptable_sfx
+#  return
+#: audio_handler_jumptable_sfx_and_music
+#  return
+#
+#: audio_handler_end
+#  i := audio_state
+#  save v0 - v6
+#  return
+#
+#
+#
+## Stop music
+#: audio_stop_music
+#  i := audio_state
+#  v0 := AUDIO_STOPPED
+#  save v0
+#  ;
+#
+#
+#
+## Begin playing a song
+#: audio_play_music # TODO: song select
+#  # Set the song
+#  Trampoline-Set-I-Const tramp_audio_tramp_i:=music_data 0xF000
+#
+#  i := audio_state
+#  v0 := AUDIO_MUSIC
+#  v1 :=
+#  v2 := 0xF0
+#  v3 := 00
+#  v4 := 10
+#  v5 := 10
+#  v6 := 10
+#
+#  save v0 - v6
+#  ;
+#
+#
+#: audio_
+#  Trampoline: audio_tramp_i:=music_data
+#  load v0 - v1 # v0 = note, v1 = sustain
+#
+#
+#
+#:calc MUSIC_MAX_SUSTAIN { 255 }
+#:calc WHOLE_NOTE { MUSIC_MAX_SUSTAIN }
+#:calc HALF_NOTE { WHOLE_NOTE / 2 }
+#:calc QUARTER_NOTE { WHOLE_NOTE / 4 }
+#:calc EIGHTH_NOTE { WHOLE_NOTE / 8 }
+#:calc SIXTEENTH_NOTE { WHOLE_NOTE / 16 }
+#
+#
+#
+#: music_note_sustain
+#	audio
 #    vf := 6
 #	delay  := vf
-#	vf     := 12
+#	vf     := 60
 #	buzzer := vf
+#	loop
+#		vf := delay
+#		if vf != 0 then
+#	again
+#    v8 += 1
 #;
-
-#: play-sfx
-#    i := sfx-crash jump quick-sfx # 0x00
-#    i := sfx-vuvu jump quick-sfx  # 0x04 (vuvuzela)
-#;
-
-#: song-table-static
-#    i := song_a # 0
-#    :breakpoint song
-#    jump static-screen-music-player-2
-#;
-
-#: static-screen-music-player-1
-#        # v5, v8, and v9 reserved (song, progress)
 #
-#        # grab song
-#        v0 := v5
-#        jump0 song-table-static
-#;
-
-
-
-## These constants point into the jumptable and can be used in songs
-:macro --- { :byte 0x00 }
-:macro C-3 { :byte 0x04 }
-:macro C$3 { :byte 0x08 }
-:macro D-3 { :byte 0x0C }
-:macro D$3 { :byte 0x10 }
-:macro E-3 { :byte 0x14 }
-:macro F-3 { :byte 0x18 }
-:macro F$3 { :byte 0x1C }
-:macro G-3 { :byte 0x20 }
-:macro G$3 { :byte 0x24 }
-:macro A-3 { :byte 0x28 }
-:macro A$3 { :byte 0x2C }
-:macro B-3 { :byte 0x30 }
-:macro C-4 { :byte 0x34 }
-:macro C$4 { :byte 0x38 }
-:macro D-4 { :byte 0x3C }
-:macro D$4 { :byte 0x40 }
-:macro E-4 { :byte 0x44 }
-:macro F-4 { :byte 0x48 }
-:macro F$4 { :byte 0x4C }
-:macro G-4 { :byte 0x50 }
-:macro G$4 { :byte 0x54 }
-:macro A-4 { :byte 0x58 }
-:macro A$4 { :byte 0x5C }
-:macro B-4 { :byte 0x60 }
-:macro C-5 { :byte 0x64 }
-:macro C$5 { :byte 0x68 }
-:macro D-5 { :byte 0x6C }
-:macro D$5 { :byte 0x70 }
-:macro E-5 { :byte 0x74 }
-:macro F-5 { :byte 0x78 }
-:macro F$5 { :byte 0x7C }
-:macro G-5 { :byte 0x80 }
-:macro G$5 { :byte 0x84 }
-:macro A-5 { :byte 0x88 }
-:macro A$5 { :byte 0x8C }
-:macro B-5 { :byte 0x90 }
-
+##: quick-sfx
+##    audio
+##    vf := 6
+##	delay  := vf
+##	vf     := 12
+##	buzzer := vf
+##;
+#
+##: play-sfx
+##    i := sfx-crash jump quick-sfx # 0x00
+##    i := sfx-vuvu jump quick-sfx  # 0x04 (vuvuzela)
+##;
+#
+##: song-table-static
+##    i := song_a # 0
+##    :breakpoint song
+##    jump static-screen-music-player-2
+##;
+#
+##: static-screen-music-player-1
+##        # v5, v8, and v9 reserved (song, progress)
+##
+##        # grab song
+##        v0 := v5
+##        jump0 song-table-static
+##;
+#
+#
+#
+### These constants point into the jumptable and can be used in songs
+:calc note_begin { HERE }
 
 : note_jumptable
-    i := NOTE_--- jump music_note_sustain # 0x00
-    i := NOTE_C-3 jump music_note_sustain # 0x04
-    i := NOTE_C$3 jump music_note_sustain # 0x08
-    i := NOTE_D-3 jump music_note_sustain # 0x0C
-    i := NOTE_D$3 jump music_note_sustain # 0x10
-    i := NOTE_E-3 jump music_note_sustain # 0x14
-    i := NOTE_F-3 jump music_note_sustain # 0x18
-    i := NOTE_F$3 jump music_note_sustain # 0x1C
-    i := NOTE_G-3 jump music_note_sustain # 0x20
-    i := NOTE_G$3 jump music_note_sustain # 0x24
-    i := NOTE_A-3 jump music_note_sustain # 0x28
-    i := NOTE_A$3 jump music_note_sustain # 0x2C
-    i := NOTE_B-3 jump music_note_sustain # 0x30
-    i := NOTE_C-4 jump music_note_sustain # 0x34
-    i := NOTE_C$4 jump music_note_sustain # 0x38
-    i := NOTE_D-4 jump music_note_sustain # 0x3C
-    i := NOTE_D$4 jump music_note_sustain # 0x40
-    i := NOTE_E-4 jump music_note_sustain # 0x44
-    i := NOTE_F-4 jump music_note_sustain # 0x48
-    i := NOTE_F$4 jump music_note_sustain # 0x4C
-    i := NOTE_G-4 jump music_note_sustain # 0x50
-    i := NOTE_G$4 jump music_note_sustain # 0x54
-    i := NOTE_A-4 jump music_note_sustain # 0x58
-    i := NOTE_A$4 jump music_note_sustain # 0x5C
-    i := NOTE_B-4 jump music_note_sustain # 0x60
-    i := NOTE_C-5 jump music_note_sustain # 0x64
-    i := NOTE_C$5 jump music_note_sustain # 0x68
-    i := NOTE_D-5 jump music_note_sustain # 0x6C
-    i := NOTE_D$5 jump music_note_sustain # 0x70
-    i := NOTE_E-5 jump music_note_sustain # 0x74
-    i := NOTE_F-5 jump music_note_sustain # 0x78
-    i := NOTE_F$5 jump music_note_sustain # 0x7C
-    i := NOTE_G-5 jump music_note_sustain # 0x80
-    i := NOTE_G$5 jump music_note_sustain # 0x84
-    i := NOTE_A-5 jump music_note_sustain # 0x88
-    i := NOTE_A$5 jump music_note_sustain # 0x8C
-    i := NOTE_B-5 jump music_note_sustain # 0x90
-;
+:macro note_entry code note_label {
+  :calc code { HERE - note_begin }
+  i := long note_label jump audio_handler_next_note_return
+}
+note_entry --- NOTE_---
+note_entry C-3 NOTE_C-3
+note_entry C$3 NOTE_C$3
+note_entry D-3 NOTE_D-3
+note_entry D$3 NOTE_D$3
+note_entry E-3 NOTE_E-3
+note_entry F-3 NOTE_F-3
+note_entry F$3 NOTE_F$3
+note_entry G-3 NOTE_G-3
+note_entry G$3 NOTE_G$3
+note_entry A-3 NOTE_A-3
+note_entry A$3 NOTE_A$3
+note_entry B-3 NOTE_B-3
+note_entry C-4 NOTE_C-4
+note_entry C$4 NOTE_C$4
+note_entry D-4 NOTE_D-4
+note_entry D$4 NOTE_D$4
+note_entry E-4 NOTE_E-4
+note_entry F-4 NOTE_F-4
+note_entry F$4 NOTE_F$4
+note_entry G-4 NOTE_G-4
+note_entry G$4 NOTE_G$4
+note_entry A-4 NOTE_A-4
+note_entry A$4 NOTE_A$4
+note_entry B-4 NOTE_B-4
+note_entry C-5 NOTE_C-5
+note_entry C$5 NOTE_C$5
+note_entry D-5 NOTE_D-5
+note_entry D$5 NOTE_D$5
+note_entry E-5 NOTE_E-5
+note_entry F-5 NOTE_F-5
+note_entry F$5 NOTE_F$5
+note_entry G-5 NOTE_G-5
+note_entry G$5 NOTE_G$5
+note_entry A-5 NOTE_A-5
+note_entry A$5 NOTE_A$5
+note_entry B-5 NOTE_B-5

@@ -1,0 +1,849 @@
+# /home/jdeeny/Downloads/pixelmix.ttf, 7 points, height 8 px, widest 8 px
+# Exporting: 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+FONT: 8 8
+GLYPH: 48 4 8   # 0 (ASCII: 48) (align-bot)
+.....
+.XXX.
+X...X
+X...X
+X.X.X
+X...X
+X...X
+.XXX
+GLYPH: 49 3 8   # 1 (ASCII: 49) (align-bot)
+...
+.X.
+XX.
+.X.
+.X.
+.X.
+.X.
+XXX
+GLYPH: 50 4 8   # 2 (ASCII: 50) (align-bot)
+....
+.XX.
+X..X
+...X
+...X
+..X.
+.X..
+XXXX
+GLYPH: 51 4 8   # 3 (ASCII: 51) (align-bot)
+....
+XXXXX
+...X
+..X.
+...X
+....X
+X...X
+.XXX
+GLYPH: 52 5 8   # 4 (ASCII: 52) (align-bot)
+.....
+...X.
+..XX.
+.X.X.
+X..X.
+XXXXX
+...X.
+...X.
+GLYPH: 53 4 8   # 5 (ASCII: 53) (align-bot)
+....
+XXXX
+X...
+XXXX
+...X
+...X
+X..X
+.XX.
+GLYPH: 54 4 8   # 6 (ASCII: 54) (align-bot)
+....
+..XX
+.X..
+X...
+XXX.
+X..X
+X..X
+.XX.
+GLYPH: 55 5 8   # 7 (ASCII: 55) (align-bot)
+.....
+XXXXX
+....X
+...X.
+..X..
+.X...
+.X...
+.X...
+GLYPH: 56 4 8   # 8 (ASCII: 56) (align-bot)
+....
+.XXX
+X..X
+X..X
+.XXX
+X..X
+X..X
+.XXX
+GLYPH: 57 4 8   # 9 (ASCII: 57) (align-bot)
+....
+.XXX
+X..X
+X..X
+.XXX
+....
+...X
+.XX.
+GLYPH: 97 4 8   # a (ASCII: 97) (align-bot)
+....
+....
+....
+.XXX
+...X
+.XXX
+X..X
+.XXX
+GLYPH: 98 5 8   # b (ASCII: 98) (align-bot)
+.....
+X....
+X....
+X.XX.
+XX..X
+X...X
+X...X
+XXXX.
+GLYPH: 99 4 8   # c (ASCII: 99) (align-bot)
+....
+....
+....
+.XXX
+X...
+X...
+X..
+.XXX
+GLYPH: 100 4 8   # d (ASCII: 100) (align-bot)
+....
+...X
+...X
+.XXX
+X..X
+X..X
+X..X
+.XXX
+GLYPH: 101 4 8   # e (ASCII: 101) (align-bot)
+....
+....
+....
+.XXX
+X..X
+XXXX
+X...
+.XXX
+GLYPH: 102 4 8   # f (ASCII: 102) (align-bot)
+..XX
+.X.X
+.X..
+.X..
+XXX.
+.X..
+.X..
+.X..
+GLYPH: 103 4 8   # g (ASCII: 103) (align-bot)
+....
+....
+.XXX
+X..X
+X..X
+.XXX
+...X
+.XXX
+GLYPH: 104 5 8   # h (ASCII: 104) (align-bot)
+.....
+X....
+X....
+X.XX.
+XX..X
+X...X
+X...X
+X...X
+GLYPH: 105 3 8   # i (ASCII: 105) (align-bot)
+...
+.X.
+...
+XX.
+.X.
+.X.
+.X.
+XXX
+GLYPH: 106 4 8   # j (ASCII: 106) (align-bot)
+....
+...X
+....
+...X
+...X
+...X
+X..X
+.XX.
+GLYPH: 107 4 8   # k (ASCII: 107) (align-bot)
+....
+X...
+X...
+X..X
+X.X.
+XX..
+X.X.
+X..X
+GLYPH: 108 3 8   # l (ASCII: 108) (align-bot)
+...
+XX.
+.X.
+.X.
+.X.
+.X.
+.X.
+XXX
+GLYPH: 109 4 8   # m (ASCII: 109) (align-bot)
+.....
+.....
+.....
+XX.XX
+X.X.X
+X.X.X
+X...X
+X...X
+GLYPH: 110 5 8   # n (ASCII: 110) (align-bot)
+.....
+.....
+.....
+X.XX.
+XX..X
+X...X
+X...X
+X...X
+GLYPH: 111 4 8   # o (ASCII: 111) (align-bot)
+....
+....
+....
+.XX.
+X..X
+X..X
+X..X
+.XX.
+GLYPH: 112 4 8   # p (ASCII: 112) (align-bot)
+....
+....
+....
+XXX.
+X..X
+XXX.
+X...
+X...
+GLYPH: 113 4 8   # q (ASCII: 113) (align-bot)
+....
+....
+....
+.XXX
+X..X
+.XXX
+...X
+...X
+GLYPH: 114 5 8   # r (ASCII: 114) (align-bot)
+.....
+.....
+.....
+X.XX.
+XX..X
+X....
+X....
+X....
+GLYPH: 115 4 8   # s (ASCII: 115) (align-bot)
+....
+....
+....
+.XXX
+X...
+.XXX
+...X
+XXXX
+GLYPH: 116 4 8   # t (ASCII: 116) (align-bot)
+....
+.X..
+.X..
+XXX.
+.X..
+.X..
+.X.X
+..XX
+GLYPH: 117 4 8   # u (ASCII: 117) (align-bot)
+....
+....
+....
+X..X
+X..X
+X..X
+X..X
+.XXX
+GLYPH: 118 4 8   # v (ASCII: 118) (align-bot)
+.....
+.....
+.....
+X...X
+X...X
+X...X
+.X.X.
+..X..
+GLYPH: 119 4 8   # w (ASCII: 119) (align-bot)
+.....
+.....
+.....
+X...X
+X...X
+X.X.X
+X.X.X
+.X.X.
+GLYPH: 120 4 8   # x (ASCII: 120) (align-bot)
+.....
+.....
+.....
+X...X
+.X.X.
+..X..
+.X.X.
+X...X
+GLYPH: 121 4 8   # y (ASCII: 121) (align-bot)
+....
+....
+....
+X..X
+X..X
+.XXX
+...X
+.XXX
+GLYPH: 122 4 8   # z (ASCII: 122) (align-bot)
+....
+....
+....
+XXXX
+...X
+..X.
+.X..
+XXXX
+GLYPH: 65 4 8   # A (ASCII: 65) (align-bot)
+.....
+.XXX.
+X...X
+X...X
+XXXXX
+X...X
+X...X
+X...X
+GLYPH: 66 4 8   # B (ASCII: 66) (align-bot)
+....
+XXX.
+X..X
+X..X
+XXX.
+X..X
+X..X
+XXX.
+GLYPH: 67 4 8   # C (ASCII: 67) (align-bot)
+....
+.XXX
+X..X
+X...
+X...
+X...
+X..X
+.XXX
+GLYPH: 68 4 8   # D (ASCII: 68) (align-bot)
+....
+XXX.
+X..X
+X..X
+X..X
+X..X
+X..X
+XXX.
+GLYPH: 69 5 8   # E (ASCII: 69) (align-bot)
+.....
+XXXXX
+X....
+X....
+XXXX.
+X....
+X....
+XXXXX
+GLYPH: 70 5 8   # F (ASCII: 70) (align-bot)
+.....
+XXXXX
+X....
+X....
+XXXX.
+X....
+X....
+X....
+GLYPH: 71 4 8   # G (ASCII: 71) (align-bot)
+....
+.XXX
+X..X
+X...
+X.XX
+X..X
+X..X
+.XXX
+GLYPH: 72 4 8   # H (ASCII: 72) (align-bot)
+....
+X..X
+X..X
+X..X
+XXXX
+X..X
+X..X
+X..X
+GLYPH: 73 3 8   # I (ASCII: 73) (align-bot)
+...
+XXX
+.X.
+.X.
+.X.
+.X.
+.X.
+XXX
+GLYPH: 74 5 8   # J (ASCII: 74) (align-bot)
+.....
+..XXX
+...X.
+...X.
+...X.
+...X.
+X..X.
+.XX..
+GLYPH: 75 4 8   # K (ASCII: 75) (align-bot)
+....
+X..X
+X..X
+X.X.
+XX..
+X.X.
+X..X
+X..X
+GLYPH: 76 5 8   # L (ASCII: 76) (align-bot)
+.....
+X....
+X....
+X....
+X....
+X....
+X....
+XXXXX
+GLYPH: 77 5 8   # M (ASCII: 77) (align-bot)
+.....
+X...X
+XX.XX
+X.X.X
+X.X.X
+X...X
+X...X
+X...X
+GLYPH: 78 5 8   # N (ASCII: 78) (align-bot)
+.....
+X...X
+X...X
+XX..X
+X.X.X
+X..XX
+X...X
+X...X
+GLYPH: 79 4 8   # O (ASCII: 79) (align-bot)
+....
+.XXX
+X..X
+X..X
+X..X
+X..X
+X..X
+.XXX
+GLYPH: 80 4 8   # P (ASCII: 80) (align-bot)
+....
+XXX.
+X..X
+X..X
+XXX.
+X...
+X...
+X...
+GLYPH: 81 4 8   # Q (ASCII: 81) (align-bot)
+....
+.XXX
+X..X
+X..X
+X..X
+X.XX
+X..X
+.XXX
+GLYPH: 82 4 8   # R (ASCII: 82) (align-bot)
+....
+XXXX
+X..X
+X..X
+XXXX
+X.X.
+X..X
+X..X
+GLYPH: 83 4 8   # S (ASCII: 83) (align-bot)
+....
+.XXX
+X...
+X...
+.XXX
+...X
+...X
+XXXX
+GLYPH: 84 4 8   # T (ASCII: 84) (align-bot)
+....
+XXXX
+..X.
+..X.
+..X.
+..X.
+..X.
+..X.
+GLYPH: 85 4 8   # U (ASCII: 85) (align-bot)
+.....
+X...X
+X...X
+X...X
+X...X
+X...X
+X...X
+.XXX.
+GLYPH: 86 4 8   # V (ASCII: 86) (align-bot)
+.....
+X...X
+X...X
+X...X
+X...X
+.X.X.
+.X.X.
+..X..
+GLYPH: 87 4 8   # W (ASCII: 87) (align-bot)
+.....
+X...X
+X...X
+X...X
+X.X.X
+X.X.X
+X.X.X
+.X.X.
+GLYPH: 88 4 8   # X (ASCII: 88) (align-bot)
+....
+X...X
+X...X
+.X.X.
+..X..
+.X.X.
+X...X
+X...X
+GLYPH: 89 4 8   # Y (ASCII: 89) (align-bot)
+.....
+X...X
+X...X
+X...X
+.X.X.
+..X..
+..X..
+..X..
+GLYPH: 90 4 8   # Z (ASCII: 90) (align-bot)
+....
+XXXXX
+....X
+...X.
+..X..
+.X...
+X....
+XXXXX
+GLYPH: 33 1 8   # ! (ASCII: 33) (centered)
+.
+XX
+XX
+XX
+XX
+XX
+.
+XX
+GLYPH: 34 3 8   # " (ASCII: 34) (align-top)
+....
+X..X
+X..X
+....
+....
+....
+....
+....
+#GLYPH: 35 4 8   # # (ASCII: 35) (centered)
+#.....
+#.X.X.
+#XXXXX
+#.X.X.
+#.X.X.
+#.X.X.
+#XXXXX
+#.X.X.
+GLYPH: 36 4 8   # $ (ASCII: 36) (centered)
+.....
+.XXX.
+X.X.X
+X.X..
+.XXX.
+..X.X
+X.X.X
+.XXX.
+GLYPH: 37 4 8   # % (ASCII: 37) (centered)
+.....
+XX..X
+XX.X.
+...X.
+..X..
+.X...
+.X.XX
+X..XX
+#GLYPH: 38 5 8   # & (ASCII: 38) (align-bot)
+#.....
+#XXX..
+#X.X..
+#X.X..
+#.X...
+#X.XXX
+#X..X.
+#.XXXX
+GLYPH: 39 1 8   # ' (ASCII: 39) (align-top)
+.
+X
+X
+.
+.
+.
+.
+.
+GLYPH: 40 3 8   # ( (ASCII: 40) (centered)
+...
+..X
+.X.
+X..
+X..
+X..
+.X.
+..X
+GLYPH: 41 3 8   # ) (ASCII: 41) (centered)
+...
+X..
+.X.
+..X
+..X
+..X
+.X.
+X..
+#GLYPH: 42 3 8   # * (ASCII: 42) (centered)
+#...
+#...
+#...
+#.X.
+#XXX
+#.X.
+#...
+#...
+GLYPH: 43 4 8   # + (ASCII: 43) (centered)
+.....
+.....
+..X..
+..X..
+XXXXX
+..X..
+..X..
+.....
+GLYPH: 44 2 8   # , (ASCII: 44) (align-bot)
+..
+..
+..
+..
+..
+..
+XX
+.X
+GLYPH: 45 4 8   # - (ASCII: 45) (align-bot)
+....
+....
+....
+....
+XXXX
+....
+....
+....
+GLYPH: 46 2 8   # . (ASCII: 46) (align-bot)
+..
+..
+..
+..
+..
+..
+XX
+XX
+GLYPH: 47 3 8   # / (ASCII: 47) (centered)
+...
+..X
+..X
+.X.
+.X.
+.X.
+X..
+X..
+GLYPH: 58 1 8   # : (ASCII: 58) (align-bot)
+.
+.
+.
+X
+.
+.
+X
+.
+#GLYPH: 59 2 8   # ; (ASCII: 59) (align-bot)
+#..
+#..
+#.X
+#..
+#..
+#..
+#XX
+#.X
+#GLYPH: 60 4 8   # < (ASCII: 60) (centered)
+#....
+#...X
+#..X.
+#.X..
+#X...
+#.X..
+#..X.
+#...X
+GLYPH: 61 4 8   # = (ASCII: 61) (centered)
+....
+....
+....
+XXXX
+....
+XXXX
+....
+....
+#GLYPH: 62 4 8   # > (ASCII: 62) (centered)
+#....
+#X...
+#.X..
+#..X.
+#...X
+#..X.
+#.X..
+#X...
+GLYPH: 63 4 8   # ? (ASCII: 63) (align-bot)
+....
+.XX.
+X..X
+...X
+..X.
+.X..
+....
+.X..
+#GLYPH: 64 6 8   # @ (ASCII: 64) (centered)
+#......
+#.XXXX.
+#X....X
+#X.XX.X
+#X.XX.X
+#X.XXXX
+#X.....
+#.XXXX.
+#GLYPH: 91 2 8   # [ (ASCII: 91) (centered)
+#..
+#XX
+#X.
+#X.
+#X.
+#X.
+#X.
+#XX
+#GLYPH: 92 3 8   # \ (ASCII: 92) (centered)
+#...
+#X..
+#X..
+#.X.
+#.X.
+#.X.
+#..X
+#..X
+#GLYPH: 93 2 8   # ] (ASCII: 93) (centered)
+#..
+#XX
+#.X
+#.X
+#.X
+#.X
+#.X
+#XX
+#GLYPH: 94 4 8   # ^ (ASCII: 94) (align-top)
+#....
+#..X.
+#.X.X
+#X..X
+#....
+#....
+#....
+#....
+#GLYPH: 95 3 8   # _ (ASCII: 95) (align-bot)
+#...
+#...
+#...
+#...
+#...
+#...
+#...
+#XXX
+#GLYPH: 96 2 8   # ` (ASCII: 96) (align-top)
+#..
+#X.
+#.X
+#..
+#..
+#..
+#..
+#..
+#GLYPH: 123 3 8   # { (ASCII: 123) (centered)
+#...
+#.XX
+#.X.
+#.X.
+#X..
+#.X.
+#.X.
+#.XX
+#GLYPH: 124 1 8   # | (ASCII: 124) (centered)
+#.
+#X
+#X
+#X
+#X
+#X
+#X
+#X
+#GLYPH: 125 3 8   # } (ASCII: 125) (centered)
+#...
+#XX.
+#.X.
+#.X.
+#..X
+#.X.
+#.X.
+#XX.
+#GLYPH: 126 4 8   # ~ (ASCII: 126) (centered)
+#.....
+#.....
+#.....
+#.X..X
+#X.X.X
+#X..X.
+#.....
+#.....

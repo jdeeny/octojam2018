@@ -1,0 +1,15 @@
+[Spider]
+Hp: 3
+Flags:
+Ai: "DumbJumpy"
+Deathspeech: "Blah"
+MeleeWith: "pincer"
+MeleeDmg: 1-3
+
+
+
+--snip.. --
+
+[melee]
+Hit: "The %enemyname hits you with its %attackwith."
+Miss: "The %enemyname's %attackwith just missed you."

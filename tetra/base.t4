@@ -1,4 +1,4 @@
-: RETURN octo tetra_native_return ;
+: EXIT octo tetra_native_exit ;
 
 : + octo tetra_native_add ;
 : - octo tetra_native_sub ;
