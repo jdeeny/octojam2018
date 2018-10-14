@@ -1,5 +1,5 @@
 use nom::*;
-use crate::{ Word, DefPiece } ;//, DictEntry, WordOrLiteral, Definition };
+use crate::{ Word, DefPiece, WordOrLiteral } ;//, DictEntry, WordOrLiteral, Definition };
 
 named!(pub tetra_source<&str, Vec<Word>>,
         many0!(
@@ -28,7 +28,7 @@ named!(dict_entry_tetra<&str, Word>,
         do_parse!(
             tag!(":") >>
             name: word >>
-            value: many1!(word) >>
+            value: many1!(word_or_literal) >>
             tag!(";") >>
             ( Word { name: name, def: value.iter().map(|v| DefPiece::Tetra(v.clone())).collect() } )
         )
@@ -67,12 +67,12 @@ named!(word<&str, String>,
 );
 
 
-/*named!(word_or_literal<&str, WordOrLiteral>,
+named!(word_or_literal<&str, WordOrLiteral>,
     alt_complete!(
         do_parse!( value: literal >> (WordOrLiteral::L(value)) ) |
         do_parse!( value: word >> (WordOrLiteral::W(value)) )
     )
-);*/
+);
 
 
 fn from_hex(input: &str) -> Result<usize, std::num::ParseIntError> {

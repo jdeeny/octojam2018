@@ -3,22 +3,6 @@
 ###
 
 
-
-
-:calc ESCAPE_
-
-
-
-
-
-
-
-
-
-
-
-
-
 :macro TETRA_NEXT { jump tetra_next }
 
 # Tetra data is put on the same stack that is used in the rest of the program, but
@@ -106,6 +90,8 @@
   # Switch on type of word using jumptable
   jump0 tetra_decode_table
 
+: tetra_decode_literal
+  ;
 
 # This is a basic template
 :macro impl_tetra_native_nop {
@@ -114,10 +100,10 @@
   jump tetra_next
 }
 
-:macro impl_tetra_native_exit {
-: tetra_native_exit
+:macro impl_tetra_native_semicolon {
+: tetra_native_semicolon
   tetra_callstack_decr_sp TETRA_CALLFRAME_BYTES   # Drop this stack frame
-  return
+  :breakpoint xx
 }
 
 

@@ -14,9 +14,18 @@ pub struct Word {
     pub def: Vec<DefPiece>,
 }
 
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Ord, PartialOrd)]
+pub enum WordOrLiteral {
+    W(String),
+    L(usize),
+}
+
+use self::WordOrLiteral::{W,L};
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Ord, PartialOrd)]
 pub enum DefPiece {
-    Tetra(String),
+    Tetra(WordOrLiteral),
     Literal(usize),
     Token(usize),
     OctoCall(String),
@@ -60,7 +69,7 @@ fn main() {
     // count the uses
     for entry in &parsed {
         for w in entry.def.clone() {
-            if let DefPiece::Tetra(def) = w {
+            if let DefPiece::Tetra(W(def)) = w {
                 *uses.entry(String::from(def)).or_insert(0) += 1;
             }
 
@@ -68,8 +77,8 @@ fn main() {
     }
 
     let mut sorted_uses: Vec<(String, usize)> =  Vec::new();
-    for (uses, word) in uses {
-        sorted_uses.push((uses,word));
+    for (word, uses) in uses {
+        sorted_uses.push((word, uses));
     }
     sorted_uses.sort_by_key(|v| v.1);
 
@@ -90,7 +99,7 @@ fn main() {
 
     dump_tetra_header(&mut header_dest, &escapes);
     dump_token_consts(&mut header_dest, &tokens);
-
+    dump_instantiations(&mut header_dest, &dictionary);
     dump_dict_entries(&mut data_dest, &dictionary);
     dump_token_table(&mut data_dest, &dictionary, &tokens);
 }
@@ -99,13 +108,20 @@ fn main() {
 
 fn dump_tetra_header(out: &mut Write, escapes: &Vec<Escape>) {
     for e in escapes {
-        writeln!(out, ":calc {} {{ {:16} }}", e.name, e.value);
+        writeln!(out, ":calc {} {{ {} }}", e.name, e.value);
 
     }
 }
 
 fn dump_token_consts(out: &mut Write, tokens: &BTreeMap<String, usize>) {
+    writeln!(out, "\n\n: tetra_dictionary   # Begin Tetra Token Definitions  2Bytes each");
+    let mut sorted: Vec<(usize, String)> = Vec::new();
     for (name, val) in tokens {
+        sorted.push((val.clone(), name.clone()));
+    }
+    sorted.sort_by_key(|v| v.0);
+
+    for (val, name) in sorted  {
         writeln!(out, ":calc {} {{ {} }}", name, val);
     }
 }
@@ -141,25 +157,45 @@ fn dump_tetra_definition(out: &mut Write, name: &str, word: &Word) {
     write!(out, ": {}", defname);
     for piece in word.def.clone() {
         match piece {
-            DefPiece::Token(n) => { write!(out, " 0x{:16}", n); },
-            DefPiece::Tetra(s) => { write!(out, " TETRA_ESCAPE_TETRAPTR {}", s); },
-            DefPiece::Literal(n) => { write!(out, "TETRA_ESCAPE_LIT8 0x{:16}", n); },
-            DefPiece::OctoCall(addr) => { write!(out, "TETRA_ESCAPE_OCTOCALL tobytes {}", addr); },
-            DefPiece::OctoAddr(addr) => { write!(out, "TETRA_ESCAPE_OCTODATA tobytes {}", addr); },
+            DefPiece::Token(n) => { write!(out, " {}", n); },
+            DefPiece::Tetra(s) => {
+                match(s) {
+                    W(w) => {write!(out, " TETRA_ESCAPE_TETRAPTR {}", w); },
+                    L(n) => {write!(out, " TETRA_ESCAPE_LIT8 {}", n); },
+                }
+             },
+            DefPiece::Literal(n) => { write!(out, " TETRA_ESCAPE_LIT8 {}", n); },
+            DefPiece::OctoCall(addr) => { write!(out, " TETRA_ESCAPE_OCTOCALL tobytes {}", addr); },
+            DefPiece::OctoAddr(addr) => { write!(out, " TETRA_ESCAPE_OCTODATA tobytes {}", addr); },
         }
     }
-    write!(out, " EXIT");
+    write!(out, " TETRA_ESCAPE_OCTOCALL tobytes tetra_native_semicolon");
     writeln!(out, "");
 }
 
 
 fn dump_token_table(out: &mut Write, dictionary: &HashMap<String, Word>, tokens: &BTreeMap<String, usize>) {
-    writeln!(out, "\n\n: tetra_dictionary   # Begin Dictionary Table  2Bytes each");
+    writeln!(out, "\n\n: tetra_token_table   # Begin Tetra Token Definitions  2Bytes each");
+    let mut sorted: Vec<(usize, String)> = Vec::new();
     for (name, val) in tokens {
-        writeln!(out, "0x{:16} 0x{:16} # {} ", val >> 8, val & 0xFF, name);
+        sorted.push((val.clone(), name.clone()));
+    }
+    sorted.sort_by_key(|v| v.0);
+    for (val, name) in sorted {
+        writeln!(out, "{} {} # {} ", val >> 8, val & 0xFF, name);
     }
 }
 
+fn dump_instantiations(out: &mut Write, dictionary: &HashMap<String, Word>) {
+    for word in dictionary.values() {
+        for piece in word.def.clone() {
+            match piece {
+                DefPiece::OctoCall(addr) => { writeln!(out, "impl_{}", addr); },
+                _ => {},
+            }
+        }
+    }
+}
 
 /*
 fn dump_dict_consts(out: &mut Write, dictionary: &HashMap<Word, Definition>) {

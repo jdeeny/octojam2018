@@ -1,0 +1,35 @@
+: dialog_draw_frame
+  v0 := 0
+  v1 := 0
+  i := sprite_dialog_UL
+  sprite v0 v1 8
+  v1 := 56
+  i := sprite_dialog_LL
+  sprite v0 v1 8
+  v0 := 120
+  i := sprite_dialog_LR
+  sprite v0 v1 8
+  v1 := 0
+  i := sprite_dialog_UR
+  sprite v0 v1 8
+  v0 := 8
+  v1 := 2
+  i := sprite_dialog_horiz
+  : horizloop
+  v1 := 2
+  sprite v0 v1 1
+  v1 := 61
+  sprite v0 v1 1
+  v0 += 8
+  if v0 != 120 then jump horizloop
+  v0 := 2
+  v1 := 8
+  i := sprite_dialog_vert
+  : vertloop
+  v0 := 2
+  sprite v0 v1 8
+  v0 := 125
+  sprite v0 v1 8
+  v1 += 8
+  if v1 != 56 then jump vertloop
+  ;
