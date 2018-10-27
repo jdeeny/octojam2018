@@ -217,6 +217,7 @@
 :org 0x1000
 : frame-buffer #2816 (256*11) bytes
 
+:org 0x1B01
 #xwrap sub counter, ywrap subcounter, X_WRAP * xwrap count, Y_WRAP * ywrap count
 : wrap-around-counters #TODO: initial values
 0 0 0 0
