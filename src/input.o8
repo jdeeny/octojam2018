@@ -1,9 +1,9 @@
 :calc INPUT_TABLE_END { 0xFF }
 
-: tetra_exec_v0v1 tetra_exec v0 v1
 
 : input_state 0
 : input_handler
+  return
   i := input_state
   v0 := 0
   save v0 - v0
@@ -13,10 +13,18 @@
   load v2     # Load = v0v1 = address of tetra code; v2 = key
   if v2 == INPUT_TABLE_END then return
 
-  if v2 key then :breakpoint keyv2 tetra_exec_v0v1
+  if v2 key then :breakpoint keyv2 #tetra_exec_v0v1
 
   i := input_state
   load v0 - v0
   v0 += 3
   save v0 - v0
   jump input_handler_loop
+
+
+: T4_PLAYER_LEFT
+: T4_PLAYER_RIGHT
+: T4_PLAYER_UP
+: T4_PLAYER_DOWN
+: T4_PLAY_MUSIC
+: T4_STOP_MUSIC
