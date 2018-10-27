@@ -1,3 +1,10 @@
+:macro set-i-reg reg-hi reg-lo {
+	:calc tgt { HERE + 6 }
+	i := tgt
+	save reg-hi - reg-lo
+	0xF0 0x00 0x00 0x00
+}
+
 :const TILE_HEIGHT 6
 
 :const SPRITE_TOP_LEFT 0
@@ -75,9 +82,9 @@
 		hexx <<= hexx
 		hexx <<= hexx
 		#get ground tile
-		reg-set-i-macro hexy hexx compo-tile-ptr-1
+		set-i-reg hexy hexx
 		load vd - ve
-		reg-set-i-macro vd ve compo-tile-graphic-1
+		set-i-reg vd ve
 		#this is the right side, so we need to load the second
 		#graphic for this hex
 		vf := 12
@@ -102,9 +109,9 @@
 		hexx <<= hexx
 
 		#get ground tile
-		reg-set-i-macro hexy hexx compo-tile-ptr-2
+		set-i-reg hexy hexx
 		load vd - ve
-		reg-set-i-macro vd ve compo-tile-graphic-3
+		set-i-reg vd ve
 		i += planeoffset
 		load v4 - v9
 
@@ -131,10 +138,10 @@
 	jump compo-go-again
 
 : compo-add-sprite
-	reg-set-i-macro hexy hexx compo-hex-contents-ptr
+	set-i-reg hexy hexx
 	load vd - ve
 	if vd == 0 then return #empty hex
-	reg-set-i-macro vd ve compo-sprite-ptr
+	set-i-reg vd ve
 	i += spritesegment
 
 	#mask
@@ -217,7 +224,7 @@
 :org 0x1000
 : frame-buffer #2816 (256*11) bytes
 
-:org 0x1B01
+:org 0x1B00
 #xwrap sub counter, ywrap subcounter, X_WRAP * xwrap count, Y_WRAP * ywrap count
 : wrap-around-counters #TODO: initial values
 0 0 0 0
