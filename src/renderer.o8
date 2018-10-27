@@ -23,10 +23,10 @@
 	 hexy += 2
 }
 
-:alias tilex v0
-:alias tiley v1
-:alias hexx v0
-:alias hexy v1
+:alias tilex v1
+:alias tiley v0
+:alias hexx v1
+:alias hexy v0
 :alias spritesegment v2
 :alias planeoffset v3
 
@@ -34,122 +34,122 @@
 # next input buffer/tmp va vb vc vd ve vf
 #updates next tile in stack
 : composite-tiles
-		#pull index of next tile to update from stack
-		i := long dirty-tiles load v0 - v0
-		if v0 == 0 then return #no tiles to update
-		v0 += -2 save v0
-		i += v0 load tilex - tiley
+	#pull index of next tile to update from stack
+	i := long dirty-tiles load v0 - v0
+	if v0 == 0 then return #no tiles to update
+	v0 += -2 save v0
+	i += v0 load tilex - tiley
 
-		#prep pointer to framebuffer, since we're about to destroy our tile coords
-		#ve := tilex*12
-		vd <<= tilex
-		vd <<= vd
-		ve <<= vd
-		ve += vd
-		#rows are 256-byte aligned, though a row only uses 228 bytes.
-		vd := SEG_FRAMEBUFFER_UPPER
-		vd += tiley
-		i := store-tile-target save vd - ve
+	#prep pointer to framebuffer, since we're about to destroy our tile coords
+	#ve := tilex*12
+	vd <<= tilex
+	vd <<= vd
+	ve <<= vd
+	ve += vd
+	#rows are 256-byte aligned, though a row only uses 228 bytes.
+	vd := SEG_FRAMEBUFFER_UPPER
+	vd += tiley
+	i := store-tile-target save vd - ve
 
-		#turn tileindex into hex coordinates 
-		i := long wrap-around-counters load vb - ve
-		#sub wrap counters, determine on whether
-		#wrap front has hit the present tile
-		#if wrapfront > tile coordinate, the tile is wrapped 
-		vb -= tilex if vf == 1 then tilex += X_WRAP
-		vc -= tiley if vf == 1 then tiley += Y_WRAP
-		#whole wrap counters, premultiplied
-		tilex += vd
-		tiley += ve
-		#offset based on the skewed coordinate system
-		tilex -= tiley
-		tilex >>= tilex
-		#now our humble tilex and tiley are hexx and hexy
+	#turn tileindex into hex coordinates 
+	i := long wrap-around-counters load vb - ve
+	#sub wrap counters, determine on whether
+	#wrap front has hit the present tile
+	#if wrapfront > tile coordinate, the tile is wrapped 
+	vb -= tilex if vf == 1 then tilex += X_WRAP
+	vc -= tiley if vf == 1 then tiley += Y_WRAP
+	#whole wrap counters, premultiplied
+	tilex += vd
+	tiley += ve
+	#offset based on the skewed coordinate system
+	tilex -= tiley
+	tilex >>= tilex
+	#now our humble tilex and tiley are hexx and hexy
 
-		hexy += SEG_TILE_CONTENTS_UPPER
+	hexy += SEG_TILE_CONTENTS_UPPER
 
-		#start by drawing plane 1
-		planeoffset := 0
-		: compo-go-again
-		if vf == 0 begin #the tile is the right side of a hex
-				hexx <<= hexx
-				hexx <<= hexx
-				#get ground tile
-				reg-set-i-macro hexy hexx compo-tile-ptr-1
-				load vd - ve
-				reg-set-i-macro vd ve compo-tile-graphic-1
-				#this is the right side, so we need to load the second
-				#graphic for this hex
-				vf := 12
-				i += vf
-				i += planeoffset
-				load v4 - v9
-				
-				#start getting hex contents
-				hexx += HEX_CONTENTS_OFFSET
+	#start by drawing plane 1
+	planeoffset := 0
+	: compo-go-again
+	if vf == 0 begin #the tile is the right side of a hex
+		hexx <<= hexx
+		hexx <<= hexx
+		#get ground tile
+		reg-set-i-macro hexy hexx compo-tile-ptr-1
+		load vd - ve
+		reg-set-i-macro vd ve compo-tile-graphic-1
+		#this is the right side, so we need to load the second
+		#graphic for this hex
+		vf := 12
+		i += vf
+		i += planeoffset
+		load v4 - v9
+		
+		#start getting hex contents
+		hexx += HEX_CONTENTS_OFFSET
 
-				spritesegment := SPRITE_BOTTOM_RIGHT
-				compo-add-sprite
-				HEX_DOWN_RIGHT hexx hexy
-				spritesegment := SPRITE_MIDDLE_LEFT
-				compo-add-sprite
-				HEX_DOWN_LEFT hexx hexy
-				spritesegment := SPRITE_TOP_RIGHT
-				compo-add-sprite
-				vf := 0
-		else #the tile is the left side of a hex
-				hexx <<= hexx
-				hexx <<= hexx
+		spritesegment := SPRITE_BOTTOM_RIGHT
+		compo-add-sprite
+		HEX_DOWN_RIGHT hexx hexy
+		spritesegment := SPRITE_MIDDLE_LEFT
+		compo-add-sprite
+		HEX_DOWN_LEFT hexx hexy
+		spritesegment := SPRITE_TOP_RIGHT
+		compo-add-sprite
+		vf := 0
+	else #the tile is the left side of a hex
+		hexx <<= hexx
+		hexx <<= hexx
 
-				#get ground tile
-				reg-set-i-macro hexy hexx compo-tile-ptr-2
-				load vd - ve
-				reg-set-i-macro vd ve compo-tile-graphic-3
-				i += planeoffset
-				load v4 - v9
+		#get ground tile
+		reg-set-i-macro hexy hexx compo-tile-ptr-2
+		load vd - ve
+		reg-set-i-macro vd ve compo-tile-graphic-3
+		i += planeoffset
+		load v4 - v9
 
-				#start getting hex contents
-				hexx += HEX_CONTENTS_OFFSET
+		#start getting hex contents
+		hexx += HEX_CONTENTS_OFFSET
 
-				spritesegment := SPRITE_BOTTOM_LEFT
-				compo-add-sprite
-				HEX_DOWN_LEFT hexx hexy
-				spritesegment := SPRITE_MIDDLE_RIGHT
-				compo-add-sprite
-				HEX_DOWN_RIGHT hexx hexy
-				spritesegment := SPRITE_TOP_LEFT
-				compo-add-sprite
-				vf := 1
-		end
-		#save the plane to the frame buffer
-		#i := long store tile target
-		0xF0 0x00 : store-tile-target 0x00 0x00
-		i += planeoffset save v0
-		#go again with plane 2				
-		if planeoffset != 0 then return
-		planeoffset := TILE_HEIGHT
-		jump compo-go-again
+		spritesegment := SPRITE_BOTTOM_LEFT
+		compo-add-sprite
+		HEX_DOWN_LEFT hexx hexy
+		spritesegment := SPRITE_MIDDLE_RIGHT
+		compo-add-sprite
+		HEX_DOWN_RIGHT hexx hexy
+		spritesegment := SPRITE_TOP_LEFT
+		compo-add-sprite
+		vf := 1
+	end
+	#save the plane to the frame buffer
+	#i := long store tile target
+	0xF0 0x00 : store-tile-target 0x00 0x00
+	i += planeoffset save v0
+	#go again with plane 2				
+	if planeoffset != 0 then return
+	planeoffset := TILE_HEIGHT
+	jump compo-go-again
 
 : compo-add-sprite
-		reg-set-i-macro hexy hexx compo-hex-contents-ptr
-		load vd - ve
-		if vd == 0 then return #empty hex
-		reg-set-i-macro vd ve compo-sprite-ptr
-		i += spritesegment
+	reg-set-i-macro hexy hexx compo-hex-contents-ptr
+	load vd - ve
+	if vd == 0 then return #empty hex
+	reg-set-i-macro vd ve compo-sprite-ptr
+	i += spritesegment
 
-		#mask
-		load va - vf
-		v9 &= vf v8 &= ve
-		v7 &= vd v6 &= vc
-		v5 &= vb v4 &= va
+	#mask
+	load va - vf
+	v9 &= vf v8 &= ve
+	v7 &= vd v6 &= vc
+	v5 &= vb v4 &= va
 
-		#image
-		vf := TILE_HEIGHT i += vf
-		i += planeoffset
-		load va - vf
-		v9 += vf v8 += ve
-		v7 += vd v6 += vc
-		v5 += vb v4 += va
+	#image
+	vf := TILE_HEIGHT i += vf
+	i += planeoffset
+	load va - vf
+	v9 += vf v8 += ve
+	v7 += vd v6 += vc
+	v5 += vb v4 += va
 ;
 
 :alias x v0
@@ -173,43 +173,48 @@
 		x += 7
 		if x == 133 then x := 0
 		if rowcount != 19 then jump frame-loop
-				if colcount == 20 then return
-				rowcount := 0
-				colcount += 1
-			 	y += 6
-				if y == 66 then y := 0
+			if colcount == 20 then return
+			rowcount := 0
+			colcount += 1
+		 	y += 6
+			if y == 66 then y := 0
 		again
 #end draw-tiles
 
 :alias v0 hexx
 :alias v1 hexy
 #marks a hex to be redrawn
+#TODO: detect whether hex is on screen
 : dirty-hex
-		#convert hex to tile space
-		i := long hex-y-to-tile-y i += hexy
-		load hexy - hexy
-		i := long hex-x-to-tile-x i += hexx
-		load hexx - hexx
+	#unskew
+	hexx <<= hexx
+	hexx += hexy
+	#convert hex to tile space
+	i := long mod19 i += hexy
+	load hexy - hexy
+	i := long mod11 i += hexx
+	load hexx - hexx
 
-		#update size of tile update stack
-		i :=  long dirty-tiles
-		load vf - vf
-		vf += 12 save vf - vf
-		vf += -11 i += vf
+	#update size of tile update stack
+	i :=  long dirty-tiles
+	load vf - vf
+	vf += 12 save vf - vf
+	vf += -11 i += vf
 
-		#mark the 6 tiles that an object in this hex
-		#could be drawn to
-		save hexy
-		hexy += -1 save hexy
-		hexy += -1 save hexy
-		hexx += 1 save hexy
-		hexy += 1 save hexy
-		hexy += 1 save hexy
+	#mark the 6 tiles that an object in this hex
+	#could be drawn to
+	save hexy
+	hexy += -1 save hexy
+	hexy += -1 save hexy
+	hexx += 1 save hexy
+	hexy += 1 save hexy
+	hexy += 1 save hexy
 ;
 
 : scroll-screen #TODO
 ;
 #himem labels
+:org 0x1000
 : frame-buffer #2816 (256*11) bytes
 
 #xwrap sub counter, ywrap subcounter, X_WRAP * xwrap count, Y_WRAP * ywrap count
@@ -222,8 +227,31 @@
 0 0 0 0 12 28
 
 #a stack of tiles to be composited. First value is size of stack + 1
-: dirty-tiles 1 # ??? bytes 
+: dirty-tiles 3 # ??? bytes 
+0 0
+:macro m19 { 
+	:byte { index % 19 }
+	:calc index { index + 1 } 
+}
+:macro m11 { 
+	:byte { index % 11 }
+	:calc index { index + 1 } 
+}
+:macro 8x m {
+	m m m m m m m m
+}
+:macro 32x m {
+	8x m 8x m 8x m 8x m
+}
+:macro 128x m {
+	32x m 32x m 32x m 32x m
+}
+:calc index { 0 }
+: mod11
+32x m11
+:calc index { 0 }
+: mod19
+128x m19
 
-: hex-y-to-tile-y #TODO:Precompute
-
-: hex-x-to-tile-x #TODO:Precompute
+:org 0x2000
+: hex-contents
