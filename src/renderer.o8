@@ -21,7 +21,9 @@
 :const HEX_CONTENTS_OFFSET 0x80
 
 :const X_WRAP 19
+:const NEG_X_WRAP 19
 :const Y_WRAP 11
+:const NEG_Y_WRAP 11
 
 :macro HEX_DOWN_RIGHT hexx hexy {
 	 hexx += 2
@@ -64,7 +66,7 @@
 	i := long wrap-around-counters load vb - ve
 	#sub wrap counters, determine on whether
 	#wrap front has hit the present tile
-	#if wrapfront > tile coordinate, the tile is wrapped 
+	#if wrapfront < tile coordinate, the tile is wrapped 
 	vb -= tilex if vf == 1 then tilex += X_WRAP
 	vc -= tiley if vf == 1 then tiley += Y_WRAP
 	#whole wrap counters, premultiplied
@@ -222,5 +224,23 @@
 	hexy += 1 save hexy
 ;
 
-: scroll-screen #TODO
+:alias xwrapsub v0 
+:alias ywrapsub v1
+:alias xwrap v2
+:alias ywrap v3 
+:alias xoff v4
+:alias yoff v5
+: scroll-right
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+	if xwrapsub == 0 begin
+		xwrap += X_WRAP
+		xoff := 126
+		xwrapsub := X_WRAP
+	else
+		xoff += -7
+		xwrap += -1
+	end
+	save xwrapsub - yoff
+	#TODO mark scrolled tiles to be updated
 ;
