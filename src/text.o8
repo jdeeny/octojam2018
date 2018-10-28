@@ -23,12 +23,11 @@
 # Draw an entire word
 :alias text_word v0
 : text_draw_word
-:breakpoint word
   i := long word_table
   i += text_word
   i += text_word
   load v3 - v4 # address of word data
-  push v3 v4 2  # put word address on stack
+#  push v3 v4 2  # put word address on stack
 : text_draw_word_internal
   i := word_target
   save v3 - v4
