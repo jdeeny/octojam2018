@@ -2,15 +2,17 @@ use png;
 
 use std::collections::HashMap;
 
+use std::fs::File;
 
-fn main() {
+use std::fs::read_dir;
+use std::path::Path;
+use std::io::Write;
 
-    use std::fs::File;
+fn process_sprite(header_file: &mut Write, data_file: &mut Write, name: &str, path: &Path) {
 
-    // The decoder is a build for reader and can be used to set various decoding options
-    // via `Transformations`. The default output transformation is `Transformations::EXPAND
-    // | Transformations::STRIP_ALPHA`.
-    let decoder = png::Decoder::new(File::open("../../assets/enemies/hero1/tile.png").unwrap());
+    println!("{:?} {:?}", name, path);
+
+    let decoder = png::Decoder::new(File::open(path).unwrap());
     let (info, mut reader) = decoder.read_info().unwrap();
     // Allocate the output buffer.
     let mut buf = vec![0; info.buffer_size()];
@@ -35,5 +37,37 @@ fn main() {
         println!("{:?}", c);
 
     }
+
+}
+
+
+fn main() {
+    let mut header_dest = File::create("build/sprite_header.o8").unwrap();
+    let mut data_dest = File::create("build/sprite_data.o8").unwrap();
+
+
+    // The decoder is a build for reader and can be used to set various decoding options
+    // via `Transformations`. The default output transformation is `Transformations::EXPAND
+    // | Transformations::STRIP_ALPHA`.
+
+
+
+    if let Ok(entries) = read_dir("../../assets/enemies") {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if let Ok(file_type) = entry.file_type() {
+                    if file_type.is_dir() {
+                        let sprite_name = entry.file_name();
+
+                        let mut sprite_path = entry.path();
+                        sprite_path.push(Path::new("tile.png"));
+                        println!("{:?}", sprite_path);
+                        process_sprite(&mut header_dest, &mut data_dest, &sprite_name.to_string_lossy(), &sprite_path);
+                    }
+                }
+            }
+        }
+    }
+
 
 }
