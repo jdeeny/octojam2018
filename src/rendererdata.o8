@@ -1,0 +1,70 @@
+#random bits for renderer
+
+:org SEG_FRAMEBUFFER
+: frame-buffer #(256*11) bytes
+:org SEG_HEX_CONTENTS 
+: hex-contents
+
+:calc orgptr { SEG_FRAMEBUFFER }
+:macro ORG_BACKFILL n {
+	:calc orgptr { orgptr - n }
+	:org orgptr
+}
+
+ORG_BACKFILL 9
+
+#these next two labels go together (9 bytes)
+
+#counters governing what the state of the screen wrap is
+: wrap-around-counters #TODO: initial values
+0 #xwrap sub 
+0 #ywrap sub
+0 #xwrap counter
+0 #ywrap counter
+
+#where on the screen the drawing procedure starts
+: screen-offset
+0 #x offset
+0 #y offset
+0 12 28 #fixed initial values for screen drawing procedure
+
+ORG_BACKFILL 39
+
+#a stack of tiles to be composited.
+: dirty-tiles #39 bytes 
+0 #stack size
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0
+
+ORG_BACKFILL 32
+ORG_BACKFILL 128
+
+#tables of results to modulo operations
+:macro m19 { 
+	:byte { index % 19 }
+	:calc index { index + 1 } 
+}
+:macro m11 { 
+	:byte { index % 11 }
+	:calc index { index + 1 } 
+}
+:macro 8x m {
+	m m m m m m m m
+}
+:macro 32x m {
+	8x m 8x m 8x m 8x m
+}
+:macro 128x m {
+	32x m 32x m 32x m 32x m
+}
+:calc index { 0 } 
+: mod11 #32 bytes
+32x m11
+:calc index { 0 } 
+: mod19 #128 bytes
+128x m19

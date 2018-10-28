@@ -14,8 +14,10 @@
 :const SPRITE_BOTTOM_LEFT 72
 :const SPRITE_BOTTOM_RIGHT 90
 
-:const SEG_FRAMEBUFFER_UPPER 0x10
-:const SEG_TILE_CONTENTS_UPPER 0x20
+:const SEG_FRAMEBUFFER_UPPER 0xE4
+:const SEG_FRAMEBUFFER 0xE400
+:const SEG_HEX_CONTENTS_UPPER 0xF0
+:const SEG_HEX_CONTENTS 0xF000
 :const HEX_CONTENTS_OFFSET 0x80
 
 :const X_WRAP 19
@@ -73,7 +75,7 @@
 	tilex >>= tilex
 	#now our humble tilex and tiley are hexx and hexy
 
-	hexy += SEG_TILE_CONTENTS_UPPER
+	hexy += SEG_HEX_CONTENTS_UPPER
 
 	#start by drawing plane 1
 	planeoffset := 0
@@ -193,10 +195,12 @@
 #marks a hex to be redrawn
 #TODO: detect whether hex is on screen
 : dirty-hex
+
+	#convert hex to tile space
 	#unskew
 	hexx <<= hexx
 	hexx += hexy
-	#convert hex to tile space
+	#wrap screen
 	i := long mod19 i += hexy
 	load hexy - hexy
 	i := long mod11 i += hexx
@@ -220,46 +224,3 @@
 
 : scroll-screen #TODO
 ;
-#himem labels
-:org 0x1000
-: frame-buffer #2816 (256*11) bytes
-
-:org 0x1B00
-#xwrap sub counter, ywrap subcounter, X_WRAP * xwrap count, Y_WRAP * ywrap count
-: wrap-around-counters #TODO: initial values
-0 0 0 0
-#first two values are x,y positions at which tile 0 is located
-#depending on how the screen is scrolled
-#next three are fixes values to be used in the screen drawing procedure
-: screen-offset
-0 0 0 0 12 28
-
-#a stack of tiles to be composited. First value is size of stack + 1
-: dirty-tiles 3 # ??? bytes 
-0 0
-:macro m19 { 
-	:byte { index % 19 }
-	:calc index { index + 1 } 
-}
-:macro m11 { 
-	:byte { index % 11 }
-	:calc index { index + 1 } 
-}
-:macro 8x m {
-	m m m m m m m m
-}
-:macro 32x m {
-	8x m 8x m 8x m 8x m
-}
-:macro 128x m {
-	32x m 32x m 32x m 32x m
-}
-:calc index { 0 }
-: mod11
-32x m11
-:calc index { 0 }
-: mod19
-128x m19
-
-:org 0x2000
-: hex-contents
