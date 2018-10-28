@@ -1,7 +1,7 @@
 
 : text-test-data 0 0 0
-: next-line v1 := 0 v2 += 8 ;
-
+: next-line v1 := 0 v2 += 9 ;
+: next-screen v1 := 0 v2 := 0 clear ;
 : main
   hires
 
@@ -17,16 +17,19 @@
   delay := vF
   i := text-test-data
   load v0 - v2
-  if v0 == 75  then v0 := 0
-  v6 := v0
+  : tryagain
+  v0 := random 127
+  vF := 74
+  vF -= v0
+  if vF == 0 then jump tryagain
   text_draw_glyph
-  v1 += 2
-  vF := 128
+  vF := 122
   vF -= v1
   if vF == 0 then next-line
+  vF := 62
+  vF -= v2
+  if vF == 0 then next-screen
   i := text-test-data
-  v6 += 1
-  v0 := v6
   save v0 - v2
   # Process real time systems
   audio_handler
