@@ -781,3 +781,9 @@ tobytes glyph_- :calc GLYPH_- { 71 }
 tobytes glyph_. :calc GLYPH_. { 72 }
 tobytes glyph_/ :calc GLYPH_/ { 73 }
 tobytes glyph_: :calc GLYPH_: { 74 }
+
+
+: word_0 GLYPH_A GLYPH_B GLYPH_C GLYPH_ESC_END
+
+: word_table
+tobytes word_0 :calc WORD_0 { 0 }
