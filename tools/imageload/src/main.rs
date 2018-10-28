@@ -284,8 +284,27 @@ fn main() {
         }
     }
 
-
     if let Ok(entries) = read_dir("../../assets/terrain") {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if let Ok(file_type) = entry.file_type() {
+                    if file_type.is_dir() {
+                        let sprite_name = entry.file_name();
+
+                        let mut sprite_path = entry.path();
+                        sprite_path.push(Path::new("tile.png"));
+                        println!("{:?}", sprite_path);
+                        writeln!(header_dest, ":const SPR_{} {}", sprite_name.to_string_lossy(), sprite_count);
+                        sprite_count += 1;
+                        process_sprite(&mut header_dest, &mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
+                    }
+                }
+            }
+        }
+    }
+
+
+    if let Ok(entries) = read_dir("../../assets/tiles") {
         for entry in entries {
             if let Ok(entry) = entry {
                 if let Ok(file_type) = entry.file_type() {

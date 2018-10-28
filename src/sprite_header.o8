@@ -13,4 +13,4 @@
 :const SPR_enemy9 12
 :const SPR_wall_r 13
 :const SPR_wall_l 14
-:const SPR_floor 15
+:const TILE_floor 15
