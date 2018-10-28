@@ -66,26 +66,31 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
             for plane in 0..2 {
                 writeln!(data_file, "# Plane {}", plane);
                 for y in 0..6 {
+                    let px_y = y + segment * 6;
+                    let px_y = px_y as i64 - (18-info.height as i64);
                     write!(data_file, "0b");
-//                    let px_y = segment * (3 * 6) + y;
-                    let px_y = y;
-                    let px_y: i32 = px_y as i32 - (18 - info.height as i32);
-                    if px_y < 0 {
+                    if px_y < 0 || px_y > info.height as i64 {
                         writeln!(data_file, "00000000");
                     } else {
+                        println!("y: {}", px_y);
                         for x in 0..7 {
                             let px_x = x + half * 7;
-                            let idx: usize = ((px_y as usize * info.width as usize + px_x) * 4) as usize;
-                            println!("{} {} {}", px_x, px_y, idx);
-                            let c = closest_color(colors, (buf[idx], buf[idx+1], buf[idx+2]));
-                            if (c >> plane) != 0 {
-                                write!(data_file, "1");
-                            } else {
+                            if px_x > info.width {
                                 write!(data_file, "0");
+                            } else {
+                                let idx: usize = ((px_y as usize * info.width as usize + px_x as usize) * 4) as usize;
+                                //println!("{} {} {}", px_x, px_y, idx);
+                                let c = closest_color(colors, (buf[idx], buf[idx+1], buf[idx+2]));
+                                //println!("{} {} {} {} = {}", buf[idx], buf[idx+1], buf[idx+2], buf[idx+3], c);
+                                if (c >> plane) != 0 && buf[idx+3] > 128 {
+                                    write!(data_file, "1");
+                                } else {
+                                    write!(data_file, "0");
+                                }
                             }
                         }
-                        writeln!(data_file, "0");
 
+                        writeln!(data_file, "0");
                     }
                 }
             }
@@ -93,14 +98,29 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
 
             writeln!(data_file, "# Mask");
             for y in 0..6 {
+                let px_y = y + segment * 6;
+                let px_y = px_y as i64 - (18-info.height as i64);
                 write!(data_file, "0b");
-//                    let px_y = segment * (3 * 6) + y;
-                let px_y = y;
-                let px_y: i32 = px_y as i32 - (18 - info.height as i32);
-                if px_y < 0 {
-                    writeln!(data_file, "11111110");
-                } else {
+                if px_y < 0 || px_y > info.height as i64 {
                     writeln!(data_file, "00000000");
+                } else {
+                    println!("y: {}", px_y);
+                    for x in 0..7 {
+                        let px_x = x + half * 7;
+                        if px_x > info.width {
+                            write!(data_file, "0");
+                        } else {
+                            let idx: usize = ((px_y as usize * info.width as usize + px_x as usize) * 4) as usize;
+                            let m = buf[idx+3];
+                            if m > 128 {
+                                write!(data_file, "1");
+                            } else {
+                                write!(data_file, "0");
+                            }
+                        }
+                    }
+
+                    writeln!(data_file, "0");
                 }
             }
 
