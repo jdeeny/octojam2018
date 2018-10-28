@@ -1,4 +1,6 @@
 
+: text-test-data 0 0 0
+: next-line v1 := 0 v2 += 8 ;
 
 : main
   hires
@@ -9,10 +11,23 @@
 
   audio_play_music  # Test of music
 
+
 : gameloop
   vF := 1
   delay := vF
-
+  i := text-test-data
+  load v0 - v2
+  if v0 == 75  then v0 := 0
+  v6 := v0
+  text_draw_glyph
+  v1 += 2
+  vF := 128
+  vF -= v1
+  if vF == 0 then next-line
+  i := text-test-data
+  v6 += 1
+  v0 := v6
+  save v0 - v2
   # Process real time systems
   audio_handler
   input_handler

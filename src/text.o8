@@ -1,21 +1,17 @@
 
-# v2,v3 = string location
-# v0 = x, v1 = y
-
-:alias DRAW_STRING_OFFSET vA
-: draw_string
-  v2 := v0
-  Trampoline-Set-I-v2v3 draw_string_i:=string
-  vA := 0
-: draw_string_loop
-  Trampoline: draw_string_i:=string
-  i += DRAW_STRING_OFFSET
-  load v0-v0
-  i := glyph_table
-  i += v2
-  load v2-v3 #address pf glyph
-  load
-
-: draw_glyph
-  #lookup glyph
-  sprite v2 v1
+:alias text_glyph v0
+:alias text_glyph_width v0
+:alias text_x v1
+:alias text_y v2
+: text_draw_glyph
+    i := long font_table
+    i += text_glyph
+    i += text_glyph
+    load v3 - v4 # load address of glyph
+    i := glyph_target
+    save v3 - v4
+    0xF0 0x00 : glyph_target 0x00 0x00 # i := long *glyph
+    load v0
+    sprite text_x text_y 7
+    text_x += text_glyph_width
+    ;

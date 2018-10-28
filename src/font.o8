@@ -41,7 +41,7 @@ XX......
 .X......
 XXX.....
 
-: glyph_2 4
+: glyph_2 5
 .XX.
 X..X
 ...X
@@ -50,7 +50,7 @@ X..X
 .X..
 XXXX
 
-: glyph_3 5
+: glyph_3 6
 XXXXX...
 ...X....
 ..X.....
@@ -668,7 +668,7 @@ XX.
 .X.
 X..
 X..
-: glyph_: 3 
+: glyph_: 3
 ...
 ...
 ...
@@ -678,7 +678,7 @@ X..
 X..
 ...
 
-#:calc GLYPH_ { Fo }nt table, each entry is 2 bytes, hi/lo
+: font_table
 tobytes glyph_0 :calc GLYPH_0 { 0 }
 tobytes glyph_1 :calc GLYPH_1 { 1 }
 tobytes glyph_2 :calc GLYPH_2 { 2 }
