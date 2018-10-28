@@ -230,7 +230,7 @@
 :alias ywrap v3 
 :alias xoff v4
 :alias yoff v5
-: scroll-right
+: compo-scroll-right
 	i := long wrap-around-counters
 	load xwrapsub - yoff
 	if xwrapsub == 0 begin
