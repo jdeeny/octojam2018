@@ -17,7 +17,7 @@
   if v1 == 0 then jump audio_handler_next_note
 : audio_handler_play_note
   #:breakpoint dobuzzer
-  vF := 2
+  vF := 3
   buzzer := vF
   return
 
