@@ -192,8 +192,8 @@
 		again
 #end draw-tiles
 
-:alias v0 hexx
-:alias v1 hexy
+:alias hexx v0
+:alias hexy v1
 #marks a hex to be redrawn
 #TODO: detect whether hex is on screen
 : dirty-hex

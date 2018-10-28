@@ -50,7 +50,7 @@
 : audio_play_music
   # Set the song
   i := music_data_ptr
-  v0 := 0xF0
+  v0 := 0xD0
   v1 := 0x00
   save v0 - v1
   i := audio_state
