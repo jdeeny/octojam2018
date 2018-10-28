@@ -18,11 +18,8 @@
   i := text-test-data
   load v0 - v2
   : tryagain
-  v0 := random 127
-  vF := 74
-  vF -= v0
-  if vF == 0 then jump tryagain
-  text_draw_glyph
+  v0 := random 1
+  text_draw_word
   vF := 122
   vF -= v1
   if vF == 0 then next-line

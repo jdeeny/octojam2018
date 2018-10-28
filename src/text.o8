@@ -23,26 +23,26 @@
 # Draw an entire word
 :alias text_word v0
 : text_draw_word
+:breakpoint word
   i := long word_table
   i += text_word
   i += text_word
   load v3 - v4 # address of word data
   push v3 v4 2  # put word address on stack
-  ;
-
 : text_draw_word_internal
-  pop v3 v4 2
   i := word_target
   save v3 - v4
-  math_add_u16_u8imm v3 v4 2
+  math_add_u16_u8imm v3 v4 1
   push v3 v4 2
   0xF0 0x00 : word_target 0x00 0x00 # i := long *word
   load v0 - v0
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
   text_draw_glyph
-  ;
+  pop v3 v4 2
+  jump text_draw_word_internal
 : text_draw_word_end
   pop v3 v4 2
+  ;
 
 : text_draw_phrase
   ;
