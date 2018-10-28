@@ -63,6 +63,35 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
         writeln!(data_file, "# Half {}", half);
         for segment in 0..3 {
             writeln!(data_file, "# Seg {}", segment);
+
+            writeln!(data_file, "# Mask");
+            for y in 0..6 {
+                let px_y = y + segment * 6;
+                let px_y = px_y as i64 - (18-info.height as i64);
+                write!(data_file, "0b");
+                if px_y < 0 || px_y > info.height as i64 {
+                    writeln!(data_file, "00000000");
+                } else {
+                    println!("y: {}", px_y);
+                    for x in 0..7 {
+                        let px_x = x + half * 7;
+                        if px_x > info.width {
+                            write!(data_file, "0");
+                        } else {
+                            let idx: usize = ((px_y as usize * info.width as usize + px_x as usize) * 4) as usize;
+                            let m = buf[idx+3];
+                            if m > 128 {
+                                write!(data_file, "1");
+                            } else {
+                                write!(data_file, "0");
+                            }
+                        }
+                    }
+
+                    writeln!(data_file, "0");
+                }
+            }
+
             for plane in 0..2 {
                 writeln!(data_file, "# Plane {}", plane);
                 for y in 0..6 {
@@ -96,33 +125,6 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
             }
 
 
-            writeln!(data_file, "# Mask");
-            for y in 0..6 {
-                let px_y = y + segment * 6;
-                let px_y = px_y as i64 - (18-info.height as i64);
-                write!(data_file, "0b");
-                if px_y < 0 || px_y > info.height as i64 {
-                    writeln!(data_file, "00000000");
-                } else {
-                    println!("y: {}", px_y);
-                    for x in 0..7 {
-                        let px_x = x + half * 7;
-                        if px_x > info.width {
-                            write!(data_file, "0");
-                        } else {
-                            let idx: usize = ((px_y as usize * info.width as usize + px_x as usize) * 4) as usize;
-                            let m = buf[idx+3];
-                            if m > 128 {
-                                write!(data_file, "1");
-                            } else {
-                                write!(data_file, "0");
-                            }
-                        }
-                    }
-
-                    writeln!(data_file, "0");
-                }
-            }
 
         }
     }
