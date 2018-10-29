@@ -1,6 +1,6 @@
 
 : text-test-data 0 0 0
-: next-line v1 := 24 v2 += 9 ;
+: next-line v1 := 24 v2 += 6 ;
 : main
   hires
   # initialize stuff here

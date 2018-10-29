@@ -13,7 +13,7 @@
     save v3 - v4
     0xF0 0x00 : glyph_target 0x00 0x00 # i := long *glyph
     load v0 # load width
-    sprite text_x text_y 8
+    sprite text_x text_y 6
     text_x += text_glyph_width
     ;
 
