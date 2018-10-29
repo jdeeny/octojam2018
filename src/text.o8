@@ -1,21 +1,64 @@
 
-# v2,v3 = string location
-# v0 = x, v1 = y
+# Draw a single glyph
+:alias text_id v0
+:alias text_glyph_width v0
+:alias text_x v1
+:alias text_y v2
+: text_draw_glyph
+    i := long font_table
+    i += text_id
+    i += text_id
+    load v3 - v4 # load address of glyph
+    i := glyph_target
+    save v3 - v4
+    0xF0 0x00 : glyph_target 0x00 0x00 # i := long *glyph
+    load v0 # load width
+    sprite text_x text_y 8
+    text_x += text_glyph_width
+    ;
 
-:alias DRAW_STRING_OFFSET vA
-: draw_string
-  v2 := v0
-  Trampoline-Set-I-v2v3 draw_string_i:=string
-  vA := 0
-: draw_string_loop
-  Trampoline: draw_string_i:=string
-  i += DRAW_STRING_OFFSET
-  load v0-v0
-  i := glyph_table
-  i += v2
-  load v2-v3 #address pf glyph
-  load
 
-: draw_glyph
-  #lookup glyph
-  sprite v2 v1
+:const GLYPH_ESC_END 0xFF
+
+# Draw an entire word
+:alias text_word v0
+: text_draw_word
+  i := long word_table
+  i += text_id
+  i += text_id
+  load v3 - v4 # address of word data
+: text_draw_word_internal
+  i := word_target
+  save v3 - v4
+  math_add_u16_u8imm v3 v4 1
+  push v3 v4 2
+  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
+  load v0 - v0
+  if v0 == GLYPH_ESC_END then jump text_draw_word_end
+  text_draw_glyph
+  pop v3 v4 2
+  jump text_draw_word_internal
+: text_draw_word_end
+  pop v3 v4 2
+  ;
+
+
+: text_draw_phrase
+  i := long phrase_table
+  i += text_id
+  i += text_id
+  load v3 - v4 # address of word data
+: text_draw_phrase_internal
+  i := phrase_target
+  save v3 - v4
+  math_add_u16_u8imm v3 v4 1
+  push v3 v4 2
+  0xF0 0x00 : phrase_target 0x00 0x00 # i := long *phrase
+  load v0 - v0
+  if v0 == GLYPH_ESC_END then jump text_draw_phrase_end
+  text_draw_word
+  pop v3 v4 2
+  jump text_draw_phrase_internal
+: text_draw_phrase_end
+  pop v3 v4 2
+  ;
