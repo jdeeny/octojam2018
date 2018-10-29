@@ -1,0 +1,2 @@
+:const STATE_SPLASH 0
+:const STATE_TITLE 1

@@ -1,5 +1,7 @@
 :calc INPUT_TABLE_END { 0xFF }
 
+:macro input_table_set hi-reg lo-reg { i := input_table_addr save hi-reg - lo-reg }
+
 
 : input_state 0
 : input_handler
@@ -8,7 +10,7 @@
   v0 := 0
   save v0 - v0
 : input_handler_loop
-  i := long input_table # <-- to be modified to point to the current state's input table
+  0xFF 0x00 : input_table_addr 0x00 0x00  #i := long input_table # <-- to be modified to point to the current state's input table
   i += v0
   load v2     # Load = v0v1 = address of tetra code; v2 = key
   if v2 == INPUT_TABLE_END then return
@@ -20,11 +22,3 @@
   v0 += 3
   save v0 - v0
   jump input_handler_loop
-
-
-: T4_PLAYER_LEFT
-: T4_PLAYER_RIGHT
-: T4_PLAYER_UP
-: T4_PLAYER_DOWN
-: T4_PLAY_MUSIC
-: T4_STOP_MUSIC

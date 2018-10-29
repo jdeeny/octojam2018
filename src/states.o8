@@ -1,0 +1,21 @@
+: nop_func ;     # can be used to fill in unused ptrs in the state table
+
+
+# v0 := state num
+: state_switch
+  i := long state_table
+  v0 <<= v0 v0 <<= v0 # 4 bytes per entry
+  i += v0 # index into table
+  load v0 - v3 # v01 = input table, v23 = on-entry
+
+#  input_table_set v0 v1
+  i := input_table_addr
+  save v0 - v1
+
+
+  vF := 0x20
+  v2 |= vF  # create a call instruction
+  i := state_switch_call_on_entry
+  save v2 - v3
+  : state_switch_call_on_entry  0x00 0x00 # overwritten by the code immediately before
+  ;
