@@ -1,4 +1,19 @@
+: charedit_next_item
+  ;
+
+: charedit_prev_item
+  ;
+
+: charedit_inc
+  ;
+  
+: charedit_dec
+  ;
+
 : charedit_do
+  # if left/right, switch edit location
+  # if up/down, change letter
+  # if ok, finish
   ;
 
 : charedit_display
@@ -17,6 +32,4 @@
   text_draw_glyph
   v9 += 1
   if v9 != 8 then jump charedit_display_loop
-
-
   ;

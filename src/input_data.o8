@@ -2,10 +2,38 @@
 :macro input_table_entry TETRA_TARGET KEY_CODE { tobytes TETRA_TARGET :byte KEY_CODE }
 :macro input_table_end { :byte 0 :byte 0 :byte INPUT_TABLE_END }
 : input_table
-input_table_entry   T4_PLAYER_LEFT     OCTO_KEY_A
-input_table_entry   T4_PLAYER_RIGHT    OCTO_KEY_D
-input_table_entry   T4_PLAYER_UP       OCTO_KEY_W
-input_table_entry   T4_PLAYER_DOWN     OCTO_KEY_S
-input_table_entry   T4_PLAY_MUSIC     OCTO_KEY_1
-input_table_entry   T4_STOP_MUSIC      OCTO_KEY_2
+#input_table_entry   T4_PLAYER_LEFT     OCTO_KEY_A
+#input_table_entry   T4_PLAYER_RIGHT    OCTO_KEY_D
+#input_table_entry   T4_PLAYER_UP       OCTO_KEY_W
+#input_table_entry   T4_PLAYER_DOWN     OCTO_KEY_S
+#input_table_entry   T4_PLAY_MUSIC     OCTO_KEY_1
+#input_table_entry   T4_STOP_MUSIC      OCTO_KEY_2
 input_table_end
+
+: input_table_charedit
+  input_table_entry   charedit_next_item  OCTO_KEY_D
+  input_table_entry   charedit_prev_item  OCTO_KEY_A
+  input_table_entry   charedit_inc        OCTO_KEY_W
+  input_table_entry   charedit_dec        OCTO_KEY_S
+  #input_table_entry   charedit_finish     OCTO_KEY_R
+  input_table_end
+
+: input_table_empty
+  input_table_end
+
+
+:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY {
+        #:calc NAME { entry_count } :calc entry_count { entry_count + 1 }
+        tobytes INPUT_TABLE_ADDR
+        tobytes ON_ENTRY
+      }
+: state_table
+                #   name of the state,  input_table ptr,        on-entry func,
+  state_table_entry STATE_SPLASH        input_table_empty      splash_display
+  state_table_entry STATE_TITLE         input_table_empty       titlescreen_display
+  state_table_entry STATE_CHAREDIT      input_table_charedit    nop_func
+  state_table_entry STATE_GAMEPLAY      input_table_empty    nop_func
+  state_table_entry STATE_PLAYERINFO    input_table_empty      nop_func
+  state_table_entry STATE_ENDING        input_table_empty      nop_func
+
+  
