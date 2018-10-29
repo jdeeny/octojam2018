@@ -14,3 +14,16 @@
 :const sprite_wall_r 13
 :const sprite_wall_l 14
 :const tile_floor 15
+:const sprite_portrait_enemy1 16
+:const sprite_portrait_enemy8 17
+:const sprite_portrait_enemy6 18
+:const sprite_portrait_enemy11 19
+:const sprite_portrait_hero2 20
+:const sprite_portrait_enemy3 21
+:const sprite_portrait_enemy10 22
+:const sprite_portrait_enemy5 23
+:const sprite_portrait_hero1 24
+:const sprite_portrait_enemy4 25
+:const sprite_portrait_enemy2 26
+:const sprite_portrait_enemy7 27
+:const sprite_portrait_enemy9 28

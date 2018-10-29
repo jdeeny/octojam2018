@@ -1,0 +1,18 @@
+:macro Elem x y spr { :byte y :byte x tobytes spr 0 }
+:macro HRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
+:macro VRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
+:macro ScreenEnd { :byte 0xFF }
+
+
+: screen_frame  Elem 0 0 sprite_dialog_UL
+                Elem 0 48 sprite_dialog_LL
+                Elem 112 0 sprite_dialog_UR
+                Elem 112 48 sprite_dialog_LR
+                HRep 16 2 6 sprite_dialog_HLINE
+                HRep 16 61 6 sprite_dialog_HLINE
+                VRep 2 16 2 sprite_dialog_VLINE
+                VRep 125 16 2 sprite_dialog_VLINE
+                Elem 5 8 SPR_portrait_enemy1
+                ScreenEnd
+: screen_table
+  tobytes screen_frame
