@@ -9,8 +9,15 @@
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
-  v0 := 2
-  v1 := 2
+  v0 := 2 v1 := 2
+  v1 <<= v1 v1 <<= v1
+  v1 += HEX_CONTENTS_OFFSET
+  v0 += SEG_HEX_CONTENTS_UPPER
+  set-i-reg v0 v1
+  v0 := 0x22
+  v1 := 0x8A
+  save v0 - v1
+  v0 := 2 v1 := 2
   dirty-hex
 
   audio_play_music  # Test of music
