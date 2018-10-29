@@ -1,34 +1,39 @@
 
 : text-test-data 0 0 0
-: next-line v1 := 0 v2 += 9 ;
-: next-screen v1 := 0 v2 := 0 clear ;
+: next-line v1 := 24 v2 += 9 ;
 : main
   hires
-
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
 
   audio_play_music  # Test of music
 
+  : next-screen
 
+   v1 := 24 v2 := 5 clear
+   i := text-test-data
+   save v0 - v2
+
+  v0 := SCREEN_dialog
+  screen_draw_screen
 : gameloop
   vF := 1
   delay := vF
   i := text-test-data
   load v0 - v2
   : tryagain
-  v0 := random 127
-  vF := 74
-  vF -= v0
-  if vF == 0 then jump tryagain
-  text_draw_glyph
-  vF := 122
+  v0 := random 3
+  plane 1
+  text_draw_word
+  v1 += 2
+  vF := 106
   vF -= v1
   if vF == 0 then next-line
-  vF := 62
+  vF := 57
   vF -= v2
-  if vF == 0 then next-screen
+
+  if vF == 0 then jump next-screen
   i := text-test-data
   save v0 - v2
   # Process real time systems

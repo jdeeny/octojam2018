@@ -1,0 +1,21 @@
+[Ruin]
+tileset = "ruin"
+levels = 3
+enemies = ["ruin.mechanic", "ruin.security"]
+treasure = [{id = "flute", chance = 0.25}]
+narration = """
+{portrait:static}...
+...Hello?...
+{portrait:gc}Hey, are you still alive?
+Cool.
+...
+Look, I haven't really been paying attention. Did you find the treasure yet?
+Come on, I know it's your first job, but it's not that hard.
+Anyway, I've turned my radio back on. Good luck!"""
+
+[Lab]
+tileset = "lab"
+levels = 3
+enemies = []
+treasure = []
+narration = "Beep Boop welcome to nerd city, chump"

@@ -628,3 +628,24 @@ tobytes glyph_- :calc GLYPH_- { 71 }
 tobytes glyph_. :calc GLYPH_. { 72 }
 tobytes glyph_/ :calc GLYPH_/ { 73 }
 tobytes glyph_: :calc GLYPH_: { 74 }
+
+
+: word_0 :byte GLYPH_A :byte GLYPH_B :byte GLYPH_C :byte GLYPH_ESC_END
+: word_1 :byte GLYPH_$ :byte GLYPH_$ :byte GLYPH_$ :byte GLYPH_ESC_END
+: word_2 :byte GLYPH_! :byte GLYPH_ESC_END
+: word_3 :byte GLYPH_1 :byte GLYPH_l :byte GLYPH_ESC_END
+
+: word_table
+tobytes word_0 :calc WORD_0 { 0 }
+tobytes word_1 :calc WORD_1 { 1 }
+tobytes word_2 :calc WORD_2 { 2 }
+tobytes word_3 :calc WORD_3 { 3 }
+
+:calc PHRASE_WORD { 0 }
+:calc PHRASE_CHOICE { 1 }
+:calc PHRASE_END { 0xFF }
+
+: phrase_0 :byte PHRASE_WORD WORD_0 :byte PHRASE_WORD WORD_1 :byte PHRASE_END
+
+: phrase_table
+tobytes phrase_0 :calc PHRASE_0 { 0 }

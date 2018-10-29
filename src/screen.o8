@@ -1,0 +1,56 @@
+:const screen_dialog 0
+
+# v0 = screen number
+: screen_draw_screen
+  plane 3
+  i := long screen_table
+  i += v0
+  i += v0
+  load v0 - v1
+  push v0 v1 2
+: screen_draw_screen_continue
+  reg_set_i_v01
+  load v0 - v4
+  if v0 == 0xFF then jump screen_draw_screen_end
+  vF := 0x80
+  vF &= v0
+  if vF != 0 then jump screen_draw_screen_vrep
+  vF := 0x40
+  vF &= v0
+  if vF != 0 then jump screen_draw_screen_hrep
+  # else this is an Element
+  # v0 = y, v1 = x, v2/3 = address of sprite
+
+  reg_set_i_v23
+  sprite v1 v0 0
+: screen_draw_screen_advance
+  pop v0 v1 2
+  math_add_u16_u8imm v0 v1 5
+  push v0 v1 2
+  jump screen_draw_screen_continue
+: screen_draw_screen_end
+  pop v0 v1 2
+  ;
+
+: screen_draw_screen_vrep
+#:macro VRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
+  vF := 127
+  v0 &= vF # v0 = y
+  reg_set_i_v23
+  : vrep_continue
+  sprite v0 v1 0
+  v4 += -1
+  v1 += 16
+  if v4 != 0 then jump vrep_continue
+  jump screen_draw_screen_advance
+: screen_draw_screen_hrep
+#:macro HRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
+  vF := 63
+  v0 &= vF # v0 = x
+  reg_set_i_v23
+  : hrep_continue
+  sprite v1 v0 0
+  v4 += -1
+  v1 += 16
+  if v4 != 0 then jump hrep_continue
+  jump screen_draw_screen_advance
