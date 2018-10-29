@@ -1,15 +1,26 @@
-[Spider]
-Hp: 3
-Flags:
-Ai: "DumbJumpy"
-Deathspeech: "Blah"
-MeleeWith: "pincer"
-MeleeDmg: 1-3
+[ruin.mechanic]
+art = "enemy1"
+hp = 3
+agi = 3
+ac = 0
+ai = "melee_smart"
+attacks = [ 
+    {dmg = 2, hit = "smashes you with a wrench", miss = "swings a wrench past you"}, 
+    {range = 3, acc = 0.75, hit = "throws a wrench at you", miss = "misses you with a thrown wrench"}, 
+    {range = 255, chance = 0.1, acc = 0.01, hit = "fizzles and sparks. Its pitiful state hits your ego", miss = "fizzles and sparks"} ]
+# If not specified, default values are:
+# range = 1
+# acc = 1.0
+# dmg = 1
+desc = "Robots that fix other robots... Maybe the people who built them are gone because they weren't needed anymore?"
 
-
-
---snip.. --
-
-[melee]
-Hit: "The %enemyname hits you with its %attackwith."
-Miss: "The %enemyname's %attackwith just missed you."
+[ruin.security]
+art = "enemy2"
+hp = 5
+agi = 1
+ac = 1
+ai = "melee_smart"
+attacks = [ 
+    {dmg = 2, acc = 0.9, hit = "jabs you with a baton", miss = "fumbles a baton"},
+    {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
+desc = "Who did they build these to deter? I don't think they planned for us to go digging up their stuff."
