@@ -26,19 +26,19 @@
 	vd := SEG_FRAMEBUFFER_UPPER
 	vd += tiley
 	i := store-tile-target save vd - ve
-
 	#turn tileindex into hex coordinates 
 	i := long wrap-around-counters load vb - ve
 	#sub wrap counters, determine on whether
 	#wrap front has hit the present tile
-	#if wrapfront < tile coordinate, the tile is wrapped 
-	vb -= tilex if vf == 0 then tilex += X_WRAP
-	vc -= tiley if vf == 0 then tiley += Y_WRAP
+	#if wrapfront > tile coordinate, the tile is wrapped 
+	vb =- tilex if vf == 0 then tilex += X_WRAP
+	vc =- tiley if vf == 0 then tiley += Y_WRAP
 	#whole wrap counters, premultiplied
 	tilex += vd
 	tiley += ve
 	#offset based on the skewed coordinate system
 	tilex -= tiley
+	#if vf == 0 then :breakpoint underflow tilex += tiley
 	tilex >>= tilex
 	#now our humble tilex and tiley are hexx and hexy
 
@@ -145,6 +145,8 @@
 
 #copies frame buffer onto screen
 : draw-tiles
+	v0 := 3 if v0 key then :breakpoint draw
+		v0 += 0
   	plane 3
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
@@ -199,24 +201,72 @@
 	hexy += 1 save hexy
 ;
 
-:alias xwrapsub v0 
-:alias ywrapsub v1
-:alias xwrap v2
-:alias ywrap v3 
-:alias xoff v4
-:alias yoff v5
+:alias xwrapsub v2 
+:alias ywrapsub v3
+:alias xwrap v4
+:alias ywrap v5 
+:alias xoff v6
+:alias yoff v7
+
 : compo-scroll-right
 	i := long wrap-around-counters
 	load xwrapsub - yoff
-	if xwrapsub == 0 begin
+	:calc xwrapx5 { X_WRAP * 5 }
+	if xwrap == xwrapx5 then return
+
+	dirty-left-edge
+
+	xoff += -7
+	if xoff == -7 then xoff := 126
+
+	xwrapsub += 1
+
+	if xwrapsub == X_WRAP begin
 		xwrap += X_WRAP
-		xwrapsub := X_WRAP
-		xoff += -7
-	else
-		xoff += -7
-		xwrapsub += -1
-		if xoff == -7 then xoff := 126
+		xwrapsub := 0
 	end
+
+	i := long wrap-around-counters
 	save xwrapsub - yoff
-	#TODO mark scrolled tiles to be updated
+;
+: compo-scroll-left
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+	:calc xwrapx2 { X_WRAP * 2 }
+	if xwrap == xwrapx2 then return
+
+	xoff += 7
+	if xoff == 133 then xoff := 0
+
+	xwrapsub += -1
+
+	if xwrapsub == -1 begin
+		xwrap += NEG_X_WRAP
+		:calc xwrapless1 { X_WRAP - 1 }
+		xwrapsub := xwrapless1
+	end
+
+	save xwrapsub - yoff
+	dirty-left-edge
+;
+: dirty-left-edge
+	i :=  long dirty-tiles
+	load v0 - v0
+	v1 := 230 v1 -= v0
+	if vf == 0 then :breakpoint overflow v0 += 0
+	v0 += 22 save v0 - v0
+	v0 += -21
+	i += v0
+	v0 := xwrapsub
+	v1 := 0 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
 ;

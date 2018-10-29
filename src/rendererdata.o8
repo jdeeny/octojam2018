@@ -1,9 +1,9 @@
  : tile-graphic
 
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
-	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
+	0x00 0x00 0x00 0x00 0x00 0x00 
 	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
-	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
+	0x00 0x00 0x00 0x00 0x00 0x00 
 
 
 :org SEG_FRAMEBUFFER
@@ -44,7 +44,6 @@
 8x image image image
 :org SEG_HEX_CONTENTS #256*32 bytes
 : hex-contents
-:calc tmp { SPR_enemy1 + 6 }
 :macro hex-entry {
 	tobytes tile-graphic
 	tobytes 0x0000
@@ -62,15 +61,20 @@
 	:org orgptr
 }
 
+ORG_BACKFILL 257
+#a stack of tiles to be composited.
+: dirty-tiles
+0 #stack size
+
 ORG_BACKFILL 10
 
 #these next two labels go together (10 bytes)
 
 #counters governing what the state of the screen wrap is
-: wrap-around-counters #TODO: initial values
-19 #xwrap sub 
-11 #ywrap sub
-0 #xwrap counter
+: wrap-around-counters 
+0 #xwrap sub 
+0 #ywrap sub
+57 #xwrap counter
 0 #ywrap counter
 
 #where on the screen the drawing procedure starts
@@ -78,19 +82,6 @@ ORG_BACKFILL 10
 0 #x offset
 0 #y offset
 0 0 12 28 #fixed initial values for screen drawing procedure
-
-ORG_BACKFILL 39
-
-#a stack of tiles to be composited.
-: dirty-tiles #39 bytes 
-0 #stack size
-0 0 0 0 0 0
-0 0 0 0 0 0
-0 0 0 0 0 0
-0 0 0 0 0 0
-0 0 0 0 0 0
-0 0 0 0 0 0
-0 0
 
 ORG_BACKFILL 32
 ORG_BACKFILL 128

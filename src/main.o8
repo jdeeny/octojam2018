@@ -8,17 +8,6 @@
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
-  # dummy data for testing rendering
-  v0 := 2 v1 := 2
-  v1 <<= v1 v1 <<= v1
-  v1 += HEX_CONTENTS_OFFSET
-  v0 += SEG_HEX_CONTENTS_UPPER
-  set-i-reg v0 v1
-  v0 := 0x22
-  v1 := 0x8A
-  save v0 - v1
-  v0 := 2 v1 := 2
-  dirty-hex
 
   audio_play_music  # Test of music
 
@@ -52,9 +41,13 @@
   # Process real time systems
   audio_handler
   input_handler
+
   plane 3
   clear
   draw-tiles
+  v0 := 9 if v0 key then compo-scroll-right
+  v0 := 7 if v0 key then compo-scroll-left
+
   # Process other systems until we run out of frame time
 : systemloop
   #do_movement

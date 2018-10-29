@@ -20,8 +20,11 @@
 :const SEG_HEX_CONTENTS 0xE000
 :const HEX_CONTENTS_OFFSET 2
 
+
 :const X_WRAP 19
 :const Y_WRAP 11
+:const NEG_X_WRAP -19
+:const NEG_Y_WRAP -11
 
 :macro HEX_DOWN_RIGHT hexx hexy {
   hexy += 1
