@@ -275,7 +275,7 @@ fn main() {
                         let mut sprite_path = entry.path();
                         sprite_path.push(Path::new("tile.png"));
                         println!("{:?}", sprite_path);
-                        writeln!(header_dest, ":const SPR_{} {}", sprite_name.to_string_lossy(), sprite_count);
+                        writeln!(header_dest, ":const sprite_{} {}", sprite_name.to_string_lossy(), sprite_count);
                         sprite_count += 1;
                         process_sprite(&mut header_dest, &mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
                     }
@@ -294,7 +294,7 @@ fn main() {
                         let mut sprite_path = entry.path();
                         sprite_path.push(Path::new("tile.png"));
                         println!("{:?}", sprite_path);
-                        writeln!(header_dest, ":const SPR_{} {}", sprite_name.to_string_lossy(), sprite_count);
+                        writeln!(header_dest, ":const sprite_{} {}", sprite_name.to_string_lossy(), sprite_count);
                         sprite_count += 1;
                         process_sprite(&mut header_dest, &mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
                     }
@@ -314,7 +314,7 @@ fn main() {
                         let mut sprite_path = entry.path();
                         sprite_path.push(Path::new("tile.png"));
                         println!("{:?}", sprite_path);
-                        writeln!(header_dest, ":const TILE_{} {}", sprite_name.to_string_lossy(), sprite_count);
+                        writeln!(header_dest, ":const tile_{} {}", sprite_name.to_string_lossy(), sprite_count);
                         sprite_count += 1;
                         process_tile(&mut header_dest, &mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
                     }
