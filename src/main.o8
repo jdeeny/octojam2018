@@ -7,7 +7,14 @@
   delay := vF
   : splash_wait vF := delay if vF != 0 then jump splash_wait
   vF := key
-  hires
+
+  titlescreen_display
+  vF := 60
+  delay := vF
+  : title_wait vF := delay if vF != 0 then jump title_wait
+  vF := key
+  clear
+
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
