@@ -1,0 +1,22 @@
+: charedit_do
+  ;
+
+: charedit_display
+  v9 := 0
+: charedit_display_loop
+  i := long charedit_data
+  i += v9
+  load v0
+  :breakpoint v0=char
+  v1 := 30
+  v2 <<= v9
+  v2 <<= v2
+  v2 <<= v2
+  v1 += v2
+  v2 := 10
+  text_draw_glyph
+  v9 += 1
+  if v9 != 8 then jump charedit_display_loop
+
+
+  ;
