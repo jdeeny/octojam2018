@@ -1,0 +1,4 @@
+[flute]
+art = "flute"
+active = [ {id = "stun", time = 2, cooldown = 2} ]
+desc = "Back then, people controlled machines by playing notes on a flute. You should practice whistling so you can be like an ancient hacker."
