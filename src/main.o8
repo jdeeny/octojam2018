@@ -9,7 +9,8 @@
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
-
+  v0 := 2
+  v1 := 2
   dirty-hex
 
   audio_play_music  # Test of music

@@ -14,10 +14,10 @@
 :const SPRITE_MIDDLE_RIGHT 72
 :const SPRITE_BOTTOM_RIGHT 90
 
-:const SEG_FRAMEBUFFER_UPPER 0xE4
-:const SEG_FRAMEBUFFER 0xE400
-:const SEG_HEX_CONTENTS_UPPER 0xF0
-:const SEG_HEX_CONTENTS 0xF000
+:const SEG_FRAMEBUFFER_UPPER 0xD4
+:const SEG_FRAMEBUFFER 0xD400
+:const SEG_HEX_CONTENTS_UPPER 0xD0
+:const SEG_HEX_CONTENTS 0xE000
 :const HEX_CONTENTS_OFFSET 2
 
 :const X_WRAP 19
@@ -80,7 +80,7 @@
 	#start by drawing plane 1
 	planeoffset := 0
 	: compo-go-again
-	if vf == 0 begin #the tile is the right side of a hex
+	if vf == 1 begin #the tile is the right side of a hex
 		hexx <<= hexx
 		hexx <<= hexx
 		#get ground tile
@@ -179,6 +179,7 @@
 
 #copies frame buffer onto screen
 : draw-tiles
+	:breakpoint draw-tiles
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
 	i := long screen-offset load x - rowoffset
@@ -191,11 +192,12 @@
 		x += 7
 		if x == 133 then x := 0
 		if rowcount != 19 then jump frame-loop
-			if colcount == 20 then return
+			if colcount == 11 then return
 			rowcount := 0
 			colcount += 1
 		 	y += 6
 			if y == 66 then y := 0
+			i += rowoffset
 		again
 #end draw-tiles
 

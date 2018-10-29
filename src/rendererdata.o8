@@ -1,22 +1,65 @@
-#random bits for renderer
+:macro 8x m {
+	m m m m m m m m
+}
+:macro 32x m {
+	8x m 8x m 8x m 8x m
+}
+:macro 128x m {
+	32x m 32x m 32x m 32x m
+}
 
 :org SEG_FRAMEBUFFER
 : frame-buffer #(256*11) bytes
-:org SEG_HEX_CONTENTS 
+:macro image {
+	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
+	0x00 0x00 0x00 0x00 0x00 0x00
+	0x00 0xF8 0xFC 0xFC 0xFE 0xF0 
+	0x00 0x00 0x00 0x00 0x00 0x00 
+}
+8x image image image
+:org 0xD4F4
+8x image image image
+:org 0XD600
+8x image image image
+:org 0xD6F4
+8x image image image
+:org 0XD800
+8x image image image
+:org 0xD8F4
+8x image image image
+:org 0XDA00
+8x image image image
+:org 0xDAF4
+8x image image image
+:org 0XDC00
+8x image image image
+:org 0xDCF4
+8x image image image
+:org 0XDE00
+8x image image image
+:org SEG_HEX_CONTENTS #256*32 bytes
 : hex-contents
 :calc tmp { SPR_enemy1 + 6 }
-tobytes tmp
-tobytes SPR_enemy1
+:macro hex-entry {
+	tobytes frame-buffer
+	tobytes SPR_enemy1
+}
 
+128x hex-entry 128x hex-entry 128x hex-entry 128x hex-entry 
+128x hex-entry 128x hex-entry 128x hex-entry 128x hex-entry 
+128x hex-entry 128x hex-entry 128x hex-entry 128x hex-entry 
+128x hex-entry 128x hex-entry 128x hex-entry 128x hex-entry 
+
+#random bits for renderer
 :calc orgptr { SEG_FRAMEBUFFER }
 :macro ORG_BACKFILL n {
 	:calc orgptr { orgptr - n }
 	:org orgptr
 }
 
-ORG_BACKFILL 9
+ORG_BACKFILL 10
 
-#these next two labels go together (9 bytes)
+#these next two labels go together (10 bytes)
 
 #counters governing what the state of the screen wrap is
 : wrap-around-counters #TODO: initial values
@@ -29,7 +72,7 @@ ORG_BACKFILL 9
 : screen-offset
 0 #x offset
 0 #y offset
-0 12 28 #fixed initial values for screen drawing procedure
+0 0 12 28 #fixed initial values for screen drawing procedure
 
 ORG_BACKFILL 39
 
@@ -55,15 +98,6 @@ ORG_BACKFILL 128
 :macro m11 { 
 	:byte { index % 11 }
 	:calc index { index + 1 } 
-}
-:macro 8x m {
-	m m m m m m m m
-}
-:macro 32x m {
-	8x m 8x m 8x m 8x m
-}
-:macro 128x m {
-	32x m 32x m 32x m 32x m
 }
 :calc index { 0 } 
 : mod11 #32 bytes
