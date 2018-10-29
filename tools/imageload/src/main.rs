@@ -70,7 +70,7 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
                 let px_y = px_y as i64 - (18-info.height as i64);
                 write!(data_file, "0b");
                 if px_y < 0 || px_y > info.height as i64 {
-                    writeln!(data_file, "00000000");
+                    writeln!(data_file, "11111111");
                 } else {
                     println!("y: {}", px_y);
                     for x in 0..7 {
@@ -81,14 +81,14 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
                             let idx: usize = ((px_y as usize * info.width as usize + px_x as usize) * 4) as usize;
                             let m = buf[idx+3];
                             if m > 128 {
-                                write!(data_file, "1");
-                            } else {
                                 write!(data_file, "0");
+                            } else {
+                                write!(data_file, "1");
                             }
                         }
                     }
 
-                    writeln!(data_file, "0");
+                    writeln!(data_file, "1");
                 }
             }
 
