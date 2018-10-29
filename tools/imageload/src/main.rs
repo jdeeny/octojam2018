@@ -69,7 +69,7 @@ fn process_16_sprite(data_file: &mut Write, colors: &HashMap<usize, (u8, u8, u8)
                             //println!("{} {} {}", px_x, px_y, idx);
                             let c = closest_color(colors, (buf[idx], buf[idx+1], buf[idx+2]));
                             //println!("{} {} {} {} = {}", buf[idx], buf[idx+1], buf[idx+2], buf[idx+3], c);
-                            if (c >> plane) != 0 && buf[idx+3] > 128 {
+                            if (c >> plane) & 1 != 0 && buf[idx+3] > 128 {
                                 write!(data_file, "1");
                             } else {
                                 write!(data_file, "0");
@@ -171,7 +171,7 @@ fn process_sprite(header_file: &mut Write, data_file: &mut Write, colors: &HashM
                                 //println!("{} {} {}", px_x, px_y, idx);
                                 let c = closest_color(colors, (buf[idx], buf[idx+1], buf[idx+2]));
                                 //println!("{} {} {} {} = {}", buf[idx], buf[idx+1], buf[idx+2], buf[idx+3], c);
-                                if (c >> plane) != 0 && buf[idx+3] > 128 {
+                                if ((c >> plane) & 1) != 0 && buf[idx+3] > 128 {
                                     write!(data_file, "1");
                                 } else {
                                     write!(data_file, "0");
@@ -281,7 +281,7 @@ fn process_tile(header_file: &mut Write, data_file: &mut Write, colors: &HashMap
                                 //println!("{} {} {}", px_x, px_y, idx);
                                 let c = closest_color(colors, (buf[idx], buf[idx+1], buf[idx+2]));
                                 //println!("{} {} {} {} = {}", buf[idx], buf[idx+1], buf[idx+2], buf[idx+3], c);
-                                if (c >> plane) != 0 && buf[idx+3] > 128 {
+                                if ((c >> plane) & 1) != 0 && buf[idx+3] > 128 {
                                     write!(data_file, "1");
                                 } else {
                                     write!(data_file, "0");
