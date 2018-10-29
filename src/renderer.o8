@@ -145,6 +145,7 @@
 
 #copies frame buffer onto screen
 : draw-tiles
+  	plane 3
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
 	i := long screen-offset load x - rowoffset
