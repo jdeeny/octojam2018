@@ -27,9 +27,6 @@
 	vd += tiley
 	i := store-tile-target save vd - ve
 
-
-	:breakpoint composite1
-
 	#turn tileindex into hex coordinates 
 	i := long wrap-around-counters load vb - ve
 	#sub wrap counters, determine on whether
@@ -108,8 +105,6 @@
 	#i := long store tile target
 	0xF0 0x00 : store-tile-target 0x00 0x00
 	i += planeoffset save v4 - v9
-
-	:breakpoint composite
 
 	#go again with plane 2				
 	if planeoffset != 0 then return
