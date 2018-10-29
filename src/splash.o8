@@ -1,0 +1,36 @@
+
+:macro wait TIME {
+    vf := TIME
+    delay := vf
+    loop
+        vf := delay
+        if vf != 0 then
+    again
+}
+:macro letter X Y IMAGE {
+    v0 := X
+    v1 := Y
+    i  := long IMAGE
+    sprite v0 v1 8
+    wait 10
+}
+
+: splash_display
+  clear
+  lores
+
+  letter 7 10 splash-big-O
+  letter 15 14 splash-big-C
+  letter 23 10 splash-big-T
+  letter 31 14 splash-big-O
+
+  v0 := 43
+  v1 := 9
+  i  := long splash-jam
+  sprite v0 v1 14
+  wait 30
+	i := long splash-five
+  v0 := 53
+  v1 := 13
+  sprite v0 v1 8
+  ;

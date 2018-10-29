@@ -2,6 +2,11 @@
 : text-test-data 0 0 0
 : next-line v1 := 24 v2 += 7 ;
 : main
+  splash_display
+  vF := 60
+  delay := vF
+  : splash_wait vF := delay if vF != 0 then jump splash_wait
+  vF := key
   hires
   # initialize stuff here
 
