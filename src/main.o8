@@ -15,6 +15,14 @@
   vF := key
   clear
 
+  endscreen_display
+  vF := 60
+  delay := vF
+  : end_wait vF := delay if vF != 0 then jump end_wait
+  vF := key
+  clear
+
+
   # initialize stuff here
 
   # load initial gamestate, which determines active systems, keymap, and ?
