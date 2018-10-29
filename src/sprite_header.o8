@@ -1,4 +1,4 @@
-:const SPR_enemy1 0
+#:const SPR_enemy1 0
 :const SPR_enemy8 1
 :const SPR_enemy6 2
 :const SPR_enemy11 3

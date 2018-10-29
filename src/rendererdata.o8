@@ -4,6 +4,9 @@
 : frame-buffer #(256*11) bytes
 :org SEG_HEX_CONTENTS 
 : hex-contents
+:calc tmp { SPR_enemy1 + 6 }
+tobytes tmp
+tobytes SPR_enemy1
 
 :calc orgptr { SEG_FRAMEBUFFER }
 :macro ORG_BACKFILL n {
@@ -17,8 +20,8 @@ ORG_BACKFILL 9
 
 #counters governing what the state of the screen wrap is
 : wrap-around-counters #TODO: initial values
-0 #xwrap sub 
-0 #ywrap sub
+19 #xwrap sub 
+11 #ywrap sub
 0 #xwrap counter
 0 #ywrap counter
 

@@ -8,22 +8,20 @@
 :const TILE_HEIGHT 6
 
 :const SPRITE_TOP_LEFT 0
-:const SPRITE_TOP_RIGHT 18
-:const SPRITE_MIDDLE_LEFT 36
-:const SPRITE_MIDDLE_RIGHT 54
-:const SPRITE_BOTTOM_LEFT 72
+:const SPRITE_MIDDLE_LEFT 18
+:const SPRITE_BOTTOM_LEFT 36
+:const SPRITE_TOP_RIGHT 54
+:const SPRITE_MIDDLE_RIGHT 72
 :const SPRITE_BOTTOM_RIGHT 90
 
 :const SEG_FRAMEBUFFER_UPPER 0xE4
 :const SEG_FRAMEBUFFER 0xE400
 :const SEG_HEX_CONTENTS_UPPER 0xF0
 :const SEG_HEX_CONTENTS 0xF000
-:const HEX_CONTENTS_OFFSET 0x80
+:const HEX_CONTENTS_OFFSET 2
 
 :const X_WRAP 19
-:const NEG_X_WRAP 19
 :const Y_WRAP 11
-:const NEG_Y_WRAP 11
 
 :macro HEX_DOWN_RIGHT hexx hexy {
 	 hexx += 2
@@ -34,10 +32,10 @@
 	 hexy += 2
 }
 
-:alias tilex v1
-:alias tiley v0
-:alias hexx v1
-:alias hexy v0
+:alias tilex v0
+:alias tiley v1
+:alias hexx v0
+:alias hexy v1
 :alias spritesegment v2
 :alias planeoffset v3
 
@@ -67,8 +65,8 @@
 	#sub wrap counters, determine on whether
 	#wrap front has hit the present tile
 	#if wrapfront < tile coordinate, the tile is wrapped 
-	vb -= tilex if vf == 1 then tilex += X_WRAP
-	vc -= tiley if vf == 1 then tiley += Y_WRAP
+	vb -= tilex if vf == 0 then tilex += X_WRAP
+	vc -= tiley if vf == 0 then tiley += Y_WRAP
 	#whole wrap counters, premultiplied
 	tilex += vd
 	tiley += ve
@@ -78,7 +76,7 @@
 	#now our humble tilex and tiley are hexx and hexy
 
 	hexy += SEG_HEX_CONTENTS_UPPER
-
+	i := present-hex save hexx - hexy
 	#start by drawing plane 1
 	planeoffset := 0
 	: compo-go-again
@@ -107,6 +105,8 @@
 		HEX_DOWN_LEFT hexx hexy
 		spritesegment := SPRITE_TOP_RIGHT
 		compo-add-sprite
+
+		i := present-hex load hexx - hexy
 		vf := 0
 	else #the tile is the left side of a hex
 		hexx <<= hexx
@@ -130,16 +130,23 @@
 		HEX_DOWN_RIGHT hexx hexy
 		spritesegment := SPRITE_TOP_LEFT
 		compo-add-sprite
+
+		i := present-hex load hexx - hexy
 		vf := 1
 	end
 	#save the plane to the frame buffer
 	#i := long store tile target
 	0xF0 0x00 : store-tile-target 0x00 0x00
-	i += planeoffset save v0
+	i += planeoffset save v4 - v9
+
+	:breakpoint composite
 	#go again with plane 2				
 	if planeoffset != 0 then return
 	planeoffset := TILE_HEIGHT
 	jump compo-go-again
+
+: present-hex
+0 0
 
 : compo-add-sprite
 	set-i-reg hexy hexx
@@ -235,11 +242,12 @@
 	load xwrapsub - yoff
 	if xwrapsub == 0 begin
 		xwrap += X_WRAP
-		xoff := 126
 		xwrapsub := X_WRAP
+		xoff += -7
 	else
 		xoff += -7
-		xwrap += -1
+		xwrapsub += -1
+		if xoff == -7 then xoff := 126
 	end
 	save xwrapsub - yoff
 	#TODO mark scrolled tiles to be updated
