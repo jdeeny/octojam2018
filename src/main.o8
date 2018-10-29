@@ -1,6 +1,6 @@
 
 : text-test-data 0 0 0
-: next-line v1 := 0 v2 += 9 ;
+: next-line v1 := 24 v2 += 9 ;
 : main
   hires
   # initialize stuff here
@@ -11,13 +11,12 @@
 
   : next-screen
 
-   v1 := 0 v2 := 0 clear
+   v1 := 24 v2 := 5 clear
    i := text-test-data
    save v0 - v2
 
   v0 := SCREEN_dialog
   screen_draw_screen
-
 : gameloop
   vF := 1
   delay := vF
@@ -25,12 +24,13 @@
   load v0 - v2
   : tryagain
   v0 := random 3
+  plane 1
   text_draw_word
   v1 += 2
-  vF := 112
+  vF := 106
   vF -= v1
   if vF == 0 then next-line
-  vF := 62
+  vF := 57
   vF -= v2
 
   if vF == 0 then jump next-screen
