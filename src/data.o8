@@ -74,7 +74,7 @@
 ## Audio
 :macro note code sustain { :byte code :byte sustain }
 ## Song Data
-:org 0xF000
+:org 0x2000
 : music
 : song_a
 note G-4 10 note E-4 20 note D-4 20 note C-4 10 note G-4 10

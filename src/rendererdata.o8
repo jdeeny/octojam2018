@@ -1,0 +1,146 @@
+#dummy data
+ : tile-graphic
+	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
+	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
+	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
+	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
+
+
+:org SEG_FRAMEBUFFER
+: frame-buffer #(256*11) bytes
+#dummy data
+:macro image {
+
+	0x00 0x1E 0x7E 0xFE 0x7E 0x1E 
+	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
+
+	0x00 0xF8 0xFC 0xFC 0xFE 0xF0 
+	0x00 0xF8 0xFC 0xFC 0xFE 0xF0 
+}
+
+#	0x00 0x00 0x00 0x00 0x00 0x00 
+#	0x00 0x00 0x00 0x00 0x00 0x00 
+#	0x00 0x00 0x00 0x00 0x00 0x00 
+#	0x00 0x00 0x00 0x00 0x00 0x00 
+8x image image image
+:org 0xC4F4
+8x image image image
+:org 0XC600
+8x image image image
+:org 0xC6F4
+8x image image image
+:org 0XC800
+8x image image image
+:org 0xC8F4
+8x image image image
+:org 0XCA00
+8x image image image
+:org 0xCAF4
+8x image image image
+:org 0XCC00
+8x image image image
+:org 0xCCF4
+8x image image image
+:org 0XCE00
+8x image image image
+:org SEG_HEX_CONTENTS #256*32 bytes
+: hex-contents
+#dummy data
+:macro hex-entry {
+	tobytes tile-graphic
+	tobytes SPR_enemy2
+	tobytes tile-graphic
+	tobytes SPR_enemy2
+}
+:macro hex-entry2 {
+	tobytes tile-graphic
+	tobytes 0x0000
+	tobytes tile-graphic
+	tobytes 0x0000
+}
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+#random bits for renderer
+:calc orgptr { SEG_FRAMEBUFFER }
+:macro ORG_BACKFILL n {
+	:calc orgptr { orgptr - n }
+	:org orgptr
+}
+
+ORG_BACKFILL 257
+#a stack of tiles to be composited.
+: dirty-tiles
+0 #stack size
+
+ORG_BACKFILL 14
+
+#these next two labels go together (14 bytes)
+
+#counters governing what the state of the screen wrap is
+: wrap-around-counters 
+0 #xwrap sub 
+0 #ywrap sub
+57 #xwrap counter
+0 #ywrap counter
+
+#where on the screen the drawing procedure starts
+: screen-offset
+0 #x offset
+0 #y offset
+0 0 12 28 #fixed initial values for screen drawing procedure
+x := 0 x += 7 #more fixed values
+
+ORG_BACKFILL 32
+ORG_BACKFILL 128
+
+#tables of results to modulo operations
+:macro m19 { 
+	:byte { index % 19 }
+	:calc index { index + 1 } 
+}
+:macro m11 { 
+	:byte { index % 11 }
+	:calc index { index + 1 } 
+}
+:calc index { 0 } 
+: mod11 #32 bytes
+32x m11
+:calc index { 0 } 
+: mod19 #128 bytes
+128x m19
+
+ORG_BACKFILL 133
+:calc nextentry { 112 }
+:macro loop-unroll-table-entry {
+	:byte nextentry
+	0x00 0x00 0x00
+	0x00 0x00 0x00
+	:calc nextentry {
+		nextentry - 6
+	}
+}
+: get-loop-wrap-point
+	loop-unroll-table-entry
+	8x loop-unroll-table-entry
+	8x loop-unroll-table-entry
+	loop-unroll-table-entry
+	:byte nextentry
+	

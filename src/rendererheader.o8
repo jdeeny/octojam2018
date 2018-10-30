@@ -1,0 +1,46 @@
+:macro set-i-reg reg-hi reg-lo {
+  :calc tgt { HERE + 6 }
+  i := tgt
+  save reg-hi - reg-lo
+  0xF0 0x00 0x00 0x00
+}
+
+:const TILE_HEIGHT 6
+
+:const SPRITE_TOP_LEFT 0
+:const SPRITE_MIDDLE_LEFT 18
+:const SPRITE_BOTTOM_LEFT 36
+:const SPRITE_TOP_RIGHT 54
+:const SPRITE_MIDDLE_RIGHT 72
+:const SPRITE_BOTTOM_RIGHT 90
+
+:const SEG_FRAMEBUFFER_UPPER 0xC4
+:const SEG_FRAMEBUFFER 0xC400
+:const SEG_HEX_CONTENTS_UPPER 0xD0
+:const SEG_HEX_CONTENTS 0xD000
+:const HEX_CONTENTS_OFFSET 2
+
+
+:const X_WRAP 19
+:const Y_WRAP 11
+:const NEG_X_WRAP -19
+:const NEG_Y_WRAP -11
+
+:macro HEX_DOWN_RIGHT hexx hexy {
+  hexy += 1
+}
+
+:macro HEX_DOWN_LEFT hexx hexy {
+  hexy += 1
+  hexx += -4
+}
+
+:macro 8x m {
+  m m m m m m m m
+}
+:macro 32x m {
+  8x m 8x m 8x m 8x m
+}
+:macro 128x m {
+  32x m 32x m 32x m 32x m
+}

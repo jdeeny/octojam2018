@@ -1,0 +1,372 @@
+
+:alias tilex v0
+:alias tiley v1
+:alias hexx v0
+:alias hexy v1
+:alias spritesegment v2
+:alias planeoffset v3
+
+# composited tile v4 v5 v6 v7 v8 v9
+# next input buffer/tmp va vb vc vd ve vf
+#updates next tile in stack
+: composite-tiles
+	#pull index of next tile to update from stack
+	i := long dirty-tiles load v0 - v0
+	if v0 == 0 then return #no tiles to update
+	v0 += -2 save v0
+	i += v0 load tilex - tiley
+: composite-direct
+	#prep pointer to framebuffer, since we're about to destroy our tile coords
+	#ve := tilex*12
+	vd <<= tilex
+	vd <<= vd
+	ve <<= vd
+	ve += vd
+	#rows are 256-byte aligned, though a row only uses 228 bytes.
+	vd := SEG_FRAMEBUFFER_UPPER
+	vd += tiley
+	i := store-tile-target save vd - ve
+	#turn tileindex into hex coordinates 
+	i := long wrap-around-counters load vb - ve
+	#sub wrap counters, determine on whether
+	#wrap front has hit the present tile
+	#if wrapfront > tile coordinate, the tile is wrapped 
+	vb =- tilex if vf == 0 then tilex += X_WRAP
+	vc =- tiley if vf == 0 then tiley += Y_WRAP
+	#whole wrap counters, premultiplied
+	tilex += vd
+	tiley += ve
+	#offset based on the skewed coordinate system
+	tilex -= tiley
+	if vf == 0 then :breakpoint underflow v0 += 0
+	vf := 1 if vf key then :breakpoint composite v0 += 0
+
+	tilex >>= tilex
+	#now our humble tilex and tiley are hexx and hexy
+
+	hexy += SEG_HEX_CONTENTS_UPPER
+	i := present-hex save hexx - hexy
+	#start by drawing plane 1
+	planeoffset := 0
+	: compo-go-again
+	if vf == 1 begin #the tile is the right side of a hex
+		hexx <<= hexx
+		hexx <<= hexx
+		#get ground tile
+		set-i-reg hexy hexx
+		load vd - ve
+		set-i-reg vd ve
+		#this is the right side, so we need to load the second
+		#graphic for this hex
+		vf := 12
+		i += vf
+		i += planeoffset
+		load v4 - v9
+		
+		#start getting hex contents
+		hexx += HEX_CONTENTS_OFFSET
+
+		spritesegment := SPRITE_BOTTOM_RIGHT
+		compo-add-sprite
+		HEX_DOWN_RIGHT hexx hexy
+		spritesegment := SPRITE_MIDDLE_LEFT
+		compo-add-sprite
+		HEX_DOWN_LEFT hexx hexy
+		spritesegment := SPRITE_TOP_RIGHT
+		compo-add-sprite
+
+		i := present-hex load hexx - hexy
+		vf := 1
+	else #the tile is the left side of a hex
+		hexx <<= hexx
+		hexx <<= hexx
+
+		#get ground tile
+		set-i-reg hexy hexx
+		load vd - ve
+		set-i-reg vd ve
+		i += planeoffset
+		load v4 - v9
+
+		#start getting hex contents
+		hexx += HEX_CONTENTS_OFFSET
+
+		spritesegment := SPRITE_BOTTOM_LEFT
+		compo-add-sprite
+		HEX_DOWN_LEFT hexx hexy
+		spritesegment := SPRITE_MIDDLE_RIGHT
+		compo-add-sprite
+		HEX_DOWN_RIGHT hexx hexy
+		spritesegment := SPRITE_TOP_LEFT
+		compo-add-sprite
+
+		i := present-hex load hexx - hexy
+		vf := 0
+	end
+	#save the plane to the frame buffer
+	#i := long store tile target
+	0xF0 0x00 : store-tile-target 0x00 0x00
+	i += planeoffset save v4 - v9
+
+	#go again with plane 2				
+	if planeoffset != 0 then return
+	planeoffset := TILE_HEIGHT
+	jump compo-go-again
+
+: present-hex
+0 0
+
+: compo-add-sprite
+	set-i-reg hexy hexx
+	load vd - ve
+	if vd == 0 then return #empty hex
+	set-i-reg vd ve
+	i += spritesegment
+
+	#mask
+	load va - vf
+	v9 &= vf v8 &= ve
+	v7 &= vd v6 &= vc
+	v5 &= vb v4 &= va
+
+	#image
+	vf := TILE_HEIGHT i += vf
+	i += planeoffset
+	load va - vf
+	v9 += vf v8 += ve
+	v7 += vd v6 += vc
+	v5 += vb v4 += va
+;
+
+:alias x v0
+:alias y v1
+:alias rowcount v2
+:alias colcount v3
+:alias tilewidth v4
+:alias rowoffset v5
+#v6 v7 v8 v9 - loaded instructions
+#for injection into unrolled loop
+#copies frame buffer onto screen
+: draw-tiles
+  	plane 3
+	#load the iterator & tile width from memory rather than setting it directly
+	#these two values are fixed, though. It's just a faster/smaller way to set them
+	i := long screen-offset load x - v9
+	i := long get-loop-wrap-point i += x
+	load vf - vf
+	i := frame-loop i += vf
+	save v6 - v7
+	i := long frame-buffer
+	: frame-loop
+	loop
+		:macro loopunrolled	{ 
+			sprite x y 6 
+			i += tilewidth 
+			x += 7 
+		}
+		8x loopunrolled 8x loopunrolled
+		loopunrolled 
+		loopunrolled
+		loopunrolled
+		vf := 3 if vf key then :breakpoint draw v0 += 0
+		if colcount == 10 then jump draw-tiles-cleanup
+		colcount += 1
+		y += 6
+		if y == 66 then y := 0
+		i += rowoffset
+	again
+	: draw-tiles-cleanup
+	i := long get-loop-wrap-point i += x
+	load vf - vf
+	i := frame-loop i += vf
+	vf := 7 save v8 - v9
+;
+#end draw-tiles
+
+:alias hexx v0
+:alias hexy v1
+#marks a hex to be redrawn
+#TODO: detect whether hex is on screen
+: dirty-hex
+
+	#convert hex to tile space
+	#unskew
+	hexx <<= hexx
+	hexx += hexy
+	#wrap screen
+	i := long mod19 i += hexy
+	load hexy - hexy
+	i := long mod11 i += hexx
+	load hexx - hexx
+
+	#update size of tile update stack
+	i :=  long dirty-tiles
+	load vf - vf
+	vf += 12 save vf - vf
+	vf += -11 i += vf
+
+	#mark the 6 tiles that an object in this hex
+	#could be drawn to
+	save hexy
+	hexy += -1 save hexy
+	hexy += -1 save hexy
+	hexx += 1 save hexy
+	hexy += 1 save hexy
+	hexy += 1 save hexy
+;
+
+:alias xwrapsub v2 
+:alias ywrapsub v3
+:alias xwrap v4
+:alias ywrap v5 
+:alias xoff v6
+:alias yoff v7
+
+: compo-scroll-right
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+	#hit right side TODO: more exact
+	:calc xwrapx6 { X_WRAP * 6 }
+	if xwrap == xwrapx6 begin
+		if xwrapsub == 14 then
+			return
+	end
+	
+	dirty-left-edge
+	
+	xoff += -7
+	if xoff == -7 then xoff := 126
+
+	xwrapsub += 1
+
+	if xwrapsub == X_WRAP begin
+		xwrap += X_WRAP
+		xwrapsub := 0
+	end
+
+	i := long wrap-around-counters
+	save xwrapsub - yoff
+;
+: compo-scroll-left
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+	#hit left side
+	if xwrap == X_WRAP begin 
+		if xwrapsub == 12 then
+			return
+	end
+	xoff += 7
+	if xoff == 133 then xoff := 0
+
+	xwrapsub += -1
+
+	if xwrapsub == -1 begin
+		xwrap += NEG_X_WRAP
+		:calc xwrapless1 { X_WRAP - 1 }
+		xwrapsub := xwrapless1
+	end
+
+	save xwrapsub - yoff
+	dirty-left-edge
+;
+: dirty-left-edge
+	i :=  long dirty-tiles
+	load v0 - v0
+	v1 := 230 v1 -= v0
+	if vf == 0 then :breakpoint overflow v0 += 0
+	v0 += 22 save v0 - v0
+	v0 += -21
+	i += v0
+	v0 := xwrapsub
+	v1 := 0 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+	v1 += 1 save v1
+;
+: compo-scroll-down
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+	
+	vf := 2 if vf key then :breakpoint scroll v0 += 0
+	#hit bottom
+	if ywrap == Y_WRAP begin
+		if ywrapsub == 10 then
+			return
+	end
+
+	dirty-top-edge
+
+	yoff += -6
+	if yoff == -6 then yoff := 60
+
+	ywrapsub += 1
+
+	if ywrapsub == Y_WRAP begin
+		ywrap += Y_WRAP
+		ywrapsub := 0
+	end
+
+	i := long wrap-around-counters
+	save xwrapsub - yoff
+;
+: compo-scroll-up
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+
+	yoff += 6
+	if yoff == 66 then yoff := 0
+
+	ywrapsub += -1
+
+	if ywrapsub == -1 begin
+		#hit top
+		if ywrap == 0 then return
+		ywrap += NEG_Y_WRAP
+		:calc ywrapless1 { Y_WRAP - 1 }
+		ywrapsub := ywrapless1
+	end
+
+	save xwrapsub - yoff
+	dirty-top-edge
+;
+: dirty-top-edge
+	i :=  long dirty-tiles
+	load v0 - v0
+	v1 := 215 v1 -= v0
+	if vf == 0 then :breakpoint overflow v0 += 0
+	v0 += 38 save v0 - v0
+	v0 += -37
+	i += v0
+	v1 := ywrapsub
+	v0 := 0 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+;
+
+: recompose-storage
+0 0
+: recompose-whole-screen #TODO
+;

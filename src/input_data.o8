@@ -32,6 +32,11 @@ input_table_end
   input_table_entry   charedit_next_state     OCTO_KEY_R
   input_table_end
 
+: input_table_gameplay
+  input_table_all_keys gameplay_next_state
+  input_table_end
+
+
 : input_table_ending
   input_table_all_keys ending_next_state
   input_table_end
@@ -41,18 +46,19 @@ input_table_end
   input_table_end
 
 
-:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY LOOP_FUNC {
+:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY ONCE_FUNC LOOP_FUNC {
         #:calc NAME { entry_count } :calc entry_count { entry_count + 1 }
         tobytes INPUT_TABLE_ADDR
         tobytes ON_ENTRY
         tobytes LOOP_FUNC
+        tobytes ONCE_FUNC
       }
 
 : state_table
-                #   name of the state,  input_table ptr,        on-entry func,          loop func,
-  state_table_entry STATE_SPLASH        input_table_splash      splash_display          nop_func
-  state_table_entry STATE_TITLE         input_table_title       title_display           nop_func
-  state_table_entry STATE_CHAREDIT      input_table_charedit    charedit_display        nop_func
-  state_table_entry STATE_GAMEPLAY      input_table_empty       nop_func                nop_func
-  state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func
-  state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func
+                #   name of the state,  input_table ptr,        on-entry func,          once-per-frame,     loop-during-frame,
+  state_table_entry STATE_SPLASH        input_table_splash      splash_display          nop_func            nop_func
+  state_table_entry STATE_TITLE         input_table_title       title_display           nop_func            nop_func
+  state_table_entry STATE_CHAREDIT      input_table_charedit    charedit_display        nop_func            nop_func
+  state_table_entry STATE_GAMEPLAY      input_table_gameplay    gameplay_begin          gameplay_once       gameplay_loop
+  state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func            nop_func
+  state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func            nop_func

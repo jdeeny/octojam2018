@@ -17,6 +17,7 @@
   ;
 
 : charedit_display
+  clear
   v9 := 0
 : charedit_display_loop
   i := long charedit_data
@@ -35,5 +36,6 @@
   ;
 
 : charedit_next_state
-  v0 := STATE_ENDING state_switch
+  v0 := STATE_GAMEPLAY
+  state_switch
   ;

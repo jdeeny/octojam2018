@@ -15,12 +15,12 @@
   # These are done ONCE per frame
   audio_handler
   input_handler
+: gameloop_call_state_once 0x00 0x00  # This calls the state specific once function, to be replaced by state data
 
   # Process other systems until we run out of frame time
 : systemloop
-
-: gameloop_call_state_loop 0x00 0x00  # This calls the state specific gameloop function, to be replaced by state data
-
+  : gameloop_call_state_loop 0x00 0x00  # This calls the state specific gameloop function, to be replaced by state data
   vF := delay
   if vF != 0 then jump systemloop
+
 jump gameloop
