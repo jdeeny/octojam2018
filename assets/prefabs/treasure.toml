@@ -1,4 +1,29 @@
 [flute]
+name = "Piper's Flute"
 art = "flute"
 active = [ {id = "stun", time = 2, cooldown = 2} ]
-desc = "Back then, people controlled machines by playing notes on a flute. You should practice whistling so you can be like an ancient hacker."
+desc = "Back then, people controlled machines by playing notes on a flute. Ancient hackers must've been good at whistling."
+
+[dog]
+name = "Octo"
+art = "enemy11"
+passive = [{id = "bonus_dmg", chance = 0.25, amt = 1, hit = "Your dog shocks the enemy."}]
+desc = "Their name is Octo and they are my friend. Don't come back if you lose them."
+
+[pillar]
+name = "???"
+art = "???"
+active = [ {id = "cover", cooldown = 2} ]
+desc = "summons a pillar of rock or something as cover; haven't thought of a story reason for this"
+
+[overclock]
+name = "Overclock"
+art = "overclock"
+active = [ {id = "extra_turn", cooldown = 4} ]
+desc = "All the ancient buildings have a central clock that the robots sync with."
+
+[crickets]
+name = "Jar of Crickets"
+art = "crickets"
+active = [ {id = "absorb", amt = 1, cooldown = 2} ]
+desc = "Instead of janitors, they must've used swarms of tiny robots."

@@ -1,8 +1,8 @@
 [Ruin]
 tileset = "ruin"
 levels = 3
-enemies = ["ruin.mechanic", "ruin.security"]
-treasure = [{id = "flute", chance = 0.25}]
+enemies = ["ruin.mechanic", "ruin.security", "ruin.dog", "ruin.turret"]
+treasure = []
 narration = """
 {portrait:static}...
 ...Hello?...

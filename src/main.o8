@@ -1,60 +1,25 @@
 
-: text-test-data 0 0 0
-: next-line v1 := 24 v2 += 7 ;
 : main
-  hires
-  plane 3
-
   # initialize stuff here
 
-  # load initial gamestate, which determines active systems, keymap, and ?
+  # Load splash state to begin game - loads keymap etc
+  v0 := STATE_SPLASH
+  state_switch
 
   audio_play_music  # Test of music
 
-  : next-screen
-
-   v1 := 24 v2 := 5 clear
-   i := text-test-data
-   save v0 - v2
-
-  v0 := SCREEN_dialog
-  screen_draw_screen
 : gameloop
   vF := 1
   delay := vF
-  i := text-test-data
-  load v0 - v2
-  : tryagain
-  v0 := random 3
-  plane 1
-  text_draw_word
-  v1 += 2
-  vF := 106
-  vF -= v1
-  if vF == 0 then next-line
-  vF := 57
-  vF -= v2
 
-  if vF == 0 then jump next-screen
-  i := text-test-data
-  save v0 - v2
-  # Process real time systems
+  # These are done ONCE per frame
   audio_handler
   input_handler
 
-  plane 3
-  clear
-  draw-tiles
-  v0 := 9 if v0 key then compo-scroll-right
-  v0 := 7 if v0 key then compo-scroll-left
-  v0 := 5 if v0 key then compo-scroll-up
-  v0 := 8 if v0 key then compo-scroll-down
-
   # Process other systems until we run out of frame time
 : systemloop
-  #do_movement
-  #do_display
-  composite-tiles
+
+: gameloop_call_state_loop 0x00 0x00  # This calls the state specific gameloop function, to be replaced by state data
 
   vF := delay
   if vF != 0 then jump systemloop

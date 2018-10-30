@@ -1,30 +1,50 @@
 :calc INPUT_TABLE_END { 0xFF }
 
+:macro input_table_set hi-reg lo-reg { i := input_table_addr save hi-reg - lo-reg }
+
 
 : input_state 0
 : input_handler
-  return
   i := input_state
+  load vF - vF
+  if vF == 0xFF then jump input_handler_debounce
   v0 := 0
   save v0 - v0
 : input_handler_loop
-  i := long input_table # <-- to be modified to point to the current state's input table
+  0xF0 0x00 : input_table_addr 0x00 0x00  #i := long input_table # <-- to be modified to point to the current state's input table
   i += v0
   load v2     # Load = v0v1 = address of tetra code; v2 = key
   if v2 == INPUT_TABLE_END then return
 
-  if v2 key then :breakpoint keyv2 #tetra_exec_v0v1
+  if v2 -key then jump input_handler_no_match
 
+
+  i := input_handler_jump_keyfunc
+  vF := 0x10
+  v0 |= vF
+  save v0 - v1
+
+  i := input_state
+  vF := 0xFF
+  save vF - vF
+
+  : input_handler_jump_keyfunc 0x00 0x00  # replaced with a call by preceding code
+
+: input_handler_no_match
   i := input_state
   load v0 - v0
   v0 += 3
   save v0 - v0
   jump input_handler_loop
 
-
-: T4_PLAYER_LEFT
-: T4_PLAYER_RIGHT
-: T4_PLAYER_UP
-: T4_PLAYER_DOWN
-: T4_PLAY_MUSIC
-: T4_STOP_MUSIC
+# When a key is used, all keys must be released before a key can be pressed again
+: input_handler_debounce
+  v0 := 0
+: input_handler_debounce_loop
+  if v0 key then return
+  v0 += 1
+  if v0 != 16 then jump input_handler_debounce_loop
+  i := input_state
+  v0 := 0
+  save v0 - v0
+  ;

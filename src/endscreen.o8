@@ -1,0 +1,10 @@
+: ending_display
+  clear
+  v0 := 5 v1 := 0 v2 := 0
+  text_draw_word
+  ;
+
+: ending_next_state
+  v0 := STATE_TITLE
+  state_switch
+  ;

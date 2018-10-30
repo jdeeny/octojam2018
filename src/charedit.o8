@@ -1,0 +1,39 @@
+: charedit_next_item
+  ;
+
+: charedit_prev_item
+  ;
+
+: charedit_inc
+  ;
+
+: charedit_dec
+  ;
+
+: charedit_do
+  # if left/right, switch edit location
+  # if up/down, change letter
+  # if ok, finish
+  ;
+
+: charedit_display
+  v9 := 0
+: charedit_display_loop
+  i := long charedit_data
+  i += v9
+  load v0
+
+  v1 := 30
+  v2 <<= v9
+  v2 <<= v2
+  v2 <<= v2
+  v1 += v2
+  v2 := 10
+  text_draw_glyph
+  v9 += 1
+  if v9 != 8 then jump charedit_display_loop
+  ;
+
+: charedit_next_state
+  v0 := STATE_ENDING state_switch
+  ;
