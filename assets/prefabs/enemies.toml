@@ -1,26 +1,58 @@
 [ruin.mechanic]
 art = "enemy1"
 hp = 3
-agi = 3
-ac = 0
+ac = 1
+ammo = 2
+reload = 1
 ai = "melee_smart"
+move = 2
+treasure = [{id = "flute", chance = 0.25}]
 attacks = [ 
     {dmg = 2, hit = "smashes you with a wrench", miss = "swings a wrench past you"}, 
-    {range = 3, acc = 0.75, hit = "throws a wrench at you", miss = "misses you with a thrown wrench"}, 
+    {cost = 1, range = 3, acc = 0.75, hit = "throws a wrench at you", miss = "misses you with a thrown wrench"}, 
     {range = 255, chance = 0.1, acc = 0.01, hit = "fizzles and sparks. Its pitiful state hits your ego", miss = "fizzles and sparks"} ]
+desc = "Robots that fix other robots... Maybe the people who built them are gone because they weren't needed anymore?"
 # If not specified, default values are:
 # range = 1
 # acc = 1.0
 # dmg = 1
-desc = "Robots that fix other robots... Maybe the people who built them are gone because they weren't needed anymore?"
+# ammo = 1
+# cost = 0
+# reload = 1 (this is "time it takes to reload")
+# move = 1 (tile range for moving)
 
 [ruin.security]
 art = "enemy2"
 hp = 5
-agi = 1
-ac = 1
+ac = 2
 ai = "melee_smart"
+move = 2
 attacks = [ 
     {dmg = 2, acc = 0.9, hit = "jabs you with a baton", miss = "fumbles a baton"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "Who did they build these to deter? I don't think they planned for us to go digging up their stuff."
+
+[ruin.dog]
+art = "enemy11"
+hp = 2
+ac = 0
+ai = "melee"
+move = 3
+treasure = [{id = "dog", chance = 0.25}]
+attacks = [
+    {hit = "shocks you while playing a synthesized bark", miss = "tries to shock you"}
+]
+desc = "If you find a deactivated one, make sure to take it with you; we really need a pet."
+
+[ruin.turret]
+art = "enemy10"
+hp = 1
+ac = 1
+ammo = 10
+reload = 2
+move = 1
+ai = "turret"
+attacks = [
+    {range = 5, cost = 2, hit = "hisses and shoots you", miss = "hisses, and a bullet whirrs past you"}
+]
+desc = "The hissing sound comes from pressure releasing in their airguns. It seems bullets can be recycled pretty easily if they're just chunks of metal."
