@@ -38,7 +38,8 @@
 	tiley += ve
 	#offset based on the skewed coordinate system
 	tilex -= tiley
-	#if vf == 0 then :breakpoint underflow tilex += tiley
+	vf := 1 if vf key then :breakpoint composite v0 += 0
+
 	tilex >>= tilex
 	#now our humble tilex and tiley are hexx and hexy
 
@@ -158,8 +159,7 @@
 		x += 7
 		if x == 133 then x := 0
 		if rowcount != 19 then jump frame-loop
-			v6 := 3 if v6 key then :breakpoint draw
-		v0 += 0
+			vf := 3 if vf key then :breakpoint draw v0 += 0
 			if colcount == 10 then return
 			rowcount := 0
 			colcount += 1
@@ -211,6 +211,7 @@
 : compo-scroll-right
 	i := long wrap-around-counters
 	load xwrapsub - yoff
+	#hit right side TODO: more exact
 	:calc xwrapx5 { X_WRAP * 5 }
 	if xwrap == xwrapx5 then return
 
@@ -232,6 +233,7 @@
 : compo-scroll-left
 	i := long wrap-around-counters
 	load xwrapsub - yoff
+	#hit left side TODO: more exact
 	:calc xwrapx2 { X_WRAP * 2 }
 	if xwrap == xwrapx2 then return
 
@@ -273,14 +275,18 @@
 : compo-scroll-down
 	i := long wrap-around-counters
 	load xwrapsub - yoff
-#	:breakpoint scroll
-	:calc ywrapx3 { Y_WRAP * 3 }
-	if ywrap == ywrapx3 then return
+	
+	vf := 2 if vf key then :breakpoint scroll v0 += 0
+	#hit bottom
+	if ywrap == Y_WRAP begin
+		if ywrapsub == 10 then
+			return
+	end
 
 	dirty-top-edge
 
 	yoff += -6
-	if yoff == -6 then yoff := 66
+	if yoff == -6 then yoff := 60
 
 	ywrapsub += 1
 
@@ -297,11 +303,12 @@
 	load xwrapsub - yoff
 
 	yoff += 6
-	if yoff == 72 then yoff := 0
+	if yoff == 66 then yoff := 0
 
 	ywrapsub += -1
 
 	if ywrapsub == -1 begin
+		#hit top
 		if ywrap == 0  then return
 		ywrap += NEG_Y_WRAP
 		:calc ywrapless1 { Y_WRAP - 1 }
@@ -309,7 +316,7 @@
 	end
 
 	save xwrapsub - yoff
-#	dirty-top-edge
+	dirty-top-edge
 ;
 : dirty-top-edge
 	i :=  long dirty-tiles
