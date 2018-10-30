@@ -18,6 +18,8 @@
 :const SEG_FRAMEBUFFER 0xC400
 :const SEG_HEX_CONTENTS_UPPER 0xD0
 :const SEG_HEX_CONTENTS 0xD000
+#what you add to x to get from
+#tile to entity
 :const HEX_CONTENTS_OFFSET 2
 
 
@@ -29,10 +31,22 @@
 :macro HEX_DOWN_RIGHT hexx hexy {
   hexy += 1
 }
-
 :macro HEX_DOWN_LEFT hexx hexy {
   hexy += 1
   hexx += -4
+}
+:macro HEX_RIGHT hexx hexy {
+  hexx += 4
+}
+:macro HEX_LEFT hexx hexy {
+  hexx += -4
+}
+:macro HEX_UP_RIGHT hexx hexy {
+  hexy += -1
+  hexx += 4
+}
+:macro HEX_UP_LEFT hexx hexy {
+  hexy += -1
 }
 
 :macro 8x m {

@@ -5,6 +5,11 @@
 	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
 	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
 
+: emtpy-graphic
+	0x00 0x00 0x00 0x00 0x00 0x00 
+	0x00 0x00 0x00 0x00 0x00 0x00 
+	0x00 0x00 0x00 0x00 0x00 0x00 
+	0x00 0x00 0x00 0x00 0x00 0x00 
 
 :org SEG_FRAMEBUFFER
 : frame-buffer #(256*11) bytes
@@ -47,19 +52,22 @@
 : hex-contents
 #dummy data
 :macro hex-entry {
-	tobytes tile-graphic
-	tobytes SPR_enemy2
-	tobytes tile-graphic
-	tobytes SPR_enemy2
+	tobytes emtpy-graphic
+	tobytes 0x0000
+	tobytes emtpy-graphic
+	tobytes 0x0000
 }
 :macro hex-entry2 {
-	tobytes tile-graphic
+
+	tobytes emtpy-graphic
 	tobytes 0x0000
-	tobytes tile-graphic
+	tobytes emtpy-graphic
 	tobytes 0x0000
 }
 
-32x hex-entry 32x hex-entry2 
+
+
+32x hex-entry2 32x hex-entry2 
 32x hex-entry 32x hex-entry2 
 32x hex-entry 32x hex-entry2 
 32x hex-entry 32x hex-entry2 

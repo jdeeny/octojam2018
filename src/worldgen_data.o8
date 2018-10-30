@@ -1,0 +1,20 @@
+ORG_BACKFILL 64
+
+:macro _ { :byte 0 }
+:macro + { :byte 1 }
+: rooms
+: room1 #(64 bytes)
+_ _ + _ _ + _ _
+ _ + + _ + _ _ +
++ + _ + + _ _ +
+ + + + _ _ _ + +
++ + + + + + + _
+ _ + + + + + _ _
+_ + + + + + _ _
+ _ + + _ + + _ _
+
+ORG_BACKFILL 7
+: worldgen-state
+60 -8 0 0
+tobytes tile-graphic
+5

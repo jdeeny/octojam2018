@@ -1,10 +1,18 @@
 : gameplay_begin
+
+place-room
+place-room
+place-room
+place-room
+place-room
+
   clear
   hires
   plane 3
   ;
 
 : gameplay_once
+
   clear
   draw-tiles
   ;

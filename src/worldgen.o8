@@ -1,0 +1,49 @@
+#v0 = worldx
+#v1 = worldy
+:alias roomcounter v2
+:alias roomindex v3
+#v4-v5 = pointer to floor tile
+#v6 how many rooms we have placed in this row
+: place-room
+	i := long worldgen-state
+	load v0 - v6
+	#prepare state for next room
+	if v6 == 5 begin
+		v6 := 0
+		y += 10
+		x += 56 #todo: correct value
+	end
+	v6 += 1
+	x += 40
+
+	if y == 32 then #we finished
+	; #TODO: cleanup + transition
+
+	save v6
+
+	y += SEG_HEX_CONTENTS_UPPER
+
+	loop
+		#TODO: load random room here
+		i := long room1
+		i += roomindex
+		load v7 - v7
+		if v7 == 1 begin
+			set-i-reg y x
+			save v4 - v5
+		end
+		HEX_RIGHT x y
+		roomindex += 1
+		roomcounter += 1
+		if roomcounter == 8 begin
+			y += 1
+			x += -32 #8 tiles to the left
+		end
+		if roomcounter == 16 begin
+			roomcounter := 0
+			y += 1
+			x += -36 #9 tiles left
+		end
+	if roomindex != 64 then again
+
+;
