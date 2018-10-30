@@ -5,18 +5,24 @@
 
 : input_state 0
 : input_handler
-  return
   i := input_state
   v0 := 0
   save v0 - v0
 : input_handler_loop
-  0xFF 0x00 : input_table_addr 0x00 0x00  #i := long input_table # <-- to be modified to point to the current state's input table
+  0xF0 0x00 : input_table_addr 0x00 0x00  #i := long input_table # <-- to be modified to point to the current state's input table
   i += v0
   load v2     # Load = v0v1 = address of tetra code; v2 = key
   if v2 == INPUT_TABLE_END then return
 
-  if v2 key then :breakpoint keyv2 #tetra_exec_v0v1
+  if v2 -key then jump input_handler_no_match
 
+  i := input_handler_call_keyfunc
+  vF := 0x20
+  v0 |= vF
+  save v0 - v1
+  : input_handler_call_keyfunc 0x00 0x00  # replaced with a call by preceding code
+
+: input_handler_no_match
   i := input_state
   load v0 - v0
   v0 += 3

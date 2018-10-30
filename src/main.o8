@@ -16,9 +16,9 @@
   audio_handler
   input_handler
 
-
   # Process other systems until we run out of frame time
 : systemloop
+
 : gameloop_call_state_loop 0x00 0x00  # This calls the state specific gameloop function, to be replaced by state data
 
   vF := delay

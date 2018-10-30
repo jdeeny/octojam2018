@@ -34,3 +34,8 @@
   v1 := 13
   sprite v0 v1 8
   ;
+
+: splash_next_state
+  hires
+  v0 := STATE_TITLE state_switch
+  ;
