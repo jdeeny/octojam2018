@@ -5,6 +5,13 @@
 #v4-v5 = pointer to floor tile
 #v6 how many rooms we have placed in this row
 : place-room
+	i := long rooms
+	v0 := random 3
+	v0 <<= v0
+	i += v0
+	load v1
+	i := gen-room-pointer save v1
+
 	i := long worldgen-state
 	load v0 - v6
 
@@ -12,7 +19,7 @@
 
 	loop
 		#TODO: load random room here
-		i := long room1
+		0XF0 0x00 : gen-room-pointer 0x00 0x00
 		i += roomindex
 		load v7 - v7
 		if v7 == 1 begin
@@ -29,20 +36,45 @@
 		if roomcounter == 16 begin
 			roomcounter := 0
 			y += 1
-			x += -36 #9 tiles left
+			x += -36 #9 tiles to the left
 		end
-	if roomindex != 64 then again
+	if roomindex != 72 then again
+
+
+	if v6 == 5 begin
+		if y == 0xEF then jump room-cleanup
+		jump room-choose-down
+	end
+	if y == 0xEF then
+		jump room-choose-right
+
+	v7 := random 1
+
+	if v7 == 1 then
+		jump room-choose-down
+
+	: room-choose-right
+		y += -5
+		x += 40
+	jump room-write
+	: room-choose-down
+		x += 8
+	: room-write
+	set-i-reg y x
+	save v4 - v5
+
+	: room-cleanup
+	#prepare state for next room
+
 	i := long worldgen-state
 	load v0 - v6
 
-	#prepare state for next room
-
 	v6 += 1
-	if v6 == 5 begin
+	if v6 == 6 begin
 		v6 := 0
 		y += 10
-		x += 36
+		x += 20
 	end
-	x += 40
+	x += 36
 	i := long worldgen-state save v6
 ;
