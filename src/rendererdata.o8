@@ -1,5 +1,5 @@
+#dummy data
  : tile-graphic
-
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
 	0x00 0xF8 0xFC 0xFC 0xFE 0xF0
@@ -8,6 +8,7 @@
 
 :org SEG_FRAMEBUFFER
 : frame-buffer #(256*11) bytes
+#dummy data
 :macro image {
 
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E 
@@ -44,6 +45,7 @@
 8x image image image
 :org SEG_HEX_CONTENTS #256*32 bytes
 : hex-contents
+#dummy data
 :macro hex-entry {
 	tobytes tile-graphic
 	tobytes 0x0000
@@ -68,9 +70,9 @@ ORG_BACKFILL 257
 : dirty-tiles
 0 #stack size
 
-ORG_BACKFILL 10
+ORG_BACKFILL 14
 
-#these next two labels go together (10 bytes)
+#these next two labels go together (14 bytes)
 
 #counters governing what the state of the screen wrap is
 : wrap-around-counters 
@@ -84,6 +86,7 @@ ORG_BACKFILL 10
 0 #x offset
 0 #y offset
 0 0 12 28 #fixed initial values for screen drawing procedure
+x := 0 x += 7 #more fixed values
 
 ORG_BACKFILL 32
 ORG_BACKFILL 128
@@ -103,3 +106,21 @@ ORG_BACKFILL 128
 :calc index { 0 } 
 : mod19 #128 bytes
 128x m19
+
+ORG_BACKFILL 133
+:calc nextentry { 112 }
+:macro loop-unroll-table-entry {
+	:byte nextentry
+	0x00 0x00 0x00
+	0x00 0x00 0x00
+	:calc nextentry {
+		nextentry - 6
+	}
+}
+: get-loop-wrap-point
+	loop-unroll-table-entry
+	8x loop-unroll-table-entry
+	8x loop-unroll-table-entry
+	loop-unroll-table-entry
+	:byte nextentry
+	

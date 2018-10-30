@@ -15,7 +15,7 @@
 	if v0 == 0 then return #no tiles to update
 	v0 += -2 save v0
 	i += v0 load tilex - tiley
-
+: composite-direct
 	#prep pointer to framebuffer, since we're about to destroy our tile coords
 	#ve := tilex*12
 	vd <<= tilex
@@ -143,30 +143,43 @@
 :alias colcount v3
 :alias tilewidth v4
 :alias rowoffset v5
-
+#v6 v7 v8 v9 - loaded instructions
+#for injection into unrolled loop
 #copies frame buffer onto screen
 : draw-tiles
   	plane 3
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
-	i := long screen-offset load x - rowoffset
+	i := long screen-offset load x - v9
+	i := long get-loop-wrap-point i += x
+	load vf - vf
+	i := frame-loop i += vf
+	save v6 - v7
 	i := long frame-buffer
 	: frame-loop
 	loop
-		sprite x y 6
-		rowcount += 1
-		i += tilewidth
-		x += 7
-		if x == 133 then x := 0
-		if rowcount != 19 then jump frame-loop
-			vf := 3 if vf key then :breakpoint draw v0 += 0
-			if colcount == 10 then return
-			rowcount := 0
-			colcount += 1
-		 	y += 6
-			if y == 66 then y := 0
-			i += rowoffset
-		again
+		:macro loopunrolled	{ 
+			sprite x y 6 
+			i += tilewidth 
+			x += 7 
+		}
+		8x loopunrolled 8x loopunrolled
+		loopunrolled 
+		loopunrolled
+		loopunrolled
+		vf := 3 if vf key then :breakpoint draw v0 += 0
+		if colcount == 10 then jump draw-tiles-cleanup
+		colcount += 1
+		y += 6
+		if y == 66 then y := 0
+		i += rowoffset
+	again
+	: draw-tiles-cleanup
+	i := long get-loop-wrap-point i += x
+	load vf - vf
+	i := frame-loop i += vf
+	vf := 7 save v8 - v9
+;
 #end draw-tiles
 
 :alias hexx v0
@@ -346,5 +359,9 @@
 	v0 += 1 save v1
 	v0 += 1 save v1
 	v0 += 1 save v1
+;
 
+: recompose-storage
+0 0
+: recompose-whole-screen #TODO
 ;
