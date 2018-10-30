@@ -22,18 +22,18 @@ input_table_end
   input_table_end
 
 
-:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY {
+:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY LOOP_FUNC {
         #:calc NAME { entry_count } :calc entry_count { entry_count + 1 }
         tobytes INPUT_TABLE_ADDR
         tobytes ON_ENTRY
+        tobytes LOOP_FUNC
       }
-: state_table
-                #   name of the state,  input_table ptr,        on-entry func,
-  state_table_entry STATE_SPLASH        input_table_empty      splash_display
-  state_table_entry STATE_TITLE         input_table_empty       titlescreen_display
-  state_table_entry STATE_CHAREDIT      input_table_charedit    nop_func
-  state_table_entry STATE_GAMEPLAY      input_table_empty    nop_func
-  state_table_entry STATE_PLAYERINFO    input_table_empty      nop_func
-  state_table_entry STATE_ENDING        input_table_empty      nop_func
 
-  
+: state_table
+                #   name of the state,  input_table ptr,        on-entry func,          loop func,
+  state_table_entry STATE_SPLASH        input_table_empty       splash_display          nop_func
+  state_table_entry STATE_TITLE         input_table_empty       titlescreen_display     nop_func
+  state_table_entry STATE_CHAREDIT      input_table_charedit    nop_func                nop_func
+  state_table_entry STATE_GAMEPLAY      input_table_empty       nop_func                nop_func
+  state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func
+  state_table_entry STATE_ENDING        input_table_empty       nop_func                nop_func
