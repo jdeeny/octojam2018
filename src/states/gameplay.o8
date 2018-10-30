@@ -1,19 +1,16 @@
 : gameplay_begin
   clear
+  hires
+  plane 3
   ;
 
 : gameplay_once
   clear
+  draw-tiles
   ;
 
 : gameplay_loop
-  vF := random 15
-  if vF != 0 then return
-  v0 := random 127
-  v1 := random 63
-  i := long SPR_portrait_enemy10
-  plane 3
-  sprite v0 v1 0
+  composite-tiles
   ;
 
 : gameplay_next_state
