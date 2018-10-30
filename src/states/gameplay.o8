@@ -1,0 +1,22 @@
+: gameplay_begin
+  clear
+  ;
+
+: gameplay_once
+  clear
+  ;
+
+: gameplay_loop
+  vF := random 15
+  if vF != 0 then return
+  v0 := random 127
+  v1 := random 63
+  i := long SPR_portrait_enemy10
+  plane 3
+  sprite v0 v1 0
+  ;
+
+: gameplay_next_state
+  v0 := STATE_ENDING
+  state_switch
+  ;

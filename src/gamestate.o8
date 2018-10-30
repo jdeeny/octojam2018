@@ -5,10 +5,10 @@
 : state_switch
   i := long state_table
   v0 <<= v0
-  i += v0
   v0 <<= v0
-  i += v0 # index into table, 6bytes per entry
-  load v0 - v5 # v01 = input table, v23 = on-entry, v45 = loop
+  v0 <<= v0
+  i += v0 # index into table, 8bytes per entry
+  load v0 - v7 # v01 = input table, v23 = on-entry, v45 = loop, v67 = once
 
 #  input_table_set v0 v1
   i := input_table_addr
@@ -26,6 +26,13 @@
   v2 |= vF  # create a call instruction
   i := gameloop_call_state_loop
   save v2 - v3
+
+  v2 := v6 v3 := v7
+  vF := 0x20
+  v2 |= vF  # create a call instruction
+  i := gameloop_call_state_once
+  save v2 - v3
+
 
   : state_switch_call_on_entry  0x00 0x00 # overwritten by the code immediately before
   ;
