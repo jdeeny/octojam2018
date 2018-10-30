@@ -48,16 +48,36 @@
 #dummy data
 :macro hex-entry {
 	tobytes tile-graphic
-	tobytes 0x0000
+	tobytes SPR_enemy2
 	tobytes tile-graphic
 	tobytes SPR_enemy2
 }
+:macro hex-entry2 {
+	tobytes tile-graphic
+	tobytes 0x0000
+	tobytes tile-graphic
+	tobytes 0x0000
+}
 
-128x hex-entry 128x hex-entry #128x hex-entry 128x hex-entry 
-128x hex-entry 128x hex-entry #128x hex-entry 128x hex-entry 
-128x hex-entry 128x hex-entry #128x hex-entry 128x hex-entry 
-128x hex-entry 128x hex-entry #128x hex-entry 128x hex-entry 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
+32x hex-entry 32x hex-entry2 
 #random bits for renderer
 :calc orgptr { SEG_FRAMEBUFFER }
 :macro ORG_BACKFILL n {

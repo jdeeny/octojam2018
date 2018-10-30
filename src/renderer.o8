@@ -38,6 +38,7 @@
 	tiley += ve
 	#offset based on the skewed coordinate system
 	tilex -= tiley
+	if vf == 0 then :breakpoint underflow v0 += 0
 	vf := 1 if vf key then :breakpoint composite v0 += 0
 
 	tilex >>= tilex
@@ -225,11 +226,14 @@
 	i := long wrap-around-counters
 	load xwrapsub - yoff
 	#hit right side TODO: more exact
-	:calc xwrapx5 { X_WRAP * 5 }
-	if xwrap == xwrapx5 then return
-
+	:calc xwrapx6 { X_WRAP * 6 }
+	if xwrap == xwrapx6 begin
+		if xwrapsub == 14 then
+			return
+	end
+	
 	dirty-left-edge
-
+	
 	xoff += -7
 	if xoff == -7 then xoff := 126
 
@@ -246,10 +250,11 @@
 : compo-scroll-left
 	i := long wrap-around-counters
 	load xwrapsub - yoff
-	#hit left side TODO: more exact
-	:calc xwrapx2 { X_WRAP * 2 }
-	if xwrap == xwrapx2 then return
-
+	#hit left side
+	if xwrap == X_WRAP begin 
+		if xwrapsub == 12 then
+			return
+	end
 	xoff += 7
 	if xoff == 133 then xoff := 0
 
@@ -322,7 +327,7 @@
 
 	if ywrapsub == -1 begin
 		#hit top
-		if ywrap == 0  then return
+		if ywrap == 0 then return
 		ywrap += NEG_Y_WRAP
 		:calc ywrapless1 { Y_WRAP - 1 }
 		ywrapsub := ywrapless1
