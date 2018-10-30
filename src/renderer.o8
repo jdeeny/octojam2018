@@ -145,8 +145,6 @@
 
 #copies frame buffer onto screen
 : draw-tiles
-	v0 := 3 if v0 key then :breakpoint draw
-		v0 += 0
   	plane 3
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
@@ -160,7 +158,9 @@
 		x += 7
 		if x == 133 then x := 0
 		if rowcount != 19 then jump frame-loop
-			if colcount == 11 then return
+			v6 := 3 if v6 key then :breakpoint draw
+		v0 += 0
+			if colcount == 10 then return
 			rowcount := 0
 			colcount += 1
 		 	y += 6
@@ -269,4 +269,75 @@
 	v1 += 1 save v1
 	v1 += 1 save v1
 	v1 += 1 save v1
+;
+: compo-scroll-down
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+#	:breakpoint scroll
+	:calc ywrapx3 { Y_WRAP * 3 }
+	if ywrap == ywrapx3 then return
+
+	dirty-top-edge
+
+	yoff += -6
+	if yoff == -6 then yoff := 66
+
+	ywrapsub += 1
+
+	if ywrapsub == Y_WRAP begin
+		ywrap += Y_WRAP
+		ywrapsub := 0
+	end
+
+	i := long wrap-around-counters
+	save xwrapsub - yoff
+;
+: compo-scroll-up
+	i := long wrap-around-counters
+	load xwrapsub - yoff
+
+	yoff += 6
+	if yoff == 72 then yoff := 0
+
+	ywrapsub += -1
+
+	if ywrapsub == -1 begin
+		if ywrap == 0  then return
+		ywrap += NEG_Y_WRAP
+		:calc ywrapless1 { Y_WRAP - 1 }
+		ywrapsub := ywrapless1
+	end
+
+	save xwrapsub - yoff
+#	dirty-top-edge
+;
+: dirty-top-edge
+	i :=  long dirty-tiles
+	load v0 - v0
+	v1 := 215 v1 -= v0
+	if vf == 0 then :breakpoint overflow v0 += 0
+	v0 += 38 save v0 - v0
+	v0 += -37
+	i += v0
+	v1 := ywrapsub
+	v0 := 0 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+	v0 += 1 save v1
+
 ;

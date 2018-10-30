@@ -22,25 +22,25 @@
 #	0x00 0x00 0x00 0x00 0x00 0x00 
 #	0x00 0x00 0x00 0x00 0x00 0x00 
 8x image image image
-:org 0xD4F4
+:org 0xC4F4
 8x image image image
-:org 0XD600
+:org 0XC600
 8x image image image
-:org 0xD6F4
+:org 0xC6F4
 8x image image image
-:org 0XD800
+:org 0XC800
 8x image image image
-:org 0xD8F4
+:org 0xC8F4
 8x image image image
-:org 0XDA00
+:org 0XCA00
 8x image image image
-:org 0xDAF4
+:org 0xCAF4
 8x image image image
-:org 0XDC00
+:org 0XCC00
 8x image image image
-:org 0xDCF4
+:org 0xCCF4
 8x image image image
-:org 0XDE00
+:org 0XCE00
 8x image image image
 :org SEG_HEX_CONTENTS #256*32 bytes
 : hex-contents
