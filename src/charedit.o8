@@ -6,7 +6,7 @@
 
 : charedit_inc
   ;
-  
+
 : charedit_dec
   ;
 
@@ -22,7 +22,7 @@
   i := long charedit_data
   i += v9
   load v0
-  :breakpoint v0=char
+
   v1 := 30
   v2 <<= v9
   v2 <<= v2
@@ -32,4 +32,8 @@
   text_draw_glyph
   v9 += 1
   if v9 != 8 then jump charedit_display_loop
+  ;
+
+: charedit_next_state
+  v0 := STATE_ENDING state_switch
   ;

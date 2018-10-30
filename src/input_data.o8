@@ -20,14 +20,22 @@ input_table_end
   input_table_all_keys splash_next_state
   input_table_end
 
+: input_table_title
+  input_table_all_keys title_next_state
+  input_table_end
 
 : input_table_charedit
-  input_table_entry   charedit_next_item  OCTO_KEY_D
-  input_table_entry   charedit_prev_item  OCTO_KEY_A
-  input_table_entry   charedit_inc        OCTO_KEY_W
-  input_table_entry   charedit_dec        OCTO_KEY_S
-  #input_table_entry   charedit_finish     OCTO_KEY_R
+  input_table_entry   charedit_next_item      OCTO_KEY_D
+  input_table_entry   charedit_prev_item      OCTO_KEY_A
+  input_table_entry   charedit_inc            OCTO_KEY_W
+  input_table_entry   charedit_dec            OCTO_KEY_S
+  input_table_entry   charedit_next_state     OCTO_KEY_R
   input_table_end
+
+: input_table_ending
+  input_table_all_keys ending_next_state
+  input_table_end
+
 
 : input_table_empty
   input_table_end
@@ -42,9 +50,9 @@ input_table_end
 
 : state_table
                 #   name of the state,  input_table ptr,        on-entry func,          loop func,
-  state_table_entry STATE_SPLASH        input_table_splash       splash_display          nop_func
-  state_table_entry STATE_TITLE         input_table_empty       titlescreen_display     nop_func
-  state_table_entry STATE_CHAREDIT      input_table_charedit    nop_func                nop_func
+  state_table_entry STATE_SPLASH        input_table_splash      splash_display          nop_func
+  state_table_entry STATE_TITLE         input_table_title       title_display           nop_func
+  state_table_entry STATE_CHAREDIT      input_table_charedit    charedit_display        nop_func
   state_table_entry STATE_GAMEPLAY      input_table_empty       nop_func                nop_func
   state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func
-  state_table_entry STATE_ENDING        input_table_empty       nop_func                nop_func
+  state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func
