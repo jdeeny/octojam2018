@@ -5,3 +5,4 @@ authors = ["jdeeny <jdeeny@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+toml = "0.4.8"
