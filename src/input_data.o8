@@ -33,7 +33,10 @@ input_table_end
   input_table_end
 
 : input_table_gameplay
-  input_table_all_keys gameplay_next_state
+input_table_entry     compo-scroll-right      OCTO_KEY_D
+input_table_entry     compo-scroll-left       OCTO_KEY_A
+input_table_entry     compo-scroll-up         OCTO_KEY_W
+input_table_entry     compo-scroll-down       OCTO_KEY_S
   input_table_end
 
 
