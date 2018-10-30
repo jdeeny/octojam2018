@@ -7,19 +7,6 @@
 : place-room
 	i := long worldgen-state
 	load v0 - v6
-	#prepare state for next room
-	if v6 == 5 begin
-		v6 := 0
-		y += 10
-		x += 56 #todo: correct value
-	end
-	v6 += 1
-	x += 40
-
-	if y == 32 then #we finished
-	; #TODO: cleanup + transition
-
-	save v6
 
 	y += SEG_HEX_CONTENTS_UPPER
 
@@ -45,5 +32,17 @@
 			x += -36 #9 tiles left
 		end
 	if roomindex != 64 then again
+	i := long worldgen-state
+	load v0 - v6
 
+	#prepare state for next room
+
+	v6 += 1
+	if v6 == 5 begin
+		v6 := 0
+		y += 10
+		x += 36
+	end
+	x += 40
+	i := long worldgen-state save v6
 ;
