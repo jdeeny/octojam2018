@@ -1,2 +1,2 @@
-: SWORD_SLASH "slashes"
-: MISS "misses"
+: string_Title "The Game Title"
+: string_Start "Start"

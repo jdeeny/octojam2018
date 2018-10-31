@@ -1,10 +1,10 @@
-[weapon.spiderpincer]
-Type: melee
-Damage: 1-3
-AttackDescription: [ "pincer", "mandible" ]
+[weapon-spiderpincer]
+Type = "melee"
+Damage = "1-3"
+AttackDescription = [ "pincer", "mandible" ]
 
-[weapon.fist]
-Type: melee
-Damage: 1-3
-AttackVerb: [ "fist", "knuckles"]
-AttackNoun: [ "punches", "?"]
+[weapon-fist]
+Type = "melee"
+Damage = "1-3"
+AttackVerb = [ "fist", "knuckles"]
+AttackNoun = [ "punches", "?"]

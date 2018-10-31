@@ -10,11 +10,11 @@ art = "enemy11"
 passive = [{id = "bonus_dmg", chance = 0.25, amt = 1, hit = "Your dog shocks the enemy."}]
 desc = "Their name is Octo and they are my friend. Don't come back if you lose them."
 
-[pillar]
-name = "???"
-art = "???"
+[antishovel]
+name = "Anti-Shovel"
+art = "antishovel"
 active = [ {id = "cover", cooldown = 2} ]
-desc = "summons a pillar of rock or something as cover; haven't thought of a story reason for this"
+desc = "What is this even for? Why would you ever need to summon a cubic meter of dirt?"
 
 [overclock]
 name = "Overclock"
@@ -27,3 +27,52 @@ name = "Jar of Crickets"
 art = "crickets"
 active = [ {id = "absorb", amt = 1, cooldown = 2} ]
 desc = "Instead of janitors, they must've used swarms of tiny robots."
+
+[rocket_shoes]
+name = "Rocket Shoes"
+art = "rocket_shoes"
+passive = [ {id = "mod_move", amt = 1} ]
+desc = "I don't think shoes with pressurized air tanks taped on really count as treasure."
+
+[nano_blood]
+name = "Artificial Blood Cells"
+art = "nano_blood"
+passive = [ {id = "mod_hp", amt = 2} ]
+desc = "For those who weren't brave enough to become fully robotic, but who still wanted some of the benefits, replacement blood was made. Seems a little uncomfortable, though..."
+
+[exoskeleton]
+name = "Exoskeleton"
+art = "exoskeleton"
+passive = [ {id = "mod_str", amt = 1} ]
+desc = "For some reason, these were designed so that you could put two together to make a stronger one."
+
+[magnet_shield]
+name = "Magnet Shield"
+art = "magnet_shield"
+passive = [ {id = "mod_ac", amt = 1} ]
+desc = "Creates a strong magnetic field that repels metal. It probably won't hurt you."
+
+[void_pants]
+name = "Void Pants"
+art = "void_pants"
+passive = [ {id = "mod_clip", amt = 2} ]
+desc = "Using space-bending technology, these pants have deeper pockets than would normally be possible. Somehow, this makes you have to reload less."
+
+[tarski_field]
+name = "Banach-Tarski Field"
+art = "tarski_field"
+passive = [ {id = "mod_reload", amt = -1} ]
+desc = "Apparently, it's possible to duplicate matter, and the people who invented this technology used it to make more bullets. Maybe this is why they aren't around anymore."
+
+[accelerator]
+name = "Bullet Accelerator"
+art = "accelerator"
+passive = [ {id = "mod_breech", amt = 1} ]
+desc = "Doesn't this kinda remind you of the accelerators you put on toy car tracks...?"
+
+[enlargener]
+name = "Bullet Resizer"
+art = "enlargener"
+passive = [ {id = "mod_dmg", amt = 1} ]
+desc = "I feel like they focused too much on bullet-related technology. Maybe it was just this facility...?"
+
