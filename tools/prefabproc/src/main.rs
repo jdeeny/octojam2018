@@ -9,9 +9,6 @@ extern crate serde_derive;
 
 
 #[derive(Debug, Deserialize)]
-struct AttackTable(BTreeMap<String, Attack>);
-
-#[derive(Debug, Deserialize)]
 struct Attack {
     range: Option<f64>,
     dmg: Option<f64>,
@@ -19,6 +16,45 @@ struct Attack {
     Miss: Option<String>,
 }
 
+#[derive(Debug, Deserialize)]
+struct Biome {
+    tileset: Option<String>,
+    levels: Option<usize>,
+    enemies: Option<Vec<String>>,
+    treasure: Option<Vec<String>>,
+    narration: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct Enemy {
+    art: Option<String>,
+    hp: Option<usize>,
+    ac: Option<usize>,
+    ammo: Option<usize>,
+    reload: Option<usize>,
+    ai: Option<String>,
+    speed: Option<usize>,
+    treasure: Option<Vec<Value>>,
+    attacks: Option<Vec<Value>>,
+    desc: Option<String>,
+}
+
+
+#[derive(Debug, Deserialize)]
+struct Treasure {
+    name: Option<String>,
+    art: Option<String>,
+    active: Option<Vec<Value>>,
+    desc: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct Weapon {
+    Type: Option<String>,
+    Damage: Option<String>,
+    AttackDescription: Option<Vec<String>>,
+
+}
 
 
 fn process_attacks(attacks: &Value, text_strings: &mut HashMap<String, String>) {
@@ -70,11 +106,38 @@ fn main() {
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
     let weapons_string = read_file("../../assets/prefabs/weapons.toml");
 
+    println!("\nAttacks:", );
     let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
-
     for atk in attacks {
-        println!("{:?}\n\n", atk);
+        println!("{:?}\n", atk);
     }
+
+    println!("\nBiomes:", );
+    let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
+    for b in biomes {
+        println!("{:?}\n", b);
+    }
+
+    println!("\nEnemies:", );
+    let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
+    for e in enemies {
+        println!("{:?}\n", e);
+    }
+
+    println!("\nTreasure:", );
+    let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
+    for t in treasure {
+        println!("{:?}\n", t);
+    }
+
+
+    let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
+    println!("\nWeapons:", );
+    for w in weapons {
+        println!("{:?}\n", w);
+    }
+
+
 /*
     let attacks = attacks_string.parse::<Value>().unwrap();
     let biomes = biomes_string.parse::<Value>().unwrap();
