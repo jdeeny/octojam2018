@@ -40,9 +40,10 @@ entity_offset ENTITY_AI 2
 : ecs_copy_entity
   i := long enemy_ruin-dog
   load v4 - vA
-  hilo entity_table_location
-  v2 := hi
-  v3 := lo
+
+  # Load address of table
+  i := long entity_table_address
+  load v2 - v3
   loop
     reg_set_i_v23
     load vC - vC

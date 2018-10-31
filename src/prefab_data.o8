@@ -7,3 +7,4 @@
 ### End Enemy Data ###
 
 
+: entity_table_address tobytes entity_table

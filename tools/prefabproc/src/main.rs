@@ -230,7 +230,7 @@ fn main() {
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
 
-
+    writeln!(data_dest, ": entity_table_address tobytes entity_table");
     println!("Strings:");
     for (k, v) in text_strings {
         print!("{} -> \"{}\"\n\n", k, v);
