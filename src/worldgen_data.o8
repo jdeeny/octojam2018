@@ -71,13 +71,32 @@ ORG_BACKFILL 7
 tobytes tile-graphic
 0
 
+ORG_BACKFILL entity_bytes
+: wall-l-dummy-entitiy
+:calc next { HERE + ENTITY_SPRITE }
+:org next
+tobytes SPR_wall_l
+
+ORG_BACKFILL entity_bytes
+: wall-r-dummy-entitiy
+:calc next { HERE + ENTITY_SPRITE }
+:org next
+tobytes SPR_wall_r
+
+ORG_BACKFILL entity_bytes 
+: wall-double-dummy-entitiy
+:calc next { HERE + ENTITY_SPRITE }
+:org next
+tobytes SPR_wall_double
+
+
 ORG_BACKFILL 11
 
 : wall-state
 0 
 :byte SEG_HEX_CONTENTS_UPPER
 tobytes emtpy-graphic
-tobytes SPR_wall_r
-tobytes SPR_wall_l
-tobytes SPR_wall_double
+tobytes wall-r-dummy-entitiy
+tobytes wall-l-dummy-entitiy
+tobytes wall-double-dummy-entitiy
 :byte HEX_CONTENTS_OFFSET

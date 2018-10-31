@@ -119,6 +119,10 @@
 	load vd - ve
 	if vd == 0 then return #empty hex
 	set-i-reg vd ve
+	vf := ENTITY_SPRITE
+	i += vf
+	load vd - ve
+	set-i-reg vd ve	
 	i += spritesegment
 
 	#mask
