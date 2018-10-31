@@ -17,8 +17,38 @@
 :org 0x2000
 : music
 : song_a
-note G-4 10 note E-4 20 note D-4 20 note C-4 10 note G-4 10
-note G-4 10 note G-4 10 note G-4 10 note E-4 20 note D-4 10 note C-4 10 note A-4 10
+
+note F-3 60 note C-4 20 note F-4 60 note D$3 20 note G$3 60
+note A$3 10 note B-3 10 note C-4 42 note A$3 60 note G$4 40
+note F-5 60 note A$4 20 note F-4 60 note A$3 40 note D$3 60
+note C-3 60 note C$3 60 note F$4 15 note C$3 20 note C-4 20
+note F-3 60 note C-4 20 note F-4 60 note D$3 20 note G$3 60
+note A$3 10 note B-3 10 note C-4 42 note A$3 60 note G$4 40
+note F-5 60 note A$4 20 note F-4 60 note A$3 40 note D$3 60
+note C-3 60 note C$3 60 note F$4 15 note C$3 20 note C-4 20
+
+: normal_music
+
+note G-4 10 note --- 10 note D-5 10 note --- 10 note C-5 10 note --- 30 
+note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10 
+note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30  
+note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30 
+note G-4 10 note --- 10 note F-5 10 note --- 10 note D-5 10 note --- 30 
+note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10 
+note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30  
+note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30 
+
+: danger_music
+
+note G-4 10 note F-3 4 note C-4 10 note G-3 4 note C$4 10 note F-3 4 note F-4 10 note C-3 4
+note A$4 10 note F-3 4 note C$5 10 note G-3 4 note C-5 10 note F-3 4 note G-4 10 note C-3 4
+note F-5 10 note F-3 4 note C$5 10 note G-3 4 note A$4 10 note F-3 4 note C$5 10 note C-3 4
+note G-4 10 note F-3 4 note F-4 10 note G-3 4 note C-5 10 note F-3 4 note G-4 10 note C-3 4
+note G-4 10 note F-3 4 note C-4 10 note G-3 4 note C$4 10 note F-3 4 note F-4 10 note C-3 4
+note A$4 10 note F-3 4 note C$5 10 note G-3 4 note C-5 10 note F-3 4 note G-4 10 note C-3 4
+note F-5 10 note F-3 4 note C$5 10 note G-3 4 note A$4 10 note F-3 4 note C$5 10 note C-3 4
+note G-4 10 note F-3 4 note F-4 10 note G-3 4 note C-5 10 note F-3 4 note G-4 10 note C-3 4
+
 
 note 0xFF 0
 
