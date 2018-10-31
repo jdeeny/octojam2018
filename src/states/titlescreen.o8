@@ -6,5 +6,5 @@
   ;
 
 : title_next_state
-  v0 := STATE_CHAREDIT state_switch
+  v0 := STATE_GAMEPLAY state_switch
   ;
