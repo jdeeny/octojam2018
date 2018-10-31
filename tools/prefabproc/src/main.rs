@@ -116,16 +116,23 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
 
 }
 
-fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Enemies");
     writeln!(data_out, "# Enemy Data");
     for (name, data) in enemies.iter() {
-        writeln!(data_out, "# '{}'", name);
-        writeln!(data_out, ": enemy_{} 0", name);
-        writeln!(data_out, "0xFF # End enemies\n\n");
-    }
-    writeln!(data_out, "### End Enemy Data ###\n\n");
+        let x = 0;
+        let y = 0;
+        let flags = 0;
+        let mut ai = String::from("ai_default");
+        if let Some(a) = &data.ai { ai = a.clone();}
+        let sprite = data.art.clone();
 
+        write!(data_out, ": enemy_{} {} {} {} tobytes ai_{} tobytes SPR_{}", name, x, y, flags, ai, sprite);
+        writeln!(data_out, " # '{}'", name);
+    }
+    writeln!(data_out, "0xFF\n### End Enemy Data ###\n\n");
+
+    writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count());
 }
 
 fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
@@ -214,13 +221,14 @@ fn main() {
 */
 
 
-    let mut data_dest = File::create("build/sprite_data.o8").unwrap();
+    let mut header_dest = File::create("build/prefab_header.o8").unwrap();
+    let mut data_dest = File::create("build/prefab_data.o8").unwrap();
 
-    process_biomes(&biomes, &mut text_strings, &mut data_dest);
-    process_weapons(&weapons, &mut text_strings, &mut data_dest);
-    process_treasure(&treasure, &mut text_strings, &mut data_dest);
-    process_enemies(&enemies, &mut text_strings, &mut data_dest);
-    process_attacks(&attacks, &mut text_strings, &mut data_dest);
+    //process_biomes(&biomes, &mut text_strings, &mut data_dest);
+    //process_weapons(&weapons, &mut text_strings, &mut data_dest);
+    //process_treasure(&treasure, &mut text_strings, &mut data_dest);
+    //process_attacks(&attacks, &mut text_strings, &mut data_dest);
+    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
 
 
     println!("Strings:");

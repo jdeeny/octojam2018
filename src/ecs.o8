@@ -7,6 +7,8 @@ entity_offset ENTITY_FLAGS 1
 entity_offset ENTITY_X 1
 entity_offset ENTITY_Y 1
 entity_offset ENTITY_AI 2
+entity_offset ENTITY_SPRITE 2
+#entity_offset ENTITY_other
 
 :calc entity_count { 64 }
 :calc entity_table_bytes { entity_bytes * entity_count }
@@ -20,5 +22,15 @@ entity_offset ENTITY_AI 2
 
 # search entities for one that matches a system
 : process_entities
-    # for each byte in table
-    # if byte is 0, there are no entities in this set of 8
+  # for each byte in table
+  # if byte is 0, there are no entities in this set of 8
+  ;
+
+
+: generate_new_enemy
+  # choose from table
+  
+  ;
+
+: generate_new_treasure
+  ;
