@@ -1,0 +1,14 @@
+: ai_default
+: ai_treasure
+: ai_nop
+  ;
+
+: ai_melee_smart
+: ai_melee
+  ;
+
+: ai_turret
+  ;
+
+: ai_player
+  ;
