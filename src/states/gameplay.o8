@@ -21,6 +21,8 @@ place-room
 place-room
 place-room
 
+add-walls
+
   clear
   hires
   plane 3

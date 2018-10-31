@@ -70,3 +70,14 @@ ORG_BACKFILL 7
 60 2 0 0
 tobytes tile-graphic
 0
+
+ORG_BACKFILL 11
+
+: wall-state
+0 
+:byte SEG_HEX_CONTENTS_UPPER
+tobytes tile-graphic
+tobytes SPR_wall_l
+tobytes SPR_wall_r
+tobytes SPR_enemy4
+:byte HEX_CONTENTS_OFFSET

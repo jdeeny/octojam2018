@@ -78,3 +78,73 @@
 	x += 36
 	i := long worldgen-state save v6
 ;
+
+
+# v0 x
+# v1 y
+# v2 - v3 empty-tile pointer
+# v4 - v5 wall-left pointer
+# v6 - v7 wall-right pointer
+# v8 - v9 wall-middle pointer
+# va hex contents offset
+# vb - vc tmp
+: add-walls
+	i := long wall-state
+	load va
+	: wall-loop
+		x += 4
+		if x == 0 begin
+
+	:breakpoint walls
+			y += 1
+			:calc bounds { SEG_HEX_CONTENTS_UPPER + 31 }
+			if y == bounds then return
+		end
+
+		set-i-reg y x load vb - vc
+		#walls only live on blank tiles
+		if vc == v3 then if vb != v2 then jump wall-loop
+
+
+		#check floor to bottom right
+		HEX_DOWN_RIGHT x y
+		set-i-reg y x load vb - vc
+		#if it's not blank, then we want to draw a wall
+		if vc == v3 then if vb != v2 then jump wall-rhs-true
+
+		#the right side is blank, but we want to check the left side
+		HEX_LEFT x y
+		set-i-reg y x load vb - vc
+		if vc == v3 then if vb != v2 then jump wall-blank
+
+		: wall-lhs
+
+		HEX_UP_RIGHT x y
+		set-i-reg y x i += va #pointing at object data
+		save  v4 - v5
+		jump wall-loop
+
+		: wall-blank
+		
+		HEX_UP_RIGHT x y
+		jump wall-loop
+
+
+		: wall-rhs-true
+		HEX_LEFT x y
+		set-i-reg x y load vb - vc
+		if vc == v3 then if vb != v2 then jump wall-double
+
+		: wall-rhs
+
+		HEX_UP_RIGHT x y
+		set-i-reg y x i += va #pointing at object data
+		save  v6 - v7
+		jump wall-loop
+
+		: wall-double
+
+		HEX_UP_RIGHT x y
+		set-i-reg y x i += va #pointing at object data
+		save  v8 - v9
+		jump wall-loop
