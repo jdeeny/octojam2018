@@ -1,7 +1,6 @@
 
 # What's in an entity?
 
-:const entity_table_location 0xB000
 
 :calc entity_bytes { 0 }
 :macro entity_offset name size { :calc name { entity_bytes } :calc entity_bytes { entity_bytes + size } }
