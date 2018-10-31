@@ -188,7 +188,8 @@
 #marks a hex to be redrawn
 #TODO: detect whether hex is on screen
 : dirty-hex
-
+	#we're going to be messing up coords so save them to get them back
+	i := recompose-storage save v0 - v1
 	#convert hex to tile space
 	#unskew
 	hexx <<= hexx
@@ -213,6 +214,8 @@
 	hexx += 1 save hexy
 	hexy += 1 save hexy
 	hexy += 1 save hexy
+
+	i := recompose-storage load v0 - v1
 ;
 
 :alias xwrapsub v2 
@@ -379,4 +382,30 @@
 		if v0 == X_WRAP then v1 += 1
 		if  v1 == Y_WRAP then return
 	again 
+;
+
+
+#v0 x v1 y
+: remove-entity
+	dirty-hex
+	x += HEX_CONTENTS_OFFSET
+	y += SEG_HEX_CONTENTS_UPPER
+	set-i-reg y x
+	load v2 - v3 #get entity pointer
+	vf := 0 save vf - v4#delete existing entity
+	save v2 - v3
+	i := recompose-storage load v0 - v1
+;
+
+#v0 x v1 y
+#v2 v3 pointer to entity
+: place-entity
+	dirty-hex
+
+	x += HEX_CONTENTS_OFFSET
+	y += SEG_HEX_CONTENTS_UPPER
+
+	set-i-reg y x save v2 - v3
+
+	i := recompose-storage load v0 - v1
 ;
