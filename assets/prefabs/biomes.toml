@@ -1,4 +1,4 @@
-[Ruin]
+[ruin]
 tileset = "ruin"
 levels = 3
 enemies = ["ruin.mechanic", "ruin.security", "ruin.dog", "ruin.turret"]
@@ -13,9 +13,9 @@ Look, I haven't really been paying attention. Did you find the treasure yet?
 Come on, I know it's your first job, but it's not that hard.
 Anyway, I've turned my radio back on. Good luck!"""
 
-[Lab]
+[lab]
 tileset = "lab"
 levels = 3
 enemies = []
 treasure = []
-narration = "Beep Boop welcome to nerd city, chump"
+narration = "There's probably some fancy stuff in there. Make sure to bring it all back with you!"
