@@ -3,7 +3,7 @@ ORG_BACKFILL roomssize
 
 :macro _ { :byte 0 }
 :macro + { :byte 1 }
-
+:macro m { :byte 2 }
 
 : room1 #(72 bytes)
 
@@ -13,7 +13,7 @@ _ _ + _ _ + _ _
 + + _ + + _ _ +
  + + + _ _ _ + +
 + + + + + + + +
- _ + + + + + _ _
+ _ + + m + + _ _
 _ + + + + + _ _
  _ + + _ + + _ _
 _ _ + _ _ + _ _
@@ -24,7 +24,7 @@ _ _ + _ _ + _ _
 + + + _ _ _ + +
  + + _ _ _ _ + +
 + + _ _ _ _ + +
- + + + + + + + +
+ + + + + + + m +
 + + + + + + + +
  + + _ _ _ _ + +
 + + _ _ _ _ + +
@@ -38,7 +38,7 @@ _ _ + _ _ _ _ _
  _ + + + + + _ _
 _ + _ + _ _ + _
  + _ _ + _ _ + +
-+ _ _ _ + _ + +
++ _ _ _ m _ + +
  _ _ _ + + + _ _
 _ _ _ + _ + _ _
  _ _ + _ _ + _ _
@@ -50,7 +50,7 @@ _ _ + _ _ + _ _
 _ _ _ + + _ _ _
  + _ _ + + + _ _
 + _ _ _ + + + +
- + _ + + + + + +
+ + _ + + m + + +
 + _ + _ + + + +
  + + _ _ + _ _ _
 + + _ _ _ + _ _
@@ -100,3 +100,6 @@ tobytes wall-r-dummy-entitiy
 tobytes wall-l-dummy-entitiy
 tobytes wall-double-dummy-entitiy
 :byte HEX_CONTENTS_OFFSET
+
+ORG_BACKFILL 7
+: pickmonster-tmp
