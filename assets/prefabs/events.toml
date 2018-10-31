@@ -1,4 +1,8 @@
-game_over = """Hey, are you still there?
+game_over = """{sound:worried}Hey, are you still there?
 ...Hello?"""
+# voice: "...Hello?" (worried for player)
 
-ending = "Hey, welcome back. You wanna go get something to eat? I'm starving..."
+ending = "{sound:welcome}Hey, welcome back. You wanna go get something to eat? I'm starving..."
+# voice: "Welcome back." (congratulatory but calm????) (don't have experience with directing voice acting :V )
+
+# For calls (as in, asking about an enemy), something like "Hey" or a similar short greeting would be good

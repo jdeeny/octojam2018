@@ -3,15 +3,15 @@ tileset = "ruin"
 levels = 3
 enemies = ["ruin.mechanic", "ruin.security", "ruin.dog", "ruin.turret"]
 treasure = []
-narration = """
-{portrait:static}...
-...Hello?...
+narration = """{portrait:static}...
+{sound:hello}...Hello?...
 {portrait:gc}Hey, are you still alive?
 Cool.
 ...
 Look, I haven't really been paying attention. Did you find the treasure yet?
 Come on, I know it's your first job, but it's not that hard.
 Anyway, I've turned my radio back on. Good luck!"""
+# short: "Hello?" (worried for self due to neglecting duties as mission control person)
 
 [lab]
 tileset = "lab"
@@ -19,3 +19,10 @@ levels = 3
 enemies = []
 treasure = []
 narration = "There's probably some fancy stuff in there. Make sure to bring it all back with you!"
+
+[power_plant]
+tileset = "power_plant"
+levels = 3
+enemies = []
+treasure = []
+narration = "They used geothermal energy, so you must be close to the end. Good luck!"
