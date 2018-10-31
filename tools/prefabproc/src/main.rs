@@ -84,19 +84,46 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
             text_strings.insert(key, narration.clone());
         }
     }
+
+    writeln!(data_out, "# Biomes (Level List)");
+    writeln!(data_out, ": biome_state tobytes HERE 0");
+    for (name, data) in biomes.iter() {
+        let mut lvls = 1;
+        if let Some(levels) = data.levels { lvls = levels; }
+
+        // tileset - unused for now
+
+        // create a word for the name
+
+        // create an enemy set
+
+        // create a narration event
+
+        // create a treasure set
+
+        writeln!(data_out, "# '{}', {} levels", name, lvls);
+        writeln!(data_out, ": biome_{}      :byte {}       tobytes word_{}     tobytes narration_{}     tobytes enemyset_{}\n", lvls, name, name, name, name);
+        writeln!(data_out, "0xFF # End biomes\n\n");
+    }
+
 }
 
-fn process_enemies(enemies: &Value, text_strings: &mut HashMap<String, String>) {
+fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
     println!("{:?}\n", enemies);
 
 }
 
-fn process_treasure(treasure: &Value, text_strings: &mut HashMap<String, String>) {
+fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
     println!("{:?}\n", treasure);
 }
 
-fn process_weapons(weapons: &Value, text_strings: &mut HashMap<String, String>) {
-    println!("{:?}\n", weapons);
+fn process_weapons(weapons: &BTreeMap<String, Weapon>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+    println!("Process Weapons");
+    for (name, data) in weapons {
+        println!("{} -> {:?}\n", name, data);
+
+    }
+
 
 }
 
@@ -150,14 +177,19 @@ fn main() {
 
     let mut data_dest = File::create("build/sprite_data.o8").unwrap();
 
-    process_attacks(&attacks, &mut text_strings, &mut data_dest);
+
+    //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_biomes(&biomes, &mut text_strings, &mut data_dest);
+    process_weapons(&weapons, &mut text_strings, &mut data_dest);
+    process_treasure(&treasure, &mut text_strings, &mut data_dest);
+    process_enemies(&enemies, &mut text_strings, &mut data_dest);
+    process_attacks(&attacks, &mut text_strings, &mut data_dest);
 
 
-    println!("Strings:");
+    /*println!("Strings:");
     for (k, v) in text_strings {
         print!("{} -> \"{}\"\n\n", k, v);
-    }
+    }*/
 }
 
 enum Symbol {
