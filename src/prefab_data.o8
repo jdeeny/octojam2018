@@ -1,10 +1,28 @@
-# Enemy Data
+### Enemy Prefabs ###
 : enemy_ruin-dog 0 0 0 tobytes SPR_enemy11 tobytes ai_melee # 'ruin-dog'
 : enemy_ruin-mechanic 0 0 0 tobytes SPR_enemy1 tobytes ai_melee_smart # 'ruin-mechanic'
 : enemy_ruin-security 0 0 0 tobytes SPR_enemy2 tobytes ai_melee_smart # 'ruin-security'
 : enemy_ruin-turret 0 0 0 tobytes SPR_enemy10 tobytes ai_turret # 'ruin-turret'
 0xFF
-### End Enemy Data ###
+### End Enemy Prefabs ###
+
+
+### Treasure Prefabs ###
+: treasure_accelerator 0 0 0 tobytes SPR_accelerator tobytes ai_treasure # 'accelerator'
+: treasure_antishovel 0 0 0 tobytes SPR_antishovel tobytes ai_treasure # 'antishovel'
+: treasure_crickets 0 0 0 tobytes SPR_crickets tobytes ai_treasure # 'crickets'
+: treasure_dog 0 0 0 tobytes SPR_enemy11 tobytes ai_treasure # 'dog'
+: treasure_enlargener 0 0 0 tobytes SPR_enlargener tobytes ai_treasure # 'enlargener'
+: treasure_exoskeleton 0 0 0 tobytes SPR_exoskeleton tobytes ai_treasure # 'exoskeleton'
+: treasure_flute 0 0 0 tobytes SPR_flute tobytes ai_treasure # 'flute'
+: treasure_magnet_shield 0 0 0 tobytes SPR_magnet_shield tobytes ai_treasure # 'magnet_shield'
+: treasure_nano_blood 0 0 0 tobytes SPR_nano_blood tobytes ai_treasure # 'nano_blood'
+: treasure_overclock 0 0 0 tobytes SPR_overclock tobytes ai_treasure # 'overclock'
+: treasure_rocket_shoes 0 0 0 tobytes SPR_rocket_shoes tobytes ai_treasure # 'rocket_shoes'
+: treasure_tarski_field 0 0 0 tobytes SPR_tarski_field tobytes ai_treasure # 'tarski_field'
+: treasure_void_pants 0 0 0 tobytes SPR_void_pants tobytes ai_treasure # 'void_pants'
+0xFF
+### End Treasure Data ###
 
 
 : entity_table_address tobytes entity_table

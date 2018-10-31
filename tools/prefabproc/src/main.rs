@@ -44,7 +44,7 @@ struct Enemy {
 #[derive(Debug, Deserialize)]
 struct Treasure {
     name: Option<String>,
-    art: Option<String>,
+    art: String,
     active: Option<Vec<Value>>,
     desc: Option<String>,
 }
@@ -67,6 +67,19 @@ fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &st
         text_strings.insert(key, text.to_string());
     }
 }
+
+fn add_text_string(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: &Option<String>) { // forgive me rust gods
+    if let Some(text) = &text {
+        let mut key: String = String::from(name);
+        if subname.chars().count() > 0 {
+            key.push('-');
+            key.push_str(subname);
+        }
+        text_strings.insert(key, text.to_string());
+    }
+}
+
+
 
 fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
     println!("Processing Attacks");
@@ -118,40 +131,48 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
 
 fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Enemies");
-    writeln!(data_out, "# Enemy Data");
+    writeln!(data_out, "### Enemy Prefabs ###");
     for (name, data) in enemies.iter() {
         let x = 0;
         let y = 0;
         let flags = 0;
-        let mut ai = String::from("ai_default");
+        let mut ai = String::from("default");
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
+
+        add_text(text_strings, name, "name", Some(name));
+        add_text_string(text_strings, name, "desc", &data.desc);
 
         write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai);
         writeln!(data_out, " # '{}'", name);
     }
-    writeln!(data_out, "0xFF\n### End Enemy Data ###\n\n");
+    writeln!(data_out, "0xFF\n### End Enemy Prefabs ###\n\n");
 
     writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count());
 }
 
-fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Treasure");
-    //println!("{:?}\n", treasure);
-
-    writeln!(data_out, "### Treasure Data ###");
+    writeln!(data_out, "### Treasure Prefabs ###");
     for (name, data) in treasure.iter() {
+        let x = 0;
+        let y = 0;
+        let flags = 0;
+        let ai = String::from("treasure");
+        let sprite = data.art.clone();
+
         add_text(text_strings, name, "name", Some(name));
+        add_text_string(text_strings, name, "desc", &data.desc);
 
-        if let Some(desc) = &data.desc {
-            add_text(text_strings, name, "desc", Some(desc));
-        }
 
-        writeln!(data_out, "# '{}'", name);
-        writeln!(data_out, ": enemy_{} 0", name);
-        writeln!(data_out, "0xFF # End enemies\n\n");
+        write!(data_out, ": treasure_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai);
+        writeln!(data_out, " # '{}'", name);
     }
-    writeln!(data_out, "### End Treasure Data ###\n\n");
+    writeln!(data_out, "0xFF\n### End Treasure Data ###\n\n");
+
+    writeln!(header_out, ":const treasure_prefab_count {}", treasure.keys().count());
+
+
 
 }
 
@@ -226,9 +247,9 @@ fn main() {
 
     //process_biomes(&biomes, &mut text_strings, &mut data_dest);
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
-    //process_treasure(&treasure, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
+    process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
 
     writeln!(data_dest, ": entity_table_address tobytes entity_table");
     println!("Strings:");
