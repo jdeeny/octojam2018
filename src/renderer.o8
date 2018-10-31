@@ -409,3 +409,15 @@
 
 	i := recompose-storage load v0 - v1
 ;
+#return 1 in vf if passable
+#v0 x v1 y
+: is-passable
+	i := recompose-storage save v0 - v1	
+	y += SEG_HEX_CONTENTS_UPPER
+	x += 1
+	set-i-reg y x load x - x
+	i := long impassable-match load y - y
+	vf := 1
+	if x == y then vf := 0
+	i := recompose-storage load v0 - v1
+;
