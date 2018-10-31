@@ -38,7 +38,6 @@
 	tiley += ve
 	#offset based on the skewed coordinate system
 	tilex -= tiley
-	if vf == 0 then :breakpoint underflow v0 += 0
 	vf := 1 if vf key then :breakpoint composite v0 += 0
 
 	tilex >>= tilex
@@ -367,5 +366,17 @@
 
 : recompose-storage
 0 0
-: recompose-whole-screen #TODO
+: recompose-whole-screen
+	v0 := 0
+	v1 := 0
+	i := recompose-storage
+	loop
+		save v0 - v1
+		composite-direct
+		i := recompose-storage
+		load v0 - v1
+		v0 += 1
+		if v0 == X_WRAP then v1 += 1
+		if  v1 == Y_WRAP then return
+	again 
 ;

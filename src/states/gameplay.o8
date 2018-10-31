@@ -22,7 +22,7 @@ place-room
 place-room
 
 add-walls
-
+recompose-whole-screen
   clear
   hires
   plane 3
