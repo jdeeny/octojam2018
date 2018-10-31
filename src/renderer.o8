@@ -38,7 +38,6 @@
 	tiley += ve
 	#offset based on the skewed coordinate system
 	tilex -= tiley
-	vf := 1 if vf key then :breakpoint composite v0 += 0
 
 	tilex >>= tilex
 	#now our humble tilex and tiley are hexx and hexy
@@ -166,7 +165,6 @@
 		loopunrolled 
 		loopunrolled
 		loopunrolled
-		vf := 3 if vf key then :breakpoint draw v0 += 0
 		if colcount == 10 then jump draw-tiles-cleanup
 		colcount += 1
 		y += 6
@@ -223,7 +221,7 @@
 : compo-scroll-right
 	i := long wrap-around-counters
 	load xwrapsub - yoff
-	#hit right side TODO: more exact
+	#hit right side
 	:calc xwrapx6 { X_WRAP * 6 }
 	if xwrap == xwrapx6 begin
 		if xwrapsub == 14 then
@@ -291,8 +289,6 @@
 : compo-scroll-down
 	i := long wrap-around-counters
 	load xwrapsub - yoff
-	
-	vf := 2 if vf key then :breakpoint scroll v0 += 0
 	#hit bottom
 	if ywrap == Y_WRAP begin
 		if ywrapsub == 10 then

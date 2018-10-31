@@ -18,7 +18,6 @@
 	y += SEG_HEX_CONTENTS_UPPER
 
 	loop
-		#TODO: load random room here
 		0XF0 0x00 : gen-room-pointer 0x00 0x00
 		i += roomindex
 		load v7 - v7
