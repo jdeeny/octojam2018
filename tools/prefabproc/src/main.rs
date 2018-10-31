@@ -28,7 +28,7 @@ struct Biome {
 
 #[derive(Debug, Deserialize)]
 struct Enemy {
-    art: Option<String>,
+    art: String,
     hp: Option<usize>,
     ac: Option<usize>,
     ammo: Option<usize>,
@@ -57,27 +57,38 @@ struct Weapon {
 
 }
 
-
-fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
-
-    for (name, data) in attacks.iter() {
-        println!("{} -> {:?}", &name, data);
-        if let Some(hitmsg) = &data.Hit {
-            let mut key: String = name.clone();
-            key.push_str("-hitmsg");
-            text_strings.insert(key, hitmsg.clone());
+fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: Option<&str>) {
+    if let Some(text) = &text {
+        let mut key: String = String::from(name);
+        if subname.chars().count() > 0 {
+            key.push('-');
+            key.push_str(subname);
         }
-        if let Some(missmsg) = &data.Miss {
-            let mut key: String = name.clone();
-            key.push_str("-missmsg");
-            text_strings.insert(key, missmsg.clone());
-        }
+        text_strings.insert(key, text.to_string());
     }
 }
 
+fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+    println!("Processing Attacks");
+
+    writeln!(data_out, "### Attack Data ###");
+    for (name, data) in attacks.iter() {
+        if let Some(hitmsg) = &data.Hit {
+            add_text(text_strings, name, "hitmsg", Some(hitmsg));
+        }
+        if let Some(missmsg) = &data.Miss {
+            add_text(text_strings, name, "missmsg", Some(missmsg));
+        }
+    }
+    writeln!(data_out, "### End Attack Data ###\n\n");
+
+
+}
+
 fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+    println!("Processing Biomes");
     for (name, data) in biomes.iter() {
-        println!("{} -> {:?}", &name, data);
+//        println!("{} -> {:?}", &name, data);
         if let Some(narration) = &data.narration {
             let mut key: String = name.clone();
             key.push_str("-narration");
@@ -92,40 +103,63 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
         if let Some(levels) = data.levels { lvls = levels; }
 
         // tileset - unused for now
-
         // create a word for the name
-
         // create an enemy set
-
         // create a narration event
-
         // create a treasure set
 
         writeln!(data_out, "# '{}', {} levels", name, lvls);
         writeln!(data_out, ": biome_{}      :byte {}       tobytes word_{}     tobytes narration_{}     tobytes enemyset_{}\n", lvls, name, name, name, name);
-        writeln!(data_out, "0xFF # End biomes\n\n");
     }
+    writeln!(data_out, "0xFF # End biomes\n\n");
+    writeln!(data_out, "### End Biome Data ###\n\n");
 
 }
 
 fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
-    println!("{:?}\n", enemies);
+    println!("Processing Enemies");
+    writeln!(data_out, "# Enemy Data");
+    for (name, data) in enemies.iter() {
+        writeln!(data_out, "# '{}'", name);
+        writeln!(data_out, ": enemy_{} 0", name);
+        writeln!(data_out, "0xFF # End enemies\n\n");
+    }
+    writeln!(data_out, "### End Enemy Data ###\n\n");
 
 }
 
 fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
-    println!("{:?}\n", treasure);
+    println!("Processing Treasure");
+    //println!("{:?}\n", treasure);
+
+    writeln!(data_out, "### Treasure Data ###");
+    for (name, data) in treasure.iter() {
+        add_text(text_strings, name, "name", Some(name));
+
+        if let Some(desc) = &data.desc {
+            add_text(text_strings, name, "desc", Some(desc));
+        }
+
+        writeln!(data_out, "# '{}'", name);
+        writeln!(data_out, ": enemy_{} 0", name);
+        writeln!(data_out, "0xFF # End enemies\n\n");
+    }
+    writeln!(data_out, "### End Treasure Data ###\n\n");
+
 }
 
 fn process_weapons(weapons: &BTreeMap<String, Weapon>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
-    println!("Process Weapons");
+    println!("Processing Weapons");
+    writeln!(data_out, "### Weapon Data ###");
     for (name, data) in weapons {
-        println!("{} -> {:?}\n", name, data);
+        //println!("{} -> {:?}\n", name, data);
 
     }
-
-
+    writeln!(data_out, "### End Weapon Data ###\n\n");
 }
+
+
+
 
 fn read_file(filename: &str) -> String {
     let mut toml_file = File::open(filename).unwrap();
@@ -145,40 +179,43 @@ fn main() {
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
     let weapons_string = read_file("../../assets/prefabs/weapons.toml");
 
-    println!("\nAttacks:", );
     let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
+/*    println!("\nAttacks:", );
     for atk in &attacks {
         println!("{:?}\n", atk);
     }
+*/
 
-    println!("\nBiomes:", );
     let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
+/*    println!("\nBiomes:", );
     for b in &biomes {
         println!("{:?}\n", b);
     }
+*/
 
-    println!("\nEnemies:", );
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
+/*    println!("\nEnemies:", );
     for e in &enemies {
         println!("{:?}\n", e);
     }
-
-    println!("\nTreasure:", );
+*/
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
+/*    println!("\nTreasure:", );
     for t in &treasure {
         println!("{:?}\n", t);
     }
+*/
 
     let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
-    println!("\nWeapons:", );
+/*    println!("\nWeapons:", );
     for w in &weapons {
         println!("{:?}\n", w);
     }
+*/
+
 
     let mut data_dest = File::create("build/sprite_data.o8").unwrap();
 
-
-    //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_biomes(&biomes, &mut text_strings, &mut data_dest);
     process_weapons(&weapons, &mut text_strings, &mut data_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest);
@@ -186,10 +223,10 @@ fn main() {
     process_attacks(&attacks, &mut text_strings, &mut data_dest);
 
 
-    /*println!("Strings:");
+    println!("Strings:");
     for (k, v) in text_strings {
         print!("{} -> \"{}\"\n\n", k, v);
-    }*/
+    }
 }
 
 enum Symbol {
