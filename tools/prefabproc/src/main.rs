@@ -127,7 +127,7 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
 
-        write!(data_out, ": enemy_{} {} {} {} tobytes ai_{} tobytes SPR_{}", name, x, y, flags, ai, sprite);
+        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai);
         writeln!(data_out, " # '{}'", name);
     }
     writeln!(data_out, "0xFF\n### End Enemy Data ###\n\n");

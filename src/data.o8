@@ -9,6 +9,7 @@
 
 
 ## Entities
+:org entity_table_location
 : entity_table
 :calc table_end { HERE + entity_table_bytes }
 :org table_end
