@@ -95,7 +95,6 @@
 		x += 4
 		if x == 0 begin
 
-	:breakpoint walls
 			y += 1
 			:calc bounds { SEG_HEX_CONTENTS_UPPER + 31 }
 			if y == bounds then return
@@ -115,7 +114,12 @@
 		#the right side is blank, but we want to check the left side
 		HEX_LEFT x y
 		set-i-reg y x load vb - vc
-		if vc == v3 then if vb != v2 then jump wall-blank
+		if vc == v3 then if vb != v2 then jump wall-lhs
+
+		: wall-blank
+		
+		HEX_UP_RIGHT x y
+		jump wall-loop
 
 		: wall-lhs
 
@@ -124,19 +128,14 @@
 		save  v4 - v5
 		jump wall-loop
 
-		: wall-blank
-		
-		HEX_UP_RIGHT x y
-		jump wall-loop
 
 
 		: wall-rhs-true
 		HEX_LEFT x y
-		set-i-reg x y load vb - vc
+		set-i-reg y x load vb - vc
 		if vc == v3 then if vb != v2 then jump wall-double
 
 		: wall-rhs
-
 		HEX_UP_RIGHT x y
 		set-i-reg y x i += va #pointing at object data
 		save  v6 - v7
