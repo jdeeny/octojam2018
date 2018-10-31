@@ -1,6 +1,7 @@
+
 use std::collections::{ HashMap, BTreeMap };
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read,Write};
 use toml::{Value};
 
 #[macro_use]
@@ -57,21 +58,32 @@ struct Weapon {
 }
 
 
-fn process_attacks(attacks: &Value, text_strings: &mut HashMap<String, String>) {
-    println!("{:?}\n", attacks);
+fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
 
-    /*if let Value::Table(atk_table) = attacks {
-        let decoded: Attack = toml::from_str(toml_str).unwrap();
-        for (name, data) in atk_table.iter() {
-            println!("{} -> {:?}\n", name, data);
+    for (name, data) in attacks.iter() {
+        println!("{} -> {:?}", &name, data);
+        if let Some(hitmsg) = &data.Hit {
+            let mut key: String = name.clone();
+            key.push_str("-hitmsg");
+            text_strings.insert(key, hitmsg.clone());
         }
-
-    }*/
+        if let Some(missmsg) = &data.Miss {
+            let mut key: String = name.clone();
+            key.push_str("-missmsg");
+            text_strings.insert(key, missmsg.clone());
+        }
+    }
 }
 
-fn process_biomes(biomes: &Value, text_strings: &mut HashMap<String, String>) {
-    println!("{:?}\n", biomes);
-
+fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+    for (name, data) in biomes.iter() {
+        println!("{} -> {:?}", &name, data);
+        if let Some(narration) = &data.narration {
+            let mut key: String = name.clone();
+            key.push_str("-narration");
+            text_strings.insert(key, narration.clone());
+        }
+    }
 }
 
 fn process_enemies(enemies: &Value, text_strings: &mut HashMap<String, String>) {
@@ -108,48 +120,48 @@ fn main() {
 
     println!("\nAttacks:", );
     let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
-    for atk in attacks {
+    for atk in &attacks {
         println!("{:?}\n", atk);
     }
 
     println!("\nBiomes:", );
     let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
-    for b in biomes {
+    for b in &biomes {
         println!("{:?}\n", b);
     }
 
     println!("\nEnemies:", );
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
-    for e in enemies {
+    for e in &enemies {
         println!("{:?}\n", e);
     }
 
     println!("\nTreasure:", );
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
-    for t in treasure {
+    for t in &treasure {
         println!("{:?}\n", t);
     }
 
-
     let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
     println!("\nWeapons:", );
-    for w in weapons {
+    for w in &weapons {
         println!("{:?}\n", w);
     }
 
+    let mut data_dest = File::create("build/sprite_data.o8").unwrap();
 
-/*
-    let attacks = attacks_string.parse::<Value>().unwrap();
-    let biomes = biomes_string.parse::<Value>().unwrap();
-    let enemies = enemies_string.parse::<Value>().unwrap();
-    let treasure = treasure_string.parse::<Value>().unwrap();
-    let weapons = weapons_string.parse::<Value>().unwrap();
+    process_attacks(&attacks, &mut text_strings, &mut data_dest);
+    process_biomes(&biomes, &mut text_strings, &mut data_dest);
 
-    process_attacks(&attacks, &mut text_strings);
-    process_biomes(&biomes, &mut text_strings);
-    process_enemies(&enemies, &mut text_strings);
-    process_treasure(&treasure, &mut text_strings);
-    process_weapons(&weapons, &mut text_strings);
-*/
 
+    println!("Strings:");
+    for (k, v) in text_strings {
+        print!("{} -> \"{}\"\n\n", k, v);
+    }
+}
+
+enum Symbol {
+    Letter(char),
+    Replacement(usize),
+    Whitespace,
 }
