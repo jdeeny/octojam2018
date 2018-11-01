@@ -116,19 +116,5 @@ note 0xFF 0
 
 : sample_data
 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00
-### Enemy Prefabs ###
-: enemy_lab-scientist 0 0 0 tobytes SPR_enemy7 tobytes ai_melee_smart # 'lab-scientist'
-: enemy_lab-turret 0 0 0 tobytes SPR_enemy9 tobytes ai_flank # 'lab-turret'
-: enemy_lab-wall 0 0 0 tobytes SPR_enemy6 tobytes ai_melee # 'lab-wall'
-: enemy_ruin-dog 0 0 0 tobytes SPR_enemy11 tobytes ai_melee # 'ruin-dog'
-: enemy_ruin-mechanic 0 0 0 tobytes SPR_enemy1 tobytes ai_melee_smart # 'ruin-mechanic'
-: enemy_ruin-messenger 0 0 0 tobytes SPR_enemy5 tobytes ai_wander # 'ruin-messenger'
-: enemy_ruin-scientist 0 0 0 tobytes SPR_enemy7 tobytes ai_melee_smart # 'ruin-scientist'
-: enemy_ruin-security 0 0 0 tobytes SPR_enemy2 tobytes ai_melee_smart # 'ruin-security'
-: enemy_ruin-security2 0 0 0 tobytes SPR_enemy3 tobytes ai_cover # 'ruin-security2'
-: enemy_ruin-security3 0 0 0 tobytes SPR_enemy4 tobytes ai_cover # 'ruin-security3'
-: enemy_ruin-sentry 0 0 0 tobytes SPR_enemy8 tobytes ai_melee # 'ruin-sentry'
-: enemy_ruin-speed_turret 0 0 0 tobytes SPR_enemy9 tobytes ai_flank # 'ruin-speed_turret'
-: enemy_ruin-turret 0 0 0 tobytes SPR_enemy10 tobytes ai_turret # 'ruin-turret'
-: enemy_ruin-wall 0 0 0 tobytes SPR_enemy6 tobytes ai_melee # 'ruin-wall'
-0xFF
+
+
