@@ -1,21 +1,28 @@
 [ruin]
 tileset = "ruin"
 levels = 3
-enemies = ["ruin.mechanic", "ruin.security", "ruin.dog", "ruin.turret"]
-treasure = []
-narration = """
-{portrait:static}...
-...Hello?...
+enemies = ["ruin-mechanic", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "ruin-speed_turret", "ruin-sentry", "ruin-scientist", "ruin-wall"]
+treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator"]
+narration = """{portrait:static}...
+{sound:hello}...Hello?...
 {portrait:gc}Hey, are you still alive?
 Cool.
 ...
 Look, I haven't really been paying attention. Did you find the treasure yet?
 Come on, I know it's your first job, but it's not that hard.
 Anyway, I've turned my radio back on. Good luck!"""
+# short: "Hello?" (worried for self due to neglecting duties as mission control person)
 
 [lab]
 tileset = "lab"
 levels = 3
-enemies = []
-treasure = []
+enemies = ["ruin-mechanic", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]
+treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator", "enlargener", "tarski_field", "void_pants", "magnet_shield", "nano_blood", "rocket_shoes", "overclock", "dog"]
 narration = "There's probably some fancy stuff in there. Make sure to bring it all back with you!"
+
+[power_plant]
+tileset = "power_plant"
+levels = 3
+enemies = ["ruin-mechanic", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]
+treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator", "enlargener", "tarski_field", "void_pants", "magnet_shield", "nano_blood", "rocket_shoes", "overclock", "dog", "heat_shield", "dampener"]
+narration = "They used geothermal energy, so you must be close to the end. Good luck!"

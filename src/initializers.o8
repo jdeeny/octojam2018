@@ -1,0 +1,1 @@
+: player_entity_init 0b00000011 0 0 tobytes SPR_hero1 tobytes ai_player

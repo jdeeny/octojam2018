@@ -6,6 +6,18 @@
 0xFF
 ### End Enemy Prefabs ###
 
+: SPR_accelerator
+: SPR_antishovel
+: SPR_crickets
+: SPR_enlargener
+: SPR_exoskeleton
+: SPR_flute
+: SPR_magnet_shield
+: SPR_nano_blood
+: SPR_overclock
+: SPR_rocket_shoes
+: SPR_tarski_field
+: SPR_void_pants
 
 ### Treasure Prefabs ###
 : treasure_accelerator 0 0 0 tobytes SPR_accelerator tobytes ai_treasure # 'accelerator'
