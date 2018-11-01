@@ -267,7 +267,7 @@ println!("{}", enemies_string);
 
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Symbol {
     Letter(char),
     Word(String),
@@ -275,24 +275,35 @@ enum Symbol {
 
 fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, header_dest: &mut Write) {
     let mut words = HashMap::<String, Vec<Symbol>>::new();
+    let mut wordvec = Vec::<(String, Vec<Symbol>)>::new();
 
     for (name, data) in texts {
         println!("INPUT:    {} {:?}\n", name, data);
         let mut phrasevec = Vec::<Symbol>::new();
+
         for w in data.split_whitespace() {
             let mut svec = Vec::<Symbol>::new();
             for letter in w.chars() {
                 svec.push(Symbol::Letter(letter));
             }
-            words.insert(w.to_string(), svec);
+            if ! words.contains_key(&w.to_string()) {
+                words.insert(w.to_string(), svec.clone());
+                wordvec.push((w.to_string(), svec.clone()));
+            }
             phrasevec.push(Symbol::Word(w.to_string()));
         }
-        words.insert(name.to_string(), phrasevec);
+
+        if ! words.contains_key(&name.to_string()) {
+            words.insert(name.to_string(), phrasevec.clone());
+            wordvec.push((name.to_string(), phrasevec.clone()));
+        }
     }
 
 
+
+
     writeln!(data_dest, "### WORDS ###");
-    for (name, data) in words {
+    for (name, data) in wordvec {
         println!("{:?} -> {:?}", name, data);
         write!(data_dest, ": word_{} ", name);
         for symbol in data.iter() {
