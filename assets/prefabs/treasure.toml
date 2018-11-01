@@ -71,8 +71,21 @@ passive = [ {id = "mod_breech", amt = 1} ]
 desc = "Doesn't this kinda remind you of the accelerators you put on toy car tracks...?"
 
 [enlargener]
-name = "Bullet Resizer"
+name = "Bullet Enlargener"
 art = "enlargener"
 passive = [ {id = "mod_dmg", amt = 1} ]
 desc = "I feel like they focused too much on bullet-related technology. Maybe it was just this facility...?"
 
+[heat_shield]
+name = "Thermal Shield"
+art = "heat_shield"
+passive = [{id = "contact_damage", amt = 1}, {id = "mod_str", amt = 1}]
+desc = "Before modern people found out what that was for, they thought it was some sort of shield. It's actually used for melting through rock. If the walls here weren't made of advanced, ancient materials, you'd be able to just melt your way to the bottom!"
+
+[dampener]
+name = "Electrical Dampener"
+art = "dampener"
+active = [{id = "freeze", time = 2, cooldown = 3}]
+desc = """To avoid getting electrocuted, workers here would use these to neutralize electromagnetic fields.
+...
+Oh, I should have blamed my radio silence earlier on something like this..."""
