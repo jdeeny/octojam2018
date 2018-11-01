@@ -37,13 +37,20 @@
   #:breakpoint v0=glyph
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
   if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
+  #:breakpoint drawglyph
+  vF := vF
   text_draw_glyph
+  #:breakpoint drawn
+  vF := vF
+
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 1
   push v2 v3 2
   jump text_draw_word_internal
 : text_draw_word_end
   pop v2 v3 2
+  #:breakpoint cleanup
+  vF := vF
   ;
 
 : text_draw_word_word

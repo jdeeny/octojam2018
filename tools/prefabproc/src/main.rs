@@ -310,7 +310,7 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
         write!(data_dest, ": word_{} ", name);
         for symbol in data.iter() {
             match symbol {
-                Symbol::Letter(c) => { write!(data_dest, ":byte glyph_{} ", c); },
+                Symbol::Letter(c) => { write!(data_dest, ":byte GLYPH_{} ", c); },
                 Symbol::Word(w) => { write!(data_dest, ":byte GLYPH_ESC_WORD tobytes word_{} ", w); },
             }
         }
