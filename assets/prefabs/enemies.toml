@@ -79,7 +79,7 @@ reload = 2
 speed = 1
 ai = "turret"
 attacks = [
-    {range = 5, cost = 2, hit = "hisses and shoots you", miss = "hisses, and a bullet whirrs past you"}
+    {acc = 0.9, range = 5, cost = 2, hit = "hisses and shoots you", miss = "hisses, and a bullet whirrs past you"}
 ]
 desc = "The hissing sound comes from pressure releasing in their airguns. It seems bullets can be recycled pretty easily if they're just chunks of metal."
 
@@ -92,7 +92,7 @@ reload = 1
 move = 3
 ai = "flank"
 attacks = [
-    {range = 3, cost = 2, hit = "stings you with a bullet", miss = "fires a bullet past you"}
+    {acc = 0.8, range = 3, cost = 2, hit = "stings you with a bullet", miss = "fires a bullet past you"}
 ]
 desc = "These guys try to flank you. Don't let them! Their bullets are pretty painful..."
 
@@ -114,7 +114,7 @@ ac = 0
 move = 2
 ai = "melee_smart"
 attacks = [
-    {hit = "bashes you with a clipboard", miss = "reconsiders bashing you with important scientific research"}
+    {acc = 0.8, hit = "bashes you with a clipboard", miss = "reconsiders bashing you with important scientific research"}
 ]
 desc = "Research assistants sometimes wander away from their assigned laboratory."
 
@@ -139,3 +139,38 @@ attacks = [
     {hit = "bumps into you", miss = "flies near you"}
 ]
 desc = "People used to use these to deliver packages. They aren't hostile, but they tend to get in the way."
+
+[lab-scientist]
+art = "enemy7"
+hp = 3
+ac = 1
+move = 2
+ai = "melee_smart"
+attacks = [
+    {acc = 0.8, hit = "bashes you with a clipboard", miss = "reconsiders bashing you with important scientific research"}
+]
+desc = "These used to do lab assistant work. Science was one of the few areas where robots couldn't do everything."
+
+[lab-wall]
+art = "enemy6"
+hp = 5
+ac = 1
+move = 2
+ai = "melee"
+attacks = [
+    {dmg = 2, hit = "slams its fist against you", miss = "swings its fist past you"}
+]
+desc = "The risk of fire is greater in a laboratory, so they used upgraded versions here."
+
+[lab-turret]
+art = "enemy9"
+hp = 3
+ac = 0
+ammo = 6
+reload = 1
+move = 3
+ai = "flank"
+attacks = [
+    { acc = 0.7, range = 3, cost = 1, hit = "stings you with a bullet", miss = "fires a bullet past you"}
+]
+desc = "A prototype version of the quick turrets from earlier. It's sturdier and can fire more, but it's not as accurate."
