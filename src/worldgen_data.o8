@@ -179,3 +179,22 @@ ORG_BACKFILL 7
 ORG_BACKFILL 4
 : place-player-data
 0 tobytes entity_table :byte ENTITY_X
+
+ORG_BACKFILL 32
+: world-gen-enemies
+tobytes enemy_lab-scientist 
+tobytes enemy_lab-turret 
+tobytes enemy_lab-wall 
+tobytes enemy_ruin-dog
+tobytes enemy_ruin-mechanic 
+tobytes enemy_ruin-messenger 
+tobytes enemy_ruin-scientist 
+tobytes enemy_ruin-security 
+tobytes enemy_ruin-security2 
+tobytes enemy_ruin-security3 
+tobytes enemy_ruin-sentry 
+tobytes enemy_ruin-speed_turret
+tobytes enemy_ruin-turret
+tobytes enemy_ruin-wall
+tobytes enemy_ruin-security 
+tobytes enemy_ruin-security3
