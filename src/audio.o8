@@ -91,6 +91,33 @@
 ;
 
 
+
+: play_sample_octojam
+    v4 := 3
+    v5 := 2
+    v7 := 16
+    v6 := 40
+    i := long sample_octojam1
+    loop
+      audio
+      buzzer := v4
+      delay := v5
+      playback_wait_octojam
+      i += v7
+      v6 += -1
+      if v6 != 0 then
+    again
+    ;
+
+: playback_wait_octojam
+    loop
+      vf := delay
+      if vf != 0 then
+    again
+;
+
+
+
 ## Play a waveform sample
 #: audio_play_sample
 #  ;

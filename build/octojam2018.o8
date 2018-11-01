@@ -598,7 +598,7 @@
 
 : ai_cover
   ;
-:const enemy_prefab_count 14
+:const enemy_prefab_count 15
 :const treasure_prefab_count 15
 :macro set-i-reg reg-hi reg-lo {
   :calc tgt { HERE + 6 }
@@ -749,16 +749,16 @@
   # initialize stuff here
   entity_load_player  # set entity 0 to player
 
- : snd_loop
- :breakpoint sound
-  play_sample_playback
-jump snd_loop
+#  : snd_loop
+#  :breakpoint sound
+#   play_sample_playback
+# jump snd_loop
 
   # Load splash state to begin game - loads keymap etc
   v0 := STATE_SPLASH
   state_switch
 
-  audio_play_music  # Test of music
+  #audio_play_music  # Test of music
 
 : gameloop
   vF := 1
@@ -1290,6 +1290,7 @@ jump gameloop
   v0 := 53
   v1 := 13
   sprite v0 v1 8
+  play_sample_octojam
   ;
 
 : splash_next_state
@@ -1300,12 +1301,15 @@ jump gameloop
 : title_display
   hires
   clear
-  v0 := 4 v1 := 40 v2 := 20
+  i := long word_Title_ptr
+  load v2 - v3
+  v4 := 40
+  v5 := 20
   text_draw_word
   ;
 
 : title_next_state
-  v0 := STATE_CHAREDIT state_switch
+  v0 := STATE_GAMEPLAY state_switch
   ;
 : audio_state 0
 : audio_state_sustain 0
@@ -1398,6 +1402,33 @@ jump gameloop
       if vf != 0 then
     again
 ;
+
+
+
+: play_sample_octojam
+    v4 := 3
+    v5 := 2
+    v7 := 16
+    v6 := 40
+    i := long sample_octojam1
+    loop
+      audio
+      buzzer := v4
+      delay := v5
+      playback_wait_octojam
+      i += v7
+      v6 += -1
+      if v6 != 0 then
+    again
+    ;
+
+: playback_wait_octojam
+    loop
+      vf := delay
+      if vf != 0 then
+    again
+;
+
 
 
 ## Play a waveform sample
@@ -1706,16 +1737,14 @@ entity_offset ENTITY_AI 2
 # Draw a single glyph
 :alias text_id v0
 :alias text_glyph_width v0
-:alias text_x v1
-:alias text_y v2
+:alias text_x v4
+:alias text_y v5
 : text_draw_glyph
     i := long font_table
     i += text_id
     i += text_id
-    load v3 - v4 # load address of glyph
-    i := glyph_target
-    save v3 - v4
-    0xF0 0x00 : glyph_target 0x00 0x00 # i := long *glyph
+    load v2 - v3 # load address of glyph
+    reg_set_i_v23
     load v0 # load width
     sprite text_x text_y 6
     text_x += text_glyph_width
@@ -1729,21 +1758,37 @@ entity_offset ENTITY_AI 2
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
 : text_draw_word
-  push v3 v5 4 # save the current spot
+  push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
-  i := word_target
-  save v3 - v4
-  math_add_u16_u8imm v3 v4 1
-  push v3 v4 2
-  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
-  load v0 - v0
+#  i := word_target
+#  save v3 - v4
+#  math_add_u16_u8imm v3 v4 1
+#  push v3 v4 2
+#  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
+#  load v0 - v0
+  reg_set_i_v23
+  load v0
+  :breakpoint v0=glyph
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
+  if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
   text_draw_glyph
-  pop v3 v4 2
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 1
+  push v2 v3 2
   jump text_draw_word_internal
 : text_draw_word_end
-  pop v3 v4 2
+  pop v2 v3 2
+  ;
+
+: text_draw_word_word
+  load v2 - v3
+  text_draw_word
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 3
+  push v2 v3 2
+  text_x += 2
+  jump text_draw_word_internal
   ;
 :const screen_dialog 0
 
@@ -10091,6 +10136,7 @@ note 0xFF 0
 : enemy_lab-scientist 0 0 0 tobytes SPR_enemy7 tobytes ai_melee_smart # 'lab-scientist'
 : enemy_lab-turret 0 0 0 tobytes SPR_enemy9 tobytes ai_flank # 'lab-turret'
 : enemy_lab-wall 0 0 0 tobytes SPR_enemy6 tobytes ai_melee # 'lab-wall'
+: enemy_power-electrician 0 0 0 tobytes SPR_enemy1 tobytes ai_melee_smart # 'power-electrician'
 : enemy_ruin-dog 0 0 0 tobytes SPR_enemy11 tobytes ai_melee # 'ruin-dog'
 : enemy_ruin-mechanic 0 0 0 tobytes SPR_enemy1 tobytes ai_melee_smart # 'ruin-mechanic'
 : enemy_ruin-messenger 0 0 0 tobytes SPR_enemy5 tobytes ai_wander # 'ruin-messenger'
@@ -10127,442 +10173,455 @@ note 0xFF 0
 
 
 ### WORDS ###
-: word_void_pants glyph_v glyph_o glyph_i glyph_d glyph__ glyph_p glyph_a glyph_n glyph_t glyph_s 
-: word_void_pants-name :byte GLYPH_ESC_WORD tobytes word_void_pants 
-: word_lab-turret glyph_l glyph_a glyph_b glyph_- glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t 
-: word_lab-turret-name :byte GLYPH_ESC_WORD tobytes word_lab-turret 
-: word_People glyph_P glyph_e glyph_o glyph_p glyph_l glyph_e 
-: word_used glyph_u glyph_s glyph_e glyph_d 
-: word_to glyph_t glyph_o 
-: word_use glyph_u glyph_s glyph_e 
-: word_these glyph_t glyph_h glyph_e glyph_s glyph_e 
-: word_deliver glyph_d glyph_e glyph_l glyph_i glyph_v glyph_e glyph_r 
-: word_packages. glyph_p glyph_a glyph_c glyph_k glyph_a glyph_g glyph_e glyph_s glyph_. 
-: word_They glyph_T glyph_h glyph_e glyph_y 
-: word_aren't glyph_a glyph_r glyph_e glyph_n glyph_' glyph_t 
-: word_hostile, glyph_h glyph_o glyph_s glyph_t glyph_i glyph_l glyph_e glyph_, 
-: word_but glyph_b glyph_u glyph_t 
-: word_they glyph_t glyph_h glyph_e glyph_y 
-: word_tend glyph_t glyph_e glyph_n glyph_d 
-: word_get glyph_g glyph_e glyph_t 
-: word_in glyph_i glyph_n 
-: word_the glyph_t glyph_h glyph_e 
-: word_way. glyph_w glyph_a glyph_y glyph_. 
-: word_ruin-messenger-desc :byte GLYPH_ESC_WORD tobytes word_People :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_use :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_deliver :byte GLYPH_ESC_WORD tobytes word_packages. :byte GLYPH_ESC_WORD tobytes word_They :byte GLYPH_ESC_WORD tobytes word_aren't :byte GLYPH_ESC_WORD tobytes word_hostile, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_tend :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_get :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_way. 
-: word_magnet_shield glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph__ glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d 
-: word_magnet_shield-name :byte GLYPH_ESC_WORD tobytes word_magnet_shield 
-: word_For glyph_F glyph_o glyph_r 
-: word_some glyph_s glyph_o glyph_m glyph_e 
-: word_reason, glyph_r glyph_e glyph_a glyph_s glyph_o glyph_n glyph_, 
-: word_were glyph_w glyph_e glyph_r glyph_e 
-: word_designed glyph_d glyph_e glyph_s glyph_i glyph_g glyph_n glyph_e glyph_d 
-: word_so glyph_s glyph_o 
-: word_that glyph_t glyph_h glyph_a glyph_t 
-: word_you glyph_y glyph_o glyph_u 
-: word_could glyph_c glyph_o glyph_u glyph_l glyph_d 
-: word_put glyph_p glyph_u glyph_t 
-: word_two glyph_t glyph_w glyph_o 
-: word_together glyph_t glyph_o glyph_g glyph_e glyph_t glyph_h glyph_e glyph_r 
-: word_make glyph_m glyph_a glyph_k glyph_e 
-: word_a glyph_a 
-: word_stronger glyph_s glyph_t glyph_r glyph_o glyph_n glyph_g glyph_e glyph_r 
-: word_one. glyph_o glyph_n glyph_e glyph_. 
-: word_exoskeleton-desc :byte GLYPH_ESC_WORD tobytes word_For :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_reason, :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_designed :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_could :byte GLYPH_ESC_WORD tobytes word_put :byte GLYPH_ESC_WORD tobytes word_two :byte GLYPH_ESC_WORD tobytes word_together :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_stronger :byte GLYPH_ESC_WORD tobytes word_one. 
-: word_rocket_shoes glyph_r glyph_o glyph_c glyph_k glyph_e glyph_t glyph__ glyph_s glyph_h glyph_o glyph_e glyph_s 
-: word_rocket_shoes-name :byte GLYPH_ESC_WORD tobytes word_rocket_shoes 
-: word_I glyph_I 
-: word_feel glyph_f glyph_e glyph_e glyph_l 
-: word_like glyph_l glyph_i glyph_k glyph_e 
-: word_focused glyph_f glyph_o glyph_c glyph_u glyph_s glyph_e glyph_d 
-: word_too glyph_t glyph_o glyph_o 
-: word_much glyph_m glyph_u glyph_c glyph_h 
-: word_on glyph_o glyph_n 
-: word_bullet-related glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_- glyph_r glyph_e glyph_l glyph_a glyph_t glyph_e glyph_d 
-: word_technology. glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y glyph_. 
-: word_Maybe glyph_M glyph_a glyph_y glyph_b glyph_e 
-: word_it glyph_i glyph_t 
-: word_was glyph_w glyph_a glyph_s 
-: word_just glyph_j glyph_u glyph_s glyph_t 
-: word_this glyph_t glyph_h glyph_i glyph_s 
-: word_facility...? glyph_f glyph_a glyph_c glyph_i glyph_l glyph_i glyph_t glyph_y glyph_. glyph_. glyph_. glyph_? 
-: word_enlargener-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_feel :byte GLYPH_ESC_WORD tobytes word_like :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_focused :byte GLYPH_ESC_WORD tobytes word_too :byte GLYPH_ESC_WORD tobytes word_much :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_bullet-related :byte GLYPH_ESC_WORD tobytes word_technology. :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_facility...? 
-: word_dog glyph_d glyph_o glyph_g 
-: word_dog-name :byte GLYPH_ESC_WORD tobytes word_dog 
-: word_ruin-scientist glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_c glyph_i glyph_e glyph_n glyph_t glyph_i glyph_s glyph_t 
-: word_ruin-scientist-name :byte GLYPH_ESC_WORD tobytes word_ruin-scientist 
-: word_To glyph_T glyph_o 
-: word_avoid glyph_a glyph_v glyph_o glyph_i glyph_d 
-: word_getting glyph_g glyph_e glyph_t glyph_t glyph_i glyph_n glyph_g 
-: word_electrocuted, glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_o glyph_c glyph_u glyph_t glyph_e glyph_d glyph_, 
-: word_workers glyph_w glyph_o glyph_r glyph_k glyph_e glyph_r glyph_s 
-: word_here glyph_h glyph_e glyph_r glyph_e 
-: word_would glyph_w glyph_o glyph_u glyph_l glyph_d 
-: word_neutralize glyph_n glyph_e glyph_u glyph_t glyph_r glyph_a glyph_l glyph_i glyph_z glyph_e 
-: word_electromagnetic glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_o glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph_i glyph_c 
-: word_fields. glyph_f glyph_i glyph_e glyph_l glyph_d glyph_s glyph_. 
-: word_... glyph_. glyph_. glyph_. 
-: word_Oh, glyph_O glyph_h glyph_, 
-: word_should glyph_s glyph_h glyph_o glyph_u glyph_l glyph_d 
-: word_have glyph_h glyph_a glyph_v glyph_e 
-: word_blamed glyph_b glyph_l glyph_a glyph_m glyph_e glyph_d 
-: word_my glyph_m glyph_y 
-: word_radio glyph_r glyph_a glyph_d glyph_i glyph_o 
-: word_silence glyph_s glyph_i glyph_l glyph_e glyph_n glyph_c glyph_e 
-: word_earlier glyph_e glyph_a glyph_r glyph_l glyph_i glyph_e glyph_r 
-: word_something glyph_s glyph_o glyph_m glyph_e glyph_t glyph_h glyph_i glyph_n glyph_g 
-: word_this... glyph_t glyph_h glyph_i glyph_s glyph_. glyph_. glyph_. 
-: word_dampener-desc :byte GLYPH_ESC_WORD tobytes word_To :byte GLYPH_ESC_WORD tobytes word_avoid :byte GLYPH_ESC_WORD tobytes word_getting :byte GLYPH_ESC_WORD tobytes word_electrocuted, :byte GLYPH_ESC_WORD tobytes word_workers :byte GLYPH_ESC_WORD tobytes word_here :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_use :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_neutralize :byte GLYPH_ESC_WORD tobytes word_electromagnetic :byte GLYPH_ESC_WORD tobytes word_fields. :byte GLYPH_ESC_WORD tobytes word_... :byte GLYPH_ESC_WORD tobytes word_Oh, :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_should :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_blamed :byte GLYPH_ESC_WORD tobytes word_my :byte GLYPH_ESC_WORD tobytes word_radio :byte GLYPH_ESC_WORD tobytes word_silence :byte GLYPH_ESC_WORD tobytes word_earlier :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_something :byte GLYPH_ESC_WORD tobytes word_like :byte GLYPH_ESC_WORD tobytes word_this... 
-: word_Using glyph_U glyph_s glyph_i glyph_n glyph_g 
-: word_space-bending glyph_s glyph_p glyph_a glyph_c glyph_e glyph_- glyph_b glyph_e glyph_n glyph_d glyph_i glyph_n glyph_g 
-: word_technology, glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y glyph_, 
-: word_pants glyph_p glyph_a glyph_n glyph_t glyph_s 
-: word_deeper glyph_d glyph_e glyph_e glyph_p glyph_e glyph_r 
-: word_pockets glyph_p glyph_o glyph_c glyph_k glyph_e glyph_t glyph_s 
-: word_than glyph_t glyph_h glyph_a glyph_n 
-: word_normally glyph_n glyph_o glyph_r glyph_m glyph_a glyph_l glyph_l glyph_y 
-: word_be glyph_b glyph_e 
-: word_possible. glyph_p glyph_o glyph_s glyph_s glyph_i glyph_b glyph_l glyph_e glyph_. 
-: word_Somehow, glyph_S glyph_o glyph_m glyph_e glyph_h glyph_o glyph_w glyph_, 
-: word_makes glyph_m glyph_a glyph_k glyph_e glyph_s 
-: word_reload glyph_r glyph_e glyph_l glyph_o glyph_a glyph_d 
-: word_less. glyph_l glyph_e glyph_s glyph_s glyph_. 
-: word_void_pants-desc :byte GLYPH_ESC_WORD tobytes word_Using :byte GLYPH_ESC_WORD tobytes word_space-bending :byte GLYPH_ESC_WORD tobytes word_technology, :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_pants :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_deeper :byte GLYPH_ESC_WORD tobytes word_pockets :byte GLYPH_ESC_WORD tobytes word_than :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_normally :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_possible. :byte GLYPH_ESC_WORD tobytes word_Somehow, :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_makes :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_reload :byte GLYPH_ESC_WORD tobytes word_less. 
-: word_exoskeleton glyph_e glyph_x glyph_o glyph_s glyph_k glyph_e glyph_l glyph_e glyph_t glyph_o glyph_n 
-: word_exoskeleton-name :byte GLYPH_ESC_WORD tobytes word_exoskeleton 
-: word_heat_shield glyph_h glyph_e glyph_a glyph_t glyph__ glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d 
-: word_heat_shield-name :byte GLYPH_ESC_WORD tobytes word_heat_shield 
-: word_A glyph_A 
-: word_prototype glyph_p glyph_r glyph_o glyph_t glyph_o glyph_t glyph_y glyph_p glyph_e 
-: word_version glyph_v glyph_e glyph_r glyph_s glyph_i glyph_o glyph_n 
-: word_of glyph_o glyph_f 
-: word_quick glyph_q glyph_u glyph_i glyph_c glyph_k 
-: word_turrets glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t glyph_s 
-: word_from glyph_f glyph_r glyph_o glyph_m 
-: word_earlier. glyph_e glyph_a glyph_r glyph_l glyph_i glyph_e glyph_r glyph_. 
-: word_It's glyph_I glyph_t glyph_' glyph_s 
-: word_sturdier glyph_s glyph_t glyph_u glyph_r glyph_d glyph_i glyph_e glyph_r 
-: word_and glyph_a glyph_n glyph_d 
-: word_can glyph_c glyph_a glyph_n 
-: word_fire glyph_f glyph_i glyph_r glyph_e 
-: word_more, glyph_m glyph_o glyph_r glyph_e glyph_, 
-: word_it's glyph_i glyph_t glyph_' glyph_s 
-: word_not glyph_n glyph_o glyph_t 
-: word_as glyph_a glyph_s 
-: word_accurate. glyph_a glyph_c glyph_c glyph_u glyph_r glyph_a glyph_t glyph_e glyph_. 
-: word_lab-turret-desc :byte GLYPH_ESC_WORD tobytes word_A :byte GLYPH_ESC_WORD tobytes word_prototype :byte GLYPH_ESC_WORD tobytes word_version :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_quick :byte GLYPH_ESC_WORD tobytes word_turrets :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_earlier. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_sturdier :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_can :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_more, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_it's :byte GLYPH_ESC_WORD tobytes word_not :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_accurate. 
-: word_The glyph_T glyph_h glyph_e 
-: word_risk glyph_r glyph_i glyph_s glyph_k 
-: word_is glyph_i glyph_s 
-: word_greater glyph_g glyph_r glyph_e glyph_a glyph_t glyph_e glyph_r 
-: word_laboratory, glyph_l glyph_a glyph_b glyph_o glyph_r glyph_a glyph_t glyph_o glyph_r glyph_y glyph_, 
-: word_upgraded glyph_u glyph_p glyph_g glyph_r glyph_a glyph_d glyph_e glyph_d 
-: word_versions glyph_v glyph_e glyph_r glyph_s glyph_i glyph_o glyph_n glyph_s 
-: word_here. glyph_h glyph_e glyph_r glyph_e glyph_. 
-: word_lab-wall-desc :byte GLYPH_ESC_WORD tobytes word_The :byte GLYPH_ESC_WORD tobytes word_risk :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_greater :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_laboratory, :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_upgraded :byte GLYPH_ESC_WORD tobytes word_versions :byte GLYPH_ESC_WORD tobytes word_here. 
-: word_ruin-security glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y 
-: word_ruin-security-name :byte GLYPH_ESC_WORD tobytes word_ruin-security 
-: word_tarski_field glyph_t glyph_a glyph_r glyph_s glyph_k glyph_i glyph__ glyph_f glyph_i glyph_e glyph_l glyph_d 
-: word_tarski_field-name :byte GLYPH_ESC_WORD tobytes word_tarski_field 
-: word_ruin-sentry glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_n glyph_t glyph_r glyph_y 
-: word_ruin-sentry-name :byte GLYPH_ESC_WORD tobytes word_ruin-sentry 
-: word_hissing glyph_h glyph_i glyph_s glyph_s glyph_i glyph_n glyph_g 
-: word_sound glyph_s glyph_o glyph_u glyph_n glyph_d 
-: word_comes glyph_c glyph_o glyph_m glyph_e glyph_s 
-: word_pressure glyph_p glyph_r glyph_e glyph_s glyph_s glyph_u glyph_r glyph_e 
-: word_releasing glyph_r glyph_e glyph_l glyph_e glyph_a glyph_s glyph_i glyph_n glyph_g 
-: word_their glyph_t glyph_h glyph_e glyph_i glyph_r 
-: word_airguns. glyph_a glyph_i glyph_r glyph_g glyph_u glyph_n glyph_s glyph_. 
-: word_It glyph_I glyph_t 
-: word_seems glyph_s glyph_e glyph_e glyph_m glyph_s 
-: word_bullets glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_s 
-: word_recycled glyph_r glyph_e glyph_c glyph_y glyph_c glyph_l glyph_e glyph_d 
-: word_pretty glyph_p glyph_r glyph_e glyph_t glyph_t glyph_y 
-: word_easily glyph_e glyph_a glyph_s glyph_i glyph_l glyph_y 
-: word_if glyph_i glyph_f 
-: word_they're glyph_t glyph_h glyph_e glyph_y glyph_' glyph_r glyph_e 
-: word_chunks glyph_c glyph_h glyph_u glyph_n glyph_k glyph_s 
-: word_metal. glyph_m glyph_e glyph_t glyph_a glyph_l glyph_. 
-: word_ruin-turret-desc :byte GLYPH_ESC_WORD tobytes word_The :byte GLYPH_ESC_WORD tobytes word_hissing :byte GLYPH_ESC_WORD tobytes word_sound :byte GLYPH_ESC_WORD tobytes word_comes :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_pressure :byte GLYPH_ESC_WORD tobytes word_releasing :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_airguns. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_seems :byte GLYPH_ESC_WORD tobytes word_bullets :byte GLYPH_ESC_WORD tobytes word_can :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_recycled :byte GLYPH_ESC_WORD tobytes word_pretty :byte GLYPH_ESC_WORD tobytes word_easily :byte GLYPH_ESC_WORD tobytes word_if :byte GLYPH_ESC_WORD tobytes word_they're :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_chunks :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_metal. 
-: word_think glyph_t glyph_h glyph_i glyph_n glyph_k 
-: word_surveillance glyph_s glyph_u glyph_r glyph_v glyph_e glyph_i glyph_l glyph_l glyph_a glyph_n glyph_c glyph_e 
-: word_robots, glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_, 
-: word_years glyph_y glyph_e glyph_a glyph_r glyph_s 
-: word_decay glyph_d glyph_e glyph_c glyph_a glyph_y 
-: word_corrupted glyph_c glyph_o glyph_r glyph_r glyph_u glyph_p glyph_t glyph_e glyph_d 
-: word_systems. glyph_s glyph_y glyph_s glyph_t glyph_e glyph_m glyph_s glyph_. 
-: word_ruin-sentry-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_surveillance :byte GLYPH_ESC_WORD tobytes word_robots, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_seems :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_years :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_decay :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_corrupted :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_systems. 
-: word_crickets glyph_c glyph_r glyph_i glyph_c glyph_k glyph_e glyph_t glyph_s 
-: word_crickets-name :byte GLYPH_ESC_WORD tobytes word_crickets 
-: word_accelerator glyph_a glyph_c glyph_c glyph_e glyph_l glyph_e glyph_r glyph_a glyph_t glyph_o glyph_r 
-: word_accelerator-name :byte GLYPH_ESC_WORD tobytes word_accelerator 
-: word_enlargener glyph_e glyph_n glyph_l glyph_a glyph_r glyph_g glyph_e glyph_n glyph_e glyph_r 
-: word_enlargener-name :byte GLYPH_ESC_WORD tobytes word_enlargener 
-: word_Doesn't glyph_D glyph_o glyph_e glyph_s glyph_n glyph_' glyph_t 
-: word_kinda glyph_k glyph_i glyph_n glyph_d glyph_a 
-: word_remind glyph_r glyph_e glyph_m glyph_i glyph_n glyph_d 
-: word_accelerators glyph_a glyph_c glyph_c glyph_e glyph_l glyph_e glyph_r glyph_a glyph_t glyph_o glyph_r glyph_s 
-: word_toy glyph_t glyph_o glyph_y 
-: word_car glyph_c glyph_a glyph_r 
-: word_tracks...? glyph_t glyph_r glyph_a glyph_c glyph_k glyph_s glyph_. glyph_. glyph_. glyph_? 
-: word_accelerator-desc :byte GLYPH_ESC_WORD tobytes word_Doesn't :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_kinda :byte GLYPH_ESC_WORD tobytes word_remind :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_accelerators :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_put :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_toy :byte GLYPH_ESC_WORD tobytes word_car :byte GLYPH_ESC_WORD tobytes word_tracks...? 
-: word_These glyph_T glyph_h glyph_e glyph_s glyph_e 
-: word_guys glyph_g glyph_u glyph_y glyph_s 
-: word_try glyph_t glyph_r glyph_y 
-: word_flank glyph_f glyph_l glyph_a glyph_n glyph_k 
-: word_you. glyph_y glyph_o glyph_u glyph_. 
-: word_Don't glyph_D glyph_o glyph_n glyph_' glyph_t 
-: word_let glyph_l glyph_e glyph_t 
-: word_them! glyph_t glyph_h glyph_e glyph_m glyph_! 
-: word_Their glyph_T glyph_h glyph_e glyph_i glyph_r 
-: word_are glyph_a glyph_r glyph_e 
-: word_painful... glyph_p glyph_a glyph_i glyph_n glyph_f glyph_u glyph_l glyph_. glyph_. glyph_. 
-: word_ruin-speed_turret-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_guys :byte GLYPH_ESC_WORD tobytes word_try :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_flank :byte GLYPH_ESC_WORD tobytes word_you. :byte GLYPH_ESC_WORD tobytes word_Don't :byte GLYPH_ESC_WORD tobytes word_let :byte GLYPH_ESC_WORD tobytes word_them! :byte GLYPH_ESC_WORD tobytes word_Their :byte GLYPH_ESC_WORD tobytes word_bullets :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_pretty :byte GLYPH_ESC_WORD tobytes word_painful... 
-: word_dampener glyph_d glyph_a glyph_m glyph_p glyph_e glyph_n glyph_e glyph_r 
-: word_dampener-name :byte GLYPH_ESC_WORD tobytes word_dampener 
-: word_Creates glyph_C glyph_r glyph_e glyph_a glyph_t glyph_e glyph_s 
-: word_strong glyph_s glyph_t glyph_r glyph_o glyph_n glyph_g 
-: word_magnetic glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph_i glyph_c 
-: word_field glyph_f glyph_i glyph_e glyph_l glyph_d 
-: word_repels glyph_r glyph_e glyph_p glyph_e glyph_l glyph_s 
-: word_probably glyph_p glyph_r glyph_o glyph_b glyph_a glyph_b glyph_l glyph_y 
-: word_won't glyph_w glyph_o glyph_n glyph_' glyph_t 
-: word_hurt glyph_h glyph_u glyph_r glyph_t 
-: word_magnet_shield-desc :byte GLYPH_ESC_WORD tobytes word_Creates :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_strong :byte GLYPH_ESC_WORD tobytes word_magnetic :byte GLYPH_ESC_WORD tobytes word_field :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_repels :byte GLYPH_ESC_WORD tobytes word_metal. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_probably :byte GLYPH_ESC_WORD tobytes word_won't :byte GLYPH_ESC_WORD tobytes word_hurt :byte GLYPH_ESC_WORD tobytes word_you. 
-: word_ruin-security3 glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y glyph_3 
-: word_ruin-security3-name :byte GLYPH_ESC_WORD tobytes word_ruin-security3 
-: word_Back glyph_B glyph_a glyph_c glyph_k 
-: word_then, glyph_t glyph_h glyph_e glyph_n glyph_, 
-: word_people glyph_p glyph_e glyph_o glyph_p glyph_l glyph_e 
-: word_controlled glyph_c glyph_o glyph_n glyph_t glyph_r glyph_o glyph_l glyph_l glyph_e glyph_d 
-: word_machines glyph_m glyph_a glyph_c glyph_h glyph_i glyph_n glyph_e glyph_s 
-: word_by glyph_b glyph_y 
-: word_playing glyph_p glyph_l glyph_a glyph_y glyph_i glyph_n glyph_g 
-: word_notes glyph_n glyph_o glyph_t glyph_e glyph_s 
-: word_flute. glyph_f glyph_l glyph_u glyph_t glyph_e glyph_. 
-: word_Ancient glyph_A glyph_n glyph_c glyph_i glyph_e glyph_n glyph_t 
-: word_hackers glyph_h glyph_a glyph_c glyph_k glyph_e glyph_r glyph_s 
-: word_must've glyph_m glyph_u glyph_s glyph_t glyph_' glyph_v glyph_e 
-: word_been glyph_b glyph_e glyph_e glyph_n 
-: word_good glyph_g glyph_o glyph_o glyph_d 
-: word_at glyph_a glyph_t 
-: word_whistling. glyph_w glyph_h glyph_i glyph_s glyph_t glyph_l glyph_i glyph_n glyph_g glyph_. 
-: word_flute-desc :byte GLYPH_ESC_WORD tobytes word_Back :byte GLYPH_ESC_WORD tobytes word_then, :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_controlled :byte GLYPH_ESC_WORD tobytes word_machines :byte GLYPH_ESC_WORD tobytes word_by :byte GLYPH_ESC_WORD tobytes word_playing :byte GLYPH_ESC_WORD tobytes word_notes :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_flute. :byte GLYPH_ESC_WORD tobytes word_Ancient :byte GLYPH_ESC_WORD tobytes word_hackers :byte GLYPH_ESC_WORD tobytes word_must've :byte GLYPH_ESC_WORD tobytes word_been :byte GLYPH_ESC_WORD tobytes word_good :byte GLYPH_ESC_WORD tobytes word_at :byte GLYPH_ESC_WORD tobytes word_whistling. 
-: word_All glyph_A glyph_l glyph_l 
-: word_ancient glyph_a glyph_n glyph_c glyph_i glyph_e glyph_n glyph_t 
-: word_buildings glyph_b glyph_u glyph_i glyph_l glyph_d glyph_i glyph_n glyph_g glyph_s 
-: word_central glyph_c glyph_e glyph_n glyph_t glyph_r glyph_a glyph_l 
-: word_clock glyph_c glyph_l glyph_o glyph_c glyph_k 
-: word_robots glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s 
-: word_sync glyph_s glyph_y glyph_n glyph_c 
-: word_with. glyph_w glyph_i glyph_t glyph_h glyph_. 
-: word_overclock-desc :byte GLYPH_ESC_WORD tobytes word_All :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_ancient :byte GLYPH_ESC_WORD tobytes word_buildings :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_central :byte GLYPH_ESC_WORD tobytes word_clock :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_robots :byte GLYPH_ESC_WORD tobytes word_sync :byte GLYPH_ESC_WORD tobytes word_with. 
-: word_don't glyph_d glyph_o glyph_n glyph_' glyph_t 
-: word_shoes glyph_s glyph_h glyph_o glyph_e glyph_s 
-: word_with glyph_w glyph_i glyph_t glyph_h 
-: word_pressurized glyph_p glyph_r glyph_e glyph_s glyph_s glyph_u glyph_r glyph_i glyph_z glyph_e glyph_d 
-: word_air glyph_a glyph_i glyph_r 
-: word_tanks glyph_t glyph_a glyph_n glyph_k glyph_s 
-: word_taped glyph_t glyph_a glyph_p glyph_e glyph_d 
-: word_really glyph_r glyph_e glyph_a glyph_l glyph_l glyph_y 
-: word_count glyph_c glyph_o glyph_u glyph_n glyph_t 
-: word_treasure. glyph_t glyph_r glyph_e glyph_a glyph_s glyph_u glyph_r glyph_e glyph_. 
-: word_rocket_shoes-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_don't :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_shoes :byte GLYPH_ESC_WORD tobytes word_with :byte GLYPH_ESC_WORD tobytes word_pressurized :byte GLYPH_ESC_WORD tobytes word_air :byte GLYPH_ESC_WORD tobytes word_tanks :byte GLYPH_ESC_WORD tobytes word_taped :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_really :byte GLYPH_ESC_WORD tobytes word_count :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_treasure. 
-: word_flute glyph_f glyph_l glyph_u glyph_t glyph_e 
-: word_flute-name :byte GLYPH_ESC_WORD tobytes word_flute 
-: word_Research glyph_R glyph_e glyph_s glyph_e glyph_a glyph_r glyph_c glyph_h 
-: word_assistants glyph_a glyph_s glyph_s glyph_i glyph_s glyph_t glyph_a glyph_n glyph_t glyph_s 
-: word_sometimes glyph_s glyph_o glyph_m glyph_e glyph_t glyph_i glyph_m glyph_e glyph_s 
-: word_wander glyph_w glyph_a glyph_n glyph_d glyph_e glyph_r 
-: word_away glyph_a glyph_w glyph_a glyph_y 
-: word_assigned glyph_a glyph_s glyph_s glyph_i glyph_g glyph_n glyph_e glyph_d 
-: word_laboratory. glyph_l glyph_a glyph_b glyph_o glyph_r glyph_a glyph_t glyph_o glyph_r glyph_y glyph_. 
-: word_ruin-scientist-desc :byte GLYPH_ESC_WORD tobytes word_Research :byte GLYPH_ESC_WORD tobytes word_assistants :byte GLYPH_ESC_WORD tobytes word_sometimes :byte GLYPH_ESC_WORD tobytes word_wander :byte GLYPH_ESC_WORD tobytes word_away :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_assigned :byte GLYPH_ESC_WORD tobytes word_laboratory. 
-: word_name glyph_n glyph_a glyph_m glyph_e 
-: word_Octo glyph_O glyph_c glyph_t glyph_o 
-: word_friend. glyph_f glyph_r glyph_i glyph_e glyph_n glyph_d glyph_. 
-: word_come glyph_c glyph_o glyph_m glyph_e 
-: word_back glyph_b glyph_a glyph_c glyph_k 
-: word_lose glyph_l glyph_o glyph_s glyph_e 
-: word_them. glyph_t glyph_h glyph_e glyph_m glyph_. 
-: word_dog-desc :byte GLYPH_ESC_WORD tobytes word_Their :byte GLYPH_ESC_WORD tobytes word_name :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_Octo :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_my :byte GLYPH_ESC_WORD tobytes word_friend. :byte GLYPH_ESC_WORD tobytes word_Don't :byte GLYPH_ESC_WORD tobytes word_come :byte GLYPH_ESC_WORD tobytes word_back :byte GLYPH_ESC_WORD tobytes word_if :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_lose :byte GLYPH_ESC_WORD tobytes word_them. 
-: word_Robots glyph_R glyph_o glyph_b glyph_o glyph_t glyph_s 
-: word_fix glyph_f glyph_i glyph_x 
-: word_other glyph_o glyph_t glyph_h glyph_e glyph_r 
-: word_robots... glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_. glyph_. glyph_. 
-: word_who glyph_w glyph_h glyph_o 
-: word_built glyph_b glyph_u glyph_i glyph_l glyph_t 
-: word_them glyph_t glyph_h glyph_e glyph_m 
-: word_gone glyph_g glyph_o glyph_n glyph_e 
-: word_because glyph_b glyph_e glyph_c glyph_a glyph_u glyph_s glyph_e 
-: word_weren't glyph_w glyph_e glyph_r glyph_e glyph_n glyph_' glyph_t 
-: word_needed glyph_n glyph_e glyph_e glyph_d glyph_e glyph_d 
-: word_anymore? glyph_a glyph_n glyph_y glyph_m glyph_o glyph_r glyph_e glyph_? 
-: word_ruin-mechanic-desc :byte GLYPH_ESC_WORD tobytes word_Robots :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_fix :byte GLYPH_ESC_WORD tobytes word_other :byte GLYPH_ESC_WORD tobytes word_robots... :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_built :byte GLYPH_ESC_WORD tobytes word_them :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_gone :byte GLYPH_ESC_WORD tobytes word_because :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_needed :byte GLYPH_ESC_WORD tobytes word_anymore? 
-: word_ruin-turret glyph_r glyph_u glyph_i glyph_n glyph_- glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t 
-: word_ruin-turret-name :byte GLYPH_ESC_WORD tobytes word_ruin-turret 
-: word_antishovel glyph_a glyph_n glyph_t glyph_i glyph_s glyph_h glyph_o glyph_v glyph_e glyph_l 
-: word_antishovel-name :byte GLYPH_ESC_WORD tobytes word_antishovel 
-: word_ruin-mechanic glyph_r glyph_u glyph_i glyph_n glyph_- glyph_m glyph_e glyph_c glyph_h glyph_a glyph_n glyph_i glyph_c 
-: word_ruin-mechanic-name :byte GLYPH_ESC_WORD tobytes word_ruin-mechanic 
-: word_those glyph_t glyph_h glyph_o glyph_s glyph_e 
-: word_brave glyph_b glyph_r glyph_a glyph_v glyph_e 
-: word_enough glyph_e glyph_n glyph_o glyph_u glyph_g glyph_h 
-: word_become glyph_b glyph_e glyph_c glyph_o glyph_m glyph_e 
-: word_fully glyph_f glyph_u glyph_l glyph_l glyph_y 
-: word_robotic, glyph_r glyph_o glyph_b glyph_o glyph_t glyph_i glyph_c glyph_, 
-: word_still glyph_s glyph_t glyph_i glyph_l glyph_l 
-: word_wanted glyph_w glyph_a glyph_n glyph_t glyph_e glyph_d 
-: word_benefits, glyph_b glyph_e glyph_n glyph_e glyph_f glyph_i glyph_t glyph_s glyph_, 
-: word_replacement glyph_r glyph_e glyph_p glyph_l glyph_a glyph_c glyph_e glyph_m glyph_e glyph_n glyph_t 
-: word_blood glyph_b glyph_l glyph_o glyph_o glyph_d 
-: word_made. glyph_m glyph_a glyph_d glyph_e glyph_. 
-: word_Seems glyph_S glyph_e glyph_e glyph_m glyph_s 
-: word_little glyph_l glyph_i glyph_t glyph_t glyph_l glyph_e 
-: word_uncomfortable, glyph_u glyph_n glyph_c glyph_o glyph_m glyph_f glyph_o glyph_r glyph_t glyph_a glyph_b glyph_l glyph_e glyph_, 
-: word_though... glyph_t glyph_h glyph_o glyph_u glyph_g glyph_h glyph_. glyph_. glyph_. 
-: word_nano_blood-desc :byte GLYPH_ESC_WORD tobytes word_For :byte GLYPH_ESC_WORD tobytes word_those :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_brave :byte GLYPH_ESC_WORD tobytes word_enough :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_become :byte GLYPH_ESC_WORD tobytes word_fully :byte GLYPH_ESC_WORD tobytes word_robotic, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_still :byte GLYPH_ESC_WORD tobytes word_wanted :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_benefits, :byte GLYPH_ESC_WORD tobytes word_replacement :byte GLYPH_ESC_WORD tobytes word_blood :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_made. :byte GLYPH_ESC_WORD tobytes word_Seems :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_little :byte GLYPH_ESC_WORD tobytes word_uncomfortable, :byte GLYPH_ESC_WORD tobytes word_though... 
-: word_ruin-wall glyph_r glyph_u glyph_i glyph_n glyph_- glyph_w glyph_a glyph_l glyph_l 
-: word_ruin-wall-name :byte GLYPH_ESC_WORD tobytes word_ruin-wall 
-: word_Apparently, glyph_A glyph_p glyph_p glyph_a glyph_r glyph_e glyph_n glyph_t glyph_l glyph_y glyph_, 
-: word_possible glyph_p glyph_o glyph_s glyph_s glyph_i glyph_b glyph_l glyph_e 
-: word_duplicate glyph_d glyph_u glyph_p glyph_l glyph_i glyph_c glyph_a glyph_t glyph_e 
-: word_matter, glyph_m glyph_a glyph_t glyph_t glyph_e glyph_r glyph_, 
-: word_invented glyph_i glyph_n glyph_v glyph_e glyph_n glyph_t glyph_e glyph_d 
-: word_technology glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y 
-: word_more glyph_m glyph_o glyph_r glyph_e 
-: word_bullets. glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_s glyph_. 
-: word_why glyph_w glyph_h glyph_y 
-: word_around glyph_a glyph_r glyph_o glyph_u glyph_n glyph_d 
-: word_anymore. glyph_a glyph_n glyph_y glyph_m glyph_o glyph_r glyph_e glyph_. 
-: word_tarski_field-desc :byte GLYPH_ESC_WORD tobytes word_Apparently, :byte GLYPH_ESC_WORD tobytes word_it's :byte GLYPH_ESC_WORD tobytes word_possible :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_duplicate :byte GLYPH_ESC_WORD tobytes word_matter, :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_invented :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_technology :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_more :byte GLYPH_ESC_WORD tobytes word_bullets. :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_why :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_aren't :byte GLYPH_ESC_WORD tobytes word_around :byte GLYPH_ESC_WORD tobytes word_anymore. 
-: word_ruin-security2 glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y glyph_2 
-: word_ruin-security2-name :byte GLYPH_ESC_WORD tobytes word_ruin-security2 
-: word_ruin-speed_turret glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_p glyph_e glyph_e glyph_d glyph__ glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t 
-: word_ruin-speed_turret-name :byte GLYPH_ESC_WORD tobytes word_ruin-speed_turret 
-: word_someone glyph_s glyph_o glyph_m glyph_e glyph_o glyph_n glyph_e 
-: word_took glyph_t glyph_o glyph_o glyph_k 
-: word_gun glyph_g glyph_u glyph_n 
-: word_one glyph_o glyph_n glyph_e 
-: word_standard glyph_s glyph_t glyph_a glyph_n glyph_d glyph_a glyph_r glyph_d 
-: word_model glyph_m glyph_o glyph_d glyph_e glyph_l 
-: word_droids glyph_d glyph_r glyph_o glyph_i glyph_d glyph_s 
-: word_gave glyph_g glyph_a glyph_v glyph_e 
-: word_bigger glyph_b glyph_i glyph_g glyph_g glyph_e glyph_r 
-: word_instead. glyph_i glyph_n glyph_s glyph_t glyph_e glyph_a glyph_d glyph_. 
-: word_doesn't glyph_d glyph_o glyph_e glyph_s glyph_n glyph_' glyph_t 
-: word_seem glyph_s glyph_e glyph_e glyph_m 
-: word_know glyph_k glyph_n glyph_o glyph_w 
-: word_how glyph_h glyph_o glyph_w 
-: word_handle glyph_h glyph_a glyph_n glyph_d glyph_l glyph_e 
-: word_it, glyph_i glyph_t glyph_, 
-: word_you'll glyph_y glyph_o glyph_u glyph_' glyph_l glyph_l 
-: word_fine. glyph_f glyph_i glyph_n glyph_e glyph_. 
-: word_ruin-security3-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_someone :byte GLYPH_ESC_WORD tobytes word_took :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_gun :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_standard :byte GLYPH_ESC_WORD tobytes word_model :byte GLYPH_ESC_WORD tobytes word_droids :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_gave :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_bigger :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_instead. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_doesn't :byte GLYPH_ESC_WORD tobytes word_seem :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_know :byte GLYPH_ESC_WORD tobytes word_how :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_handle :byte GLYPH_ESC_WORD tobytes word_it, :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_you'll :byte GLYPH_ESC_WORD tobytes word_probably :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_fine. 
-: word_If glyph_I glyph_f 
-: word_find glyph_f glyph_i glyph_n glyph_d 
-: word_deactivated glyph_d glyph_e glyph_a glyph_c glyph_t glyph_i glyph_v glyph_a glyph_t glyph_e glyph_d 
-: word_one, glyph_o glyph_n glyph_e glyph_, 
-: word_sure glyph_s glyph_u glyph_r glyph_e 
-: word_take glyph_t glyph_a glyph_k glyph_e 
-: word_you; glyph_y glyph_o glyph_u glyph_; 
-: word_we glyph_w glyph_e 
-: word_need glyph_n glyph_e glyph_e glyph_d 
-: word_pet. glyph_p glyph_e glyph_t glyph_. 
-: word_ruin-dog-desc :byte GLYPH_ESC_WORD tobytes word_If :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_find :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_deactivated :byte GLYPH_ESC_WORD tobytes word_one, :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_sure :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_take :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_with :byte GLYPH_ESC_WORD tobytes word_you; :byte GLYPH_ESC_WORD tobytes word_we :byte GLYPH_ESC_WORD tobytes word_really :byte GLYPH_ESC_WORD tobytes word_need :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_pet. 
-: word_What glyph_W glyph_h glyph_a glyph_t 
-: word_even glyph_e glyph_v glyph_e glyph_n 
-: word_for? glyph_f glyph_o glyph_r glyph_? 
-: word_Why glyph_W glyph_h glyph_y 
-: word_ever glyph_e glyph_v glyph_e glyph_r 
-: word_summon glyph_s glyph_u glyph_m glyph_m glyph_o glyph_n 
-: word_cubic glyph_c glyph_u glyph_b glyph_i glyph_c 
-: word_meter glyph_m glyph_e glyph_t glyph_e glyph_r 
-: word_dirt? glyph_d glyph_i glyph_r glyph_t glyph_? 
-: word_antishovel-desc :byte GLYPH_ESC_WORD tobytes word_What :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_even :byte GLYPH_ESC_WORD tobytes word_for? :byte GLYPH_ESC_WORD tobytes word_Why :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_ever :byte GLYPH_ESC_WORD tobytes word_need :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_summon :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_cubic :byte GLYPH_ESC_WORD tobytes word_meter :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_dirt? 
-: word_do glyph_d glyph_o 
-: word_lab glyph_l glyph_a glyph_b 
-: word_assistant glyph_a glyph_s glyph_s glyph_i glyph_s glyph_t glyph_a glyph_n glyph_t 
-: word_work. glyph_w glyph_o glyph_r glyph_k glyph_. 
-: word_Science glyph_S glyph_c glyph_i glyph_e glyph_n glyph_c glyph_e 
-: word_few glyph_f glyph_e glyph_w 
-: word_areas glyph_a glyph_r glyph_e glyph_a glyph_s 
-: word_where glyph_w glyph_h glyph_e glyph_r glyph_e 
-: word_couldn't glyph_c glyph_o glyph_u glyph_l glyph_d glyph_n glyph_' glyph_t 
-: word_everything. glyph_e glyph_v glyph_e glyph_r glyph_y glyph_t glyph_h glyph_i glyph_n glyph_g glyph_. 
-: word_lab-scientist-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_do :byte GLYPH_ESC_WORD tobytes word_lab :byte GLYPH_ESC_WORD tobytes word_assistant :byte GLYPH_ESC_WORD tobytes word_work. :byte GLYPH_ESC_WORD tobytes word_Science :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_few :byte GLYPH_ESC_WORD tobytes word_areas :byte GLYPH_ESC_WORD tobytes word_where :byte GLYPH_ESC_WORD tobytes word_robots :byte GLYPH_ESC_WORD tobytes word_couldn't :byte GLYPH_ESC_WORD tobytes word_do :byte GLYPH_ESC_WORD tobytes word_everything. 
-: word_nano_blood glyph_n glyph_a glyph_n glyph_o glyph__ glyph_b glyph_l glyph_o glyph_o glyph_d 
-: word_nano_blood-name :byte GLYPH_ESC_WORD tobytes word_nano_blood 
-: word_lab-wall glyph_l glyph_a glyph_b glyph_- glyph_w glyph_a glyph_l glyph_l 
-: word_lab-wall-name :byte GLYPH_ESC_WORD tobytes word_lab-wall 
-: word_Who glyph_W glyph_h glyph_o 
-: word_did glyph_d glyph_i glyph_d 
-: word_build glyph_b glyph_u glyph_i glyph_l glyph_d 
-: word_deter? glyph_d glyph_e glyph_t glyph_e glyph_r glyph_? 
-: word_planned glyph_p glyph_l glyph_a glyph_n glyph_n glyph_e glyph_d 
-: word_for glyph_f glyph_o glyph_r 
-: word_us glyph_u glyph_s 
-: word_go glyph_g glyph_o 
-: word_digging glyph_d glyph_i glyph_g glyph_g glyph_i glyph_n glyph_g 
-: word_up glyph_u glyph_p 
-: word_stuff. glyph_s glyph_t glyph_u glyph_f glyph_f glyph_. 
-: word_ruin-security-desc :byte GLYPH_ESC_WORD tobytes word_Who :byte GLYPH_ESC_WORD tobytes word_did :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_build :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_deter? :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_don't :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_planned :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_us :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_go :byte GLYPH_ESC_WORD tobytes word_digging :byte GLYPH_ESC_WORD tobytes word_up :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_stuff. 
-: word_lab-scientist glyph_l glyph_a glyph_b glyph_- glyph_s glyph_c glyph_i glyph_e glyph_n glyph_t glyph_i glyph_s glyph_t 
-: word_lab-scientist-name :byte GLYPH_ESC_WORD tobytes word_lab-scientist 
-: word_ruin-dog glyph_r glyph_u glyph_i glyph_n glyph_- glyph_d glyph_o glyph_g 
-: word_ruin-dog-name :byte GLYPH_ESC_WORD tobytes word_ruin-dog 
-: word_overclock glyph_o glyph_v glyph_e glyph_r glyph_c glyph_l glyph_o glyph_c glyph_k 
-: word_overclock-name :byte GLYPH_ESC_WORD tobytes word_overclock 
-: word_Before glyph_B glyph_e glyph_f glyph_o glyph_r glyph_e 
-: word_modern glyph_m glyph_o glyph_d glyph_e glyph_r glyph_n 
-: word_found glyph_f glyph_o glyph_u glyph_n glyph_d 
-: word_out glyph_o glyph_u glyph_t 
-: word_what glyph_w glyph_h glyph_a glyph_t 
-: word_for, glyph_f glyph_o glyph_r glyph_, 
-: word_thought glyph_t glyph_h glyph_o glyph_u glyph_g glyph_h glyph_t 
-: word_sort glyph_s glyph_o glyph_r glyph_t 
-: word_shield. glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d glyph_. 
-: word_actually glyph_a glyph_c glyph_t glyph_u glyph_a glyph_l glyph_l glyph_y 
-: word_melting glyph_m glyph_e glyph_l glyph_t glyph_i glyph_n glyph_g 
-: word_through glyph_t glyph_h glyph_r glyph_o glyph_u glyph_g glyph_h 
-: word_rock. glyph_r glyph_o glyph_c glyph_k glyph_. 
-: word_walls glyph_w glyph_a glyph_l glyph_l glyph_s 
-: word_made glyph_m glyph_a glyph_d glyph_e 
-: word_advanced, glyph_a glyph_d glyph_v glyph_a glyph_n glyph_c glyph_e glyph_d glyph_, 
-: word_materials, glyph_m glyph_a glyph_t glyph_e glyph_r glyph_i glyph_a glyph_l glyph_s glyph_, 
-: word_you'd glyph_y glyph_o glyph_u glyph_' glyph_d 
-: word_able glyph_a glyph_b glyph_l glyph_e 
-: word_melt glyph_m glyph_e glyph_l glyph_t 
-: word_your glyph_y glyph_o glyph_u glyph_r 
-: word_way glyph_w glyph_a glyph_y 
-: word_bottom! glyph_b glyph_o glyph_t glyph_t glyph_o glyph_m glyph_! 
-: word_heat_shield-desc :byte GLYPH_ESC_WORD tobytes word_Before :byte GLYPH_ESC_WORD tobytes word_modern :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_found :byte GLYPH_ESC_WORD tobytes word_out :byte GLYPH_ESC_WORD tobytes word_what :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_for, :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_thought :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_sort :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_shield. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_actually :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_melting :byte GLYPH_ESC_WORD tobytes word_through :byte GLYPH_ESC_WORD tobytes word_rock. :byte GLYPH_ESC_WORD tobytes word_If :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_walls :byte GLYPH_ESC_WORD tobytes word_here :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_made :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_advanced, :byte GLYPH_ESC_WORD tobytes word_ancient :byte GLYPH_ESC_WORD tobytes word_materials, :byte GLYPH_ESC_WORD tobytes word_you'd :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_able :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_melt :byte GLYPH_ESC_WORD tobytes word_your :byte GLYPH_ESC_WORD tobytes word_way :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_bottom! 
-: word_Instead glyph_I glyph_n glyph_s glyph_t glyph_e glyph_a glyph_d 
-: word_janitors, glyph_j glyph_a glyph_n glyph_i glyph_t glyph_o glyph_r glyph_s glyph_, 
-: word_swarms glyph_s glyph_w glyph_a glyph_r glyph_m glyph_s 
-: word_tiny glyph_t glyph_i glyph_n glyph_y 
-: word_robots. glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_. 
-: word_crickets-desc :byte GLYPH_ESC_WORD tobytes word_Instead :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_janitors, :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_must've :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_swarms :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_tiny :byte GLYPH_ESC_WORD tobytes word_robots. 
-: word_This glyph_T glyph_h glyph_i glyph_s 
-: word_security glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y 
-: word_droid glyph_d glyph_r glyph_o glyph_i glyph_d 
-: word_has glyph_h glyph_a glyph_s 
-: word_an glyph_a glyph_n 
-: word_pistol. glyph_p glyph_i glyph_s glyph_t glyph_o glyph_l glyph_. 
-: word_smart glyph_s glyph_m glyph_a glyph_r glyph_t 
-: word_seek glyph_s glyph_e glyph_e glyph_k 
-: word_cover, glyph_c glyph_o glyph_v glyph_e glyph_r glyph_, 
-: word_shoot glyph_s glyph_h glyph_o glyph_o glyph_t 
-: word_properly. glyph_p glyph_r glyph_o glyph_p glyph_e glyph_r glyph_l glyph_y glyph_. 
-: word_ruin-security2-desc :byte GLYPH_ESC_WORD tobytes word_This :byte GLYPH_ESC_WORD tobytes word_model :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_security :byte GLYPH_ESC_WORD tobytes word_droid :byte GLYPH_ESC_WORD tobytes word_has :byte GLYPH_ESC_WORD tobytes word_an :byte GLYPH_ESC_WORD tobytes word_air :byte GLYPH_ESC_WORD tobytes word_pistol. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_smart :byte GLYPH_ESC_WORD tobytes word_enough :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_seek :byte GLYPH_ESC_WORD tobytes word_cover, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_not :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_shoot :byte GLYPH_ESC_WORD tobytes word_properly. 
-: word_ruin-messenger glyph_r glyph_u glyph_i glyph_n glyph_- glyph_m glyph_e glyph_s glyph_s glyph_e glyph_n glyph_g glyph_e glyph_r 
-: word_ruin-messenger-name :byte GLYPH_ESC_WORD tobytes word_ruin-messenger 
-: word_originally glyph_o glyph_r glyph_i glyph_g glyph_i glyph_n glyph_a glyph_l glyph_l glyph_y 
-: word_suppression, glyph_s glyph_u glyph_p glyph_p glyph_r glyph_e glyph_s glyph_s glyph_i glyph_o glyph_n glyph_, 
-: word_also glyph_a glyph_l glyph_s glyph_o 
-: word_worked glyph_w glyph_o glyph_r glyph_k glyph_e glyph_d 
-: word_well glyph_w glyph_e glyph_l glyph_l 
-: word_suppression. glyph_s glyph_u glyph_p glyph_p glyph_r glyph_e glyph_s glyph_s glyph_i glyph_o glyph_n glyph_. 
-: word_ruin-wall-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_originally :byte GLYPH_ESC_WORD tobytes word_designed :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_suppression, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_also :byte GLYPH_ESC_WORD tobytes word_worked :byte GLYPH_ESC_WORD tobytes word_well :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_suppression. 
+: word_These glyph_T glyph_h glyph_e glyph_s glyph_e :byte GLYPH_ESC_END
+: word_guys glyph_g glyph_u glyph_y glyph_s :byte GLYPH_ESC_END
+: word_try glyph_t glyph_r glyph_y :byte GLYPH_ESC_END
+: word_to glyph_t glyph_o :byte GLYPH_ESC_END
+: word_flank glyph_f glyph_l glyph_a glyph_n glyph_k :byte GLYPH_ESC_END
+: word_you. glyph_y glyph_o glyph_u glyph_. :byte GLYPH_ESC_END
+: word_Don't glyph_D glyph_o glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_let glyph_l glyph_e glyph_t :byte GLYPH_ESC_END
+: word_them! glyph_t glyph_h glyph_e glyph_m glyph_! :byte GLYPH_ESC_END
+: word_Their glyph_T glyph_h glyph_e glyph_i glyph_r :byte GLYPH_ESC_END
+: word_bullets glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_s :byte GLYPH_ESC_END
+: word_are glyph_a glyph_r glyph_e :byte GLYPH_ESC_END
+: word_pretty glyph_p glyph_r glyph_e glyph_t glyph_t glyph_y :byte GLYPH_ESC_END
+: word_painful... glyph_p glyph_a glyph_i glyph_n glyph_f glyph_u glyph_l glyph_. glyph_. glyph_. :byte GLYPH_ESC_END
+: word_ruin-speed_turret-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_guys :byte GLYPH_ESC_WORD tobytes word_try :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_flank :byte GLYPH_ESC_WORD tobytes word_you. :byte GLYPH_ESC_WORD tobytes word_Don't :byte GLYPH_ESC_WORD tobytes word_let :byte GLYPH_ESC_WORD tobytes word_them! :byte GLYPH_ESC_WORD tobytes word_Their :byte GLYPH_ESC_WORD tobytes word_bullets :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_pretty :byte GLYPH_ESC_WORD tobytes word_painful... :byte GLYPH_ESC_END
+: word_dog glyph_d glyph_o glyph_g :byte GLYPH_ESC_END
+: word_dog-name :byte GLYPH_ESC_WORD tobytes word_dog :byte GLYPH_ESC_END
+: word_void_pants glyph_v glyph_o glyph_i glyph_d glyph__ glyph_p glyph_a glyph_n glyph_t glyph_s :byte GLYPH_ESC_END
+: word_void_pants-name :byte GLYPH_ESC_WORD tobytes word_void_pants :byte GLYPH_ESC_END
+: word_ruin-messenger glyph_r glyph_u glyph_i glyph_n glyph_- glyph_m glyph_e glyph_s glyph_s glyph_e glyph_n glyph_g glyph_e glyph_r :byte GLYPH_ESC_END
+: word_ruin-messenger-name :byte GLYPH_ESC_WORD tobytes word_ruin-messenger :byte GLYPH_ESC_END
+: word_lab-wall glyph_l glyph_a glyph_b glyph_- glyph_w glyph_a glyph_l glyph_l :byte GLYPH_ESC_END
+: word_lab-wall-name :byte GLYPH_ESC_WORD tobytes word_lab-wall :byte GLYPH_ESC_END
+: word_I glyph_I :byte GLYPH_ESC_END
+: word_feel glyph_f glyph_e glyph_e glyph_l :byte GLYPH_ESC_END
+: word_like glyph_l glyph_i glyph_k glyph_e :byte GLYPH_ESC_END
+: word_they glyph_t glyph_h glyph_e glyph_y :byte GLYPH_ESC_END
+: word_focused glyph_f glyph_o glyph_c glyph_u glyph_s glyph_e glyph_d :byte GLYPH_ESC_END
+: word_too glyph_t glyph_o glyph_o :byte GLYPH_ESC_END
+: word_much glyph_m glyph_u glyph_c glyph_h :byte GLYPH_ESC_END
+: word_on glyph_o glyph_n :byte GLYPH_ESC_END
+: word_bullet-related glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_- glyph_r glyph_e glyph_l glyph_a glyph_t glyph_e glyph_d :byte GLYPH_ESC_END
+: word_technology. glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y glyph_. :byte GLYPH_ESC_END
+: word_Maybe glyph_M glyph_a glyph_y glyph_b glyph_e :byte GLYPH_ESC_END
+: word_it glyph_i glyph_t :byte GLYPH_ESC_END
+: word_was glyph_w glyph_a glyph_s :byte GLYPH_ESC_END
+: word_just glyph_j glyph_u glyph_s glyph_t :byte GLYPH_ESC_END
+: word_this glyph_t glyph_h glyph_i glyph_s :byte GLYPH_ESC_END
+: word_facility...? glyph_f glyph_a glyph_c glyph_i glyph_l glyph_i glyph_t glyph_y glyph_. glyph_. glyph_. glyph_? :byte GLYPH_ESC_END
+: word_enlargener-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_feel :byte GLYPH_ESC_WORD tobytes word_like :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_focused :byte GLYPH_ESC_WORD tobytes word_too :byte GLYPH_ESC_WORD tobytes word_much :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_bullet-related :byte GLYPH_ESC_WORD tobytes word_technology. :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_facility...? :byte GLYPH_ESC_END
+: word_This glyph_T glyph_h glyph_i glyph_s :byte GLYPH_ESC_END
+: word_model glyph_m glyph_o glyph_d glyph_e glyph_l :byte GLYPH_ESC_END
+: word_of glyph_o glyph_f :byte GLYPH_ESC_END
+: word_the glyph_t glyph_h glyph_e :byte GLYPH_ESC_END
+: word_security glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y :byte GLYPH_ESC_END
+: word_droid glyph_d glyph_r glyph_o glyph_i glyph_d :byte GLYPH_ESC_END
+: word_has glyph_h glyph_a glyph_s :byte GLYPH_ESC_END
+: word_an glyph_a glyph_n :byte GLYPH_ESC_END
+: word_air glyph_a glyph_i glyph_r :byte GLYPH_ESC_END
+: word_pistol. glyph_p glyph_i glyph_s glyph_t glyph_o glyph_l glyph_. :byte GLYPH_ESC_END
+: word_It's glyph_I glyph_t glyph_' glyph_s :byte GLYPH_ESC_END
+: word_smart glyph_s glyph_m glyph_a glyph_r glyph_t :byte GLYPH_ESC_END
+: word_enough glyph_e glyph_n glyph_o glyph_u glyph_g glyph_h :byte GLYPH_ESC_END
+: word_seek glyph_s glyph_e glyph_e glyph_k :byte GLYPH_ESC_END
+: word_cover, glyph_c glyph_o glyph_v glyph_e glyph_r glyph_, :byte GLYPH_ESC_END
+: word_but glyph_b glyph_u glyph_t :byte GLYPH_ESC_END
+: word_not glyph_n glyph_o glyph_t :byte GLYPH_ESC_END
+: word_shoot glyph_s glyph_h glyph_o glyph_o glyph_t :byte GLYPH_ESC_END
+: word_properly. glyph_p glyph_r glyph_o glyph_p glyph_e glyph_r glyph_l glyph_y glyph_. :byte GLYPH_ESC_END
+: word_ruin-security2-desc :byte GLYPH_ESC_WORD tobytes word_This :byte GLYPH_ESC_WORD tobytes word_model :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_security :byte GLYPH_ESC_WORD tobytes word_droid :byte GLYPH_ESC_WORD tobytes word_has :byte GLYPH_ESC_WORD tobytes word_an :byte GLYPH_ESC_WORD tobytes word_air :byte GLYPH_ESC_WORD tobytes word_pistol. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_smart :byte GLYPH_ESC_WORD tobytes word_enough :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_seek :byte GLYPH_ESC_WORD tobytes word_cover, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_not :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_shoot :byte GLYPH_ESC_WORD tobytes word_properly. :byte GLYPH_ESC_END
+: word_name glyph_n glyph_a glyph_m glyph_e :byte GLYPH_ESC_END
+: word_is glyph_i glyph_s :byte GLYPH_ESC_END
+: word_Octo glyph_O glyph_c glyph_t glyph_o :byte GLYPH_ESC_END
+: word_and glyph_a glyph_n glyph_d :byte GLYPH_ESC_END
+: word_my glyph_m glyph_y :byte GLYPH_ESC_END
+: word_friend. glyph_f glyph_r glyph_i glyph_e glyph_n glyph_d glyph_. :byte GLYPH_ESC_END
+: word_come glyph_c glyph_o glyph_m glyph_e :byte GLYPH_ESC_END
+: word_back glyph_b glyph_a glyph_c glyph_k :byte GLYPH_ESC_END
+: word_if glyph_i glyph_f :byte GLYPH_ESC_END
+: word_you glyph_y glyph_o glyph_u :byte GLYPH_ESC_END
+: word_lose glyph_l glyph_o glyph_s glyph_e :byte GLYPH_ESC_END
+: word_them. glyph_t glyph_h glyph_e glyph_m glyph_. :byte GLYPH_ESC_END
+: word_dog-desc :byte GLYPH_ESC_WORD tobytes word_Their :byte GLYPH_ESC_WORD tobytes word_name :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_Octo :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_my :byte GLYPH_ESC_WORD tobytes word_friend. :byte GLYPH_ESC_WORD tobytes word_Don't :byte GLYPH_ESC_WORD tobytes word_come :byte GLYPH_ESC_WORD tobytes word_back :byte GLYPH_ESC_WORD tobytes word_if :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_lose :byte GLYPH_ESC_WORD tobytes word_them. :byte GLYPH_ESC_END
+: word_ruin-scientist glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_c glyph_i glyph_e glyph_n glyph_t glyph_i glyph_s glyph_t :byte GLYPH_ESC_END
+: word_ruin-scientist-name :byte GLYPH_ESC_WORD tobytes word_ruin-scientist :byte GLYPH_ESC_END
+: word_All glyph_A glyph_l glyph_l :byte GLYPH_ESC_END
+: word_ancient glyph_a glyph_n glyph_c glyph_i glyph_e glyph_n glyph_t :byte GLYPH_ESC_END
+: word_buildings glyph_b glyph_u glyph_i glyph_l glyph_d glyph_i glyph_n glyph_g glyph_s :byte GLYPH_ESC_END
+: word_have glyph_h glyph_a glyph_v glyph_e :byte GLYPH_ESC_END
+: word_a glyph_a :byte GLYPH_ESC_END
+: word_central glyph_c glyph_e glyph_n glyph_t glyph_r glyph_a glyph_l :byte GLYPH_ESC_END
+: word_clock glyph_c glyph_l glyph_o glyph_c glyph_k :byte GLYPH_ESC_END
+: word_that glyph_t glyph_h glyph_a glyph_t :byte GLYPH_ESC_END
+: word_robots glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s :byte GLYPH_ESC_END
+: word_sync glyph_s glyph_y glyph_n glyph_c :byte GLYPH_ESC_END
+: word_with. glyph_w glyph_i glyph_t glyph_h glyph_. :byte GLYPH_ESC_END
+: word_overclock-desc :byte GLYPH_ESC_WORD tobytes word_All :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_ancient :byte GLYPH_ESC_WORD tobytes word_buildings :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_central :byte GLYPH_ESC_WORD tobytes word_clock :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_robots :byte GLYPH_ESC_WORD tobytes word_sync :byte GLYPH_ESC_WORD tobytes word_with. :byte GLYPH_ESC_END
+: word_Using glyph_U glyph_s glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_space-bending glyph_s glyph_p glyph_a glyph_c glyph_e glyph_- glyph_b glyph_e glyph_n glyph_d glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_technology, glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y glyph_, :byte GLYPH_ESC_END
+: word_these glyph_t glyph_h glyph_e glyph_s glyph_e :byte GLYPH_ESC_END
+: word_pants glyph_p glyph_a glyph_n glyph_t glyph_s :byte GLYPH_ESC_END
+: word_deeper glyph_d glyph_e glyph_e glyph_p glyph_e glyph_r :byte GLYPH_ESC_END
+: word_pockets glyph_p glyph_o glyph_c glyph_k glyph_e glyph_t glyph_s :byte GLYPH_ESC_END
+: word_than glyph_t glyph_h glyph_a glyph_n :byte GLYPH_ESC_END
+: word_would glyph_w glyph_o glyph_u glyph_l glyph_d :byte GLYPH_ESC_END
+: word_normally glyph_n glyph_o glyph_r glyph_m glyph_a glyph_l glyph_l glyph_y :byte GLYPH_ESC_END
+: word_be glyph_b glyph_e :byte GLYPH_ESC_END
+: word_possible. glyph_p glyph_o glyph_s glyph_s glyph_i glyph_b glyph_l glyph_e glyph_. :byte GLYPH_ESC_END
+: word_Somehow, glyph_S glyph_o glyph_m glyph_e glyph_h glyph_o glyph_w glyph_, :byte GLYPH_ESC_END
+: word_makes glyph_m glyph_a glyph_k glyph_e glyph_s :byte GLYPH_ESC_END
+: word_reload glyph_r glyph_e glyph_l glyph_o glyph_a glyph_d :byte GLYPH_ESC_END
+: word_less. glyph_l glyph_e glyph_s glyph_s glyph_. :byte GLYPH_ESC_END
+: word_void_pants-desc :byte GLYPH_ESC_WORD tobytes word_Using :byte GLYPH_ESC_WORD tobytes word_space-bending :byte GLYPH_ESC_WORD tobytes word_technology, :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_pants :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_deeper :byte GLYPH_ESC_WORD tobytes word_pockets :byte GLYPH_ESC_WORD tobytes word_than :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_normally :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_possible. :byte GLYPH_ESC_WORD tobytes word_Somehow, :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_makes :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_reload :byte GLYPH_ESC_WORD tobytes word_less. :byte GLYPH_ESC_END
+: word_magnet_shield glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph__ glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d :byte GLYPH_ESC_END
+: word_magnet_shield-name :byte GLYPH_ESC_WORD tobytes word_magnet_shield :byte GLYPH_ESC_END
+: word_Robots glyph_R glyph_o glyph_b glyph_o glyph_t glyph_s :byte GLYPH_ESC_END
+: word_fix glyph_f glyph_i glyph_x :byte GLYPH_ESC_END
+: word_other glyph_o glyph_t glyph_h glyph_e glyph_r :byte GLYPH_ESC_END
+: word_robots... glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_. glyph_. glyph_. :byte GLYPH_ESC_END
+: word_people glyph_p glyph_e glyph_o glyph_p glyph_l glyph_e :byte GLYPH_ESC_END
+: word_who glyph_w glyph_h glyph_o :byte GLYPH_ESC_END
+: word_built glyph_b glyph_u glyph_i glyph_l glyph_t :byte GLYPH_ESC_END
+: word_them glyph_t glyph_h glyph_e glyph_m :byte GLYPH_ESC_END
+: word_gone glyph_g glyph_o glyph_n glyph_e :byte GLYPH_ESC_END
+: word_because glyph_b glyph_e glyph_c glyph_a glyph_u glyph_s glyph_e :byte GLYPH_ESC_END
+: word_weren't glyph_w glyph_e glyph_r glyph_e glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_needed glyph_n glyph_e glyph_e glyph_d glyph_e glyph_d :byte GLYPH_ESC_END
+: word_anymore? glyph_a glyph_n glyph_y glyph_m glyph_o glyph_r glyph_e glyph_? :byte GLYPH_ESC_END
+: word_ruin-mechanic-desc :byte GLYPH_ESC_WORD tobytes word_Robots :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_fix :byte GLYPH_ESC_WORD tobytes word_other :byte GLYPH_ESC_WORD tobytes word_robots... :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_built :byte GLYPH_ESC_WORD tobytes word_them :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_gone :byte GLYPH_ESC_WORD tobytes word_because :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_needed :byte GLYPH_ESC_WORD tobytes word_anymore? :byte GLYPH_ESC_END
+: word_dampener glyph_d glyph_a glyph_m glyph_p glyph_e glyph_n glyph_e glyph_r :byte GLYPH_ESC_END
+: word_dampener-name :byte GLYPH_ESC_WORD tobytes word_dampener :byte GLYPH_ESC_END
+: word_heat_shield glyph_h glyph_e glyph_a glyph_t glyph__ glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d :byte GLYPH_ESC_END
+: word_heat_shield-name :byte GLYPH_ESC_WORD tobytes word_heat_shield :byte GLYPH_ESC_END
+: word_Robotic glyph_R glyph_o glyph_b glyph_o glyph_t glyph_i glyph_c :byte GLYPH_ESC_END
+: word_electricians glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_i glyph_c glyph_i glyph_a glyph_n glyph_s :byte GLYPH_ESC_END
+: word_convenient glyph_c glyph_o glyph_n glyph_v glyph_e glyph_n glyph_i glyph_e glyph_n glyph_t :byte GLYPH_ESC_END
+: word_in glyph_i glyph_n :byte GLYPH_ESC_END
+: word_situations glyph_s glyph_i glyph_t glyph_u glyph_a glyph_t glyph_i glyph_o glyph_n glyph_s :byte GLYPH_ESC_END
+: word_where glyph_w glyph_h glyph_e glyph_r glyph_e :byte GLYPH_ESC_END
+: word_electrocution glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_o glyph_c glyph_u glyph_t glyph_i glyph_o glyph_n :byte GLYPH_ESC_END
+: word_fatal. glyph_f glyph_a glyph_t glyph_a glyph_l glyph_. :byte GLYPH_ESC_END
+: word_power-electrician-desc :byte GLYPH_ESC_WORD tobytes word_Robotic :byte GLYPH_ESC_WORD tobytes word_electricians :byte GLYPH_ESC_WORD tobytes word_are :byte GLYPH_ESC_WORD tobytes word_convenient :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_situations :byte GLYPH_ESC_WORD tobytes word_where :byte GLYPH_ESC_WORD tobytes word_electrocution :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_fatal. :byte GLYPH_ESC_END
+: word_A glyph_A :byte GLYPH_ESC_END
+: word_prototype glyph_p glyph_r glyph_o glyph_t glyph_o glyph_t glyph_y glyph_p glyph_e :byte GLYPH_ESC_END
+: word_version glyph_v glyph_e glyph_r glyph_s glyph_i glyph_o glyph_n :byte GLYPH_ESC_END
+: word_quick glyph_q glyph_u glyph_i glyph_c glyph_k :byte GLYPH_ESC_END
+: word_turrets glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t glyph_s :byte GLYPH_ESC_END
+: word_from glyph_f glyph_r glyph_o glyph_m :byte GLYPH_ESC_END
+: word_earlier. glyph_e glyph_a glyph_r glyph_l glyph_i glyph_e glyph_r glyph_. :byte GLYPH_ESC_END
+: word_sturdier glyph_s glyph_t glyph_u glyph_r glyph_d glyph_i glyph_e glyph_r :byte GLYPH_ESC_END
+: word_can glyph_c glyph_a glyph_n :byte GLYPH_ESC_END
+: word_fire glyph_f glyph_i glyph_r glyph_e :byte GLYPH_ESC_END
+: word_more, glyph_m glyph_o glyph_r glyph_e glyph_, :byte GLYPH_ESC_END
+: word_it's glyph_i glyph_t glyph_' glyph_s :byte GLYPH_ESC_END
+: word_as glyph_a glyph_s :byte GLYPH_ESC_END
+: word_accurate. glyph_a glyph_c glyph_c glyph_u glyph_r glyph_a glyph_t glyph_e glyph_. :byte GLYPH_ESC_END
+: word_lab-turret-desc :byte GLYPH_ESC_WORD tobytes word_A :byte GLYPH_ESC_WORD tobytes word_prototype :byte GLYPH_ESC_WORD tobytes word_version :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_quick :byte GLYPH_ESC_WORD tobytes word_turrets :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_earlier. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_sturdier :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_can :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_more, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_it's :byte GLYPH_ESC_WORD tobytes word_not :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_accurate. :byte GLYPH_ESC_END
+: word_accelerator glyph_a glyph_c glyph_c glyph_e glyph_l glyph_e glyph_r glyph_a glyph_t glyph_o glyph_r :byte GLYPH_ESC_END
+: word_accelerator-name :byte GLYPH_ESC_WORD tobytes word_accelerator :byte GLYPH_ESC_END
+: word_ruin-wall glyph_r glyph_u glyph_i glyph_n glyph_- glyph_w glyph_a glyph_l glyph_l :byte GLYPH_ESC_END
+: word_ruin-wall-name :byte GLYPH_ESC_WORD tobytes word_ruin-wall :byte GLYPH_ESC_END
+: word_Who glyph_W glyph_h glyph_o :byte GLYPH_ESC_END
+: word_did glyph_d glyph_i glyph_d :byte GLYPH_ESC_END
+: word_build glyph_b glyph_u glyph_i glyph_l glyph_d :byte GLYPH_ESC_END
+: word_deter? glyph_d glyph_e glyph_t glyph_e glyph_r glyph_? :byte GLYPH_ESC_END
+: word_don't glyph_d glyph_o glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_think glyph_t glyph_h glyph_i glyph_n glyph_k :byte GLYPH_ESC_END
+: word_planned glyph_p glyph_l glyph_a glyph_n glyph_n glyph_e glyph_d :byte GLYPH_ESC_END
+: word_for glyph_f glyph_o glyph_r :byte GLYPH_ESC_END
+: word_us glyph_u glyph_s :byte GLYPH_ESC_END
+: word_go glyph_g glyph_o :byte GLYPH_ESC_END
+: word_digging glyph_d glyph_i glyph_g glyph_g glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_up glyph_u glyph_p :byte GLYPH_ESC_END
+: word_their glyph_t glyph_h glyph_e glyph_i glyph_r :byte GLYPH_ESC_END
+: word_stuff. glyph_s glyph_t glyph_u glyph_f glyph_f glyph_. :byte GLYPH_ESC_END
+: word_ruin-security-desc :byte GLYPH_ESC_WORD tobytes word_Who :byte GLYPH_ESC_WORD tobytes word_did :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_build :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_deter? :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_don't :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_planned :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_us :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_go :byte GLYPH_ESC_WORD tobytes word_digging :byte GLYPH_ESC_WORD tobytes word_up :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_stuff. :byte GLYPH_ESC_END
+: word_Research glyph_R glyph_e glyph_s glyph_e glyph_a glyph_r glyph_c glyph_h :byte GLYPH_ESC_END
+: word_assistants glyph_a glyph_s glyph_s glyph_i glyph_s glyph_t glyph_a glyph_n glyph_t glyph_s :byte GLYPH_ESC_END
+: word_sometimes glyph_s glyph_o glyph_m glyph_e glyph_t glyph_i glyph_m glyph_e glyph_s :byte GLYPH_ESC_END
+: word_wander glyph_w glyph_a glyph_n glyph_d glyph_e glyph_r :byte GLYPH_ESC_END
+: word_away glyph_a glyph_w glyph_a glyph_y :byte GLYPH_ESC_END
+: word_assigned glyph_a glyph_s glyph_s glyph_i glyph_g glyph_n glyph_e glyph_d :byte GLYPH_ESC_END
+: word_laboratory. glyph_l glyph_a glyph_b glyph_o glyph_r glyph_a glyph_t glyph_o glyph_r glyph_y glyph_. :byte GLYPH_ESC_END
+: word_ruin-scientist-desc :byte GLYPH_ESC_WORD tobytes word_Research :byte GLYPH_ESC_WORD tobytes word_assistants :byte GLYPH_ESC_WORD tobytes word_sometimes :byte GLYPH_ESC_WORD tobytes word_wander :byte GLYPH_ESC_WORD tobytes word_away :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_assigned :byte GLYPH_ESC_WORD tobytes word_laboratory. :byte GLYPH_ESC_END
+: word_Back glyph_B glyph_a glyph_c glyph_k :byte GLYPH_ESC_END
+: word_then, glyph_t glyph_h glyph_e glyph_n glyph_, :byte GLYPH_ESC_END
+: word_controlled glyph_c glyph_o glyph_n glyph_t glyph_r glyph_o glyph_l glyph_l glyph_e glyph_d :byte GLYPH_ESC_END
+: word_machines glyph_m glyph_a glyph_c glyph_h glyph_i glyph_n glyph_e glyph_s :byte GLYPH_ESC_END
+: word_by glyph_b glyph_y :byte GLYPH_ESC_END
+: word_playing glyph_p glyph_l glyph_a glyph_y glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_notes glyph_n glyph_o glyph_t glyph_e glyph_s :byte GLYPH_ESC_END
+: word_flute. glyph_f glyph_l glyph_u glyph_t glyph_e glyph_. :byte GLYPH_ESC_END
+: word_Ancient glyph_A glyph_n glyph_c glyph_i glyph_e glyph_n glyph_t :byte GLYPH_ESC_END
+: word_hackers glyph_h glyph_a glyph_c glyph_k glyph_e glyph_r glyph_s :byte GLYPH_ESC_END
+: word_must've glyph_m glyph_u glyph_s glyph_t glyph_' glyph_v glyph_e :byte GLYPH_ESC_END
+: word_been glyph_b glyph_e glyph_e glyph_n :byte GLYPH_ESC_END
+: word_good glyph_g glyph_o glyph_o glyph_d :byte GLYPH_ESC_END
+: word_at glyph_a glyph_t :byte GLYPH_ESC_END
+: word_whistling. glyph_w glyph_h glyph_i glyph_s glyph_t glyph_l glyph_i glyph_n glyph_g glyph_. :byte GLYPH_ESC_END
+: word_flute-desc :byte GLYPH_ESC_WORD tobytes word_Back :byte GLYPH_ESC_WORD tobytes word_then, :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_controlled :byte GLYPH_ESC_WORD tobytes word_machines :byte GLYPH_ESC_WORD tobytes word_by :byte GLYPH_ESC_WORD tobytes word_playing :byte GLYPH_ESC_WORD tobytes word_notes :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_flute. :byte GLYPH_ESC_WORD tobytes word_Ancient :byte GLYPH_ESC_WORD tobytes word_hackers :byte GLYPH_ESC_WORD tobytes word_must've :byte GLYPH_ESC_WORD tobytes word_been :byte GLYPH_ESC_WORD tobytes word_good :byte GLYPH_ESC_WORD tobytes word_at :byte GLYPH_ESC_WORD tobytes word_whistling. :byte GLYPH_ESC_END
+: word_Instead glyph_I glyph_n glyph_s glyph_t glyph_e glyph_a glyph_d :byte GLYPH_ESC_END
+: word_janitors, glyph_j glyph_a glyph_n glyph_i glyph_t glyph_o glyph_r glyph_s glyph_, :byte GLYPH_ESC_END
+: word_used glyph_u glyph_s glyph_e glyph_d :byte GLYPH_ESC_END
+: word_swarms glyph_s glyph_w glyph_a glyph_r glyph_m glyph_s :byte GLYPH_ESC_END
+: word_tiny glyph_t glyph_i glyph_n glyph_y :byte GLYPH_ESC_END
+: word_robots. glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_. :byte GLYPH_ESC_END
+: word_crickets-desc :byte GLYPH_ESC_WORD tobytes word_Instead :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_janitors, :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_must've :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_swarms :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_tiny :byte GLYPH_ESC_WORD tobytes word_robots. :byte GLYPH_ESC_END
+: word_someone glyph_s glyph_o glyph_m glyph_e glyph_o glyph_n glyph_e :byte GLYPH_ESC_END
+: word_took glyph_t glyph_o glyph_o glyph_k :byte GLYPH_ESC_END
+: word_gun glyph_g glyph_u glyph_n :byte GLYPH_ESC_END
+: word_one glyph_o glyph_n glyph_e :byte GLYPH_ESC_END
+: word_standard glyph_s glyph_t glyph_a glyph_n glyph_d glyph_a glyph_r glyph_d :byte GLYPH_ESC_END
+: word_droids glyph_d glyph_r glyph_o glyph_i glyph_d glyph_s :byte GLYPH_ESC_END
+: word_gave glyph_g glyph_a glyph_v glyph_e :byte GLYPH_ESC_END
+: word_bigger glyph_b glyph_i glyph_g glyph_g glyph_e glyph_r :byte GLYPH_ESC_END
+: word_instead. glyph_i glyph_n glyph_s glyph_t glyph_e glyph_a glyph_d glyph_. :byte GLYPH_ESC_END
+: word_It glyph_I glyph_t :byte GLYPH_ESC_END
+: word_doesn't glyph_d glyph_o glyph_e glyph_s glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_seem glyph_s glyph_e glyph_e glyph_m :byte GLYPH_ESC_END
+: word_know glyph_k glyph_n glyph_o glyph_w :byte GLYPH_ESC_END
+: word_how glyph_h glyph_o glyph_w :byte GLYPH_ESC_END
+: word_handle glyph_h glyph_a glyph_n glyph_d glyph_l glyph_e :byte GLYPH_ESC_END
+: word_it, glyph_i glyph_t glyph_, :byte GLYPH_ESC_END
+: word_so glyph_s glyph_o :byte GLYPH_ESC_END
+: word_you'll glyph_y glyph_o glyph_u glyph_' glyph_l glyph_l :byte GLYPH_ESC_END
+: word_probably glyph_p glyph_r glyph_o glyph_b glyph_a glyph_b glyph_l glyph_y :byte GLYPH_ESC_END
+: word_fine. glyph_f glyph_i glyph_n glyph_e glyph_. :byte GLYPH_ESC_END
+: word_ruin-security3-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_someone :byte GLYPH_ESC_WORD tobytes word_took :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_gun :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_standard :byte GLYPH_ESC_WORD tobytes word_model :byte GLYPH_ESC_WORD tobytes word_droids :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_gave :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_bigger :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_instead. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_doesn't :byte GLYPH_ESC_WORD tobytes word_seem :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_know :byte GLYPH_ESC_WORD tobytes word_how :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_handle :byte GLYPH_ESC_WORD tobytes word_it, :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_you'll :byte GLYPH_ESC_WORD tobytes word_probably :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_fine. :byte GLYPH_ESC_END
+: word_ruin-security2 glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y glyph_2 :byte GLYPH_ESC_END
+: word_ruin-security2-name :byte GLYPH_ESC_WORD tobytes word_ruin-security2 :byte GLYPH_ESC_END
+: word_ruin-security glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y :byte GLYPH_ESC_END
+: word_ruin-security-name :byte GLYPH_ESC_WORD tobytes word_ruin-security :byte GLYPH_ESC_END
+: word_To glyph_T glyph_o :byte GLYPH_ESC_END
+: word_avoid glyph_a glyph_v glyph_o glyph_i glyph_d :byte GLYPH_ESC_END
+: word_getting glyph_g glyph_e glyph_t glyph_t glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_electrocuted, glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_o glyph_c glyph_u glyph_t glyph_e glyph_d glyph_, :byte GLYPH_ESC_END
+: word_workers glyph_w glyph_o glyph_r glyph_k glyph_e glyph_r glyph_s :byte GLYPH_ESC_END
+: word_here glyph_h glyph_e glyph_r glyph_e :byte GLYPH_ESC_END
+: word_use glyph_u glyph_s glyph_e :byte GLYPH_ESC_END
+: word_neutralize glyph_n glyph_e glyph_u glyph_t glyph_r glyph_a glyph_l glyph_i glyph_z glyph_e :byte GLYPH_ESC_END
+: word_electromagnetic glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_o glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph_i glyph_c :byte GLYPH_ESC_END
+: word_fields. glyph_f glyph_i glyph_e glyph_l glyph_d glyph_s glyph_. :byte GLYPH_ESC_END
+: word_... glyph_. glyph_. glyph_. :byte GLYPH_ESC_END
+: word_Oh, glyph_O glyph_h glyph_, :byte GLYPH_ESC_END
+: word_should glyph_s glyph_h glyph_o glyph_u glyph_l glyph_d :byte GLYPH_ESC_END
+: word_blamed glyph_b glyph_l glyph_a glyph_m glyph_e glyph_d :byte GLYPH_ESC_END
+: word_radio glyph_r glyph_a glyph_d glyph_i glyph_o :byte GLYPH_ESC_END
+: word_silence glyph_s glyph_i glyph_l glyph_e glyph_n glyph_c glyph_e :byte GLYPH_ESC_END
+: word_earlier glyph_e glyph_a glyph_r glyph_l glyph_i glyph_e glyph_r :byte GLYPH_ESC_END
+: word_something glyph_s glyph_o glyph_m glyph_e glyph_t glyph_h glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_this... glyph_t glyph_h glyph_i glyph_s glyph_. glyph_. glyph_. :byte GLYPH_ESC_END
+: word_dampener-desc :byte GLYPH_ESC_WORD tobytes word_To :byte GLYPH_ESC_WORD tobytes word_avoid :byte GLYPH_ESC_WORD tobytes word_getting :byte GLYPH_ESC_WORD tobytes word_electrocuted, :byte GLYPH_ESC_WORD tobytes word_workers :byte GLYPH_ESC_WORD tobytes word_here :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_use :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_neutralize :byte GLYPH_ESC_WORD tobytes word_electromagnetic :byte GLYPH_ESC_WORD tobytes word_fields. :byte GLYPH_ESC_WORD tobytes word_... :byte GLYPH_ESC_WORD tobytes word_Oh, :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_should :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_blamed :byte GLYPH_ESC_WORD tobytes word_my :byte GLYPH_ESC_WORD tobytes word_radio :byte GLYPH_ESC_WORD tobytes word_silence :byte GLYPH_ESC_WORD tobytes word_earlier :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_something :byte GLYPH_ESC_WORD tobytes word_like :byte GLYPH_ESC_WORD tobytes word_this... :byte GLYPH_ESC_END
+: word_lab-scientist glyph_l glyph_a glyph_b glyph_- glyph_s glyph_c glyph_i glyph_e glyph_n glyph_t glyph_i glyph_s glyph_t :byte GLYPH_ESC_END
+: word_lab-scientist-name :byte GLYPH_ESC_WORD tobytes word_lab-scientist :byte GLYPH_ESC_END
+: word_Apparently, glyph_A glyph_p glyph_p glyph_a glyph_r glyph_e glyph_n glyph_t glyph_l glyph_y glyph_, :byte GLYPH_ESC_END
+: word_possible glyph_p glyph_o glyph_s glyph_s glyph_i glyph_b glyph_l glyph_e :byte GLYPH_ESC_END
+: word_duplicate glyph_d glyph_u glyph_p glyph_l glyph_i glyph_c glyph_a glyph_t glyph_e :byte GLYPH_ESC_END
+: word_matter, glyph_m glyph_a glyph_t glyph_t glyph_e glyph_r glyph_, :byte GLYPH_ESC_END
+: word_invented glyph_i glyph_n glyph_v glyph_e glyph_n glyph_t glyph_e glyph_d :byte GLYPH_ESC_END
+: word_technology glyph_t glyph_e glyph_c glyph_h glyph_n glyph_o glyph_l glyph_o glyph_g glyph_y :byte GLYPH_ESC_END
+: word_make glyph_m glyph_a glyph_k glyph_e :byte GLYPH_ESC_END
+: word_more glyph_m glyph_o glyph_r glyph_e :byte GLYPH_ESC_END
+: word_bullets. glyph_b glyph_u glyph_l glyph_l glyph_e glyph_t glyph_s glyph_. :byte GLYPH_ESC_END
+: word_why glyph_w glyph_h glyph_y :byte GLYPH_ESC_END
+: word_aren't glyph_a glyph_r glyph_e glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_around glyph_a glyph_r glyph_o glyph_u glyph_n glyph_d :byte GLYPH_ESC_END
+: word_anymore. glyph_a glyph_n glyph_y glyph_m glyph_o glyph_r glyph_e glyph_. :byte GLYPH_ESC_END
+: word_tarski_field-desc :byte GLYPH_ESC_WORD tobytes word_Apparently, :byte GLYPH_ESC_WORD tobytes word_it's :byte GLYPH_ESC_WORD tobytes word_possible :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_duplicate :byte GLYPH_ESC_WORD tobytes word_matter, :byte GLYPH_ESC_WORD tobytes word_and :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_invented :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_technology :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_more :byte GLYPH_ESC_WORD tobytes word_bullets. :byte GLYPH_ESC_WORD tobytes word_Maybe :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_why :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_aren't :byte GLYPH_ESC_WORD tobytes word_around :byte GLYPH_ESC_WORD tobytes word_anymore. :byte GLYPH_ESC_END
+: word_overclock glyph_o glyph_v glyph_e glyph_r glyph_c glyph_l glyph_o glyph_c glyph_k :byte GLYPH_ESC_END
+: word_overclock-name :byte GLYPH_ESC_WORD tobytes word_overclock :byte GLYPH_ESC_END
+: word_The glyph_T glyph_h glyph_e :byte GLYPH_ESC_END
+: word_risk glyph_r glyph_i glyph_s glyph_k :byte GLYPH_ESC_END
+: word_greater glyph_g glyph_r glyph_e glyph_a glyph_t glyph_e glyph_r :byte GLYPH_ESC_END
+: word_laboratory, glyph_l glyph_a glyph_b glyph_o glyph_r glyph_a glyph_t glyph_o glyph_r glyph_y glyph_, :byte GLYPH_ESC_END
+: word_upgraded glyph_u glyph_p glyph_g glyph_r glyph_a glyph_d glyph_e glyph_d :byte GLYPH_ESC_END
+: word_versions glyph_v glyph_e glyph_r glyph_s glyph_i glyph_o glyph_n glyph_s :byte GLYPH_ESC_END
+: word_here. glyph_h glyph_e glyph_r glyph_e glyph_. :byte GLYPH_ESC_END
+: word_lab-wall-desc :byte GLYPH_ESC_WORD tobytes word_The :byte GLYPH_ESC_WORD tobytes word_risk :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_greater :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_laboratory, :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_upgraded :byte GLYPH_ESC_WORD tobytes word_versions :byte GLYPH_ESC_WORD tobytes word_here. :byte GLYPH_ESC_END
+: word_antishovel glyph_a glyph_n glyph_t glyph_i glyph_s glyph_h glyph_o glyph_v glyph_e glyph_l :byte GLYPH_ESC_END
+: word_antishovel-name :byte GLYPH_ESC_WORD tobytes word_antishovel :byte GLYPH_ESC_END
+: word_do glyph_d glyph_o :byte GLYPH_ESC_END
+: word_lab glyph_l glyph_a glyph_b :byte GLYPH_ESC_END
+: word_assistant glyph_a glyph_s glyph_s glyph_i glyph_s glyph_t glyph_a glyph_n glyph_t :byte GLYPH_ESC_END
+: word_work. glyph_w glyph_o glyph_r glyph_k glyph_. :byte GLYPH_ESC_END
+: word_Science glyph_S glyph_c glyph_i glyph_e glyph_n glyph_c glyph_e :byte GLYPH_ESC_END
+: word_few glyph_f glyph_e glyph_w :byte GLYPH_ESC_END
+: word_areas glyph_a glyph_r glyph_e glyph_a glyph_s :byte GLYPH_ESC_END
+: word_couldn't glyph_c glyph_o glyph_u glyph_l glyph_d glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_everything. glyph_e glyph_v glyph_e glyph_r glyph_y glyph_t glyph_h glyph_i glyph_n glyph_g glyph_. :byte GLYPH_ESC_END
+: word_lab-scientist-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_do :byte GLYPH_ESC_WORD tobytes word_lab :byte GLYPH_ESC_WORD tobytes word_assistant :byte GLYPH_ESC_WORD tobytes word_work. :byte GLYPH_ESC_WORD tobytes word_Science :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_one :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_few :byte GLYPH_ESC_WORD tobytes word_areas :byte GLYPH_ESC_WORD tobytes word_where :byte GLYPH_ESC_WORD tobytes word_robots :byte GLYPH_ESC_WORD tobytes word_couldn't :byte GLYPH_ESC_WORD tobytes word_do :byte GLYPH_ESC_WORD tobytes word_everything. :byte GLYPH_ESC_END
+: word_tarski_field glyph_t glyph_a glyph_r glyph_s glyph_k glyph_i glyph__ glyph_f glyph_i glyph_e glyph_l glyph_d :byte GLYPH_ESC_END
+: word_tarski_field-name :byte GLYPH_ESC_WORD tobytes word_tarski_field :byte GLYPH_ESC_END
+: word_lab-turret glyph_l glyph_a glyph_b glyph_- glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t :byte GLYPH_ESC_END
+: word_lab-turret-name :byte GLYPH_ESC_WORD tobytes word_lab-turret :byte GLYPH_ESC_END
+: word_If glyph_I glyph_f :byte GLYPH_ESC_END
+: word_find glyph_f glyph_i glyph_n glyph_d :byte GLYPH_ESC_END
+: word_deactivated glyph_d glyph_e glyph_a glyph_c glyph_t glyph_i glyph_v glyph_a glyph_t glyph_e glyph_d :byte GLYPH_ESC_END
+: word_one, glyph_o glyph_n glyph_e glyph_, :byte GLYPH_ESC_END
+: word_sure glyph_s glyph_u glyph_r glyph_e :byte GLYPH_ESC_END
+: word_take glyph_t glyph_a glyph_k glyph_e :byte GLYPH_ESC_END
+: word_with glyph_w glyph_i glyph_t glyph_h :byte GLYPH_ESC_END
+: word_you; glyph_y glyph_o glyph_u glyph_; :byte GLYPH_ESC_END
+: word_we glyph_w glyph_e :byte GLYPH_ESC_END
+: word_really glyph_r glyph_e glyph_a glyph_l glyph_l glyph_y :byte GLYPH_ESC_END
+: word_need glyph_n glyph_e glyph_e glyph_d :byte GLYPH_ESC_END
+: word_pet. glyph_p glyph_e glyph_t glyph_. :byte GLYPH_ESC_END
+: word_ruin-dog-desc :byte GLYPH_ESC_WORD tobytes word_If :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_find :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_deactivated :byte GLYPH_ESC_WORD tobytes word_one, :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_sure :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_take :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_with :byte GLYPH_ESC_WORD tobytes word_you; :byte GLYPH_ESC_WORD tobytes word_we :byte GLYPH_ESC_WORD tobytes word_really :byte GLYPH_ESC_WORD tobytes word_need :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_pet. :byte GLYPH_ESC_END
+: word_ruin-security3 glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_c glyph_u glyph_r glyph_i glyph_t glyph_y glyph_3 :byte GLYPH_ESC_END
+: word_ruin-security3-name :byte GLYPH_ESC_WORD tobytes word_ruin-security3 :byte GLYPH_ESC_END
+: word_What glyph_W glyph_h glyph_a glyph_t :byte GLYPH_ESC_END
+: word_even glyph_e glyph_v glyph_e glyph_n :byte GLYPH_ESC_END
+: word_for? glyph_f glyph_o glyph_r glyph_? :byte GLYPH_ESC_END
+: word_Why glyph_W glyph_h glyph_y :byte GLYPH_ESC_END
+: word_ever glyph_e glyph_v glyph_e glyph_r :byte GLYPH_ESC_END
+: word_summon glyph_s glyph_u glyph_m glyph_m glyph_o glyph_n :byte GLYPH_ESC_END
+: word_cubic glyph_c glyph_u glyph_b glyph_i glyph_c :byte GLYPH_ESC_END
+: word_meter glyph_m glyph_e glyph_t glyph_e glyph_r :byte GLYPH_ESC_END
+: word_dirt? glyph_d glyph_i glyph_r glyph_t glyph_? :byte GLYPH_ESC_END
+: word_antishovel-desc :byte GLYPH_ESC_WORD tobytes word_What :byte GLYPH_ESC_WORD tobytes word_is :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_even :byte GLYPH_ESC_WORD tobytes word_for? :byte GLYPH_ESC_WORD tobytes word_Why :byte GLYPH_ESC_WORD tobytes word_would :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_ever :byte GLYPH_ESC_WORD tobytes word_need :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_summon :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_cubic :byte GLYPH_ESC_WORD tobytes word_meter :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_dirt? :byte GLYPH_ESC_END
+: word_People glyph_P glyph_e glyph_o glyph_p glyph_l glyph_e :byte GLYPH_ESC_END
+: word_deliver glyph_d glyph_e glyph_l glyph_i glyph_v glyph_e glyph_r :byte GLYPH_ESC_END
+: word_packages. glyph_p glyph_a glyph_c glyph_k glyph_a glyph_g glyph_e glyph_s glyph_. :byte GLYPH_ESC_END
+: word_They glyph_T glyph_h glyph_e glyph_y :byte GLYPH_ESC_END
+: word_hostile, glyph_h glyph_o glyph_s glyph_t glyph_i glyph_l glyph_e glyph_, :byte GLYPH_ESC_END
+: word_tend glyph_t glyph_e glyph_n glyph_d :byte GLYPH_ESC_END
+: word_get glyph_g glyph_e glyph_t :byte GLYPH_ESC_END
+: word_way. glyph_w glyph_a glyph_y glyph_. :byte GLYPH_ESC_END
+: word_ruin-messenger-desc :byte GLYPH_ESC_WORD tobytes word_People :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_use :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_deliver :byte GLYPH_ESC_WORD tobytes word_packages. :byte GLYPH_ESC_WORD tobytes word_They :byte GLYPH_ESC_WORD tobytes word_aren't :byte GLYPH_ESC_WORD tobytes word_hostile, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_tend :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_get :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_way. :byte GLYPH_ESC_END
+: word_power-electrician glyph_p glyph_o glyph_w glyph_e glyph_r glyph_- glyph_e glyph_l glyph_e glyph_c glyph_t glyph_r glyph_i glyph_c glyph_i glyph_a glyph_n :byte GLYPH_ESC_END
+: word_power-electrician-name :byte GLYPH_ESC_WORD tobytes word_power-electrician :byte GLYPH_ESC_END
+: word_Creates glyph_C glyph_r glyph_e glyph_a glyph_t glyph_e glyph_s :byte GLYPH_ESC_END
+: word_strong glyph_s glyph_t glyph_r glyph_o glyph_n glyph_g :byte GLYPH_ESC_END
+: word_magnetic glyph_m glyph_a glyph_g glyph_n glyph_e glyph_t glyph_i glyph_c :byte GLYPH_ESC_END
+: word_field glyph_f glyph_i glyph_e glyph_l glyph_d :byte GLYPH_ESC_END
+: word_repels glyph_r glyph_e glyph_p glyph_e glyph_l glyph_s :byte GLYPH_ESC_END
+: word_metal. glyph_m glyph_e glyph_t glyph_a glyph_l glyph_. :byte GLYPH_ESC_END
+: word_won't glyph_w glyph_o glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_hurt glyph_h glyph_u glyph_r glyph_t :byte GLYPH_ESC_END
+: word_magnet_shield-desc :byte GLYPH_ESC_WORD tobytes word_Creates :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_strong :byte GLYPH_ESC_WORD tobytes word_magnetic :byte GLYPH_ESC_WORD tobytes word_field :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_repels :byte GLYPH_ESC_WORD tobytes word_metal. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_probably :byte GLYPH_ESC_WORD tobytes word_won't :byte GLYPH_ESC_WORD tobytes word_hurt :byte GLYPH_ESC_WORD tobytes word_you. :byte GLYPH_ESC_END
+: word_For glyph_F glyph_o glyph_r :byte GLYPH_ESC_END
+: word_some glyph_s glyph_o glyph_m glyph_e :byte GLYPH_ESC_END
+: word_reason, glyph_r glyph_e glyph_a glyph_s glyph_o glyph_n glyph_, :byte GLYPH_ESC_END
+: word_were glyph_w glyph_e glyph_r glyph_e :byte GLYPH_ESC_END
+: word_designed glyph_d glyph_e glyph_s glyph_i glyph_g glyph_n glyph_e glyph_d :byte GLYPH_ESC_END
+: word_could glyph_c glyph_o glyph_u glyph_l glyph_d :byte GLYPH_ESC_END
+: word_put glyph_p glyph_u glyph_t :byte GLYPH_ESC_END
+: word_two glyph_t glyph_w glyph_o :byte GLYPH_ESC_END
+: word_together glyph_t glyph_o glyph_g glyph_e glyph_t glyph_h glyph_e glyph_r :byte GLYPH_ESC_END
+: word_stronger glyph_s glyph_t glyph_r glyph_o glyph_n glyph_g glyph_e glyph_r :byte GLYPH_ESC_END
+: word_one. glyph_o glyph_n glyph_e glyph_. :byte GLYPH_ESC_END
+: word_exoskeleton-desc :byte GLYPH_ESC_WORD tobytes word_For :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_reason, :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_designed :byte GLYPH_ESC_WORD tobytes word_so :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_could :byte GLYPH_ESC_WORD tobytes word_put :byte GLYPH_ESC_WORD tobytes word_two :byte GLYPH_ESC_WORD tobytes word_together :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_make :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_stronger :byte GLYPH_ESC_WORD tobytes word_one. :byte GLYPH_ESC_END
+: word_shoes glyph_s glyph_h glyph_o glyph_e glyph_s :byte GLYPH_ESC_END
+: word_pressurized glyph_p glyph_r glyph_e glyph_s glyph_s glyph_u glyph_r glyph_i glyph_z glyph_e glyph_d :byte GLYPH_ESC_END
+: word_tanks glyph_t glyph_a glyph_n glyph_k glyph_s :byte GLYPH_ESC_END
+: word_taped glyph_t glyph_a glyph_p glyph_e glyph_d :byte GLYPH_ESC_END
+: word_count glyph_c glyph_o glyph_u glyph_n glyph_t :byte GLYPH_ESC_END
+: word_treasure. glyph_t glyph_r glyph_e glyph_a glyph_s glyph_u glyph_r glyph_e glyph_. :byte GLYPH_ESC_END
+: word_rocket_shoes-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_don't :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_shoes :byte GLYPH_ESC_WORD tobytes word_with :byte GLYPH_ESC_WORD tobytes word_pressurized :byte GLYPH_ESC_WORD tobytes word_air :byte GLYPH_ESC_WORD tobytes word_tanks :byte GLYPH_ESC_WORD tobytes word_taped :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_really :byte GLYPH_ESC_WORD tobytes word_count :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_treasure. :byte GLYPH_ESC_END
+: word_hissing glyph_h glyph_i glyph_s glyph_s glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_sound glyph_s glyph_o glyph_u glyph_n glyph_d :byte GLYPH_ESC_END
+: word_comes glyph_c glyph_o glyph_m glyph_e glyph_s :byte GLYPH_ESC_END
+: word_pressure glyph_p glyph_r glyph_e glyph_s glyph_s glyph_u glyph_r glyph_e :byte GLYPH_ESC_END
+: word_releasing glyph_r glyph_e glyph_l glyph_e glyph_a glyph_s glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_airguns. glyph_a glyph_i glyph_r glyph_g glyph_u glyph_n glyph_s glyph_. :byte GLYPH_ESC_END
+: word_seems glyph_s glyph_e glyph_e glyph_m glyph_s :byte GLYPH_ESC_END
+: word_recycled glyph_r glyph_e glyph_c glyph_y glyph_c glyph_l glyph_e glyph_d :byte GLYPH_ESC_END
+: word_easily glyph_e glyph_a glyph_s glyph_i glyph_l glyph_y :byte GLYPH_ESC_END
+: word_they're glyph_t glyph_h glyph_e glyph_y glyph_' glyph_r glyph_e :byte GLYPH_ESC_END
+: word_chunks glyph_c glyph_h glyph_u glyph_n glyph_k glyph_s :byte GLYPH_ESC_END
+: word_ruin-turret-desc :byte GLYPH_ESC_WORD tobytes word_The :byte GLYPH_ESC_WORD tobytes word_hissing :byte GLYPH_ESC_WORD tobytes word_sound :byte GLYPH_ESC_WORD tobytes word_comes :byte GLYPH_ESC_WORD tobytes word_from :byte GLYPH_ESC_WORD tobytes word_pressure :byte GLYPH_ESC_WORD tobytes word_releasing :byte GLYPH_ESC_WORD tobytes word_in :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_airguns. :byte GLYPH_ESC_WORD tobytes word_It :byte GLYPH_ESC_WORD tobytes word_seems :byte GLYPH_ESC_WORD tobytes word_bullets :byte GLYPH_ESC_WORD tobytes word_can :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_recycled :byte GLYPH_ESC_WORD tobytes word_pretty :byte GLYPH_ESC_WORD tobytes word_easily :byte GLYPH_ESC_WORD tobytes word_if :byte GLYPH_ESC_WORD tobytes word_they're :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_chunks :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_metal. :byte GLYPH_ESC_END
+: word_enlargener glyph_e glyph_n glyph_l glyph_a glyph_r glyph_g glyph_e glyph_n glyph_e glyph_r :byte GLYPH_ESC_END
+: word_enlargener-name :byte GLYPH_ESC_WORD tobytes word_enlargener :byte GLYPH_ESC_END
+: word_surveillance glyph_s glyph_u glyph_r glyph_v glyph_e glyph_i glyph_l glyph_l glyph_a glyph_n glyph_c glyph_e :byte GLYPH_ESC_END
+: word_robots, glyph_r glyph_o glyph_b glyph_o glyph_t glyph_s glyph_, :byte GLYPH_ESC_END
+: word_years glyph_y glyph_e glyph_a glyph_r glyph_s :byte GLYPH_ESC_END
+: word_decay glyph_d glyph_e glyph_c glyph_a glyph_y :byte GLYPH_ESC_END
+: word_corrupted glyph_c glyph_o glyph_r glyph_r glyph_u glyph_p glyph_t glyph_e glyph_d :byte GLYPH_ESC_END
+: word_systems. glyph_s glyph_y glyph_s glyph_t glyph_e glyph_m glyph_s glyph_. :byte GLYPH_ESC_END
+: word_ruin-sentry-desc :byte GLYPH_ESC_WORD tobytes word_I :byte GLYPH_ESC_WORD tobytes word_think :byte GLYPH_ESC_WORD tobytes word_these :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_as :byte GLYPH_ESC_WORD tobytes word_surveillance :byte GLYPH_ESC_WORD tobytes word_robots, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_seems :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_years :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_decay :byte GLYPH_ESC_WORD tobytes word_have :byte GLYPH_ESC_WORD tobytes word_corrupted :byte GLYPH_ESC_WORD tobytes word_their :byte GLYPH_ESC_WORD tobytes word_systems. :byte GLYPH_ESC_END
+: word_Before glyph_B glyph_e glyph_f glyph_o glyph_r glyph_e :byte GLYPH_ESC_END
+: word_modern glyph_m glyph_o glyph_d glyph_e glyph_r glyph_n :byte GLYPH_ESC_END
+: word_found glyph_f glyph_o glyph_u glyph_n glyph_d :byte GLYPH_ESC_END
+: word_out glyph_o glyph_u glyph_t :byte GLYPH_ESC_END
+: word_what glyph_w glyph_h glyph_a glyph_t :byte GLYPH_ESC_END
+: word_for, glyph_f glyph_o glyph_r glyph_, :byte GLYPH_ESC_END
+: word_thought glyph_t glyph_h glyph_o glyph_u glyph_g glyph_h glyph_t :byte GLYPH_ESC_END
+: word_sort glyph_s glyph_o glyph_r glyph_t :byte GLYPH_ESC_END
+: word_shield. glyph_s glyph_h glyph_i glyph_e glyph_l glyph_d glyph_. :byte GLYPH_ESC_END
+: word_actually glyph_a glyph_c glyph_t glyph_u glyph_a glyph_l glyph_l glyph_y :byte GLYPH_ESC_END
+: word_melting glyph_m glyph_e glyph_l glyph_t glyph_i glyph_n glyph_g :byte GLYPH_ESC_END
+: word_through glyph_t glyph_h glyph_r glyph_o glyph_u glyph_g glyph_h :byte GLYPH_ESC_END
+: word_rock. glyph_r glyph_o glyph_c glyph_k glyph_. :byte GLYPH_ESC_END
+: word_walls glyph_w glyph_a glyph_l glyph_l glyph_s :byte GLYPH_ESC_END
+: word_made glyph_m glyph_a glyph_d glyph_e :byte GLYPH_ESC_END
+: word_advanced, glyph_a glyph_d glyph_v glyph_a glyph_n glyph_c glyph_e glyph_d glyph_, :byte GLYPH_ESC_END
+: word_materials, glyph_m glyph_a glyph_t glyph_e glyph_r glyph_i glyph_a glyph_l glyph_s glyph_, :byte GLYPH_ESC_END
+: word_you'd glyph_y glyph_o glyph_u glyph_' glyph_d :byte GLYPH_ESC_END
+: word_able glyph_a glyph_b glyph_l glyph_e :byte GLYPH_ESC_END
+: word_melt glyph_m glyph_e glyph_l glyph_t :byte GLYPH_ESC_END
+: word_your glyph_y glyph_o glyph_u glyph_r :byte GLYPH_ESC_END
+: word_way glyph_w glyph_a glyph_y :byte GLYPH_ESC_END
+: word_bottom! glyph_b glyph_o glyph_t glyph_t glyph_o glyph_m glyph_! :byte GLYPH_ESC_END
+: word_heat_shield-desc :byte GLYPH_ESC_WORD tobytes word_Before :byte GLYPH_ESC_WORD tobytes word_modern :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_found :byte GLYPH_ESC_WORD tobytes word_out :byte GLYPH_ESC_WORD tobytes word_what :byte GLYPH_ESC_WORD tobytes word_that :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_for, :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_thought :byte GLYPH_ESC_WORD tobytes word_it :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_sort :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_shield. :byte GLYPH_ESC_WORD tobytes word_It's :byte GLYPH_ESC_WORD tobytes word_actually :byte GLYPH_ESC_WORD tobytes word_used :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_melting :byte GLYPH_ESC_WORD tobytes word_through :byte GLYPH_ESC_WORD tobytes word_rock. :byte GLYPH_ESC_WORD tobytes word_If :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_walls :byte GLYPH_ESC_WORD tobytes word_here :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_made :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_advanced, :byte GLYPH_ESC_WORD tobytes word_ancient :byte GLYPH_ESC_WORD tobytes word_materials, :byte GLYPH_ESC_WORD tobytes word_you'd :byte GLYPH_ESC_WORD tobytes word_be :byte GLYPH_ESC_WORD tobytes word_able :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_just :byte GLYPH_ESC_WORD tobytes word_melt :byte GLYPH_ESC_WORD tobytes word_your :byte GLYPH_ESC_WORD tobytes word_way :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_bottom! :byte GLYPH_ESC_END
+: word_ruin-turret glyph_r glyph_u glyph_i glyph_n glyph_- glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t :byte GLYPH_ESC_END
+: word_ruin-turret-name :byte GLYPH_ESC_WORD tobytes word_ruin-turret :byte GLYPH_ESC_END
+: word_originally glyph_o glyph_r glyph_i glyph_g glyph_i glyph_n glyph_a glyph_l glyph_l glyph_y :byte GLYPH_ESC_END
+: word_suppression, glyph_s glyph_u glyph_p glyph_p glyph_r glyph_e glyph_s glyph_s glyph_i glyph_o glyph_n glyph_, :byte GLYPH_ESC_END
+: word_also glyph_a glyph_l glyph_s glyph_o :byte GLYPH_ESC_END
+: word_worked glyph_w glyph_o glyph_r glyph_k glyph_e glyph_d :byte GLYPH_ESC_END
+: word_well glyph_w glyph_e glyph_l glyph_l :byte GLYPH_ESC_END
+: word_suppression. glyph_s glyph_u glyph_p glyph_p glyph_r glyph_e glyph_s glyph_s glyph_i glyph_o glyph_n glyph_. :byte GLYPH_ESC_END
+: word_ruin-wall-desc :byte GLYPH_ESC_WORD tobytes word_These :byte GLYPH_ESC_WORD tobytes word_were :byte GLYPH_ESC_WORD tobytes word_originally :byte GLYPH_ESC_WORD tobytes word_designed :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_fire :byte GLYPH_ESC_WORD tobytes word_suppression, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_they :byte GLYPH_ESC_WORD tobytes word_also :byte GLYPH_ESC_WORD tobytes word_worked :byte GLYPH_ESC_WORD tobytes word_well :byte GLYPH_ESC_WORD tobytes word_for :byte GLYPH_ESC_WORD tobytes word_people :byte GLYPH_ESC_WORD tobytes word_suppression. :byte GLYPH_ESC_END
+: word_nano_blood glyph_n glyph_a glyph_n glyph_o glyph__ glyph_b glyph_l glyph_o glyph_o glyph_d :byte GLYPH_ESC_END
+: word_nano_blood-name :byte GLYPH_ESC_WORD tobytes word_nano_blood :byte GLYPH_ESC_END
+: word_crickets glyph_c glyph_r glyph_i glyph_c glyph_k glyph_e glyph_t glyph_s :byte GLYPH_ESC_END
+: word_crickets-name :byte GLYPH_ESC_WORD tobytes word_crickets :byte GLYPH_ESC_END
+: word_flute glyph_f glyph_l glyph_u glyph_t glyph_e :byte GLYPH_ESC_END
+: word_flute-name :byte GLYPH_ESC_WORD tobytes word_flute :byte GLYPH_ESC_END
+: word_ruin-speed_turret glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_p glyph_e glyph_e glyph_d glyph__ glyph_t glyph_u glyph_r glyph_r glyph_e glyph_t :byte GLYPH_ESC_END
+: word_ruin-speed_turret-name :byte GLYPH_ESC_WORD tobytes word_ruin-speed_turret :byte GLYPH_ESC_END
+: word_those glyph_t glyph_h glyph_o glyph_s glyph_e :byte GLYPH_ESC_END
+: word_brave glyph_b glyph_r glyph_a glyph_v glyph_e :byte GLYPH_ESC_END
+: word_become glyph_b glyph_e glyph_c glyph_o glyph_m glyph_e :byte GLYPH_ESC_END
+: word_fully glyph_f glyph_u glyph_l glyph_l glyph_y :byte GLYPH_ESC_END
+: word_robotic, glyph_r glyph_o glyph_b glyph_o glyph_t glyph_i glyph_c glyph_, :byte GLYPH_ESC_END
+: word_still glyph_s glyph_t glyph_i glyph_l glyph_l :byte GLYPH_ESC_END
+: word_wanted glyph_w glyph_a glyph_n glyph_t glyph_e glyph_d :byte GLYPH_ESC_END
+: word_benefits, glyph_b glyph_e glyph_n glyph_e glyph_f glyph_i glyph_t glyph_s glyph_, :byte GLYPH_ESC_END
+: word_replacement glyph_r glyph_e glyph_p glyph_l glyph_a glyph_c glyph_e glyph_m glyph_e glyph_n glyph_t :byte GLYPH_ESC_END
+: word_blood glyph_b glyph_l glyph_o glyph_o glyph_d :byte GLYPH_ESC_END
+: word_made. glyph_m glyph_a glyph_d glyph_e glyph_. :byte GLYPH_ESC_END
+: word_Seems glyph_S glyph_e glyph_e glyph_m glyph_s :byte GLYPH_ESC_END
+: word_little glyph_l glyph_i glyph_t glyph_t glyph_l glyph_e :byte GLYPH_ESC_END
+: word_uncomfortable, glyph_u glyph_n glyph_c glyph_o glyph_m glyph_f glyph_o glyph_r glyph_t glyph_a glyph_b glyph_l glyph_e glyph_, :byte GLYPH_ESC_END
+: word_though... glyph_t glyph_h glyph_o glyph_u glyph_g glyph_h glyph_. glyph_. glyph_. :byte GLYPH_ESC_END
+: word_nano_blood-desc :byte GLYPH_ESC_WORD tobytes word_For :byte GLYPH_ESC_WORD tobytes word_those :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_weren't :byte GLYPH_ESC_WORD tobytes word_brave :byte GLYPH_ESC_WORD tobytes word_enough :byte GLYPH_ESC_WORD tobytes word_to :byte GLYPH_ESC_WORD tobytes word_become :byte GLYPH_ESC_WORD tobytes word_fully :byte GLYPH_ESC_WORD tobytes word_robotic, :byte GLYPH_ESC_WORD tobytes word_but :byte GLYPH_ESC_WORD tobytes word_who :byte GLYPH_ESC_WORD tobytes word_still :byte GLYPH_ESC_WORD tobytes word_wanted :byte GLYPH_ESC_WORD tobytes word_some :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_benefits, :byte GLYPH_ESC_WORD tobytes word_replacement :byte GLYPH_ESC_WORD tobytes word_blood :byte GLYPH_ESC_WORD tobytes word_was :byte GLYPH_ESC_WORD tobytes word_made. :byte GLYPH_ESC_WORD tobytes word_Seems :byte GLYPH_ESC_WORD tobytes word_a :byte GLYPH_ESC_WORD tobytes word_little :byte GLYPH_ESC_WORD tobytes word_uncomfortable, :byte GLYPH_ESC_WORD tobytes word_though... :byte GLYPH_ESC_END
+: word_rocket_shoes glyph_r glyph_o glyph_c glyph_k glyph_e glyph_t glyph__ glyph_s glyph_h glyph_o glyph_e glyph_s :byte GLYPH_ESC_END
+: word_rocket_shoes-name :byte GLYPH_ESC_WORD tobytes word_rocket_shoes :byte GLYPH_ESC_END
+: word_Doesn't glyph_D glyph_o glyph_e glyph_s glyph_n glyph_' glyph_t :byte GLYPH_ESC_END
+: word_kinda glyph_k glyph_i glyph_n glyph_d glyph_a :byte GLYPH_ESC_END
+: word_remind glyph_r glyph_e glyph_m glyph_i glyph_n glyph_d :byte GLYPH_ESC_END
+: word_accelerators glyph_a glyph_c glyph_c glyph_e glyph_l glyph_e glyph_r glyph_a glyph_t glyph_o glyph_r glyph_s :byte GLYPH_ESC_END
+: word_toy glyph_t glyph_o glyph_y :byte GLYPH_ESC_END
+: word_car glyph_c glyph_a glyph_r :byte GLYPH_ESC_END
+: word_tracks...? glyph_t glyph_r glyph_a glyph_c glyph_k glyph_s glyph_. glyph_. glyph_. glyph_? :byte GLYPH_ESC_END
+: word_accelerator-desc :byte GLYPH_ESC_WORD tobytes word_Doesn't :byte GLYPH_ESC_WORD tobytes word_this :byte GLYPH_ESC_WORD tobytes word_kinda :byte GLYPH_ESC_WORD tobytes word_remind :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_of :byte GLYPH_ESC_WORD tobytes word_the :byte GLYPH_ESC_WORD tobytes word_accelerators :byte GLYPH_ESC_WORD tobytes word_you :byte GLYPH_ESC_WORD tobytes word_put :byte GLYPH_ESC_WORD tobytes word_on :byte GLYPH_ESC_WORD tobytes word_toy :byte GLYPH_ESC_WORD tobytes word_car :byte GLYPH_ESC_WORD tobytes word_tracks...? :byte GLYPH_ESC_END
+: word_ruin-dog glyph_r glyph_u glyph_i glyph_n glyph_- glyph_d glyph_o glyph_g :byte GLYPH_ESC_END
+: word_ruin-dog-name :byte GLYPH_ESC_WORD tobytes word_ruin-dog :byte GLYPH_ESC_END
+: word_exoskeleton glyph_e glyph_x glyph_o glyph_s glyph_k glyph_e glyph_l glyph_e glyph_t glyph_o glyph_n :byte GLYPH_ESC_END
+: word_exoskeleton-name :byte GLYPH_ESC_WORD tobytes word_exoskeleton :byte GLYPH_ESC_END
+: word_ruin-mechanic glyph_r glyph_u glyph_i glyph_n glyph_- glyph_m glyph_e glyph_c glyph_h glyph_a glyph_n glyph_i glyph_c :byte GLYPH_ESC_END
+: word_ruin-mechanic-name :byte GLYPH_ESC_WORD tobytes word_ruin-mechanic :byte GLYPH_ESC_END
+: word_ruin-sentry glyph_r glyph_u glyph_i glyph_n glyph_- glyph_s glyph_e glyph_n glyph_t glyph_r glyph_y :byte GLYPH_ESC_END
+: word_ruin-sentry-name :byte GLYPH_ESC_WORD tobytes word_ruin-sentry :byte GLYPH_ESC_END
+: word_Dig glyph_D glyph_i glyph_g :byte GLYPH_ESC_END
+: word_Site glyph_S glyph_i glyph_t glyph_e :byte GLYPH_ESC_END
+: word_8 glyph_8 :byte GLYPH_ESC_END
+: word_Title :byte GLYPH_ESC_WORD tobytes word_Dig :byte GLYPH_ESC_WORD tobytes word_Site :byte GLYPH_ESC_WORD tobytes word_8 :byte GLYPH_ESC_END
 ### END WORDS ###
 : entity_table_address tobytes entity_table
 ## Sprites for Dialog
@@ -10708,7 +10767,11 @@ input_table_entry     compo-scroll-down       OCTO_KEY_S
   state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func            nop_func
 : sample_cool3
 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xfe 0xcd 0xef 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xfb 0x0 0x0 0x0 0x0 0x0 0x0 0x28 0x0 0x0 0x0 0x80 0x0 0xa 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x1 0x5f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xf0 0x0 0x0 0x0 0x0 0xd 0xa4 0x0 0x0 0x0 0x0 0x16 0x91 0x2d 0xa4 0xb2 0x40 0x1c 0x30 0x49 0xf4 0xdf 0xfc 0x7 0xe0 0xa1 0xf8 0x78 0x7c 0x3c 0x7c 0x3c 0x3c 0x1c 0x3c 0x1c 0x3c 0x1c 0x3c 0x38 0x78 0x78 0xf0 0x71 0xe1 0xc3 0xc3 0x8f 0x6 0x3e 0x1c 0x78 0x71 0xe1 0xc7 0x7 0x1c 0x1c 0xe2 0x73 0x99 0x8e 0x66 0x71 0x91 0xc4 0xce 0x32 0x78 0xd1 0xc6 0xc7 0x1e 0x3c 0x38 0x70 0xf1 0xe1 0xc3 0xc3 0x87 0x87 0x87 0x87 0x83 0xc3 0xc1 0xf1 0xe0 0x7c 0x3c 0xf 0xc3 0x80 0xfe 0x1c 0x7 0x3c 0x71 0xc 0x7f 0x6 0x0 0x1f 0xc7 0x0 0x1 0xff 0x70 0x0 0x1 0xff 0xc0 0x0 0x0 0x7f 0xfc 0x0 0x0 0x0 0x3f 0xd0 0x0 0x0 0x7 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff
+
+: sample_octojam1
+0xf8 0x0 0x7f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xfc 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x1 0x0 0x0 0x46 0x33 0xff 0x80 0x1e 0x67 0x33 0x99 0xcc 0xe6 0x21 0xe6 0x73 0x80 0xe6 0x73 0x91 0xe6 0x63 0x11 0xcc 0xc6 0x33 0x99 0x8c 0x4e 0x67 0x31 0xbc 0xcc 0x66 0x73 0x31 0x93 0x99 0xc4 0xde 0x6f 0x26 0xf6 0x79 0x27 0x33 0x11 0x33 0x39 0x1f 0x33 0x11 0xf3 0x31 0x1e 0x63 0x3 0xe6 0x30 0x3e 0xc2 0x47 0xce 0x40 0x7e 0xe4 0x7 0xfe 0x0 0x1f 0xf8 0x0 0xff 0xe0 0x7f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xf0 0x0 0x0 0x0 0x0 0x2 0x1f 0x4 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x40 0x0 0x1f 0xfc 0x1 0xff 0xc3 0x3 0xfc 0x3c 0xf 0xc3 0xf0 0x3e 0x87 0x80 0xf 0x87 0x80 0xf 0x87 0xc0 0x7 0xc3 0xe1 0x3 0xe1 0xe0 0x40 0xf8 0x78 0x10 0x3e 0x1e 0x6 0xf 0x87 0xc0 0x3 0xf0 0xf8 0x0 0xfc 0x1f 0x0 0x3f 0x83 0xc0 0xf 0xf0 0x7e 0x0 0xff 0x7 0xe0 0xf 0xf8 0x1e 0x1 0xff 0xff 0xc0 0x0 0xff 0xfe 0x0 0xf 0xff 0xf0 0x0 0x1f 0xff 0xc0 0x0 0x7 0xff 0xe0 0x0 0x1 0xff 0xf8 0x0 0x0 0x1f 0xff 0x80 0x0 0x8 0x8f 0xfc 0x40 0x0 0x0 0x66 0xf9 0xc 0x0 0x0 0x23 0x3f 0x68 0x1 0x3f 0xff 0xff 0xa1 0x9f 0xff 0xfe 0x0 0x3f 0xff 0xfc 0x1 0xff 0xc7 0x80 0x1f 0xe1 0xf0 0xf 0xf0 0x78 0x0 0xfc 0x3c 0x0 0x1f 0x1f 0x0 0xf 0x87 0x86 0x3 0xe1 0xe3 0x80 0x78 0x78 0xe1 0xce 0x1e 0x38 0x43 0x8f 0x1e 0x0 0xfb 0xc7 0x80 0x3c 0xf1 0xe0 0xf 0x3c 0x78 0x3 0xef 0x1e 0x0 0xeb 0xab 0x80 0x79 0xe0 0xe0 0x3d 0x75 0x70 0x1e 0xba 0xb8 0xf 0x3d 0x14 0xf 0x5d 0x1c 0xf 0x5f 0x2c 0x7 0xde 0x8 0x7 0x8e 0x8c 0x7 0x8e 0x14 0xf 0xce 0x4 0xf 0x4e 0x0 0xf 0xef 0x0 0x3 0xfe 0x0 0x3 0xfe 0x0 0x7 0xfc 0x0 0x7 0xfc 0x0 0x7 0xfc 0x0 0xf 0xf8 0x0 0xf 0xf8 0x0 0xf 0xf8 0x0 0x1f 0xf8 0x0 0xf 0xf8 0x0 0xf 0xfc 0x0 0x7 0xff 0x0 0x7 0xff 0xf8 0x3 0xff 0xff 0xf0 0x0 0x7 0xff 0xfc 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x2 0x0 0x5 0x1a 0x18 0x28 0x0 0xf1 0xc7 0x9c 0x78 0xe7 0x88 0x87 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x10 0x4 0x0 0x0 0x0 0xfe 0xfe 0xc1 0xf9 0xf1 0x82 0x7c 0xe1 0xc4 0xf 0x38 0x63 0x8 0xe3 0x1e 0x61 0x9f 0x31 0xe6 0x0 0x79 0x8f 0x31 0x1 0xe3 0x3c 0x66 0x3 0xe6 0x7c 0xce 0x26 0xe6 0x1c 0xc6 0x22 0x63 0xc 0xe3 0x99 0xb9 0xc7 0x38 0xc4 0x6f 0x39 0xc6 0x38 0x99 0xe6 0x38 0xc7 0x13 0x3c 0xe7 0x98 0xe0 0x7 0xe6 0x79 0xce 0x40 0x37 0x98 0xe6 0x31 0x99 0x9f 0x33 0x8c 0x63 0x11 0x1f 0x33 0xcc 0x63 0x11 0x9f 0xcc 0x73 0x18 0xc4 0x46 0xf3 0x9c 0xe7 0x30 0x88 0xdf 0x73 0x9c 0xc6 0x0 0x9 0xf3 0x39 0xce 0x60 0x0 0x9f 0xdc 0xe7 0x31 0x80 0x0 0x7f 0x39 0xce 0x63 0x0 0x0 0xff 0x9c 0xe7 0x1c 0x0 0x1 0xdf 0xff 0xfe 0x78 0x80 0x8 0x63 0xff 0xff 0xc6 0x0 0x0 0xf 0xff 0xff 0xe0 0x80 0x0 0x1 0xff 0xff 0xfc 0x78 0x0 0x1 0x19 0xef 0xff 0xc7 0x0 0x0 0x0 0xc 0x3f 0xfe 0x18 0x0 0x0 0xf 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xf0 0x1a 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x24 0xa 0xbc 0x7f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xfc 0xe4 0xe0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x7f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0xf 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xf8 0x11 0xbf 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xf0
 : player_entity_init 0b00000011 0 0 tobytes SPR_hero1 tobytes ai_player
+: word_Title_ptr tobytes word_Title
 #dummy data
  : tile-graphic
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E

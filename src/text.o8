@@ -2,16 +2,14 @@
 # Draw a single glyph
 :alias text_id v0
 :alias text_glyph_width v0
-:alias text_x v1
-:alias text_y v2
+:alias text_x v4
+:alias text_y v5
 : text_draw_glyph
     i := long font_table
     i += text_id
     i += text_id
-    load v3 - v4 # load address of glyph
-    i := glyph_target
-    save v3 - v4
-    0xF0 0x00 : glyph_target 0x00 0x00 # i := long *glyph
+    load v2 - v3 # load address of glyph
+    reg_set_i_v23
     load v0 # load width
     sprite text_x text_y 6
     text_x += text_glyph_width
@@ -25,19 +23,35 @@
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
 : text_draw_word
-  push v3 v5 4 # save the current spot
+  push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
-  i := word_target
-  save v3 - v4
-  math_add_u16_u8imm v3 v4 1
-  push v3 v4 2
-  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
-  load v0 - v0
+#  i := word_target
+#  save v3 - v4
+#  math_add_u16_u8imm v3 v4 1
+#  push v3 v4 2
+#  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
+#  load v0 - v0
+  reg_set_i_v23
+  load v0
+  :breakpoint v0=glyph
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
+  if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
   text_draw_glyph
-  pop v3 v4 2
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 1
+  push v2 v3 2
   jump text_draw_word_internal
 : text_draw_word_end
-  pop v3 v4 2
+  pop v2 v3 2
+  ;
+
+: text_draw_word_word
+  load v2 - v3
+  text_draw_word
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 3
+  push v2 v3 2
+  text_x += 2
+  jump text_draw_word_internal
   ;

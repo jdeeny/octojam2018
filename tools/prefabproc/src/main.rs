@@ -201,7 +201,7 @@ fn main() {
 
     let mut text_strings = HashMap::<String, String>::new();
 
-    let attacks_string = read_file("../../assets/prefabs/attacks.toml");
+    //let attacks_string = read_file("../../assets/prefabs/attacks.toml");
     let biomes_string = read_file("../../assets/prefabs/biomes.toml");
     let enemies_string = read_file("../../assets/prefabs/enemies.toml");
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
@@ -259,6 +259,8 @@ println!("{}", enemies_string);
 
     // TODO: Load additional string
 
+    text_strings.insert(String::from("Title"), String::from("Dig Site 8"));
+
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
 
 
@@ -308,11 +310,11 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
         write!(data_dest, ": word_{} ", name);
         for symbol in data.iter() {
             match symbol {
-                Symbol::Letter(c) => { write!(data_dest, "glyph_{} ", c); },
+                Symbol::Letter(c) => { write!(data_dest, ":byte glyph_{} ", c); },
                 Symbol::Word(w) => { write!(data_dest, ":byte GLYPH_ESC_WORD tobytes word_{} ", w); },
             }
         }
-        writeln!(data_dest, "");
+        writeln!(data_dest, ":byte GLYPH_ESC_END");
     }
     writeln!(data_dest, "### END WORDS ###");
 
