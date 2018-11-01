@@ -1379,7 +1379,7 @@ jump gameloop
     v4 := 3
     v5 := 2
     v7 := 16
-    v6 := 20
+    v6 := 18
     i := long sample_cool3
     loop
       audio

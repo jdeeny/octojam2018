@@ -67,16 +67,21 @@
 
 
 : play_sample_playback
-  v0 := 16
-    v1 := 16
-    i := long sample_data
+    v4 := 3
+    v5 := 2
+    v7 := 16
+    v6 := 18
+    i := long sample_cool3
     loop
       audio
-      buzzer := v0
-      delay := v1
+      buzzer := v4
+      delay := v5
       playback_wait
-      i += v0
+      i += v6
+      v6 += -1
+      if v6 != 0 then
     again
+    ;
 
 : playback_wait
     loop
