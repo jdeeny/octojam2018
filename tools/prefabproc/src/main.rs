@@ -207,26 +207,27 @@ fn main() {
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
     let weapons_string = read_file("../../assets/prefabs/weapons.toml");
 
-    let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
+//    let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
 /*    println!("\nAttacks:", );
     for atk in &attacks {
         println!("{:?}\n", atk);
     }
 */
 
-    let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
+//    let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
 /*    println!("\nBiomes:", );
     for b in &biomes {
         println!("{:?}\n", b);
     }
 */
 
+println!("{}", enemies_string);
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
-/*    println!("\nEnemies:", );
+    println!("\nEnemies:", );
     for e in &enemies {
         println!("{:?}\n", e);
     }
-*/
+
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
 /*    println!("\nTreasure:", );
     for t in &treasure {
@@ -234,7 +235,7 @@ fn main() {
     }
 */
 
-    let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
+//    let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
 /*    println!("\nWeapons:", );
     for w in &weapons {
         println!("{:?}\n", w);
@@ -251,15 +252,47 @@ fn main() {
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
 
-    writeln!(data_dest, ": entity_table_address tobytes entity_table");
     println!("Strings:");
-    for (k, v) in text_strings {
+    for (k, v) in &text_strings {
         print!("{} -> \"{}\"\n\n", k, v);
     }
+
+    // TODO: Load additional string
+
+    process_strings(&text_strings, &mut data_dest, &mut header_dest);
+
+
+
+    writeln!(data_dest, ": entity_table_address tobytes entity_table");
+
 }
 
+#[derive(Debug)]
 enum Symbol {
     Letter(char),
-    Replacement(usize),
-    Whitespace,
+    Word(String),
+}
+
+fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, header_dest: &mut Write) {
+    let mut words = HashMap::<String, Vec<Symbol>>::new();
+
+    for (name, data) in texts {
+        println!("{} {:?}", name, data);
+        let mut phrasevec = Vec::<Symbol>::new();
+        for w in data.split_whitespace() {
+            let mut svec = Vec::<Symbol>::new();
+            for letter in w.chars() {
+                svec.push(Symbol::Letter(letter));
+            }
+            words.insert(w.to_string(), svec);
+            phrasevec.push(Symbol::Word(w.to_string()));
+        }
+        words.insert(name.to_string(), phrasevec);
+    }
+
+    for (name, data) in words {
+        println!("{:?} -> {:?}", name, data);
+    }
+
+
 }
