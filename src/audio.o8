@@ -65,57 +65,41 @@
   save v0 - v0
   ;
 
+: play_sample_cool
+  v6 := 18
+  i := long sample_cool3
+  jump play_sample_inner
 
-: play_sample_playback
+: play_sample_octojam
+  v6 := 40
+  i := long sample_octojam1
+  jump play_sample_inner
+
+: play_sample_title
+  i := long sample_title1
+  v6 := 35
+  jump play_sample_inner
+
+: play_sample_inner
     v4 := 3
     v5 := 2
     v7 := 16
-    v6 := 18
-    i := long sample_cool3
     loop
       audio
       buzzer := v4
       delay := v5
       playback_wait
-      i += v6
+      i += v7
       v6 += -1
       if v6 != 0 then
     again
     ;
-
 : playback_wait
     loop
       vf := delay
       if vf != 0 then
     again
 ;
-
-
-
-: play_sample_octojam
-    v4 := 3
-    v5 := 2
-    v7 := 16
-    v6 := 40
-    i := long sample_octojam1
-    loop
-      audio
-      buzzer := v4
-      delay := v5
-      playback_wait_octojam
-      i += v7
-      v6 += -1
-      if v6 != 0 then
-    again
-    ;
-
-: playback_wait_octojam
-    loop
-      vf := delay
-      if vf != 0 then
-    again
-;
-
 
 
 ## Play a waveform sample

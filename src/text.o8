@@ -34,7 +34,7 @@
 #  load v0 - v0
   reg_set_i_v23
   load v0
-  :breakpoint v0=glyph
+  #:breakpoint v0=glyph
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
   if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
   text_draw_glyph

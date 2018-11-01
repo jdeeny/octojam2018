@@ -1,6 +1,7 @@
 : gameplay_begin
   clear
   hires
+  play_sample_cool
   plane 3
   ;
 

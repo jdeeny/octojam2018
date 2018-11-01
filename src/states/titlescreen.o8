@@ -7,6 +7,7 @@
   v4 := 40
   v5 := 20
   text_draw_word
+  play_sample_title
   ;
 
 : title_next_state
