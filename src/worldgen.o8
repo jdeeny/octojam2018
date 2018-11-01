@@ -30,7 +30,7 @@
 
 		#monster
 		if v7 == 2 then pick-monster
-
+		if v7 == 3 then place-player
 		: rooms-tile-cleanup
 		HEX_RIGHT x y
 		roomindex += 1
@@ -164,4 +164,16 @@
 	set-i-reg y x save v2 - v3
 
 	i := long pickmonster-tmp load v6
+;
+: place-player
+	i := long place-player-data
+	load v8 - vb
+	#player is unique
+	if v8 != 0 then return
+	v8 := 1 save v8 - v8
+
+	#put the player on the map
+	x  += HEX_CONTENTS_OFFSET
+	set-i-reg y x save v9 - va
+	x += -2
 ;
