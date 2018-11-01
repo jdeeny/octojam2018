@@ -30,10 +30,10 @@ recompose-whole-screen
 
 : gameplay_once
 
-#  v0 := 9 if v0 key then compo-scroll-right
-#  v0 := 7 if v0 key then compo-scroll-left
-#  v0 := 5 if v0 key then compo-scroll-up
-#  v0 := 8 if v0 key then compo-scroll-down
+  v0 := 9 if v0 key then compo-scroll-right
+  v0 := 7 if v0 key then compo-scroll-left
+  v0 := 5 if v0 key then compo-scroll-up
+  v0 := 8 if v0 key then compo-scroll-down
   clear
   draw-tiles
   ;
