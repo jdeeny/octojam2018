@@ -110,3 +110,9 @@ note 0xFF 0
 
 : charedit_data :byte GLYPH_A :byte GLYPH_p :byte GLYPH_u :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK
 : charedit_data_age 18 0
+
+
+
+
+: sample_data
+0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00
