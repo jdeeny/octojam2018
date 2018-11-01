@@ -32,6 +32,32 @@ attacks = [
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "Who did they build these to deter? I don't think they planned for us to go digging up their stuff."
 
+[ruin-security2]
+art = "enemy3"
+hp = 5
+ac = 2
+ammo = 6
+reload = 1
+ai = "cover"
+move = 2
+attacks = [ 
+    {range = 3, cost = 2, acc = 0.9, hit = "shoots you with an airgun", miss = "forgot it had the safety on"},
+    {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
+desc = "This model of the security droid has an air pistol. It's smart enough to seek cover, but not to shoot properly."
+
+[ruin.security3]
+art = "enemy4"
+hp = 5
+ac = 2
+ammo = 12
+reload = 2
+ai = "cover"
+move = 2
+attacks = [ 
+    {range = 3, acc = 0.5, hit = "manages to hit you", miss = "fires erratically"},
+    {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
+desc = "I think someone took the gun from one of the standard model droids and gave it a bigger one instead. It doesn't seem to know how to handle it, so you'll probably be fine."
+
 [ruin-dog]
 art = "enemy11"
 hp = 2
@@ -53,6 +79,98 @@ reload = 2
 speed = 1
 ai = "turret"
 attacks = [
-    {range = 5, cost = 2, hit = "hisses and shoots you", miss = "hisses, and a bullet whirrs past you"}
+    {acc = 0.9, range = 5, cost = 2, hit = "hisses and shoots you", miss = "hisses, and a bullet whirrs past you"}
 ]
 desc = "The hissing sound comes from pressure releasing in their airguns. It seems bullets can be recycled pretty easily if they're just chunks of metal."
+
+[ruin-speed_turret]
+art = "enemy9"
+hp = 1
+ac = 0
+ammo = 6
+reload = 1
+move = 3
+ai = "flank"
+attacks = [
+    {acc = 0.8, range = 3, cost = 2, hit = "stings you with a bullet", miss = "fires a bullet past you"}
+]
+desc = "These guys try to flank you. Don't let them! Their bullets are pretty painful..."
+
+[ruin-sentry]
+art = "enemy8"
+hp = 1
+ac = 0
+move = 5
+ai = "melee"
+attacks = [
+    {hit = "tackles you", miss = "flings itself at you"}
+]
+desc = "I think these were used as surveillance robots, but it seems that years of decay have corrupted their systems."
+
+[ruin-scientist]
+art = "enemy7"
+hp = 3
+ac = 0
+move = 2
+ai = "melee_smart"
+attacks = [
+    {acc = 0.8, hit = "bashes you with a clipboard", miss = "reconsiders bashing you with important scientific research"}
+]
+desc = "Research assistants sometimes wander away from their assigned laboratory."
+
+[ruin-wall]
+art = "enemy6"
+hp = 4
+ac = 1
+move = 1
+ai = "melee"
+attacks = [
+    {dmg = 2, hit = "slams its fist against you", miss = "swings its fist past you"}
+]
+desc = "These were originally designed for fire suppression, but they also worked well for people suppression."
+
+[ruin-messenger]
+art = "enemy5"
+hp = 1
+ac = 0
+move = 6
+ai = "wander"
+attacks = [
+    {hit = "bumps into you", miss = "flies near you"}
+]
+desc = "People used to use these to deliver packages. They aren't hostile, but they tend to get in the way."
+
+[lab-scientist]
+art = "enemy7"
+hp = 3
+ac = 1
+move = 2
+ai = "melee_smart"
+attacks = [
+    {acc = 0.8, hit = "bashes you with a clipboard", miss = "reconsiders bashing you with important scientific research"}
+]
+desc = "These used to do lab assistant work. Science was one of the few areas where robots couldn't do everything."
+
+[lab-wall]
+art = "enemy6"
+hp = 5
+ac = 1
+move = 2
+ai = "melee"
+attacks = [
+    {dmg = 2, hit = "slams its fist against you", miss = "swings its fist past you"}
+]
+desc = "The risk of fire is greater in a laboratory, so they used upgraded versions here."
+
+[lab-turret]
+art = "enemy9"
+hp = 3
+ac = 0
+ammo = 6
+reload = 1
+move = 3
+ai = "flank"
+attacks = [
+    { acc = 0.7, range = 3, cost = 1, hit = "stings you with a bullet", miss = "fires a bullet past you"}
+]
+desc = "A prototype version of the quick turrets from earlier. It's sturdier and can fire more, but it's not as accurate."

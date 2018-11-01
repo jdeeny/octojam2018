@@ -9,3 +9,6 @@
 
 : ai_turret
   ;
+
+: ai_player
+  ;

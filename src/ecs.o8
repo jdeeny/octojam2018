@@ -20,6 +20,12 @@ entity_offset ENTITY_AI 2
 #: entity_bitset
 #:org bitset_end
 
+: entity_load_player
+  i := long player_entity_init
+  load v4 - vA
+  i := long entity_table
+  save v4 - vA
+  ;
 
 # search entities for one that matches a system
 : process_entities

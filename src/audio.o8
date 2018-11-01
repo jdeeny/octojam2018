@@ -65,6 +65,27 @@
   save v0 - v0
   ;
 
+
+: play_sample_playback
+  v0 := 16
+    v1 := 16
+    i := long sample_data
+    loop
+      audio
+      buzzer := v0
+      delay := v1
+      playback_wait
+      i += v0
+    again
+
+: playback_wait
+    loop
+      vf := delay
+      if vf != 0 then
+    again
+;
+
+
 ## Play a waveform sample
 #: audio_play_sample
 #  ;
