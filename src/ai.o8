@@ -12,3 +12,13 @@
 
 : ai_player
   ;
+
+: ai_flank
+  ;
+
+
+: ai_wander
+  ;
+
+: ai_cover
+  ;
