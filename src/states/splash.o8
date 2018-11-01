@@ -33,6 +33,7 @@
   v0 := 53
   v1 := 13
   sprite v0 v1 8
+  play_sample_octojam
   ;
 
 : splash_next_state
