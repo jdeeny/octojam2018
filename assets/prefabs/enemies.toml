@@ -45,7 +45,7 @@ attacks = [
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "This model of the security droid has an air pistol. It's smart enough to seek cover, but not to shoot properly."
 
-[ruin.security3]
+[ruin-security3]
 art = "enemy4"
 hp = 5
 ac = 2
