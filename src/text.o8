@@ -18,6 +18,8 @@
     ;
 
 
+:const GLYPH_ESC_CHOICE 0xFD
+:const GLYPH_ESC_WORD 0xFE
 :const GLYPH_ESC_END 0xFF
 
 # Draw an entire word
@@ -43,22 +45,22 @@
   ;
 
 
-: text_draw_phrase
-  i := long phrase_table
-  i += text_id
-  i += text_id
-  load v3 - v4 # address of word data
-: text_draw_phrase_internal
-  i := phrase_target
-  save v3 - v4
-  math_add_u16_u8imm v3 v4 1
-  push v3 v4 2
-  0xF0 0x00 : phrase_target 0x00 0x00 # i := long *phrase
-  load v0 - v0
-  if v0 == GLYPH_ESC_END then jump text_draw_phrase_end
-  text_draw_word
-  pop v3 v4 2
-  jump text_draw_phrase_internal
-: text_draw_phrase_end
-  pop v3 v4 2
-  ;
+#: text_draw_phrase
+#  i := long phrase_table
+#  i += text_id
+#  i += text_id
+#  load v3 - v4 # address of word data
+#: text_draw_phrase_internal
+#  i := phrase_target
+#  save v3 - v4
+#  math_add_u16_u8imm v3 v4 1
+#  push v3 v4 2
+#  0xF0 0x00 : phrase_target 0x00 0x00 # i := long *phrase
+#  load v0 - v0
+#  if v0 == GLYPH_ESC_END then jump text_draw_phrase_end
+#  text_draw_word
+#  pop v3 v4 2
+#  jump text_draw_phrase_internal
+#: text_draw_phrase_end
+#  pop v3 v4 2
+#  ;

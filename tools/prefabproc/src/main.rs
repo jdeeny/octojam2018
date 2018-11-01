@@ -277,7 +277,7 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
     let mut words = HashMap::<String, Vec<Symbol>>::new();
 
     for (name, data) in texts {
-        println!("{} {:?}", name, data);
+        println!("INPUT:    {} {:?}\n", name, data);
         let mut phrasevec = Vec::<Symbol>::new();
         for w in data.split_whitespace() {
             let mut svec = Vec::<Symbol>::new();
@@ -290,9 +290,19 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
         words.insert(name.to_string(), phrasevec);
     }
 
+
+    writeln!(data_dest, "### WORDS ###");
     for (name, data) in words {
         println!("{:?} -> {:?}", name, data);
+        write!(data_dest, ": word_{} ", name);
+        for symbol in data.iter() {
+            match symbol {
+                Symbol::Letter(c) => { write!(data_dest, "glyph_{} ", c); },
+                Symbol::Word(w) => { write!(data_dest, ":byte GLYPH_ESC_WORD word_{} ", w); },
+            }
+        }
+        writeln!(data_dest, "");
     }
-
+    writeln!(data_dest, "### END WORDS ###");
 
 }
