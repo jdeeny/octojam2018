@@ -6,7 +6,7 @@
 #v6 how many rooms we have placed in this row
 : place-room
 	i := long rooms
-	v0 := random 3
+	v0 := random 7
 	v0 <<= v0
 	i += v0
 	load v1
