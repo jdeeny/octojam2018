@@ -1,2 +1,4 @@
 : player_entity_init 0b00000011 0 0 tobytes SPR_hero1 tobytes ai_player
-: word_Title_ptr tobytes word_Title
+: word_Title_Title_ptr tobytes word_Title_Title
+: word_Title_Credits_ptr tobytes word_Title_Credits
+: word_Title_Begin_ptr tobytes word_Title_Begin

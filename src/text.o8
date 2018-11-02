@@ -62,3 +62,67 @@
   text_x += 2
   jump text_draw_word_internal
   ;
+
+
+
+# Measure an entire word
+# v23 = word address
+: text_measure_word
+  text_x := 0
+: text_measure_word_nozero
+  push v2 v3 2 # save the current spot
+
+: text_measure_word_internal
+#  i := word_target
+#  save v3 - v4
+#  math_add_u16_u8imm v3 v4 1
+#  push v3 v4 2
+#  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
+#  load v0 - v0
+  reg_set_i_v23
+  load v0
+  #:breakpoint v0=glyph
+  if v0 == GLYPH_ESC_END then jump text_measure_word_end
+  if v0 == GLYPH_ESC_WORD then jump text_measure_word_word
+  #:breakpoint measureglyph
+  vF := vF
+  text_measure_glyph
+  #:breakpoint drawn
+  vF := vF
+
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 1
+  push v2 v3 2
+  jump text_measure_word_internal
+: text_measure_word_end
+  pop v2 v3 2
+  #:breakpoint cleanup
+  vF := vF
+  ;
+
+: text_measure_word_word
+  load v2 - v3
+  text_measure_word_nozero
+  pop v2 v3 2
+  math_add_u16_u8imm v2 v3 3
+  push v2 v3 2
+  text_x += 2
+  jump text_measure_word_internal
+  ;
+
+: text_measure_glyph
+  i := long font_table
+  i += text_id
+  i += text_id
+  load v2 - v3 # load address of glyph
+  reg_set_i_v23
+  load v0 # load width
+  text_x += text_glyph_width
+  # v4 holds width
+  ;
+
+: text_draw_word_centered
+
+  ;
+
+:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }

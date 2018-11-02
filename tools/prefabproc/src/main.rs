@@ -259,7 +259,9 @@ println!("{}", enemies_string);
 
     // TODO: Load additional string
 
-    text_strings.insert(String::from("Title"), String::from("Dig Site 8"));
+    text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
+    text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
+    text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
 
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
 

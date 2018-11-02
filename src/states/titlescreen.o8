@@ -1,12 +1,12 @@
 
+: title_highlight
 : title_display
   hires
   clear
-  i := long word_Title_ptr
-  load v2 - v3
-  v4 := 40
-  v5 := 20
-  text_draw_word
+  text_draw_word_at word_Title_Title_ptr 40 20
+  text_draw_word_at word_Title_Credits_ptr 30 40
+  text_draw_word_at word_Title_Begin_ptr 20 48
+
   play_sample_title
   ;
 
