@@ -3,9 +3,22 @@
 
   hires
   clear
-  plane 1
-  text_draw_word_centered_at word_New_Level_ptr 0 127 18
+  v0 := SCREEN_newlevel
+  screen_draw_screen
+  plane 2
+  text_draw_word_centered_at word_New_Level_ptr 0 127 22
 
+  newlevel_draw_biome_name
+  plane 1
+  newlevel_draw_biome_name
+  ;
+
+: newlevel_next_state
+  v0 := STATE_NEXTLEVEL #STATE_GAMEPLAY
+  state_switch
+  ;
+
+: newlevel_draw_biome_name
   i := level_state
   load v0
   v0 <<= v0
@@ -15,12 +28,7 @@
   i += v0
   load v2 - v3
   v4 := 0
-  v5 := 38
+  v5 := 33
   v6 := 127
-  text_draw_word_centered
-  ;
-
-: newlevel_next_state
-  v0 := STATE_NEXTLEVEL #STATE_GAMEPLAY
-  state_switch
+text_draw_word_centered
   ;

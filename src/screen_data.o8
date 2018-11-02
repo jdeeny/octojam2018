@@ -103,6 +103,18 @@
                 Elem 80 48 SPR_portrait_title-parts-29.png
                 Elem 96 48 SPR_portrait_title-parts-30.png
                 Elem 112 48 SPR_portrait_title-parts-31.png
+                ScreenEnd
+
+: screen_newlevel  Elem 16 16 sprite_dialog_UL
+                Elem 16 32 sprite_dialog_LL
+                Elem 96 16 sprite_dialog_UR
+                Elem 96 32 sprite_dialog_LR
+                HRep 32 18 4 sprite_dialog_HLINE
+                HRep 32 45 4 sprite_dialog_HLINE
+#                VRep 2 16 2 sprite_dialog_VLINE
+#                VRep 125 16 2 sprite_dialog_VLINE
+                #Elem 5 8 SPR_portrait_enemy4
+                ScreenEnd
 
 
 #Elem 0 48 sprite_dialog_LL
@@ -118,3 +130,4 @@
 : screen_table
   tobytes screen_frame
   tobytes screen_title
+  tobytes screen_newlevel

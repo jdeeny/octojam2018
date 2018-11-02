@@ -300,7 +300,7 @@ fn main() {
     text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
     text_strings.insert(String::from("Title_Begin"), String::from("Explore the Site"));
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
-    text_strings.insert(String::from("New_Level"), String::from("New Level"));
+    text_strings.insert(String::from("New_Level"), String::from("Now Entering"));
     text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));
     text_strings.insert(String::from("Char_Name"), String::from("Name:"));
     text_strings.insert(String::from("Char_Height"), String::from("Height:"));
