@@ -3,9 +3,9 @@
 : title_display
   hires
   clear
-  text_draw_word_at word_Title_Title_ptr 40 20
-  text_draw_word_at word_Title_Credits_ptr 30 40
-  text_draw_word_at word_Title_Begin_ptr 20 48
+  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  text_draw_word_centered_at word_Title_Credits_ptr 0 127 40
+  text_draw_word_centered_at word_Title_Begin_ptr 0 127 48
 
   play_sample_title
   ;

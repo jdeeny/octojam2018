@@ -3,12 +3,6 @@
   # initialize stuff here
   entity_load_player  # set entity 0 to player
 
-  i := long word_Title_Begin_ptr
-  load v2 - v3
-
-  text_measure_word
-  :breakpoint v4=width
-
 #  : snd_loop
 #  :breakpoint sound
 #   play_sample_playback

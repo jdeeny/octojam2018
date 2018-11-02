@@ -96,6 +96,7 @@
   jump text_measure_word_internal
 : text_measure_word_end
   pop v2 v3 2
+  v4 += -2
   #:breakpoint cleanup
   vF := vF
   ;
@@ -121,8 +122,19 @@
   # v4 holds width
   ;
 
-: text_draw_word_centered
 
+# v23 = word v4 = x1 v5 = y v6 = x2
+: text_draw_word_centered
+  push v2 v6 6
+  text_measure_word
+  v0 >>= v4
+  pop v2 v6 6
+  v6 >>= v6
+  v4 >>= v4
+  v4 += v6
+  v4 -= v0
+  text_draw_word
   ;
 
 :macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
+:macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }

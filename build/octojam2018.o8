@@ -749,12 +749,6 @@
   # initialize stuff here
   entity_load_player  # set entity 0 to player
 
-  i := long word_Title_Begin_ptr
-  load v2 - v3
-
-  text_measure_word
-  :breakpoint v4=width
-
 #  : snd_loop
 #  :breakpoint sound
 #   play_sample_playback
@@ -1251,6 +1245,7 @@ jump gameloop
   jump text_measure_word_internal
 : text_measure_word_end
   pop v2 v3 2
+  v4 += -2
   #:breakpoint cleanup
   vF := vF
   ;
@@ -1276,11 +1271,22 @@ jump gameloop
   # v4 holds width
   ;
 
-: text_draw_word_centered
 
+# v23 = word v4 = x1 v5 = y v6 = x2
+: text_draw_word_centered
+  push v2 v6 6
+  text_measure_word
+  v0 >>= v4
+  pop v2 v6 6
+  v6 >>= v6
+  v4 >>= v4
+  v4 += v6
+  v4 -= v0
+  text_draw_word
   ;
 
 :macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
+:macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }
 : nop_func ;     # can be used to fill in unused ptrs in the state table
 
 
@@ -1437,9 +1443,9 @@ jump gameloop
 : title_display
   hires
   clear
-  text_draw_word_at word_Title_Title_ptr 40 20
-  text_draw_word_at word_Title_Credits_ptr 30 40
-  text_draw_word_at word_Title_Begin_ptr 20 48
+  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  text_draw_word_centered_at word_Title_Credits_ptr 0 127 40
+  text_draw_word_centered_at word_Title_Begin_ptr 0 127 48
 
   play_sample_title
   ;
