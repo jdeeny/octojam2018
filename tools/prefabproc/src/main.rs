@@ -297,7 +297,7 @@ fn main() {
 
     text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
     text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
-    text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
+    text_strings.insert(String::from("Title_Begin"), String::from("Explore the Site"));
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
     text_strings.insert(String::from("New_Level"), String::from("New Level"));
     text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));

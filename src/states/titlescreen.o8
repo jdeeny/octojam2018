@@ -38,9 +38,9 @@
   ;
 
 : title_draw_begin
-  text_draw_word_centered_at word_Title_Begin_ptr 0 127 48
+  text_draw_word_centered_at word_Title_Begin_ptr 0 127 55
   ;
 
 : title_draw_credits
-  text_draw_word_centered_at word_Title_Credits_ptr 0 127 36
+  text_draw_word_centered_at word_Title_Credits_ptr 0 127 49
   ;
