@@ -66,21 +66,36 @@
   ;
 
 : play_sample_cool
-  v6 := 18
   i := long sample_cool3
   jump play_sample_inner
 
 : play_sample_octojam
-  v6 := 40
   i := long sample_octojam1
   jump play_sample_inner
 
 : play_sample_title
   i := long sample_title1
-  v6 := 35
   jump play_sample_inner
 
+: play_sample_phonehey
+  i := long sample_phonehey3
+  jump play_sample_inner
+
+: play_sample_ruin
+  i := long sample_ruin1.1
+  jump play_sample_inner
+
+: play_sample_welcomeback
+  i := long sample_welcomeback
+  jump play_sample_inner
+
+: play_sample_hello
+  i := long sample_hello4
+  jump play_sample_inner
+
+
 : play_sample_inner
+    load v0 v6 := v0
     v4 := 3
     v5 := 2
     v7 := 16
