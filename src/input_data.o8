@@ -1,10 +1,10 @@
 ## Input
-:macro input_table_entry TETRA_TARGET KEY_CODE { tobytes TETRA_TARGET :byte KEY_CODE }
-:macro input_table_all_keys TETRA_TARGET {
-  input_table_entry TETRA_TARGET  0  input_table_entry TETRA_TARGET  1  input_table_entry TETRA_TARGET  2  input_table_entry TETRA_TARGET  3
-  input_table_entry TETRA_TARGET  4  input_table_entry TETRA_TARGET  5  input_table_entry TETRA_TARGET  6  input_table_entry TETRA_TARGET  7
-  input_table_entry TETRA_TARGET  8  input_table_entry TETRA_TARGET  9  input_table_entry TETRA_TARGET 10  input_table_entry TETRA_TARGET 11
-  input_table_entry TETRA_TARGET 12  input_table_entry TETRA_TARGET 13  input_table_entry TETRA_TARGET 14  input_table_entry TETRA_TARGET 15
+:macro input_table_entry function_addr KEY_CODE { tobytes function_addr :byte KEY_CODE }
+:macro input_table_all_keys function_addr {
+  input_table_entry function_addr  0  input_table_entry function_addr  1  input_table_entry function_addr  2  input_table_entry function_addr  3
+  input_table_entry function_addr  4  input_table_entry function_addr  5  input_table_entry function_addr  6  input_table_entry function_addr  7
+  input_table_entry function_addr  8  input_table_entry function_addr  9  input_table_entry function_addr 10  input_table_entry function_addr 11
+  input_table_entry function_addr 12  input_table_entry function_addr 13  input_table_entry function_addr 14  input_table_entry function_addr 15
 }
 :macro input_table_end { :byte 0 :byte 0 :byte INPUT_TABLE_END }
 : input_table
