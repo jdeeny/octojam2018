@@ -262,6 +262,7 @@ println!("{}", enemies_string);
     text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
     text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
     text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
+    text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
 
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
 

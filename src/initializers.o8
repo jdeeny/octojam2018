@@ -2,3 +2,4 @@
 : word_Title_Title_ptr tobytes word_Title_Title
 : word_Title_Credits_ptr tobytes word_Title_Credits
 : word_Title_Begin_ptr tobytes word_Title_Begin
+: word_Credits_1_ptr tobytes word_Credits_1_ptr

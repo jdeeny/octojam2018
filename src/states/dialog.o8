@@ -1,0 +1,14 @@
+: dialog_state 0 0 0   # who is talking, address_of_text
+
+: dialog_display
+  plane 3
+  clear
+  plane 1
+  v0 := SCREEN_dialog
+  screen_draw_screen
+  ;
+
+: dialog_next_state
+  v0 := STATE_GAMEPLAY
+  state_switch
+  ;
