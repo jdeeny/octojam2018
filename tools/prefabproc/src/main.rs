@@ -124,6 +124,33 @@ fn biomes_make_strings(biomes: &BTreeMap<String, Biome>, text_strings: &mut Hash
     }
 }
 
+fn process_enemy_lists(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
+    println!("Processing Biome Enemy Lists");
+    writeln!(data_out, "### Biome Enemy Lists ###");
+    for (name, data) in biomes.iter() {
+        write!(data_out, ": enemyset_{} {} ", name, data.enemies.len());
+        for e in &data.enemies {
+            write!(data_out, "tobytes enemy_{} ", &e);
+        }
+        writeln!(data_out, "");
+    }
+    writeln!(data_out, "  ### End Enemy Lists ###\n\n");
+}
+
+fn process_treasure_lists(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
+    println!("Processing Biome Treasure Lists");
+    writeln!(data_out, "### Biome Treasure Lists ###");
+    for (name, data) in biomes.iter() {
+        write!(data_out, ": treasure_list_{} {} ", name, data.treasure.len());
+        for e in &data.treasure {
+            write!(data_out, "tobytes treasure_{} ", e);
+        }
+        writeln!(data_out, "");
+    }
+    writeln!(data_out, "  ### End Treasure Lists ###\n\n");
+}
+
+
 fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
     println!("Processing Biomes");
     for (name, data) in biomes.iter() {
@@ -135,6 +162,7 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     }
 
     writeln!(data_out, "### Biomes (Level List) ###");
+    writeln!(data_out, ":const word_narration_none 0");
     writeln!(data_out, ": biome_state tobytes HERE 0");
     for (name, data) in biomes.iter() {
         for level in 0..data.levels {
@@ -146,10 +174,10 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
             } else {
                 narration = String::from("none");
             }
-            let biome_name = format!("{}{}", &name, &level);
-            let biome_display = format!("{}  -  {}", name, level + 1);
+            let level_name = format!("{}{}", &name, &level);
+            let level_display = format!("{}  -  {}", name, level + 1);
 //            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
-            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} tobytes tileset_{}\n", biome_name, biome_name, narration, biome_name, data.tileset);
+            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{}\n", level_name, level_name, narration, name);
 
         }
         // tileset - unused for now
@@ -279,20 +307,23 @@ fn main() {
     let mut header_dest = File::create("build/prefab_header.o8").unwrap();
     let mut data_dest = File::create("build/prefab_data.o8").unwrap();
 
+    text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
+    text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
+    text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
+    text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
+    text_strings.insert(String::from("New_Level"), String::from("New Level"));
+
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
     biomes_make_strings(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
-    // TODO: Load additional string
-
-    text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
-    text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
-    text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
-    text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
-
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
+
+//    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
+    process_enemy_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
+    process_treasure_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
     process_biomes(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 

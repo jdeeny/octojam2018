@@ -23,6 +23,6 @@ narration = "There's probably some fancy stuff in there. Make sure to bring it a
 [power_plant]
 tileset = "power_plant"
 levels = 3
-enemies = ["power_electrician", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]
+enemies = ["power-electrician", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]
 treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator", "enlargener", "tarski_field", "void_pants", "magnet_shield", "nano_blood", "rocket_shoes", "overclock", "dog", "heat_shield", "dampener"]
 narration = "They used geothermal energy, so you must be close to the end. Good luck!"

@@ -22,7 +22,7 @@ desc = "Robots that fix other robots... Maybe the people who built them are gone
 # reload = 1 (this is "time it takes to reload")
 # speed = 1 (tile range for moving)
 
-[ruin-security]
+[ruin-security1]
 name = "Melee Security"
 art = "enemy2"
 hp = 5
@@ -43,7 +43,7 @@ ammo = 6
 reload = 1
 ai = "cover"
 move = 2
-attacks = [ 
+attacks = [
     {range = 3, cost = 2, acc = 0.9, hit = "shoots you with an airgun", miss = "forgot it had the safety on"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "This model of the security droid has an air pistol. It's smart enough to seek cover, but not to shoot properly."
@@ -57,7 +57,7 @@ ammo = 12
 reload = 2
 ai = "cover"
 move = 2
-attacks = [ 
+attacks = [
     {range = 3, acc = 0.5, hit = "manages to hit you", miss = "fires erratically"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "I think someone took the gun from one of the standard model droids and gave it a bigger one instead. It doesn't seem to know how to handle it, so you'll probably be fine."

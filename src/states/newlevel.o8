@@ -1,5 +1,5 @@
-: status_state 0
-: status_display
+
+: newlevel_display
   hires
   clear
   plane 1
