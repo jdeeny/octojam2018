@@ -1,8 +1,11 @@
 : title_state 0
 : title_display
   hires
+  plane 3
   clear
+  plane 2
   text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  plane 1
   title_draw_begin
   title_draw_credits
   plane 2
@@ -34,5 +37,5 @@
   ;
 
 : title_draw_credits
-  text_draw_word_centered_at word_Title_Credits_ptr 0 127 40
+  text_draw_word_centered_at word_Title_Credits_ptr 0 127 36
   ;
