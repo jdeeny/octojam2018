@@ -1,3 +1,5 @@
+biome_order = ["ruin", "lab", "power_plant"]
+
 [ruin]
 name = "Ruins"
 tileset = "ruin"
