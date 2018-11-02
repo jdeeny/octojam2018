@@ -593,6 +593,7 @@
 :const sprite_title_title-parts-13.png 101
 :const sprite_title_title-parts-04.png 102
 :const SCREEN_dialog 0
+:const SCREEN_title 1
 : ai_default
 : ai_treasure
 : ai_nop
@@ -1530,8 +1531,11 @@ jump gameloop
   hires
   plane 3
   clear
-  plane 2
-  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  v0 := SCREEN_title
+  screen_draw_screen
+
+  #plane 2
+  #text_draw_word_centered_at word_Title_Title_ptr 0 127 20
   plane 1
   title_draw_begin
   title_draw_credits
@@ -12901,8 +12905,54 @@ note 0xFF 0
                 VRep 125 16 2 sprite_dialog_VLINE
                 Elem 5 8 SPR_portrait_enemy4
                 ScreenEnd
+
+: screen_title  Elem 0 0 SPR_portrait_title-parts-00.png
+                Elem 16 0 SPR_portrait_title-parts-01.png
+                Elem 32 0 SPR_portrait_title-parts-02.png
+                Elem 48 0 SPR_portrait_title-parts-03.png
+                Elem 64 0 SPR_portrait_title-parts-04.png
+                Elem 80 0 SPR_portrait_title-parts-05.png
+                Elem 96 0 SPR_portrait_title-parts-06.png
+                Elem 112 0 SPR_portrait_title-parts-07.png
+                Elem 0 16 SPR_portrait_title-parts-08.png
+                Elem 16 16 SPR_portrait_title-parts-09.png
+                Elem 32 16 SPR_portrait_title-parts-10.png
+                Elem 48 16 SPR_portrait_title-parts-11.png
+                Elem 64 16 SPR_portrait_title-parts-12.png
+                Elem 80 16 SPR_portrait_title-parts-13.png
+                Elem 96 16 SPR_portrait_title-parts-14.png
+                Elem 112 16 SPR_portrait_title-parts-15.png
+                Elem 0 32 SPR_portrait_title-parts-16.png
+                Elem 16 32 SPR_portrait_title-parts-17.png
+                Elem 32 32 SPR_portrait_title-parts-18.png
+                Elem 48 32 SPR_portrait_title-parts-19.png
+                Elem 64 32 SPR_portrait_title-parts-20.png
+                Elem 80 32 SPR_portrait_title-parts-21.png
+                Elem 96 32 SPR_portrait_title-parts-22.png
+                Elem 112 32 SPR_portrait_title-parts-23.png
+                Elem 0 48 SPR_portrait_title-parts-24.png
+                Elem 16 48 SPR_portrait_title-parts-25.png
+                Elem 32 48 SPR_portrait_title-parts-26.png
+                Elem 48 48 SPR_portrait_title-parts-27.png
+                Elem 64 48 SPR_portrait_title-parts-28.png
+                Elem 80 48 SPR_portrait_title-parts-29.png
+                Elem 96 48 SPR_portrait_title-parts-30.png
+                Elem 112 48 SPR_portrait_title-parts-31.png
+
+
+#Elem 0 48 sprite_dialog_LL
+                #Elem 112 0 sprite_dialog_UR
+                #Elem 112 48 sprite_dialog_LR
+                #HRep 16 2 6 sprite_dialog_HLINE
+                #HRep 16 61 6 sprite_dialog_HLINE
+                #VRep 2 16 2 sprite_dialog_VLINE
+                #VRep 125 16 2 sprite_dialog_VLINE
+                #Elem 5 8 SPR_portrait_enemy4
+                ScreenEnd
+
 : screen_table
   tobytes screen_frame
+  tobytes screen_title
 ## Input
 :macro input_table_entry function_addr KEY_CODE { tobytes function_addr :byte KEY_CODE }
 :macro input_table_all_keys function_addr {

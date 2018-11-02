@@ -5,8 +5,11 @@
   hires
   plane 3
   clear
-  plane 2
-  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  v0 := SCREEN_title
+  screen_draw_screen
+
+  #plane 2
+  #text_draw_word_centered_at word_Title_Title_ptr 0 127 20
   plane 1
   title_draw_begin
   title_draw_credits

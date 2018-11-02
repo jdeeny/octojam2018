@@ -1,1 +1,2 @@
 :const SCREEN_dialog 0
+:const SCREEN_title 1
