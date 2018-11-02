@@ -16,7 +16,7 @@
   plane 2
   title_draw_credits
 
-  play_sample_title
+#  play_sample_title
   ;
 
 : title_next_state
