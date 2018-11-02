@@ -10,7 +10,7 @@
 # jump snd_loop
 
   # Load splash state to begin game - loads keymap etc
-  v0 := STATE_DIALOG#STATE_SPLASH
+  v0 := STATE_SPLASH
   state_switch
 
   #audio_play_music  # Test of music
