@@ -4,10 +4,8 @@
 : word_Title_Begin_ptr tobytes word_Title_Begin
 : word_Credits_1_ptr tobytes word_Credits_1
 : word_Dialog_Test_ptr tobytes word_heat_shield-desc
-: word_New_Level_ptr tobytes word_heat_shield-desc
-: level_state tobytes biome_data
-
-
+: word_New_Level_ptr tobytes word_New_Level
+: word_End_Win_Msg_ptr tobytes word_End_Win_Msg
 
 : word_Char_Name_ptr tobytes word_Char_Name
 : word_Char_Height_ptr tobytes word_Char_Height

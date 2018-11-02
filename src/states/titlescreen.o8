@@ -1,5 +1,7 @@
 : title_state 0
+: level_state 0
 : title_display
+  i := title_state v0 := 0 save v0 save v0
   hires
   plane 3
   clear
@@ -18,7 +20,7 @@
   i := title_state
   load v1 - v1
   if v1 == 0 then v0 := STATE_CREDITS
-  if v1 == 1 then v0 := STATE_CHAREDIT
+  if v1 == 1 then v0 := STATE_NEWLEVEL #STATE_CHAREDIT
   state_switch
   ;
 

@@ -151,7 +151,7 @@ fn process_treasure_lists(biomes: &BTreeMap<String, Biome>, text_strings: &mut H
 }
 
 
-fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
+fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Biomes");
     for (name, data) in biomes.iter() {
         println!("{} -> {:?}", &name, data);
@@ -166,8 +166,10 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     writeln!(data_out, ": biome_state tobytes HERE 0");
     writeln!(data_out, ": biome_data");
 
+    let mut count = 0;
     for (name, data) in biomes.iter() {
         for level in 0..data.levels {
+            count += 1;
             let narration: String;
             if level > 0 {
                 narration = String::from("none");
@@ -179,7 +181,7 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
             let level_name = format!("{}{}", &name, &level);
             let level_display = format!("{}  -  {}", name, level + 1);
 //            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
-            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{}\n", level_name, level_name, narration, name);
+            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} 0 0\n", level_name, level_name, narration, name);
 
         }
         // tileset - unused for now
@@ -189,6 +191,8 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
         // create a treasure set
     }
     writeln!(data_out, "0xFF   ### End Biome Data ###\n\n");
+
+    writeln!(header_out, ":const level_count {}", count);
 }
 
 
@@ -296,6 +300,7 @@ fn main() {
     text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
     text_strings.insert(String::from("New_Level"), String::from("New Level"));
+    text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));
     text_strings.insert(String::from("Char_Name"), String::from("Name:"));
     text_strings.insert(String::from("Char_Height"), String::from("Height:"));
     text_strings.insert(String::from("Char_Build"), String::from("Build:"));

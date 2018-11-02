@@ -1,22 +1,26 @@
 : newlevel_display
+  i := level_state
+
   hires
   clear
   plane 1
-  text_draw_word_centered_at word_New_Level_ptr 0 127 48
+  text_draw_word_centered_at word_New_Level_ptr 0 127 18
 
-
-  #i := long biome_
-
-  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
-  title_draw_begin
-  title_draw_credits
-  plane 2
-  title_draw_credits
-
-  play_sample_title
+  i := level_state
+  load v0
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  i := long biome_data
+  i += v0
+  load v2 - v3
+  v4 := 0
+  v5 := 38
+  v6 := 127
+  text_draw_word_centered
   ;
 
 : newlevel_next_state
-  v0 := STATE_GAMEPLAY
+  v0 := STATE_NEXTLEVEL #STATE_GAMEPLAY
   state_switch
   ;

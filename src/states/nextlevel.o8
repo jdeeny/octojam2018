@@ -1,0 +1,9 @@
+: nextlevel_go
+  i := level_state
+  load v1 - v1
+  v1 += 1
+  save v1 - v1
+  v0 := STATE_NEWLEVEL
+  if v1 == level_count then v0 := STATE_ENDING
+  state_switch
+  ;
