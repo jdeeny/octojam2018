@@ -19,10 +19,10 @@ struct Attack {
 
 #[derive(Debug, Deserialize)]
 struct Biome {
-    tileset: Option<String>,
-    levels: Option<usize>,
-    enemies: Option<Vec<String>>,
-    treasure: Option<Vec<String>>,
+    tileset: String,
+    levels: usize,
+    enemies: Vec<String>,
+    treasure: Vec<String>,
     narration: Option<String>,
 }
 
@@ -98,35 +98,39 @@ fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMa
 
 }
 
-fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write) {
+fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
     println!("Processing Biomes");
     for (name, data) in biomes.iter() {
-//        println!("{} -> {:?}", &name, data);
+        println!("{} -> {:?}", &name, data);
         if let Some(narration) = &data.narration {
-            let mut key: String = name.clone();
-            key.push_str("-narration");
+            let key = format!("narration_{}", &name);
             text_strings.insert(key, narration.clone());
         }
     }
 
-    writeln!(data_out, "# Biomes (Level List)");
+    writeln!(data_out, "### Biomes (Level List) ###");
     writeln!(data_out, ": biome_state tobytes HERE 0");
     for (name, data) in biomes.iter() {
-        let mut lvls = 1;
-        if let Some(levels) = data.levels { lvls = levels; }
+        for level in 0..data.levels {
+            let narration: String;
+            if let Some(n) = data.narration.clone() {
+                narration = name.clone();
+            } else {
+                narration = String::from("none");
+            }
+            let biome_name = format!("{}{}", &name, &level);
+            let biome_display = format!("{}  -  {}", name, level + 1);
+            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
+            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes narration_{} tobytes enemyset_{} tobytes tileset_{}\n", biome_name, biome_name, narration, biome_name, data.tileset);
 
+        }
         // tileset - unused for now
         // create a word for the name
         // create an enemy set
         // create a narration event
         // create a treasure set
-
-        writeln!(data_out, "# '{}', {} levels", name, lvls);
-        writeln!(data_out, ": biome_{}      :byte {}       tobytes word_{}     tobytes narration_{}     tobytes enemyset_{}\n", lvls, name, name, name, name);
     }
-    writeln!(data_out, "0xFF # End biomes\n\n");
-    writeln!(data_out, "### End Biome Data ###\n\n");
-
+    writeln!(data_out, "0xFF   ### End Biome Data ###\n\n");
 }
 
 fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
@@ -214,19 +218,19 @@ fn main() {
     }
 */
 
-//    let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
+    let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
 /*    println!("\nBiomes:", );
     for b in &biomes {
         println!("{:?}\n", b);
     }
 */
 
-println!("{}", enemies_string);
+//    println!("{}", enemies_string);
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
-    println!("\nEnemies:", );
+/*    println!("\nEnemies:", );
     for e in &enemies {
         println!("{:?}\n", e);
-    }
+    }*/
 
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
 /*    println!("\nTreasure:", );
@@ -246,11 +250,11 @@ println!("{}", enemies_string);
     let mut header_dest = File::create("build/prefab_header.o8").unwrap();
     let mut data_dest = File::create("build/prefab_data.o8").unwrap();
 
-    //process_biomes(&biomes, &mut text_strings, &mut data_dest);
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
+    process_biomes(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
     println!("Strings:");
     for (k, v) in &text_strings {
@@ -309,7 +313,7 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
 
     writeln!(data_dest, "### WORDS ###");
     for (name, data) in wordvec {
-        println!("{:?} -> {:?}", name, data);
+        //println!("{:?} -> {:?}", name, data);
         write!(data_dest, ": word_{} ", name);
         for symbol in data.iter() {
             match symbol {

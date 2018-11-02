@@ -43,6 +43,9 @@ input_table_end
   input_table_entry     compo-scroll-down       OCTO_KEY_S
   input_table_end
 
+: input_table_newlevel
+  input_table_all_keys newlevel_next_state
+  input_table_end
 
 : input_table_ending
   input_table_all_keys ending_next_state
@@ -80,3 +83,4 @@ input_table_end
   state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func            nop_func
   state_table_entry STATE_CREDITS       input_table_credits     credits_display         nop_func            nop_func
   state_table_entry STATE_DIALOG        input_table_dialog      dialog_display          nop_func            nop_func
+  state_table_entry STATE_NEWLEVEL      input_table_newlevel    newlevel_display        nop_func            nop_func
