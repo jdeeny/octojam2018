@@ -24,10 +24,10 @@
 : mm_stack_end
 
 # Define the Tetra CallStack Segment
-:org SEG_TETRA_CALLSTACK_START
-: tetra_callstack
-:org SEG_TETRA_CALLSTACK_END
-: tetra_callstack_end
+#:org SEG_TETRA_CALLSTACK_START
+#: tetra_callstack
+#:org SEG_TETRA_CALLSTACK_END
+#: tetra_callstack_end
 
 :org stack_code_begins
 

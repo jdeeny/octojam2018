@@ -1,48 +1,33 @@
 
 
-##/ config.o8 /##
-#################
+
+#:const SEG_CODE_START 0x202
 
 
-# | Start  | End      | Size         | Contents                                                    |
-# | ------ | -------- | ------------ | ----------------------------------------------------------- |
-# | 0x0000 | 0x01FF   |   512 B      | Fonts, system area                                          |
-# | 0x0200 | 0x0201   |     2 B      | Trampoline to main, required as a side effect of using :org |
-# | 0x0202 | 0x0FFF   |   3.5 kB     | Code segment, plus any data that will be accessed with long |
-# | 0x1000 | 0x1FFF   |     4 kb     | Far data segment, (static) data that is > 12-bit boundary   |
-# | 0x2000 | 0xFCFF   |    55 kB     | Heap, begins at the end of the far data segment             |
-# | 0xFD00 | 0xFDFF   |   256 B      | Tetra CallStack                                             |
-# | 0xFE00 | 0xFEFF   |   256 B      | Data Stack                                                  |
-# | 0xFF00 | 0xFFFF   |   256 B      | Debug space                                                 |
+#:const SEG_FAR_START 0x1000
 
 
-:const SEG_CODE_START 0x202
+#:const SEG_HEAP_START 0x4000
+#:const SEG_HEAP_END 0xF000
 
 
-:const SEG_FAR_START 0x1000
-
-
-:const SEG_HEAP_START 0x4000
-:const SEG_HEAP_END 0xF000
-
-
-:const SEG_TETRA_CALLSTACK_START 0xFD00
-:const SEG_TETRA_CALLSTACK_END 0xFDFF
+#:const SEG_TETRA_CALLSTACK_START 0xFD00
+#:const SEG_TETRA_CALLSTACK_END 0xFDFF
 
 
 :const SEG_STACK_START 0xFE00
 :const SEG_STACK_END 0xFEFF
 
 
-:const SEG_CODE_SIZE_START 0xFFF0
-:const SEG_CODE_SIZE_END 0xFFFF
+#:const SEG_CODE_SIZE_START 0xFFF0
+#:const SEG_CODE_SIZE_END 0xFFFF
 
 
 # Registers
 :alias compare-temp vF	# move compare-temp so it doesn't accidentally kill SP
 :alias SCRATCH vF
 :alias SP vE	# Stack pointer
-:alias TETRA_SP vD  # Tetra stack pointer
+#:alias TETRA_SP vD  # Tetra stack pointer
 
 
 ##/ math.o8 /##
@@ -439,10 +424,10 @@
 : mm_stack_end
 
 # Define the Tetra CallStack Segment
-:org SEG_TETRA_CALLSTACK_START
-: tetra_callstack
-:org SEG_TETRA_CALLSTACK_END
-: tetra_callstack_end
+#:org SEG_TETRA_CALLSTACK_START
+#: tetra_callstack
+#:org SEG_TETRA_CALLSTACK_END
+#: tetra_callstack_end
 
 :org stack_code_begins
 
@@ -758,7 +743,7 @@
 # jump snd_loop
 
   # Load splash state to begin game - loads keymap etc
-  v0 := STATE_DIALOG#STATE_SPLASH
+  v0 := STATE_SPLASH
   state_switch
 
   #audio_play_music  # Test of music
@@ -1509,7 +1494,7 @@ jump gameloop
   i := title_state
   load v1 - v1
   if v1 == 0 then v0 := STATE_CREDITS
-  if v1 == 1 then v0 := STATE_GAMEPLAY
+  if v1 == 1 then v0 := STATE_DIALOG#STATE_GAMEPLAY
   state_switch
   ;
 
