@@ -1,11 +1,12 @@
-: dialog_state 0 0 0   # who is talking, address_of_text
+: dialog_state 0 0   # who is talking
 
 : dialog_display
   plane 3
   clear
-  plane 1
   v0 := SCREEN_dialog
   screen_draw_screen
+  plane 1
+  text_draw_word_at word_Dialog_Test_ptr 22 10
   ;
 
 : dialog_next_state
