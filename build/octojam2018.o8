@@ -748,6 +748,7 @@
 }
 
 : main
+  hires
   # initialize stuff here
   entity_load_player  # set entity 0 to player
 
@@ -757,7 +758,7 @@
 # jump snd_loop
 
   # Load splash state to begin game - loads keymap etc
-  v0 := STATE_SPLASH
+  v0 := STATE_DIALOG#STATE_SPLASH
   state_switch
 
   #audio_play_music  # Test of music
@@ -1286,7 +1287,58 @@ jump gameloop
   v4 -= v0
   text_draw_word
   ;
-
+#
+#
+## v23 = word v4 = x v5 = y v6 = x1 v7 x2
+#: text_draw_wrapped
+#  push v2 v3 2 # save the current spot
+#
+#: text_draw_wrapped_internal
+##  i := word_target
+##  save v3 - v4
+##  math_add_u16_u8imm v3 v4 1
+##  push v3 v4 2
+##  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
+##  load v0 - v0
+#  reg_set_i_v23
+#  load v0
+#  #:breakpoint v0=glyph
+#  if v0 == GLYPH_ESC_END then jump text_draw_wrapped_end
+#  if v0 == GLYPH_ESC_WORD then jump text_draw_wrapped_word
+#  #:breakpoint drawglyph
+#  vF := vF
+#  text_draw_glyph
+#  #:breakpoint drawn
+#  vF := vF
+#
+#  pop v2 v3 2
+#  math_add_u16_u8imm v2 v3 1
+#  push v2 v3 2
+#  jump text_draw_wrapped_internal
+#: text_draw_wrapped_end
+#  pop v2 v3 2
+#  #:breakpoint cleanup
+#  vF := vF
+#  ;
+#
+#: text_draw_wrapped_word
+#  load v2 - v3
+#  text_draw_wrapped
+#  pop v2 v3 2
+#  math_add_u16_u8imm v2 v3 3
+#  push v2 v3 2
+#  
+#  vF := v7
+#  vF -= v4
+#  if vF == 0 then text_draw_wrapped_backup
+#  text_x += 2
+#  jump text_draw_wrapped_internal
+#  ;
+#
+#: text_draw_wrapped_backup
+#  
+#  ;
+#
 :macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
 :macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }
 : nop_func ;     # can be used to fill in unused ptrs in the state table
@@ -1491,14 +1543,15 @@ jump gameloop
   v0 := STATE_TITLE
   state_switch
   ;
-: dialog_state 0 0 0   # who is talking, address_of_text
+: dialog_state 0 0   # who is talking
 
 : dialog_display
   plane 3
   clear
-  plane 1
   v0 := SCREEN_dialog
   screen_draw_screen
+  plane 1
+  text_draw_word_at word_Dialog_Test_ptr 22 10
   ;
 
 : dialog_next_state
@@ -10828,7 +10881,7 @@ note 0xFF 0
                 HRep 16 61 6 sprite_dialog_HLINE
                 VRep 2 16 2 sprite_dialog_VLINE
                 VRep 125 16 2 sprite_dialog_VLINE
-                Elem 5 8 SPR_portrait_enemy1
+                Elem 5 8 SPR_portrait_enemy4
                 ScreenEnd
 : screen_table
   tobytes screen_frame
@@ -10926,7 +10979,8 @@ input_table_end
 : word_Title_Title_ptr tobytes word_Title_Title
 : word_Title_Credits_ptr tobytes word_Title_Credits
 : word_Title_Begin_ptr tobytes word_Title_Begin
-: word_Credits_1_ptr tobytes word_Credits_1_ptr
+: word_Credits_1_ptr tobytes word_Credits_1
+: word_Dialog_Test_ptr tobytes word_heat_shield-desc
 #dummy data
  : tile-graphic
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
