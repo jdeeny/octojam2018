@@ -1,4 +1,5 @@
 [ruin]
+name = "Ruins"
 tileset = "ruin"
 levels = 3
 enemies = ["ruin-mechanic", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "ruin-speed_turret", "ruin-sentry", "ruin-scientist", "ruin-wall"]
@@ -14,6 +15,7 @@ Anyway, I've turned my radio back on. Good luck!"""
 # short: "Hello?" (worried for self due to neglecting duties as mission control person)
 
 [lab]
+name = "Lab"
 tileset = "lab"
 levels = 3
 enemies = ["ruin-mechanic", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]
@@ -21,6 +23,7 @@ treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator", "en
 narration = "There's probably some fancy stuff in there. Make sure to bring it all back with you!"
 
 [power_plant]
+name = "Power Plant"
 tileset = "power_plant"
 levels = 3
 enemies = ["power-electrician", "ruin-security1", "ruin-security2", "ruin-security3", "ruin-dog", "ruin-turret", "ruin-messenger", "lab-turret", "ruin-sentry", "lab-scientist", "lab-wall"]

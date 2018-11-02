@@ -19,6 +19,7 @@ struct Attack {
 
 #[derive(Debug, Deserialize)]
 struct Biome {
+    name: String,
     tileset: String,
     levels: usize,
     enemies: Vec<String>,
@@ -117,8 +118,8 @@ fn biomes_make_strings(biomes: &BTreeMap<String, Biome>, text_strings: &mut Hash
             } else {
                 narration = String::from("none");
             }
-            let biome_name = format!("{}{}", &name, &level);
-            let biome_display = format!("{}  -  {}", name, level + 1);
+            let biome_name = format!("{}{}", &name, level);
+            let biome_display = format!("{}  -  {}", &data.name, level + 1);
             text_strings.insert(format!("Biome_Name_{}", biome_name), biome_display);
         }
     }
