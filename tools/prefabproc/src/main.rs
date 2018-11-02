@@ -296,6 +296,34 @@ fn main() {
     text_strings.insert(String::from("Title_Begin"), String::from("Explore Site"));
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
     text_strings.insert(String::from("New_Level"), String::from("New Level"));
+    text_strings.insert(String::from("Char_Name"), String::from("Name:"));
+    text_strings.insert(String::from("Char_Height"), String::from("Height:"));
+    text_strings.insert(String::from("Char_Build"), String::from("Build:"));
+    text_strings.insert(String::from("Char_Eyes"), String::from("Eyes:"));
+
+    text_strings.insert(String::from("Char_Height_0"), String::from("Average"));
+    text_strings.insert(String::from("Char_Height_1"), String::from("Short"));
+    text_strings.insert(String::from("Char_Height_2"), String::from("Above Average"));
+    text_strings.insert(String::from("Char_Height_3"), String::from("Very Tall"));
+
+    text_strings.insert(String::from("Char_Build_0"), String::from("A Little Extra"));
+    text_strings.insert(String::from("Char_Build_1"), String::from("Curvy"));
+    text_strings.insert(String::from("Char_Build_2"), String::from("Full Figured"));
+    text_strings.insert(String::from("Char_Build_3"), String::from("Skinny"));
+    text_strings.insert(String::from("Char_Build_4"), String::from("Average"));
+    text_strings.insert(String::from("Char_Build_5"), String::from("Fit"));
+    text_strings.insert(String::from("Char_Build_6"), String::from("Jacked"));
+    text_strings.insert(String::from("Char_Build_7"), String::from("Rather Not Say"));
+
+    text_strings.insert(String::from("Char_Eyes_0"), String::from("Blue"));
+    text_strings.insert(String::from("Char_Eyes_1"), String::from("Brown"));
+    text_strings.insert(String::from("Char_Eyes_2"), String::from("Green"));
+    text_strings.insert(String::from("Char_Eyes_3"), String::from("Hazel"));
+    text_strings.insert(String::from("Char_Eyes_4"), String::from("Black"));
+    text_strings.insert(String::from("Char_Eyes_5"), String::from("Grey"));
+    text_strings.insert(String::from("Char_Eyes_6"), String::from("Red"));
+    text_strings.insert(String::from("Char_Eyes_7"), String::from("Shifty"));
+
 
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);

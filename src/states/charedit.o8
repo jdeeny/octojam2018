@@ -1,3 +1,4 @@
+: charedit_state 0 0
 : charedit_next_item
   ;
 
@@ -16,6 +17,9 @@
   # if ok, finish
   ;
 
+: charedit_reset
+  i := charedit_state
+  v0 := 0 save v0 save v0
 : charedit_display
   clear
   v9 := 0
