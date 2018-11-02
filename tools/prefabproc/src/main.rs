@@ -98,13 +98,39 @@ fn process_attacks(attacks: &BTreeMap<String, Attack>, text_strings: &mut HashMa
 
 }
 
+fn biomes_make_strings(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
+    println!("Processing Biomes");
+    for (name, data) in biomes.iter() {
+        if let Some(narration) = &data.narration {
+            let key = format!("narration_{}", &name);
+            text_strings.insert(key, narration.clone());
+        }
+    }
+
+    for (name, data) in biomes.iter() {
+        for level in 0..data.levels {
+            let narration: String;
+            if level > 0 {
+                narration = String::from("none");
+            } else if let Some(n) = data.narration.clone() {
+                narration = name.clone();
+            } else {
+                narration = String::from("none");
+            }
+            let biome_name = format!("{}{}", &name, &level);
+            let biome_display = format!("{}  -  {}", name, level + 1);
+            text_strings.insert(format!("Biome_Name_{}", biome_name), biome_display);
+        }
+    }
+}
+
 fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_our: &mut Write) {
     println!("Processing Biomes");
     for (name, data) in biomes.iter() {
         println!("{} -> {:?}", &name, data);
         if let Some(narration) = &data.narration {
             let key = format!("narration_{}", &name);
-            text_strings.insert(key, narration.clone());
+//            text_strings.insert(key, narration.clone());
         }
     }
 
@@ -113,15 +139,17 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     for (name, data) in biomes.iter() {
         for level in 0..data.levels {
             let narration: String;
-            if let Some(n) = data.narration.clone() {
+            if level > 0 {
+                narration = String::from("none");
+            } else if let Some(n) = data.narration.clone() {
                 narration = name.clone();
             } else {
                 narration = String::from("none");
             }
             let biome_name = format!("{}{}", &name, &level);
             let biome_display = format!("{}  -  {}", name, level + 1);
-            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
-            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes narration_{} tobytes enemyset_{} tobytes tileset_{}\n", biome_name, biome_name, narration, biome_name, data.tileset);
+//            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
+            write!(data_out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} tobytes tileset_{}\n", biome_name, biome_name, narration, biome_name, data.tileset);
 
         }
         // tileset - unused for now
@@ -132,6 +160,7 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     }
     writeln!(data_out, "0xFF   ### End Biome Data ###\n\n");
 }
+
 
 fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Enemies");
@@ -254,12 +283,7 @@ fn main() {
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
-    process_biomes(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
-
-    println!("Strings:");
-    for (k, v) in &text_strings {
-        print!("{} -> \"{}\"\n\n", k, v);
-    }
+    biomes_make_strings(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
     // TODO: Load additional string
 
@@ -270,6 +294,7 @@ fn main() {
 
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
 
+    process_biomes(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
 
     writeln!(data_dest, ": entity_table_address tobytes entity_table");
@@ -291,15 +316,23 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, heade
         let mut phrasevec = Vec::<Symbol>::new();
 
         for w in data.split_whitespace() {
-            let mut svec = Vec::<Symbol>::new();
-            for letter in w.chars() {
-                svec.push(Symbol::Letter(letter));
+
+            let trimmed = w.trim_matches(|c| c == '{' || c == '}');
+            if w.chars().count() != trimmed.chars().count() {
+                println!("Brackets: {} {}", &w, &trimmed);
+                break;
+            } else {
+                let mut svec = Vec::<Symbol>::new();
+                for letter in w.chars() {
+                    svec.push(Symbol::Letter(letter));
+                }
+                if ! words.contains_key(&w.to_string()) {
+                    words.insert(w.to_string(), svec.clone());
+                    wordvec.push((w.to_string(), svec.clone()));
+                }
+                phrasevec.push(Symbol::Word(w.to_string()));
+
             }
-            if ! words.contains_key(&w.to_string()) {
-                words.insert(w.to_string(), svec.clone());
-                wordvec.push((w.to_string(), svec.clone()));
-            }
-            phrasevec.push(Symbol::Word(w.to_string()));
         }
 
         if ! words.contains_key(&name.to_string()) {
