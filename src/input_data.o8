@@ -21,7 +21,13 @@ input_table_end
   input_table_end
 
 : input_table_title
-  input_table_all_keys title_next_state
+  input_table_entry title_updown OCTO_KEY_W
+  input_table_entry title_updown OCTO_KEY_E
+  input_table_entry title_updown OCTO_KEY_Z
+  input_table_entry title_updown OCTO_KEY_X
+  input_table_entry title_next_state OCTO_KEY_F
+
+
   input_table_end
 
 : input_table_charedit
@@ -65,3 +71,4 @@ input_table_entry     compo-scroll-down       OCTO_KEY_S
   state_table_entry STATE_GAMEPLAY      input_table_gameplay    gameplay_begin          gameplay_once       gameplay_loop
   state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func            nop_func
   state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func            nop_func
+  state_table_entry STATE_CREDITS       input_table_empty       nop_func                nop_func            nop_func
