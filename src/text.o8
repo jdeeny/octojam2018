@@ -59,7 +59,7 @@
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
   push v2 v3 2
-  text_x += 2
+  text_x += 3
   jump text_draw_word_internal
   ;
 
@@ -96,7 +96,7 @@
   jump text_measure_word_internal
 : text_measure_word_end
   pop v2 v3 2
-  v4 += -2
+  v4 += -3
   #:breakpoint cleanup
   vF := vF
   ;
@@ -107,7 +107,7 @@
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
   push v2 v3 2
-  text_x += 2
+  text_x += 3
   jump text_measure_word_internal
   ;
 
@@ -175,7 +175,7 @@
 #  pop v2 v3 2
 #  math_add_u16_u8imm v2 v3 3
 #  push v2 v3 2
-#  
+#
 #  vF := v7
 #  vF -= v4
 #  if vF == 0 then text_draw_wrapped_backup
@@ -184,7 +184,7 @@
 #  ;
 #
 #: text_draw_wrapped_backup
-#  
+#
 #  ;
 #
 :macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }

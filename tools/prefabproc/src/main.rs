@@ -164,6 +164,8 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     writeln!(data_out, "### Biomes (Level List) ###");
     writeln!(data_out, ":const word_narration_none 0");
     writeln!(data_out, ": biome_state tobytes HERE 0");
+    writeln!(data_out, ": biome_data");
+
     for (name, data) in biomes.iter() {
         for level in 0..data.levels {
             let narration: String;
@@ -276,26 +278,8 @@ fn main() {
 */
 
     let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
-/*    println!("\nBiomes:", );
-    for b in &biomes {
-        println!("{:?}\n", b);
-    }
-*/
-
-//    println!("{}", enemies_string);
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
-/*    println!("\nEnemies:", );
-    for e in &enemies {
-        println!("{:?}\n", e);
-    }*/
-
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
-/*    println!("\nTreasure:", );
-    for t in &treasure {
-        println!("{:?}\n", t);
-    }
-*/
-
 //    let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
 /*    println!("\nWeapons:", );
     for w in &weapons {

@@ -5,3 +5,4 @@
 : word_Credits_1_ptr tobytes word_Credits_1
 : word_Dialog_Test_ptr tobytes word_heat_shield-desc
 : word_New_Level_ptr tobytes word_heat_shield-desc
+: level_state tobytes biome_data

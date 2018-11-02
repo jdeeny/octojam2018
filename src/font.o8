@@ -122,8 +122,8 @@ X..X
 .XXX
 ....
 : glyph_e 5
+....
 .XXX
-X..X
 XXXX
 X...
 .XXX
@@ -255,7 +255,7 @@ X...X
 X...X
 X.X.X
 .X.X.
-: glyph_x 5
+: glyph_x 4
 ....
 ....
 X.X.
@@ -304,7 +304,7 @@ X..X
 X..X
 XXX.
 ....
-: glyph_E 6
+: glyph_E 5
 XXXX
 X...
 XXX.
