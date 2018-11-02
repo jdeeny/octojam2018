@@ -3,7 +3,8 @@
   hires
   # initialize stuff here
   entity_load_player  # set entity 0 to player
-  
+
+
   # Load splash state to begin game - loads keymap etc
   v0 := STATE_SPLASH
   state_switch

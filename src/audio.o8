@@ -73,6 +73,11 @@
   i := long sample_octojam1
   jump play_sample_inner
 
+: play_sample_five
+  i := long sample_five
+  jump play_sample_inner
+
+
 : play_sample_title
   i := long sample_title1
   jump play_sample_inner

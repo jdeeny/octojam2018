@@ -1,10 +1,11 @@
-
 : newlevel_display
   hires
   clear
   plane 1
   text_draw_word_centered_at word_New_Level_ptr 0 127 48
 
+
+  #i := long biome_
 
   text_draw_word_centered_at word_Title_Title_ptr 0 127 20
   title_draw_begin
