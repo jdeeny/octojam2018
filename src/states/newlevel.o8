@@ -5,11 +5,12 @@
   clear
   v0 := SCREEN_newlevel
   screen_draw_screen
-  plane 2
+  v0 := 2
+  set_text_color
   text_draw_word_centered_at word_New_Level_ptr 0 127 22
 
-  newlevel_draw_biome_name
-  plane 1
+  v0 := 3
+  set_text_color
   newlevel_draw_biome_name
   ;
 
