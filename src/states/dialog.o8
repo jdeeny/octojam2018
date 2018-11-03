@@ -6,7 +6,9 @@
   v0 := SCREEN_dialog
   screen_draw_screen
   plane 1
+  text_set_wrap 22 125
   text_draw_word_at word_Dialog_Test_ptr 22 10
+  text_clear_wrap
   ;
 
 : dialog_next_state
