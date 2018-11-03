@@ -1,5 +1,13 @@
+: text_state 1
+
+# v0 := new_color
+: set_text_color
+  i := text_state
+  save v0 - v0
+  ;
 
 # Draw a single glyph
+:alias text_color v8
 :alias text_id v0
 :alias text_glyph_width v0
 :alias text_x v4
@@ -11,7 +19,13 @@
     load v2 - v3 # load address of glyph
     reg_set_i_v23
     load v0 # load width
-    sprite text_x text_y 6
+
+    plane 1
+    if text_color == 1 then sprite text_x text_y 6
+    if text_color == 3 then sprite text_x text_y 6
+    plane 2
+    if text_color == 2 then sprite text_x text_y 6
+    if text_color == 3 then sprite text_x text_y 6
     text_x += text_glyph_width
     ;
 
@@ -20,9 +34,13 @@
 :const GLYPH_ESC_WORD 0xFE
 :const GLYPH_ESC_END 0xFF
 
+
+: text_draw_word
+  i := text_state
+  load text_color - text_color
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
-: text_draw_word
+: text_draw_word_noreset
   push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
@@ -55,7 +73,7 @@
 
 : text_draw_word_word
   load v2 - v3
-  text_draw_word
+  text_draw_word_noreset
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
   push v2 v3 2
@@ -187,5 +205,5 @@
 #
 #  ;
 #
-:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
+:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word_noreset }
 :macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }

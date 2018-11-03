@@ -1170,8 +1170,16 @@ jump gameloop
 0 0
 : recompose-whole-screen #TODO
 ;
+: text_state 1
+
+# v0 := new_color
+: set_text_color
+  i := text_state
+  save v0 - v0
+  ;
 
 # Draw a single glyph
+:alias text_color v8
 :alias text_id v0
 :alias text_glyph_width v0
 :alias text_x v4
@@ -1183,7 +1191,13 @@ jump gameloop
     load v2 - v3 # load address of glyph
     reg_set_i_v23
     load v0 # load width
-    sprite text_x text_y 6
+
+    plane 1
+    if text_color == 1 then sprite text_x text_y 6
+    if text_color == 3 then sprite text_x text_y 6
+    plane 2
+    if text_color == 2 then sprite text_x text_y 6
+    if text_color == 3 then sprite text_x text_y 6
     text_x += text_glyph_width
     ;
 
@@ -1192,9 +1206,13 @@ jump gameloop
 :const GLYPH_ESC_WORD 0xFE
 :const GLYPH_ESC_END 0xFF
 
+
+: text_draw_word
+  i := text_state
+  load text_color - text_color
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
-: text_draw_word
+: text_draw_word_noreset
   push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
@@ -1227,7 +1245,7 @@ jump gameloop
 
 : text_draw_word_word
   load v2 - v3
-  text_draw_word
+  text_draw_word_noreset
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
   push v2 v3 2
@@ -1359,7 +1377,7 @@ jump gameloop
 #
 #  ;
 #
-:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
+:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word_noreset }
 :macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }
 : nop_func ;     # can be used to fill in unused ptrs in the state table
 
@@ -1423,21 +1441,21 @@ jump gameloop
   v0 := 0 save v0 save v0
 : charedit_display
   clear
-  v9 := 0
+  v8 := 0
 : charedit_display_loop
   i := long charedit_data
-  i += v9
+  i += v8
   load v0
 
   v1 := 30
-  v2 <<= v9
+  v2 <<= v8
   v2 <<= v2
   v2 <<= v2
   v1 += v2
   v2 := 10
   text_draw_glyph
-  v9 += 1
-  if v9 != 8 then jump charedit_display_loop
+  v8 += 1
+  if v8 != 8 then jump charedit_display_loop
   ;
 
 : charedit_next_state
@@ -1530,18 +1548,8 @@ jump gameloop
 : title_display
   i := title_state v0 := 0 save v0 save v0
   hires
-  plane 3
-  clear
-  v0 := SCREEN_title
-  screen_draw_screen
 
-  #plane 2
-  #text_draw_word_centered_at word_Title_Title_ptr 0 127 20
-  plane 1
-  title_draw_begin
-  title_draw_credits
-  plane 2
-  title_draw_credits
+  title_draw
 
 #  play_sample_title
   ;
@@ -1560,8 +1568,7 @@ jump gameloop
   v1 := 1
   v1 -= v0
   save v1 - v1
-  title_draw_credits
-  title_draw_begin
+  title_draw
   ;
 
 : title_draw_begin
@@ -1570,6 +1577,24 @@ jump gameloop
 
 : title_draw_credits
   text_draw_word_centered_at word_Title_Credits_ptr 0 127 49
+  ;
+
+: title_draw
+  plane 3
+  clear
+  v0 := SCREEN_title
+  screen_draw_screen
+  i := title_state
+  load v1 - v1
+  v0 := 3
+  if v1 == 1 then v0 := 1
+  set_text_color
+  title_draw_credits
+
+  v0 := 1
+  if v1 == 1 then v0 := 3
+  set_text_color
+  title_draw_begin
   ;
 : credits_state 0
 : credits_display
@@ -1606,11 +1631,12 @@ jump gameloop
   clear
   v0 := SCREEN_newlevel
   screen_draw_screen
-  plane 2
+  v0 := 2
+  set_text_color
   text_draw_word_centered_at word_New_Level_ptr 0 127 22
 
-  newlevel_draw_biome_name
-  plane 1
+  v0 := 3
+  set_text_color
   newlevel_draw_biome_name
   ;
 
