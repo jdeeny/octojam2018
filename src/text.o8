@@ -1,4 +1,7 @@
+
 : text_state 1
+: text_wrap 0 0 0
+
 
 # v0 := new_color
 : set_text_color
@@ -12,6 +15,13 @@
 :alias text_glyph_width v0
 :alias text_x v4
 :alias text_y v5
+
+:alias text_wrap_state vA
+:alias text_wrap_x1 vB
+:alias text_wrap_x2 vC
+
+
+
 : text_draw_glyph
     i := long font_table
     i += text_id
@@ -38,6 +48,9 @@
 : text_draw_word
   i := text_state
   load text_color - text_color
+  i := text_wrap
+  load text_wrap_state - text_wrap_x2
+
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
 : text_draw_word_noreset
@@ -55,11 +68,9 @@
   #:breakpoint v0=glyph
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
   if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
-  #:breakpoint drawglyph
-  vF := vF
   text_draw_glyph
-  #:breakpoint drawn
-  vF := vF
+
+
 
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 1
@@ -73,6 +84,7 @@
 
 : text_draw_word_word
   load v2 - v3
+  if text_wrap_state != 0 then text_draw_word_check_wrap
   text_draw_word_noreset
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
@@ -81,7 +93,17 @@
   jump text_draw_word_internal
   ;
 
+: text_draw_word_check_wrap
+  push v2 v5 4
+  text_measure_word
+  pop v4 v5 2
+  vF := text_wrap_x2
+  vF -= text_x
 
+  if vF == 0 then text_x := text_wrap_x1
+  if vF == 0 then text_y += 6
+  pop v2 v3 2
+  ;
 
 # Measure an entire word
 # v23 = word address
@@ -115,8 +137,6 @@
 : text_measure_word_end
   pop v2 v3 2
   v4 += -2
-  #:breakpoint cleanup
-  vF := vF
   ;
 
 : text_measure_word_word
@@ -153,57 +173,6 @@
   v4 -= v0
   text_draw_word
   ;
-#
-#
-## v23 = word v4 = x v5 = y v6 = x1 v7 x2
-#: text_draw_wrapped
-#  push v2 v3 2 # save the current spot
-#
-#: text_draw_wrapped_internal
-##  i := word_target
-##  save v3 - v4
-##  math_add_u16_u8imm v3 v4 1
-##  push v3 v4 2
-##  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
-##  load v0 - v0
-#  reg_set_i_v23
-#  load v0
-#  #:breakpoint v0=glyph
-#  if v0 == GLYPH_ESC_END then jump text_draw_wrapped_end
-#  if v0 == GLYPH_ESC_WORD then jump text_draw_wrapped_word
-#  #:breakpoint drawglyph
-#  vF := vF
-#  text_draw_glyph
-#  #:breakpoint drawn
-#  vF := vF
-#
-#  pop v2 v3 2
-#  math_add_u16_u8imm v2 v3 1
-#  push v2 v3 2
-#  jump text_draw_wrapped_internal
-#: text_draw_wrapped_end
-#  pop v2 v3 2
-#  #:breakpoint cleanup
-#  vF := vF
-#  ;
-#
-#: text_draw_wrapped_word
-#  load v2 - v3
-#  text_draw_wrapped
-#  pop v2 v3 2
-#  math_add_u16_u8imm v2 v3 3
-#  push v2 v3 2
-#
-#  vF := v7
-#  vF -= v4
-#  if vF == 0 then text_draw_wrapped_backup
-#  text_x += 2
-#  jump text_draw_wrapped_internal
-#  ;
-#
-#: text_draw_wrapped_backup
-#
-#  ;
-#
+
 :macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word_noreset }
 :macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }
