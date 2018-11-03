@@ -1,6 +1,6 @@
-biome_order = ["ruin", "lab", "power_plant"]
 
 [ruin]
+order = 1
 name = "Ruins"
 tileset = "ruin"
 levels = 3
@@ -17,6 +17,7 @@ Anyway, I've turned my radio back on. Good luck!"""
 # short: "Hello?" (worried for self due to neglecting duties as mission control person)
 
 [lab]
+order = 2
 name = "Lab"
 tileset = "lab"
 levels = 3
@@ -25,6 +26,7 @@ treasure = ["flute", "antishovel", "crickets", "exoskeleton", "accelerator", "en
 narration = "There's probably some fancy stuff in there. Make sure to bring it all back with you!"
 
 [power_plant]
+order = 3
 name = "Power Plant"
 tileset = "power_plant"
 levels = 3
