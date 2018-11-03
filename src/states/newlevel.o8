@@ -1,6 +1,4 @@
 : newlevel_display
-  i := level_state
-
   hires
   clear
   v0 := SCREEN_newlevel
@@ -13,22 +11,45 @@
   newlevel_draw_biome_name
   ;
 
+:macro newlevel_do_narration {
+  newlevel_get_level_data # i = level
+  v0 := 4
+  i += v0
+  load v2 - v3
+  vF := v2
+  vF &= v3
+  if vF == 0 then return
+  i := long dialog_state
+  save v2 - v3 # save narration link
+  v5 := STATE_DIALOG
+}
+
 : newlevel_next_state
-  v0 := STATE_NEXTLEVEL #STATE_GAMEPLAY
+
+
+  v5 := STATE_GAMEPLAY
+  newlevel_do_narration
+
+  v0 := v5
   state_switch
   ;
 
-: newlevel_draw_biome_name
-  i := level_state
+
+: newlevel_get_level_data
+  i := long level_state
   load v0
   v0 <<= v0
   v0 <<= v0
   v0 <<= v0
-  i := long biome_data
+  #i := long biome_data # because level_state
   i += v0
+  ;
+
+: newlevel_draw_biome_name
+  newlevel_get_level_data
   load v2 - v3
   v4 := 0
   v5 := 33
   v6 := 127
-text_draw_word_centered
+  text_draw_word_centered
   ;

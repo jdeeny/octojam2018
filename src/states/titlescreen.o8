@@ -1,5 +1,4 @@
 : title_state 0
-: level_state 0
 : title_display
   i := title_state v0 := 0 save v0 save v0
   hires

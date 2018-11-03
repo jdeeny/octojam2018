@@ -1,3 +1,4 @@
 :const enemy_prefab_count 15
 :const treasure_prefab_count 15
 :const level_count 9
+:const level_last 8

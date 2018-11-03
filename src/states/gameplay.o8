@@ -15,6 +15,19 @@
   ;
 
 : gameplay_next_state
-  v0 := STATE_ENDING
+  nextlevel_go
+  v0 := STATE_NEWLEVEL
+  state_switch
+  ;
+
+: nextlevel_go
+  i := long level_state
+  load v1 - v1
+  v1 += 1
+  save v1 - v1
+  v0 := STATE_NEWLEVEL
+  if v1 == level_count then v0 := STATE_ENDING
+  vF := vF
+  :breakpoint v1=newlevelnum
   state_switch
   ;

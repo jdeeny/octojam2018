@@ -20,6 +20,7 @@ struct Attack {
 #[derive(Debug, Deserialize)]
 struct Biome {
     name: String,
+    order: usize,
     tileset: String,
     levels: usize,
     enemies: Vec<String>,
@@ -164,18 +165,22 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
 
     writeln!(data_out, "### Biomes (Level List) ###");
     writeln!(data_out, ":const word_narration_none 0");
-    writeln!(data_out, ": biome_state tobytes HERE 0");
+    writeln!(data_out, ": level_state 0");
     writeln!(data_out, ": biome_data");
 
+    let mut sorted_biomes: Vec<(&String, &Biome)> = biomes.iter().collect();
+    sorted_biomes.sort_by_key(|x| x.1.order );
+
+
     let mut count = 0;
-    for (name, data) in biomes.iter() {
+    for (name, data) in sorted_biomes.iter() {
         for level in 0..data.levels {
             count += 1;
             let narration: String;
             if level > 0 {
                 narration = String::from("none");
             } else if let Some(n) = data.narration.clone() {
-                narration = name.clone();
+                narration = name.to_string();
             } else {
                 narration = String::from("none");
             }
@@ -194,6 +199,7 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
     writeln!(data_out, "0xFF   ### End Biome Data ###\n\n");
 
     writeln!(header_out, ":const level_count {}", count);
+    writeln!(header_out, ":const level_last {}", count - 1);
 }
 
 

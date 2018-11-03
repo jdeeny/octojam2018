@@ -20,18 +20,15 @@
   i := state_switch_call_on_entry
   save v2 - v3
 
-  v2 := v4 v3 := v5
-
   vF := 0x20
-  v2 |= vF  # create a call instruction
+  v4 |= vF  # create a call instruction
   i := gameloop_call_state_loop
-  save v2 - v3
+  save v4 - v5
 
-  v2 := v6 v3 := v7
   vF := 0x20
-  v2 |= vF  # create a call instruction
+  v6 |= vF  # create a call instruction
   i := gameloop_call_state_once
-  save v2 - v3
+  save v6 - v7
 
 
   : state_switch_call_on_entry  0x00 0x00 # overwritten by the code immediately before
