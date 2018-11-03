@@ -1170,8 +1170,10 @@ jump gameloop
 0 0
 : recompose-whole-screen #TODO
 ;
+: text_state 0
 
 # Draw a single glyph
+:alias text_color v9
 :alias text_id v0
 :alias text_glyph_width v0
 :alias text_x v4
@@ -1192,9 +1194,13 @@ jump gameloop
 :const GLYPH_ESC_WORD 0xFE
 :const GLYPH_ESC_END 0xFF
 
+
+: text_draw_word
+  i := text_state
+  load text_color - text_color
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
-: text_draw_word
+: text_draw_word_noreset
   push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
@@ -1227,7 +1233,7 @@ jump gameloop
 
 : text_draw_word_word
   load v2 - v3
-  text_draw_word
+  text_draw_word_noreset
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 3
   push v2 v3 2
@@ -1305,7 +1311,7 @@ jump gameloop
   v4 >>= v4
   v4 += v6
   v4 -= v0
-  text_draw_word
+  text_draw_word_noreset
   ;
 #
 #
@@ -1359,7 +1365,7 @@ jump gameloop
 #
 #  ;
 #
-:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word }
+:macro text_draw_word_at w x y { i := long w load v2 - v3 v4 := x v5 := y text_draw_word_noreset }
 :macro text_draw_word_centered_at w x1 x2 y { i := long w load v2 - v3 v4 := x1 v5 := y v6 := x2 text_draw_word_centered }
 : nop_func ;     # can be used to fill in unused ptrs in the state table
 
