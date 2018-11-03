@@ -2,18 +2,8 @@
 : title_display
   i := title_state v0 := 0 save v0 save v0
   hires
-  plane 3
-  clear
-  v0 := SCREEN_title
-  screen_draw_screen
 
-  #plane 2
-  #text_draw_word_centered_at word_Title_Title_ptr 0 127 20
-  plane 1
-  title_draw_begin
-  title_draw_credits
-  plane 2
-  title_draw_credits
+  title_draw
 
 #  play_sample_title
   ;
@@ -32,8 +22,7 @@
   v1 := 1
   v1 -= v0
   save v1 - v1
-  title_draw_credits
-  title_draw_begin
+  title_draw
   ;
 
 : title_draw_begin
@@ -42,4 +31,22 @@
 
 : title_draw_credits
   text_draw_word_centered_at word_Title_Credits_ptr 0 127 49
+  ;
+
+: title_draw
+  plane 3
+  clear
+  v0 := SCREEN_title
+  screen_draw_screen
+  i := title_state
+  load v1 - v1
+  v0 := 3
+  if v1 == 1 then v0 := 1
+  set_text_color
+  title_draw_credits
+
+  v0 := 1
+  if v1 == 1 then v0 := 3
+  set_text_color
+  title_draw_begin
   ;
