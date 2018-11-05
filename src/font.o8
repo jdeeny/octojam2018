@@ -94,30 +94,30 @@ X..X
 .XX.
 ....
 : glyph_a 5
-.XXX
-...X
-.XXX
+....
+.XX
+X..X
 X..X
 .XXX
 ....
 : glyph_b 5
 X....
-X....
 XXX.
+X..X
 X..X
 XXX.
 ....
-: glyph_c 5
+: glyph_c 4
 ....
-....
-.XXX
+.XX
+X..
 X...
-.XXX
+.XX.
 ....
 : glyph_d 5
 ...X
-...X
 .XXX
+X..X
 X..X
 .XXX
 ....
@@ -143,19 +143,19 @@ X..X
 .XXX
 ...X
 .XXX
-: glyph_h 6
+: glyph_h 5
 X...
-X...
-XXX.
+XXX...
+X..X.
 X..X
 X..X
 ....
-: glyph_i 4
-.X.
+: glyph_i 2
+X..
 ...
-XX.
-.X.
-XXX
+X..
+X..
+X..
 ...
 : glyph_j 5
 ...X
@@ -165,48 +165,48 @@ XXX
 X..X
 .XX.
 ....
-: glyph_k 5
-X....
-X..X.
+: glyph_k 4
+....
 X.X..
-XXX..
-X..X.
+XX...
+X.X..
+X.X..
 .....
-: glyph_l 4
-XX.
+: glyph_l 3
+X..
+X..
+X..
+X..
 .X.
-.X.
-.X.
-.XX
 ....
 : glyph_m 6
 .....
-.....
-XX.XX
+.X.X.
 X.X.X
 X.X.X
+X.X.X
 .....
-: glyph_n 6
+: glyph_n 5
 .....
-.....
-X.XX.
-XX..X
-X...X
+X.X.
+XX.X
+X..X
+X..X
 .....
 : glyph_o 5
 ....
-....
 .XX.
+X..X
 X..X
 .XX.
 .....
 : glyph_p 5
 ....
-....
 XXX.
-X..X
+X..X.
 XXX.
 X...
+...
 : glyph_q 5
 ....
 ....
@@ -214,52 +214,52 @@ X...
 X..X
 .XXX
 ...X
-: glyph_r 6
+: glyph_r 3
 ....
-....
-X.X.
-XX.X
+.X..
+X...
+X...
 X...
 ....
-: glyph_s 5
-.XXX
-X...
-.XX.
-...X
-XXX.
-....
-: glyph_t 5
+: glyph_s 3
 ...
+.X...
+X.
+.X
+X...
+....
+: glyph_t 4
 .X.
 XXX
 .X.
 .X.
+..X
 ...
 : glyph_u 5
 ....
-....
+X..X
 X..X
 X..X
 .XXX
 ....
 : glyph_v 6
 .....
-.....
+X...X
 X...X
 .X.X.
 ..X..
 .....
 : glyph_w 6
 .....
-.....
+X...X
 X...X
 X.X.X
 .X.X.
 .....
 : glyph_x 4
 ...
-...
-X.X
+X.X.
+.X.
 .X.
 X.X
 ...
@@ -292,11 +292,11 @@ X..X
 XXX.
 ....
 : glyph_C 5
-.XXX
+.XX.
 X..X
 X...
 X..X
-.XXX
+.XX.
 ....
 : glyph_D 5
 XXX.
@@ -355,7 +355,7 @@ XX..
 X.X.
 X..X
 ....
-: glyph_L 6
+: glyph_L 5
 X....
 X....
 X....
@@ -370,50 +370,50 @@ X.X.X
 X...X
 .....
 : glyph_N 6
-XX..X
+X...X
 XX..X
 X.X.X
 X..XX
-X..XX
+X...X
 .....
 : glyph_O 6
-XXXX
+.XX.
 X..X
 X..X
 X..X
-XXXX
+.XX.
 ....
 : glyph_P 5
-XXXX
+XXX.
 X..X
-XXXX
+XXX.
 X...
 X...
 ....
 : glyph_Q 6
-XXXX.
+.XX..
 X..X.
 X..X.
 X.XX.
 .XXX.
 ....X
-: glyph_R 6
-XXXX
+: glyph_R 5
+XXX.
 X..X
-XXXX
+XXX.
 X.X.
 X..X
 ....
-: glyph_S 6
-XXXX
-XX..
+: glyph_S 5
 .XXX
-..XX
-XXXX
+X...
+.XX.
+...X
+XXX.
 ....
 : glyph_T 6
 XXXXX
-X.X.X
+..X..
 ..X..
 ..X..
 ..X..
@@ -422,21 +422,21 @@ X.X.X
 X...X
 X...X
 X...X
-XXXXX
+X...X
 .XXX.
 .....
 : glyph_V 6
 X...X
 X...X
-XX.XX
-.XXX.
+X...X
+.X.X.
 ..X..
 .....
 : glyph_W 6
 X...X
 X.X.X
 X.X.X
-XXXXX
+X.X.X
 .X.X.
 .....
 : glyph_X 6
@@ -448,8 +448,8 @@ X...X
 .....
 : glyph_Y 6
 X...X
-X...X
 .X.X.
+..X..
 ..X..
 ..X..
 .....
