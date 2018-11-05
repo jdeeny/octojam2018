@@ -10,6 +10,7 @@
   i += v0 # index into table, 8bytes per entry
   load v0 - v7 # v01 = input table, v23 = on-entry, v45 = loop, v67 = once
 
+
 #  input_table_set v0 v1
   i := input_table_addr
   save v0 - v1

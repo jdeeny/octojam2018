@@ -68,7 +68,6 @@
                 HRep 16 61 6 sprite_dialog_HLINE
                 VRep 2 16 2 sprite_dialog_VLINE
                 VRep 125 16 2 sprite_dialog_VLINE
-                Elem 5 8 SPR_portrait_enemy4
                 ScreenEnd
 
 : screen_title  Elem 0 0 SPR_portrait_title-parts-00.png
@@ -111,9 +110,6 @@
                 Elem 96 32 sprite_dialog_LR
                 HRep 32 18 4 sprite_dialog_HLINE
                 HRep 32 45 4 sprite_dialog_HLINE
-#                VRep 2 16 2 sprite_dialog_VLINE
-#                VRep 125 16 2 sprite_dialog_VLINE
-                #Elem 5 8 SPR_portrait_enemy4
                 ScreenEnd
 
 
@@ -126,6 +122,8 @@
                 #VRep 125 16 2 sprite_dialog_VLINE
                 #Elem 5 8 SPR_portrait_enemy4
                 ScreenEnd
+
+
 
 : screen_table
   tobytes screen_frame

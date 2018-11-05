@@ -34,3 +34,5 @@
 : word_Char_Eyes_5_ptr tobytes word_Char_Eyes_5
 : word_Char_Eyes_6_ptr tobytes word_Char_Eyes_6
 : word_Char_Eyes_7_ptr tobytes word_Char_Eyes_7
+
+: word_testthis_ptr tobytes word_testthis

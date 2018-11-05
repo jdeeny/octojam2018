@@ -30,6 +30,7 @@ struct Biome {
 
 #[derive(Debug, Deserialize)]
 struct Enemy {
+    name: String,
     art: String,
     hp: Option<usize>,
     ac: Option<usize>,
@@ -203,6 +204,29 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<S
 }
 
 
+
+
+
+fn enemies_make_strings(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
+    for (name, data) in enemies.iter() {
+        let x = 0;
+        let y = 0;
+        let flags = 0;
+        let mut ai = String::from("default");
+        if let Some(a) = &data.ai { ai = a.clone();}
+        let sprite = data.art.clone();
+
+        add_text(text_strings, name, "name", Some(&data.name));
+        //add_text(text_strings, name, "name", Some(name));
+        add_text_string(text_strings, name, "desc", &data.desc);
+
+    }
+}
+
+
+
+
+
 fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
     println!("Processing Enemies");
     writeln!(data_out, "### Enemy Prefabs ###");
@@ -214,15 +238,26 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
 
-        add_text(text_strings, name, "name", Some(name));
-        add_text_string(text_strings, name, "desc", &data.desc);
 
-        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai);
+        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, name, ai, name);
         writeln!(data_out, " # '{}'", name);
     }
     writeln!(data_out, "0xFF\n### End Enemy Prefabs ###\n\n");
 
     writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count());
+    writeln!(header_out, ":const enemy_offset_x 0\n");
+    writeln!(header_out, ":const enemy_offset_y 1\n");
+    writeln!(header_out, ":const enemy_offset_flags 2\n");
+    writeln!(header_out, ":const enemy_offset_sprite 3\n");
+    writeln!(header_out, ":const enemy_offset_desc 5\n");
+    writeln!(header_out, ":const enemy_offset_ai 7\n");
+    writeln!(header_out, ":const enemy_offset_name 9");
+    writeln!(header_out, ":const enemy_table_bytes 11");
+    writeln!(data_out, "\n: enemy_ptrs\n");
+    for  (name, data) in enemies.iter() {
+        writeln!(data_out, "    tobytes enemy_{}", name);
+    }
+
 }
 
 fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
@@ -336,14 +371,18 @@ fn main() {
     text_strings.insert(String::from("Char_Eyes_6"), String::from("Red"));
     text_strings.insert(String::from("Char_Eyes_7"), String::from("Shifty"));
 
+    text_strings.insert(String::from("testthis"), String::from("\"sphinx of black quartz, judge my vow\"? ABCDEF GHIJK LMNOP QRSTU VWXYZ abcd efgh ijkl mnop qrst uvwx yz"));
+
+
 
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
-    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
+    enemies_make_strings(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
     biomes_make_strings(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
+    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
 
 //    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_enemy_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);

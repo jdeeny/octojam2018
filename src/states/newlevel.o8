@@ -26,8 +26,6 @@
 }
 
 : newlevel_next_state
-
-
   v5 := STATE_GAMEPLAY
   newlevel_do_narration
 

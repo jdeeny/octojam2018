@@ -1,2 +1,0 @@
-: string_Title "The Game Title"
-: string_Start "Start"

@@ -44,6 +44,7 @@
 :const GLYPH_ESC_END 0xFF
 
 
+# v23 = word address, v4 = x, v5 = y
 : text_draw_word
   i := text_state
   load text_color - text_color
@@ -95,7 +96,6 @@
 
   v0 := v4
   pop v4 v5 2
-  :breakpoint wrap
   v0 =- text_wrap_x2
   v0 -= text_x
 

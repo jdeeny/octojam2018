@@ -1,14 +1,14 @@
-: dialog_state 0 0   # who is talking
+: enemyinfo_state 0 0   # who is talking
 
 
-: dialog_scrollup
+: enemyinfo_scrollup
   ;
 
-: dialog_scrolldown
+: enemyinfo_scrolldown
   ;
 
 
-: dialog_display
+: enemyinfo_display
   plane 3
   clear
   v0 := SCREEN_dialog
@@ -51,7 +51,7 @@
   text_clear_wrap
   ;
 
-: dialog_next_state
+: enemyinfo_next_state
   v0 := STATE_GAMEPLAY
   state_switch
   ;

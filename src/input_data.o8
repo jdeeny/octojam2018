@@ -86,3 +86,4 @@ input_table_end
   state_table_entry STATE_CREDITS       input_table_credits     credits_display         nop_func            nop_func
   state_table_entry STATE_DIALOG        input_table_dialog      dialog_display          nop_func            nop_func
   state_table_entry STATE_NEWLEVEL      input_table_newlevel    newlevel_display        nop_func            nop_func
+  state_table_entry STATE_ENEMYINFO     input_table_newlevel    enemyinfo_display       nop_func            nop_func
