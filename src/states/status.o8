@@ -1,0 +1,21 @@
+: status_state 0
+: status_display
+  hires
+  clear
+  plane 1
+  text_draw_word_centered_at word_Title_Begin_ptr 0 127 48
+
+
+  text_draw_word_centered_at word_Title_Title_ptr 0 127 20
+  title_draw_begin
+  title_draw_credits
+  plane 2
+  title_draw_credits
+
+  play_sample_title
+  ;
+
+: status_next_state
+  v0 := STATE_GAMEPLAY
+  state_switch
+  ;

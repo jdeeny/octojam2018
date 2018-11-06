@@ -1,11 +1,52 @@
-
+: title_state 0 0
 : title_display
+  i := title_state v0 := 0 save v0 save v0
   hires
-  clear
-  v0 := 4 v1 := 40 v2 := 20
-  text_draw_word
+
+  title_draw
+
+#  play_sample_title
   ;
 
 : title_next_state
-  v0 := STATE_GAMEPLAY state_switch
+  i := title_state
+  load v1 - v1
+  if v1 == 0 then v0 := STATE_CREDITS
+  if v1 == 1 then v0 := STATE_NEWLEVEL #STATE_CHAREDIT
+  state_switch
+  ;
+
+: title_updown
+  i := title_state
+  load v0 - v0
+  v1 := 1
+  v1 -= v0
+  save v1 - v1
+  title_draw
+  ;
+
+: title_draw_begin
+  text_draw_word_centered_at word_Title_Begin_ptr 0 127 55
+  ;
+
+: title_draw_credits
+  text_draw_word_centered_at word_Title_Credits_ptr 0 127 49
+  ;
+
+: title_draw
+  plane 3
+  clear
+  v0 := SCREEN_title
+  screen_draw_screen
+  i := title_state
+  load v1 - v1
+  v0 := 3
+  if v1 == 1 then v0 := 1
+  set_text_color
+  title_draw_credits
+
+  v0 := 1
+  if v1 == 1 then v0 := 3
+  set_text_color
+  title_draw_begin
   ;

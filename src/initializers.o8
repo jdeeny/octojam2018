@@ -1,1 +1,38 @@
 : player_entity_init 0b00000011 0 0 tobytes SPR_hero1 tobytes ai_player
+: word_Title_Title_ptr tobytes word_Title_Title
+: word_Title_Credits_ptr tobytes word_Title_Credits
+: word_Title_Begin_ptr tobytes word_Title_Begin
+: word_Credits_1_ptr tobytes word_Credits_1
+: word_Dialog_Test_ptr tobytes word_heat_shield-desc
+: word_New_Level_ptr tobytes word_New_Level
+: word_End_Win_Msg_ptr tobytes word_End_Win_Msg
+
+: word_Char_Name_ptr tobytes word_Char_Name
+: word_Char_Height_ptr tobytes word_Char_Height
+: word_Char_Build_ptr tobytes word_Char_Build
+: word_Char_Eyes_ptr tobytes word_Char_Eyes
+
+: word_Char_Height_0_ptr tobytes word_Char_Height_0
+: word_Char_Height_1_ptr tobytes word_Char_Height_1
+: word_Char_Height_2_ptr tobytes word_Char_Height_2
+: word_Char_Height_3_ptr tobytes word_Char_Height_3
+
+: word_Char_Build_0_ptr tobytes word_Char_Build_0
+: word_Char_Build_1_ptr tobytes word_Char_Build_1
+: word_Char_Build_2_ptr tobytes word_Char_Build_2
+: word_Char_Build_3_ptr tobytes word_Char_Build_3
+: word_Char_Build_4_ptr tobytes word_Char_Build_4
+: word_Char_Build_5_ptr tobytes word_Char_Build_5
+: word_Char_Build_6_ptr tobytes word_Char_Build_6
+: word_Char_Build_7_ptr tobytes word_Char_Build_7
+
+: word_Char_Eyes_0_ptr tobytes word_Char_Eyes_0
+: word_Char_Eyes_1_ptr tobytes word_Char_Eyes_1
+: word_Char_Eyes_2_ptr tobytes word_Char_Eyes_2
+: word_Char_Eyes_3_ptr tobytes word_Char_Eyes_3
+: word_Char_Eyes_4_ptr tobytes word_Char_Eyes_4
+: word_Char_Eyes_5_ptr tobytes word_Char_Eyes_5
+: word_Char_Eyes_6_ptr tobytes word_Char_Eyes_6
+: word_Char_Eyes_7_ptr tobytes word_Char_Eyes_7
+
+: word_testthis_ptr tobytes word_testthis

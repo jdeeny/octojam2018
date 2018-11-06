@@ -1,2 +1,18 @@
-:const enemy_prefab_count 4
-:const treasure_prefab_count 13
+:const treasure_prefab_count 15
+:const enemy_prefab_count 15
+:const enemy_offset_x 0
+
+:const enemy_offset_y 1
+
+:const enemy_offset_flags 2
+
+:const enemy_offset_sprite 3
+
+:const enemy_offset_desc 5
+
+:const enemy_offset_ai 7
+
+:const enemy_offset_name 9
+:const enemy_table_bytes 11
+:const level_count 9
+:const level_last 8

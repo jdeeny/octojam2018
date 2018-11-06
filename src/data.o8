@@ -14,7 +14,7 @@
 ## Audio
 :macro note code sustain { :byte code :byte sustain }
 ## Song Data
-:org 0x2000
+#:org 0x2000
 : music
 : song_a
 
@@ -29,14 +29,14 @@ note C-3 60 note C$3 60 note F$4 15 note C$3 20 note C-4 20
 
 : normal_music
 
-note G-4 10 note --- 10 note D-5 10 note --- 10 note C-5 10 note --- 30 
-note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10 
-note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30  
-note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30 
-note G-4 10 note --- 10 note F-5 10 note --- 10 note D-5 10 note --- 30 
-note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10 
-note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30  
-note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30 
+note G-4 10 note --- 10 note D-5 10 note --- 10 note C-5 10 note --- 30
+note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10
+note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30
+note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30
+note G-4 10 note --- 10 note F-5 10 note --- 10 note D-5 10 note --- 30
+note C-5 10 note --- 30 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 10
+note F-5 10 note --- 10 note D-5 10 note --- 10 note D-5 10 note --- 30
+note C-5 10 note --- 10 note A$4 10 note --- 10 note F-4 10 note --- 10 note G-4 10 note --- 30
 
 : danger_music
 
@@ -116,5 +116,3 @@ note 0xFF 0
 
 : sample_data
 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00 0xFF 0x00
-
-

@@ -24,10 +24,12 @@ fn closest_color(colors: &HashMap<usize, (u8, u8, u8)>, color: (u8, u8, u8)) -> 
     return result;
 }
 
+
 fn process_16_sprite(data_file: &mut Write, colors: &HashMap<usize, (u8, u8, u8)>, name: &str, path: &Path) {
 
     let decoder = png::Decoder::new(File::open(path).unwrap());
     let (info, mut reader) = decoder.read_info().unwrap();
+    println!("{:?} {:?} {:?} {:?} ", &info.width, &info.height, &info.bit_depth, &info.color_type);
     // Allocate the output buffer.
     let mut buf = vec![0; info.buffer_size()];
     // Read the next frame. Currently this function should only called once.
@@ -396,6 +398,31 @@ fn main() {
                         writeln!(header_dest, ":const sprite_portrait_{} {}", sprite_name.to_string_lossy(), sprite_count);
                         sprite_count += 1;
                         process_16_sprite(&mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
+                    }
+                }
+            }
+        }
+    }
+
+
+    if let Ok(entries) = read_dir("../../assets/images/title/") {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if let Ok(file_type) = entry.file_type() {
+                    if file_type.is_file() {
+                        let sprite_name = entry.file_name();
+                        let ext = sprite_name.to_string_lossy().split('.').last().unwrap().to_lowercase();
+
+                        if ext == "png" {
+
+                            let mut sprite_path = entry.path();
+                            //sprite_path.push(Path::new("tile.png"));
+                            println!("{:?}", sprite_path);
+                            writeln!(header_dest, ":const sprite_title_{} {}", sprite_name.to_string_lossy(), sprite_count);
+                            sprite_count += 1;
+                            process_16_sprite(&mut data_dest, &colors, &sprite_name.to_string_lossy(), &sprite_path);
+                        }
+
                     }
                 }
             }

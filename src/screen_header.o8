@@ -1,1 +1,3 @@
 :const SCREEN_dialog 0
+:const SCREEN_title 1
+:const SCREEN_newlevel 2

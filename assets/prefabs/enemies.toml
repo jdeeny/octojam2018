@@ -1,11 +1,12 @@
 [ruin-mechanic]
+name = "Mechanic"
 art = "enemy1"
 hp = 3
 ac = 1
 ammo = 2
 reload = 1
 ai = "melee_smart"
-speed = 2
+move = 2
 treasure = [{id = "flute", chance = 0.25}]
 attacks = [
     {dmg = 2, hit = "smashes you with a wrench", miss = "swings a wrench past you"},
@@ -21,18 +22,20 @@ desc = "Robots that fix other robots... Maybe the people who built them are gone
 # reload = 1 (this is "time it takes to reload")
 # speed = 1 (tile range for moving)
 
-[ruin-security]
+[ruin-security1]
+name = "Melee Security"
 art = "enemy2"
 hp = 5
 ac = 2
 ai = "melee_smart"
-speed = 2
+move = 2
 attacks = [
     {dmg = 2, acc = 0.9, hit = "jabs you with a baton", miss = "fumbles a baton"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "Who did they build these to deter? I don't think they planned for us to go digging up their stuff."
 
 [ruin-security2]
+name = "Pistol Security"
 art = "enemy3"
 hp = 5
 ac = 2
@@ -40,12 +43,13 @@ ammo = 6
 reload = 1
 ai = "cover"
 move = 2
-attacks = [ 
+attacks = [
     {range = 3, cost = 2, acc = 0.9, hit = "shoots you with an airgun", miss = "forgot it had the safety on"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "This model of the security droid has an air pistol. It's smart enough to seek cover, but not to shoot properly."
 
-[ruin.security3]
+[ruin-security3]
+name = "Modified Security"
 art = "enemy4"
 hp = 5
 ac = 2
@@ -53,12 +57,13 @@ ammo = 12
 reload = 2
 ai = "cover"
 move = 2
-attacks = [ 
+attacks = [
     {range = 3, acc = 0.5, hit = "manages to hit you", miss = "fires erratically"},
     {range = 255, dmg = 0, chance = 0.1, acc = 0.0, hit = "tips over", miss = "tips over, then scrambles back up"} ]
 desc = "I think someone took the gun from one of the standard model droids and gave it a bigger one instead. It doesn't seem to know how to handle it, so you'll probably be fine."
 
 [ruin-dog]
+name = "Dog"
 art = "enemy11"
 hp = 2
 ac = 0
@@ -71,6 +76,7 @@ attacks = [
 desc = "If you find a deactivated one, make sure to take it with you; we really need a pet."
 
 [ruin-turret]
+name = "Turret"
 art = "enemy10"
 hp = 1
 ac = 1
@@ -84,6 +90,7 @@ attacks = [
 desc = "The hissing sound comes from pressure releasing in their airguns. It seems bullets can be recycled pretty easily if they're just chunks of metal."
 
 [ruin-speed_turret]
+name = "Mobile Turret"
 art = "enemy9"
 hp = 1
 ac = 0
@@ -97,6 +104,7 @@ attacks = [
 desc = "These guys try to flank you. Don't let them! Their bullets are pretty painful..."
 
 [ruin-sentry]
+name = "Sentry"
 art = "enemy8"
 hp = 1
 ac = 0
@@ -108,6 +116,7 @@ attacks = [
 desc = "I think these were used as surveillance robots, but it seems that years of decay have corrupted their systems."
 
 [ruin-scientist]
+name = "Lab Assistant"
 art = "enemy7"
 hp = 3
 ac = 0
@@ -119,6 +128,7 @@ attacks = [
 desc = "Research assistants sometimes wander away from their assigned laboratory."
 
 [ruin-wall]
+name = "Firewall"
 art = "enemy6"
 hp = 4
 ac = 1
@@ -130,6 +140,7 @@ attacks = [
 desc = "These were originally designed for fire suppression, but they also worked well for people suppression."
 
 [ruin-messenger]
+name = "Messenger"
 art = "enemy5"
 hp = 1
 ac = 0
@@ -141,6 +152,7 @@ attacks = [
 desc = "People used to use these to deliver packages. They aren't hostile, but they tend to get in the way."
 
 [lab-scientist]
+name = "Lab Assistant"
 art = "enemy7"
 hp = 3
 ac = 1
@@ -152,6 +164,7 @@ attacks = [
 desc = "These used to do lab assistant work. Science was one of the few areas where robots couldn't do everything."
 
 [lab-wall]
+name = "Firewall"
 art = "enemy6"
 hp = 5
 ac = 1
@@ -163,6 +176,7 @@ attacks = [
 desc = "The risk of fire is greater in a laboratory, so they used upgraded versions here."
 
 [lab-turret]
+name = "Prototype Turret"
 art = "enemy9"
 hp = 3
 ac = 0
@@ -174,3 +188,18 @@ attacks = [
     { acc = 0.7, range = 3, cost = 1, hit = "stings you with a bullet", miss = "fires a bullet past you"}
 ]
 desc = "A prototype version of the quick turrets from earlier. It's sturdier and can fire more, but it's not as accurate."
+
+[power-electrician]
+name = "Electrician"
+art = "enemy1"
+hp = 5
+ac = 2
+ammo = 3
+reload = 1
+ai = "melee_smart"
+move = 2
+treasure = [{id = "flute", chance = 0.25}]
+attacks = [
+    {dmg = 3, hit = "smashes you with a wrench", miss = "swings a wrench past you"},
+    {cost = 1, range = 4, acc = 0.75, hit = "throws a wrench at you", miss = "misses you with a thrown wrench"} ]
+desc = "Robotic electricians are convenient in situations where electrocution is fatal."

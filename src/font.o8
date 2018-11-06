@@ -94,36 +94,36 @@ X..X
 .XX.
 ....
 : glyph_a 5
-.XXX
-...X
-.XXX
+....
+.XX
+X..X
 X..X
 .XXX
 ....
-: glyph_b 6
+: glyph_b 5
 X....
-X.XX.
-XX..X
-X...X
-XXXX.
+XXX.
+X..X
+X..X
+XXX.
 ....
-: glyph_c 5
+: glyph_c 4
 ....
-.XXX
-X...
+.XX
 X..
-.XXX
+X...
+.XX.
 ....
 : glyph_d 5
 ...X
-...X
 .XXX
+X..X
 X..X
 .XXX
 ....
 : glyph_e 5
+....
 .XXX
-X..X
 XXXX
 X...
 .XXX
@@ -143,55 +143,55 @@ X..X
 .XXX
 ...X
 .XXX
-: glyph_h 6
-X....
-X....
-XXXX.
-X...X
-X...X
+: glyph_h 5
+X...
+XXX...
+X..X.
+X..X
+X..X
 ....
-: glyph_i 4
-.X.
+: glyph_i 2
+X..
 ...
-XX.
-.X.
-XXX
+X..
+X..
+X..
 ...
 : glyph_j 5
-....
 ...X
 ....
+...X
 ...X
 X..X
 .XX.
 ....
-: glyph_k 5
-X....
-X..X.
+: glyph_k 4
+....
 X.X..
-XXX..
-X..X.
+XX...
+X.X..
+X.X..
 .....
-: glyph_l 4
-XX.
+: glyph_l 3
+X..
+X..
+X..
+X..
 .X.
-.X.
-.X.
-.XX
 ....
 : glyph_m 6
 .....
-.....
-XX.XX
+.X.X.
 X.X.X
 X.X.X
+X.X.X
 .....
-: glyph_n 6
+: glyph_n 5
 .....
-.....
-X.XX.
-XX..X
-X...X
+X.X.
+XX.X
+X..X
+X..X
 .....
 : glyph_o 5
 ....
@@ -202,11 +202,11 @@ X..X
 .....
 : glyph_p 5
 ....
-....
 XXX.
-X..X
+X..X.
 XXX.
 X...
+...
 : glyph_q 5
 ....
 ....
@@ -214,54 +214,55 @@ X...
 X..X
 .XXX
 ...X
-: glyph_r 6
-.....
-.....
-X.XX.
-XX..X
-X....
-.....
-: glyph_s 5
-.XXX
+: glyph_r 3
+....
+.X..
 X...
-.XX.
-...X
-XXX.
+X...
+X...
 ....
-: glyph_t 5
-.X..
-XXX.
-.X..
-.X.X
-..XX
+: glyph_s 3
+...
+.X...
+X.
+.X
+X...
 ....
+: glyph_t 4
+.X.
+XXX
+.X.
+.X.
+..X
+...
 : glyph_u 5
 ....
-....
+X..X
 X..X
 X..X
 .XXX
 ....
 : glyph_v 6
 .....
-.....
+X...X
 X...X
 .X.X.
 ..X..
 .....
 : glyph_w 6
 .....
-.....
+X...X
 X...X
 X.X.X
 .X.X.
-: glyph_x 5
-....
-....
+.....
+: glyph_x 4
+...
 X.X.
-.X..
-X.X.
-....
+.X.
+.X.
+X.X
+...
 : glyph_y 5
 ....
 ....
@@ -291,11 +292,11 @@ X..X
 XXX.
 ....
 : glyph_C 5
-.XXX
+.XX.
 X..X
 X...
 X..X
-.XXX
+.XX.
 ....
 : glyph_D 5
 XXX.
@@ -304,7 +305,7 @@ X..X
 X..X
 XXX.
 ....
-: glyph_E 6
+: glyph_E 5
 XXXX
 X...
 XXX.
@@ -354,7 +355,7 @@ XX..
 X.X.
 X..X
 ....
-: glyph_L 6
+: glyph_L 5
 X....
 X....
 X....
@@ -369,50 +370,50 @@ X.X.X
 X...X
 .....
 : glyph_N 6
-XX..X
+X...X
 XX..X
 X.X.X
 X..XX
-X..XX
+X...X
 .....
 : glyph_O 6
-XXXX
+.XX.
 X..X
 X..X
 X..X
-XXXX
+.XX.
 ....
 : glyph_P 5
-XXXX
+XXX.
 X..X
-XXXX
+XXX.
 X...
 X...
 ....
 : glyph_Q 6
-XXXX.
+.XX..
 X..X.
 X..X.
 X.XX.
 .XXX.
 ....X
-: glyph_R 6
-XXXX
+: glyph_R 5
+XXX.
 X..X
-XXXX
+XXX.
 X.X.
 X..X
 ....
-: glyph_S 6
-XXXX
-XX..
+: glyph_S 5
 .XXX
-..XX
-XXXX
+X...
+.XX.
+...X
+XXX.
 ....
 : glyph_T 6
 XXXXX
-X.X.X
+..X..
 ..X..
 ..X..
 ..X..
@@ -421,21 +422,21 @@ X.X.X
 X...X
 X...X
 X...X
-XXXXX
+X...X
 .XXX.
 .....
 : glyph_V 6
 X...X
 X...X
-XX.XX
-.XXX.
+X...X
+.X.X.
 ..X..
 .....
 : glyph_W 6
 X...X
 X.X.X
 X.X.X
-XXXXX
+X.X.X
 .X.X.
 .....
 : glyph_X 6
@@ -447,8 +448,8 @@ X...X
 .....
 : glyph_Y 6
 X...X
-X...X
 .X.X.
+..X..
 ..X..
 ..X..
 .....
@@ -561,106 +562,111 @@ X..
 ...
 ...
 
+: glyph_? 4
+XXX..
+..X.
+.X..
+....
+.X..
+...
+: glyph_; 3
+...
+....
+...
+....
+XX..
+.X.
 
+: glyph__ 5
+...
+....
+...
+....
+XXXX..
+....
+
+
+
+:calc glyph_count { 0 }
+:macro define_glyph data name { tobytes data :calc name { glyph_count } :calc glyph_count { glyph_count + 1 } }
 : font_table
-tobytes glyph_0 :calc GLYPH_0 { 0 }
-tobytes glyph_1 :calc GLYPH_1 { 1 }
-tobytes glyph_2 :calc GLYPH_2 { 2 }
-tobytes glyph_3 :calc GLYPH_3 { 3 }
-tobytes glyph_4 :calc GLYPH_4 { 4 }
-tobytes glyph_5 :calc GLYPH_5 { 5 }
-tobytes glyph_6 :calc GLYPH_6 { 6 }
-tobytes glyph_7 :calc GLYPH_7 { 7 }
-tobytes glyph_8 :calc GLYPH_8 { 8 }
-tobytes glyph_9 :calc GLYPH_9 { 9 }
-tobytes glyph_A :calc GLYPH_A { 10 }
-tobytes glyph_B :calc GLYPH_B { 11 }
-tobytes glyph_C :calc GLYPH_C { 12 }
-tobytes glyph_D :calc GLYPH_D { 13 }
-tobytes glyph_E :calc GLYPH_E { 14 }
-tobytes glyph_F :calc GLYPH_F { 15 }
-tobytes glyph_G :calc GLYPH_G { 16 }
-tobytes glyph_H :calc GLYPH_H { 17 }
-tobytes glyph_I :calc GLYPH_I { 18 }
-tobytes glyph_J :calc GLYPH_J { 19 }
-tobytes glyph_K :calc GLYPH_K { 20 }
-tobytes glyph_L :calc GLYPH_L { 21 }
-tobytes glyph_M :calc GLYPH_M { 22 }
-tobytes glyph_N :calc GLYPH_N { 23 }
-tobytes glyph_O :calc GLYPH_O { 24 }
-tobytes glyph_P :calc GLYPH_P { 25 }
-tobytes glyph_Q :calc GLYPH_Q { 26 }
-tobytes glyph_R :calc GLYPH_R { 27 }
-tobytes glyph_S :calc GLYPH_S { 28 }
-tobytes glyph_T :calc GLYPH_T { 29 }
-tobytes glyph_U :calc GLYPH_U { 30 }
-tobytes glyph_V :calc GLYPH_V { 31 }
-tobytes glyph_W :calc GLYPH_W { 32 }
-tobytes glyph_X :calc GLYPH_X { 33 }
-tobytes glyph_Y :calc GLYPH_Y { 34 }
-tobytes glyph_Z :calc GLYPH_Z { 35 }
-tobytes glyph_a :calc GLYPH_a { 36 }
-tobytes glyph_b :calc GLYPH_b { 37 }
-tobytes glyph_c :calc GLYPH_c { 38 }
-tobytes glyph_d :calc GLYPH_d { 39 }
-tobytes glyph_e :calc GLYPH_e { 40 }
-tobytes glyph_f :calc GLYPH_f { 41 }
-tobytes glyph_g :calc GLYPH_g { 42 }
-tobytes glyph_h :calc GLYPH_h { 43 }
-tobytes glyph_i :calc GLYPH_i { 44 }
-tobytes glyph_j :calc GLYPH_j { 45 }
-tobytes glyph_k :calc GLYPH_k { 46 }
-tobytes glyph_l :calc GLYPH_l { 47 }
-tobytes glyph_m :calc GLYPH_m { 48 }
-tobytes glyph_n :calc GLYPH_n { 49 }
-tobytes glyph_o :calc GLYPH_o { 50 }
-tobytes glyph_p :calc GLYPH_p { 51 }
-tobytes glyph_q :calc GLYPH_q { 52 }
-tobytes glyph_r :calc GLYPH_r { 53 }
-tobytes glyph_s :calc GLYPH_s { 54 }
-tobytes glyph_t :calc GLYPH_t { 55 }
-tobytes glyph_u :calc GLYPH_u { 56 }
-tobytes glyph_v :calc GLYPH_v { 57 }
-tobytes glyph_w :calc GLYPH_w { 58 }
-tobytes glyph_x :calc GLYPH_x { 59 }
-tobytes glyph_y :calc GLYPH_y { 60 }
-tobytes glyph_z :calc GLYPH_z { 61 }
-tobytes glyph_! :calc GLYPH_! { 62 }
-tobytes glyph_" :calc GLYPH_" { 63 }
-tobytes glyph_$ :calc GLYPH_$ { 64 }
-tobytes glyph_% :calc GLYPH_% { 65 }
-tobytes glyph_' :calc GLYPH_' { 66 }
-tobytes glyph_( :calc GLYPH_( { 67 }
-tobytes glyph_) :calc GLYPH_) { 68 }
-tobytes glyph_+ :calc GLYPH_+ { 69 }
-tobytes glyph_, :calc GLYPH_, { 70 }
-tobytes glyph_- :calc GLYPH_- { 71 }
-tobytes glyph_. :calc GLYPH_. { 72 }
-tobytes glyph_/ :calc GLYPH_/ { 73 }
-tobytes glyph_: :calc GLYPH_: { 74 }
-tobytes glyph_BLANK :calc GLYPH_BLANK { 75 }
-
-
-: word_0 :byte GLYPH_A :byte GLYPH_B :byte GLYPH_C :byte GLYPH_ESC_END
-: word_1 :byte GLYPH_$ :byte GLYPH_$ :byte GLYPH_$ :byte GLYPH_ESC_END
-: word_2 :byte GLYPH_! :byte GLYPH_ESC_END
-: word_3 :byte GLYPH_1 :byte GLYPH_l :byte GLYPH_ESC_END
-: word_TITLE :byte GLYPH_T :byte GLYPH_I :byte GLYPH_T :byte GLYPH_L :byte GLYPH_E :byte GLYPH_ESC_END
-: word_ENDING :byte GLYPH_E :byte GLYPH_N :byte GLYPH_D :byte GLYPH_I :byte GLYPH_N :byte GLYPH_G :byte GLYPH_ESC_END
-
-: word_table
-tobytes word_0 :calc WORD_0 { 0 }
-tobytes word_1 :calc WORD_1 { 1 }
-tobytes word_2 :calc WORD_2 { 2 }
-tobytes word_3 :calc WORD_3 { 3 }
-tobytes word_TITLE :calc WORD_TITLE { 4 }
-tobytes word_ENDING :calc WORD_ENDING { 5 }
-
-:calc PHRASE_WORD { 0 }
-:calc PHRASE_CHOICE { 1 }
-:calc PHRASE_END { 0xFF }
-
-: phrase_0 :byte PHRASE_WORD WORD_0 :byte PHRASE_WORD WORD_1 :byte PHRASE_END
-
-: phrase_table
-tobytes phrase_0 :calc PHRASE_0 { 0 }
+define_glyph glyph_0 GLYPH_0
+define_glyph glyph_1 GLYPH_1
+define_glyph glyph_2 GLYPH_2
+define_glyph glyph_3 GLYPH_3
+define_glyph glyph_4 GLYPH_4
+define_glyph glyph_5 GLYPH_5
+define_glyph glyph_6 GLYPH_6
+define_glyph glyph_7 GLYPH_7
+define_glyph glyph_8 GLYPH_8
+define_glyph glyph_9 GLYPH_9
+define_glyph glyph_A GLYPH_A
+define_glyph glyph_B GLYPH_B
+define_glyph glyph_C GLYPH_C
+define_glyph glyph_D GLYPH_D
+define_glyph glyph_E GLYPH_E
+define_glyph glyph_F GLYPH_F
+define_glyph glyph_G GLYPH_G
+define_glyph glyph_H GLYPH_H
+define_glyph glyph_I GLYPH_I
+define_glyph glyph_J GLYPH_J
+define_glyph glyph_K GLYPH_K
+define_glyph glyph_L GLYPH_L
+define_glyph glyph_M GLYPH_M
+define_glyph glyph_N GLYPH_N
+define_glyph glyph_O GLYPH_O
+define_glyph glyph_P GLYPH_P
+define_glyph glyph_Q GLYPH_Q
+define_glyph glyph_R GLYPH_R
+define_glyph glyph_S GLYPH_S
+define_glyph glyph_T GLYPH_T
+define_glyph glyph_U GLYPH_U
+define_glyph glyph_V GLYPH_V
+define_glyph glyph_W GLYPH_W
+define_glyph glyph_X GLYPH_X
+define_glyph glyph_Y GLYPH_Y
+define_glyph glyph_Z GLYPH_Z
+define_glyph glyph_a GLYPH_a
+define_glyph glyph_b GLYPH_b
+define_glyph glyph_c GLYPH_c
+define_glyph glyph_d GLYPH_d
+define_glyph glyph_e GLYPH_e
+define_glyph glyph_f GLYPH_f
+define_glyph glyph_g GLYPH_g
+define_glyph glyph_h GLYPH_h
+define_glyph glyph_i GLYPH_i
+define_glyph glyph_j GLYPH_j
+define_glyph glyph_k GLYPH_k
+define_glyph glyph_l GLYPH_l
+define_glyph glyph_m GLYPH_m
+define_glyph glyph_n GLYPH_n
+define_glyph glyph_o GLYPH_o
+define_glyph glyph_p GLYPH_p
+define_glyph glyph_q GLYPH_q
+define_glyph glyph_r GLYPH_r
+define_glyph glyph_s GLYPH_s
+define_glyph glyph_t GLYPH_t
+define_glyph glyph_u GLYPH_u
+define_glyph glyph_v GLYPH_v
+define_glyph glyph_w GLYPH_w
+define_glyph glyph_x GLYPH_x
+define_glyph glyph_y GLYPH_y
+define_glyph glyph_z GLYPH_z
+define_glyph glyph_! GLYPH_!
+define_glyph glyph_" GLYPH_"
+define_glyph glyph_$ GLYPH_$
+define_glyph glyph_% GLYPH_%
+define_glyph glyph_' GLYPH_'
+define_glyph glyph_( GLYPH_(
+define_glyph glyph_) GLYPH_)
+define_glyph glyph_+ GLYPH_+
+define_glyph glyph_, GLYPH_,
+define_glyph glyph_- GLYPH_-
+define_glyph glyph_. GLYPH_.
+define_glyph glyph_/ GLYPH_/
+define_glyph glyph_: GLYPH_:
+define_glyph glyph_BLANK GLYPH_BLANK
+define_glyph glyph_? GLYPH_?
+define_glyph glyph_, GLYPH_,
+define_glyph glyph__ GLYPH__
+define_glyph glyph_; GLYPH_;

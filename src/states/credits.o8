@@ -1,0 +1,13 @@
+: credits_state 0
+: credits_display
+  plane 3
+  clear
+  plane 1
+  text_draw_word_centered_at word_Credits_1_ptr 0 127 5
+
+  ;
+
+: credits_next_state
+  v0 := STATE_TITLE
+  state_switch
+  ;

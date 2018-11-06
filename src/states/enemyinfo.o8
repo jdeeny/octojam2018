@@ -1,0 +1,57 @@
+: enemyinfo_state 0 0   # who is talking
+
+
+: enemyinfo_scrollup
+  ;
+
+: enemyinfo_scrolldown
+  ;
+
+
+: enemyinfo_display
+  plane 3
+  clear
+  v0 := SCREEN_dialog
+  screen_draw_screen
+  i := long enemy_ptrs
+  load v0 - v1
+  reg_set_i_v01
+  v2 := enemy_offset_sprite
+  i += v2
+  load v2 - v3
+  reg_set_i_v23
+  text_x := 5
+  text_y := 17
+  sprite text_x text_y 0
+
+  v0 := 2 set_text_color
+  i := long enemy_ptrs
+  load v0 - v1
+  reg_set_i_v01
+  v2 := enemy_offset_name
+  i += v2
+  load v2 - v3
+  text_x := 22
+  text_y := 6
+  text_draw_word
+
+
+  plane 1
+  text_set_wrap 22 125
+  v0 := 1 set_text_color
+  i := long enemy_ptrs
+  load v0 - v1
+  reg_set_i_v01
+  v2 := enemy_offset_desc
+  i += v2
+  load v2 - v3
+  text_x := 22
+  text_y := 13
+  text_draw_word
+  text_clear_wrap
+  ;
+
+: enemyinfo_next_state
+  v0 := STATE_GAMEPLAY
+  state_switch
+  ;
