@@ -155,10 +155,8 @@
 
 : pick-monster
 	i := long pickmonster-tmp save v6
-	ve := random 15
-	ve <<= ve
-	i := long world-gen-enemies i += ve
-	load v2 - v3
+	
+	generate_new_enemy
 
 	x += HEX_CONTENTS_OFFSET
 
