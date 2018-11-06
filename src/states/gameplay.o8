@@ -1,5 +1,5 @@
 : gameplay_begin
-
+worldgen-setup
 place-room
 place-room
 place-room

@@ -28,7 +28,6 @@
 		set-i-reg y x
 		save v4 - v5
 
-		#monster
 		if v7 == 2 then pick-monster
 		if v7 == 3 then place-player
 		: rooms-tile-cleanup
@@ -178,4 +177,28 @@
 	x  += HEX_CONTENTS_OFFSET
 	set-i-reg y x save v9 - va
 	x += -2
+;
+: worldgen-setup
+	i := long worldgen-state-prototype
+	load v6
+	save v6
+	i := long clear-map-data
+	load vc
+	i := long hex-contents
+	#copy to hex contents 682 times
+	loop
+		save vb
+		vc += 1
+		if vc != 0 then
+	again
+	loop
+		save vb
+		vc += 1
+		if vc != 0 then
+	again
+	loop
+		save vb
+		vc += 1
+		if vc != 170 then
+	again
 ;

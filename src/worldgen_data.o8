@@ -137,11 +137,12 @@ tobytes room6
 tobytes room7
 tobytes room8
 
-ORG_BACKFILL 7
-: worldgen-state
+ORG_BACKFILL 14
+: worldgen-state-prototype
 60 2 0 0
 tobytes tile-graphic
 0
+: worldgen-state
 
 ORG_BACKFILL entity_bytes
 : wall-l-dummy-entitiy
@@ -198,3 +199,13 @@ tobytes enemy_ruin-turret
 tobytes enemy_ruin-wall
 tobytes enemy_ruin-security1
 tobytes enemy_ruin-security3
+
+ORG_BACKFILL 13
+: clear-map-data
+	tobytes emtpy-graphic
+	tobytes 0x0000
+	tobytes emtpy-graphic
+	tobytes 0x0000
+	tobytes emtpy-graphic
+	tobytes 0x0000
+	0 #counter
