@@ -177,9 +177,10 @@
 	x += -2
 ;
 : worldgen-setup
+	i := long place-player-prototype
+	load v0 save v0
 	i := long worldgen-state-prototype
-	load v6
-	save v6
+	load v6 save v6
 	i := long clear-map-data
 	load vc
 	i := long hex-contents

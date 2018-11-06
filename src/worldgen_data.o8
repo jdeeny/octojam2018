@@ -177,7 +177,9 @@ tobytes wall-double-dummy-entitiy
 ORG_BACKFILL 7
 : pickmonster-tmp
 
-ORG_BACKFILL 4
+ORG_BACKFILL 5
+: place-player-prototype
+0
 : place-player-data
 0 tobytes entity_table :byte ENTITY_X
 
