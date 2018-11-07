@@ -8,11 +8,13 @@
 
 :const enemy_offset_sprite 3
 
-:const enemy_offset_desc 5
+:const enemy_offset_portrait 5
 
-:const enemy_offset_ai 7
+:const enemy_offset_desc 7
 
-:const enemy_offset_name 9
-:const enemy_table_bytes 11
+:const enemy_offset_ai 9
+
+:const enemy_offset_name 11
+:const enemy_table_bytes 13
 :const level_count 9
 :const level_last 8

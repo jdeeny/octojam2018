@@ -16,7 +16,7 @@
   i := long enemy_ptrs
   load v0 - v1
   reg_set_i_v01
-  v2 := enemy_offset_sprite
+  v2 := enemy_offset_portrait
   i += v2
   load v2 - v3
   reg_set_i_v23
