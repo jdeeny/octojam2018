@@ -2,9 +2,19 @@
 
 
 : enemyinfo_scrollup
+  i := text_scroll
+  load v0 - v0
+  if v0 != 0 then v0 += -1
+  save v0 - v0
+  enemyinfo_display
   ;
 
 : enemyinfo_scrolldown
+  i := text_scroll
+  load v0 - v0
+  v0 += 1
+  save v0 - v0
+  enemyinfo_display
   ;
 
 
@@ -39,12 +49,16 @@
   plane 1
   text_set_wrap 22 125
   v0 := 1 set_text_color
-  i := long enemy_ptrs
-  load v0 - v1
-  reg_set_i_v01
-  v2 := enemy_offset_desc
-  i += v2
+  #i := long enemy_ptrs
+  #load v0 - v1
+  #reg_set_i_v01
+  #v2 := enemy_offset_desc
+  #i += v2
+  #load v2 - v3
+
+  i := long word_Dialog_Test_ptr
   load v2 - v3
+
   text_x := 22
   text_y := 13
   text_draw_word

@@ -60,6 +60,12 @@ input_table_end
   input_table_all_keys dialog_next_state
   input_table_end
 
+: input_table_enemyinfo
+  input_table_entry enemyinfo_scrollup OCTO_KEY_W
+  input_table_entry enemyinfo_scrolldown OCTO_KEY_S
+
+  input_table_entry enemyinfo_next_state OCTO_KEY_F
+  input_table_end
 
 
 : input_table_empty
@@ -86,4 +92,4 @@ input_table_end
   state_table_entry STATE_CREDITS       input_table_credits     credits_display         nop_func            nop_func
   state_table_entry STATE_DIALOG        input_table_dialog      dialog_display          nop_func            nop_func
   state_table_entry STATE_NEWLEVEL      input_table_newlevel    newlevel_display        nop_func            nop_func
-  state_table_entry STATE_ENEMYINFO     input_table_newlevel    enemyinfo_display       nop_func            nop_func
+  state_table_entry STATE_ENEMYINFO     input_table_enemyinfo   enemyinfo_display       nop_func            nop_func

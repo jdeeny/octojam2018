@@ -1,7 +1,7 @@
 
 : text_state 1
-: text_wrap 0 0 0
-
+: text_wrap 0 0 0 # on/off; x1; x2
+: text_scroll 0 0 # Scroll off = 0 / number of lines nonzero; current scroll
 
 # v0 := new_color
 : set_text_color
@@ -16,6 +16,7 @@
 :alias text_x v4
 :alias text_y v5
 
+:alias text_scroll_state v9
 :alias text_wrap_state vA
 :alias text_wrap_x1 vB
 :alias text_wrap_x2 vC
@@ -50,25 +51,24 @@
   load text_color - text_color
   i := text_wrap
   load text_wrap_state - text_wrap_x2
+  i := text_scroll
+  load text_scroll_state - text_scroll_state
 # Draw an entire word
 # v23 = word address, v4 = x, v5 = y
 : text_draw_word_noreset
   push v2 v3 2 # save the current spot
 
 : text_draw_word_internal
-#  i := word_target
-#  save v3 - v4
-#  math_add_u16_u8imm v3 v4 1
-#  push v3 v4 2
-#  0xF0 0x00 : word_target 0x00 0x00 # i := long *word
-#  load v0 - v0
   reg_set_i_v23
   load v0
   if v0 == GLYPH_ESC_END then jump text_draw_word_end
   if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
+  if text_scroll_state != 0 then jump text_draw_word_internal_skip_draw
   text_draw_glyph
-
-
+  jump text_draw_word_internal_after_draw
+  : text_draw_word_internal_skip_draw
+  text_measure_glyph
+  : text_draw_word_internal_after_draw
 
   pop v2 v3 2
   math_add_u16_u8imm v2 v3 1
@@ -99,8 +99,11 @@
   v0 =- text_wrap_x2
   v0 -= text_x
 
-  if vF == 0 then text_x := text_wrap_x1
-  if vF == 0 then text_y += 6
+  if vF != 0 then jump text_draw_word_check_wrap_nowrap
+  if text_scroll_state == 0 then text_y += 6  # don't advance y if we are skipping scrolled lines
+  if text_scroll_state != 0 then text_scroll_state += -1
+  text_x := text_wrap_x1
+  : text_draw_word_check_wrap_nowrap
   pop v2 v3 2
   ;
 
