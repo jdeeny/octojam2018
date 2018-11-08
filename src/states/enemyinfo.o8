@@ -26,7 +26,7 @@
   i := long enemy_ptrs
   load v0 - v1
   reg_set_i_v01
-  v2 := enemy_offset_sprite
+  v2 := enemy_offset_portrait
   i += v2
   load v2 - v3
   reg_set_i_v23
@@ -41,6 +41,9 @@
   v2 := enemy_offset_name
   i += v2
   load v2 - v3
+  i := text_wrap
+  v0 := 0
+  save v0 - v0
   text_x := 22
   text_y := 6
   text_draw_word
@@ -49,6 +52,9 @@
   plane 1
   text_set_wrap 22 125
   v0 := 1 set_text_color
+  i := text_wrap
+  v0 := 1
+  save v0 - v0
   #i := long enemy_ptrs
   #load v0 - v1
   #reg_set_i_v01
