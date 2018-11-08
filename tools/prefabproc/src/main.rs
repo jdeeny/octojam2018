@@ -227,23 +227,24 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMa
         let sprite = data.art.clone();
 
 
-        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, name, ai, name).unwrap();
-        writeln!(data_out, " # '{}'", name).unwrap();
+        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
+        writeln!(data_out, " # '{}'", name);
     }
-    writeln!(data_out, "0xFF\n### End Enemy Prefabs ###\n\n").unwrap();
+    writeln!(data_out, "0xFF\n### End Enemy Prefabs ###\n\n");
 
-    writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count()).unwrap();
-    writeln!(header_out, ":const enemy_offset_x 0\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_y 1\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_flags 2\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_sprite 3\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_desc 5\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_ai 7\n").unwrap();
-    writeln!(header_out, ":const enemy_offset_name 9").unwrap();
-    writeln!(header_out, ":const enemy_table_bytes 11").unwrap();
-    writeln!(data_out, "\n: enemy_ptrs\n").unwrap();
-    for  (name, _data) in enemies.iter() {
-        writeln!(data_out, "    tobytes enemy_{}", name).unwrap();
+    writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count());
+    writeln!(header_out, ":const enemy_offset_x 0\n");
+    writeln!(header_out, ":const enemy_offset_y 1\n");
+    writeln!(header_out, ":const enemy_offset_flags 2\n");
+    writeln!(header_out, ":const enemy_offset_sprite 3\n");
+    writeln!(header_out, ":const enemy_offset_portrait 5\n");
+    writeln!(header_out, ":const enemy_offset_desc 7\n");
+    writeln!(header_out, ":const enemy_offset_ai 9\n");
+    writeln!(header_out, ":const enemy_offset_name 11");
+    writeln!(header_out, ":const enemy_table_bytes 13");
+    writeln!(data_out, "\n: enemy_ptrs\n");
+    for  (name, data) in enemies.iter() {
+        writeln!(data_out, "    tobytes enemy_{}", name);
     }
 
 }
