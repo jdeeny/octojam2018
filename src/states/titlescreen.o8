@@ -1,3 +1,10 @@
+:const TITLE_CREDITS 0
+:const TITLE_PLAY 1
+:const TITLE_BEASTIARY 2
+:const TITLE_ITEMIARY 3
+:const TITLE_ITEM_COUNT 4
+
+
 : title_state 0 0
 : title_display
   i := title_state v0 := 0 save v0 save v0
@@ -11,17 +18,28 @@
 : title_next_state
   i := title_state
   load v1 - v1
-  if v1 == 0 then v0 := STATE_ITEMIARY #STATE_CREDITS
-  if v1 == 1 then v0 := STATE_NEWLEVEL #STATE_CHAREDIT
+  if v1 == TITLE_PLAY then v0 := STATE_NEWLEVEL
+  if v1 == TITLE_BEASTIARY then v0 := STATE_BEASTIARY
+  if v1 == TITLE_ITEMIARY then v0 := STATE_ITEMIARY
+  if v1 == TITLE_CREDITS then v0 := STATE_CREDITS
   state_switch
   ;
 
-: title_updown
+: title_up
   i := title_state
   load v0 - v0
-  v1 := 1
-  v1 -= v0
-  save v1 - v1
+  if v0 == 0 then v0 := TITLE_ITEM_COUNT
+  v0 += -1
+  save v0 - v0
+  title_draw
+  ;
+
+: title_down
+  i := title_state
+  load v0 - v0
+  v0 += 1
+  if v0 == TITLE_ITEM_COUNT then v0 := 0
+  save v0 - v0
   title_draw
   ;
 

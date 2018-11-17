@@ -21,10 +21,10 @@ input_table_end
   input_table_end
 
 : input_table_title
-  input_table_entry title_updown OCTO_KEY_W
-  input_table_entry title_updown OCTO_KEY_E
-  input_table_entry title_updown OCTO_KEY_Z
-  input_table_entry title_updown OCTO_KEY_X
+  input_table_entry title_up OCTO_KEY_W
+  input_table_entry title_up OCTO_KEY_E
+  input_table_entry title_down OCTO_KEY_Z
+  input_table_entry title_down OCTO_KEY_X
   input_table_entry title_next_state OCTO_KEY_F
   input_table_end
 
