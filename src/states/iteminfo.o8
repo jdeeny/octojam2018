@@ -1,0 +1,86 @@
+: iteminfo_state 0 0   # who is talking
+
+
+: iteminfo_scrollup
+  i := text_scroll
+  load v0 - v0
+  if v0 != 0 then v0 += -1
+  save v0 - v0
+  iteminfo_display
+  ;
+
+: iteminfo_scrolldown
+  i := text_scroll
+  load v0 - v0
+  v0 += 1
+  save v0 - v0
+  iteminfo_display
+  ;
+
+: iteminfo_index
+  i := iteminfo_state
+  load v2 - v2
+  i := long treasure_ptrs
+  v0 <<= v2
+  i += v0
+  load v0 - v1
+  reg_set_i_v01
+  ;
+
+: iteminfo_display
+  plane 3
+  clear
+  v0 := SCREEN_dialog
+  screen_draw_screen
+  iteminfo_index
+
+  v2 := treasure_offset_portrait
+  i += v2
+  load v2 - v3
+  reg_set_i_v23
+  text_x := 5
+  text_y := 17
+  sprite text_x text_y 0
+
+  v0 := 2 set_text_color
+  iteminfo_index
+  v2 := treasure_offset_name
+  i += v2
+  load v2 - v3
+  i := text_wrap
+  v0 := 0
+  save v0 - v0
+  text_x := 22
+  text_y := 6
+  text_draw_word
+
+
+  plane 1
+  text_set_wrap 22 125
+  v0 := 1 set_text_color
+  i := text_wrap
+  v0 := 1
+  save v0 - v0
+  #i := long item_ptrs
+  #load v0 - v1
+  #reg_set_i_v01
+  #v2 := item_offset_desc
+  #i += v2
+  #load v2 - v3
+
+  iteminfo_index
+  v2 := treasure_offset_desc
+  i += v2
+
+  load v2 - v3
+
+  text_x := 22
+  text_y := 13
+  text_draw_word
+  text_clear_wrap
+  ;
+
+: iteminfo_next_state
+  v0 := STATE_GAMEPLAY
+  state_switch
+  ;
