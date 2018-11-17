@@ -23,9 +23,14 @@
   clear
   v0 := SCREEN_dialog
   screen_draw_screen
+  i := enemyinfo_state
+  load v2 - v2
   i := long enemy_ptrs
+  v0 <<= v2
+  i += v0
   load v0 - v1
   reg_set_i_v01
+
   v2 := enemy_offset_portrait
   i += v2
   load v2 - v3

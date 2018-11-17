@@ -68,6 +68,15 @@ input_table_end
   input_table_end
 
 
+: input_table_beastiary
+  input_table_entry enemyinfo_scrollup OCTO_KEY_W
+  input_table_entry enemyinfo_scrolldown OCTO_KEY_S
+  input_table_entry beastiary_next_entry OCTO_KEY_D
+  input_table_entry beastiary_prev_entry OCTO_KEY_A
+  input_table_entry beastiary_next_state OCTO_KEY_F
+  input_table_end
+
+
 : input_table_empty
   input_table_end
 
@@ -93,3 +102,4 @@ input_table_end
   state_table_entry STATE_DIALOG        input_table_dialog      dialog_display          nop_func            nop_func
   state_table_entry STATE_NEWLEVEL      input_table_newlevel    newlevel_display        nop_func            nop_func
   state_table_entry STATE_ENEMYINFO     input_table_enemyinfo   enemyinfo_display       nop_func            nop_func
+  state_table_entry STATE_BEASTIARY     input_table_beastiary   beastiary_begin       nop_func            nop_func
