@@ -4,7 +4,7 @@ GEN:=build/
 # Final Output
 OUTPUT:=$(GEN)octojam2018.o8
 
-STATES:=src/states/charedit.o8 src/states/endscreen.o8 src/states/gameplay.o8 src/states/splash.o8 src/states/titlescreen.o8 src/states/credits.o8 src/states/dialog.o8 src/states/newlevel.o8 src/states/enemyinfo.o8
+STATES:=src/states/charedit.o8 src/states/endscreen.o8 src/states/gameplay.o8 src/states/splash.o8 src/states/titlescreen.o8 src/states/credits.o8 src/states/dialog.o8 src/states/newlevel.o8 src/states/enemyinfo.o8 src/states/beastiary.o8 src/states/iteminfo.o8 src/states/itemiary.o8
 
 SRC:=src/config.o8 src/math.o8 src/mem.o8 src/assert.o8 src/stack.o8 src/sprite_header.o8 src/screen_header.o8 src/ai.o8 src/prefab_header.o8 src/rendererheader.o8  src/state_header.o8 src/trampoline.o8  src/main.o8 src/ecs.o8 src/renderer.o8 src/worldgen.o8 src/text.o8  src/gamestate.o8 $(STATES) src/audio.o8 src/input.o8 src/screen.o8 src/font.o8 src/sprite_data.o8 src/data.o8 src/prefab_data.o8 src/screen_data.o8 src/input_data.o8 src/sample_data.o8 src/initializers.o8 src/rendererdata.o8 src/worldgen_data.o8
 
