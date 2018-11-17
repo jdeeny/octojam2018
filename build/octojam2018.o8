@@ -1744,12 +1744,7 @@ jump gameloop
   enemyinfo_display
   ;
 
-
-: enemyinfo_display
-  plane 3
-  clear
-  v0 := SCREEN_dialog
-  screen_draw_screen
+: enemyinfo_index
   i := enemyinfo_state
   load v2 - v2
   i := long enemy_ptrs
@@ -1757,6 +1752,14 @@ jump gameloop
   i += v0
   load v0 - v1
   reg_set_i_v01
+  ;
+
+: enemyinfo_display
+  plane 3
+  clear
+  v0 := SCREEN_dialog
+  screen_draw_screen
+  enemyinfo_index
 
   v2 := enemy_offset_portrait
   i += v2
@@ -1767,9 +1770,7 @@ jump gameloop
   sprite text_x text_y 0
 
   v0 := 2 set_text_color
-  i := long enemy_ptrs
-  load v0 - v1
-  reg_set_i_v01
+  enemyinfo_index
   v2 := enemy_offset_name
   i += v2
   load v2 - v3
@@ -1794,7 +1795,10 @@ jump gameloop
   #i += v2
   #load v2 - v3
 
-  i := long word_Dialog_Test_ptr
+  enemyinfo_index
+  v2 := enemy_offset_desc
+  i += v2
+
   load v2 - v3
 
   text_x := 22
