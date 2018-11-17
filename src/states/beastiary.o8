@@ -1,0 +1,38 @@
+## This is essentially the same as the enemy info screen, just add switching through enemy types
+## There are probably differences that need to be tackled
+
+#: enemyinfo_state 0 0   # who is talking
+#: enemyinfo_scrollup
+#: enemyinfo_scrolldown
+#: enemyinfo_display
+
+: beastiary_begin
+  # Set to beginning of enemy list
+  i := enemyinfo_state
+  v0 := 0
+  save v0 - v0
+  enemyinfo_display
+  ;
+
+: beastiary_next_entry
+  i := enemyinfo_state
+  load v0 - v0
+  v0 += 1
+  if v0 == enemy_prefab_count then v0 := 0
+  save v0 - v0
+  enemyinfo_display
+  ;
+
+: beastiary_prev_entry
+  i := enemyinfo_state
+  load v0 - v0
+  if v0 == 0 then v0 := enemy_prefab_count
+  v0 += -1
+  save v0 - v0
+  enemyinfo_display
+  ;
+
+: beastiary_next_state
+  v0 := STATE_TITLE
+  state_switch
+  ;

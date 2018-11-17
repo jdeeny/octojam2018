@@ -1,40 +1,40 @@
-: enemyinfo_state 0 0   # who is talking
+: iteminfo_state 0 0   # who is talking
 
 
-: enemyinfo_scrollup
+: iteminfo_scrollup
   i := text_scroll
   load v0 - v0
   if v0 != 0 then v0 += -1
   save v0 - v0
-  enemyinfo_display
+  iteminfo_display
   ;
 
-: enemyinfo_scrolldown
+: iteminfo_scrolldown
   i := text_scroll
   load v0 - v0
   v0 += 1
   save v0 - v0
-  enemyinfo_display
+  iteminfo_display
   ;
 
-: enemyinfo_index
-  i := enemyinfo_state
+: iteminfo_index
+  i := iteminfo_state
   load v2 - v2
-  i := long enemy_ptrs
+  i := long treasure_ptrs
   v0 <<= v2
   i += v0
   load v0 - v1
   reg_set_i_v01
   ;
 
-: enemyinfo_display
+: iteminfo_display
   plane 3
   clear
   v0 := SCREEN_dialog
   screen_draw_screen
-  enemyinfo_index
+  iteminfo_index
 
-  v2 := enemy_offset_portrait
+  v2 := treasure_offset_portrait
   i += v2
   load v2 - v3
   reg_set_i_v23
@@ -43,8 +43,8 @@
   sprite text_x text_y 0
 
   v0 := 2 set_text_color
-  enemyinfo_index
-  v2 := enemy_offset_name
+  iteminfo_index
+  v2 := treasure_offset_name
   i += v2
   load v2 - v3
   i := text_wrap
@@ -61,15 +61,15 @@
   i := text_wrap
   v0 := 1
   save v0 - v0
-  #i := long enemy_ptrs
+  #i := long item_ptrs
   #load v0 - v1
   #reg_set_i_v01
-  #v2 := enemy_offset_desc
+  #v2 := item_offset_desc
   #i += v2
   #load v2 - v3
 
-  enemyinfo_index
-  v2 := enemy_offset_desc
+  iteminfo_index
+  v2 := treasure_offset_desc
   i += v2
 
   load v2 - v3
@@ -80,7 +80,7 @@
   text_clear_wrap
   ;
 
-: enemyinfo_next_state
+: iteminfo_next_state
   v0 := STATE_GAMEPLAY
   state_switch
   ;

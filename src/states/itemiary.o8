@@ -1,0 +1,38 @@
+## This is essentially the same as the item info screen, just add switching through item types
+## There are probably differences that need to be tackled
+
+#: iteminfo_state 0 0   # who is talking
+#: iteminfo_scrollup
+#: iteminfo_scrolldown
+#: iteminfo_display
+
+: itemiary_begin
+  # Set to beginning of item list
+  i := iteminfo_state
+  v0 := 0
+  save v0 - v0
+  iteminfo_display
+  ;
+
+: itemiary_next_entry
+  i := iteminfo_state
+  load v0 - v0
+  v0 += 1
+  if v0 == treasure_prefab_count then v0 := 0
+  save v0 - v0
+  iteminfo_display
+  ;
+
+: itemiary_prev_entry
+  i := iteminfo_state
+  load v0 - v0
+  if v0 == 0 then v0 := treasure_prefab_count
+  v0 += -1
+  save v0 - v0
+  iteminfo_display
+  ;
+
+: itemiary_next_state
+  v0 := STATE_TITLE
+  state_switch
+  ;

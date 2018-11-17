@@ -46,7 +46,7 @@ struct Enemy {
 
 #[derive(Debug, Deserialize)]
 struct Treasure {
-    name: Option<String>,
+    name: String,
     art: String,
     active: Option<Vec<Value>>,
     desc: Option<String>,
@@ -200,6 +200,18 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, _text_strings: &mut HashMap<
 
 
 
+fn treasure_make_strings(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
+    for (name, data) in treasure.iter() {
+
+        add_text(text_strings, name, "name", Some(&data.name));
+        //add_text(text_strings, name, "name", Some(name));
+        add_text_string(text_strings, name, "desc", &data.desc);
+        println!("{:?}", &data.desc);
+
+    }
+}
+
+
 
 
 fn enemies_make_strings(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, _data_out: &mut Write, _header_out: &mut Write) {
@@ -225,7 +237,6 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMa
         let mut ai = String::from("default");
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
-
 
         write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
         writeln!(data_out, " # '{}'", name);
@@ -262,13 +273,31 @@ fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut Ha
         add_text(text_strings, name, "name", Some(name));
         add_text_string(text_strings, name, "desc", &data.desc);
 
+        write!(data_out, ": treasure_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
 
-        write!(data_out, ": treasure_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai).unwrap();
-        writeln!(data_out, " # '{}'", name).unwrap();
+        //write!(data_out, ": treasure_{} {} {} {} tobytes SPR_{} tobytes ai_{}", name, x, y, flags, sprite, ai);
+        writeln!(data_out, " # '{}'", name);
     }
     writeln!(data_out, "0xFF\n### End Treasure Data ###\n\n").unwrap();
 
-    writeln!(header_out, ":const treasure_prefab_count {}", treasure.keys().count()).unwrap();
+
+
+    writeln!(header_out, ":const treasure_prefab_count {}", treasure.keys().count());
+
+    writeln!(header_out, ":const treasure_offset_x 0\n");
+    writeln!(header_out, ":const treasure_offset_y 1\n");
+    writeln!(header_out, ":const treasure_offset_flags 2\n");
+    writeln!(header_out, ":const treasure_offset_sprite 3\n");
+    writeln!(header_out, ":const treasure_offset_portrait 5\n");
+    writeln!(header_out, ":const treasure_offset_desc 7\n");
+    writeln!(header_out, ":const treasure_offset_ai 9\n");
+    writeln!(header_out, ":const treasure_offset_name 11");
+    writeln!(header_out, ":const treasure_table_bytes 13");
+    writeln!(data_out, "\n: treasure_ptrs\n");
+    for  (name, data) in treasure.iter() {
+        writeln!(data_out, "    tobytes treasure_{}", name);
+    }
+
 
 
 
@@ -367,11 +396,12 @@ fn main() {
     //process_weapons(&weapons, &mut text_strings, &mut data_dest);
     //process_attacks(&attacks, &mut text_strings, &mut data_dest);
     enemies_make_strings(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
-    process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
+    treasure_make_strings(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
     biomes_make_strings(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
 
     process_strings(&text_strings, &mut data_dest, &mut header_dest);
     process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
+    process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
 
 //    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
     process_enemy_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
