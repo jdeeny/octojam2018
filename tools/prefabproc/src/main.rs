@@ -238,7 +238,6 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
 
-
         write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
         writeln!(data_out, " # '{}'", name);
     }
