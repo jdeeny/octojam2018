@@ -1580,7 +1580,7 @@ jump gameloop
 : title_next_state
   i := title_state
   load v1 - v1
-  if v1 == 0 then v0 := STATE_BEASTIARY #STATE_CREDITS
+  if v1 == 0 then v0 := STATE_ITEMIARY #STATE_CREDITS
   if v1 == 1 then v0 := STATE_NEWLEVEL #STATE_CHAREDIT
   state_switch
   ;
