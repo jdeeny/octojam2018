@@ -43,12 +43,11 @@
   title_draw
   ;
 
-: title_draw_begin
-  text_draw_word_centered_at word_Title_Begin_ptr 0 127 55
-  ;
-
-: title_draw_credits
-  text_draw_word_centered_at word_Title_Credits_ptr 0 127 49
+: title_load_string
+  i := long word_Title_Credits_ptr
+  i += v1
+  i += v1
+  load v2 - v3
   ;
 
 : title_draw
@@ -56,15 +55,47 @@
   clear
   v0 := SCREEN_title
   screen_draw_screen
-  i := title_state
-  load v1 - v1
-  v0 := 3
-  if v1 == 1 then v0 := 1
-  set_text_color
-  title_draw_credits
 
   v0 := 1
-  if v1 == 1 then v0 := 3
   set_text_color
-  title_draw_begin
+
+  i := title_state
+  load v1 - v1
+  if v1 == 0 then v1 := TITLE_ITEM_COUNT
+  v1 += -1
+  title_load_string   # get the string for the state
+  v4 := 0
+  v5 := 46
+  v6 := 127
+  # v23 = word v4 = x1 v5 = y v6 = x2
+  text_draw_word_centered
+
+  i := title_state
+  load v1 - v1
+  v1 += 1
+  if v1 == TITLE_ITEM_COUNT then v1 := 0
+  title_load_string   # get the string for the state
+  # draw a string
+  v4 := 0
+  v5 := 58
+  v6 := 127
+  # v23 = word v4 = x1 v5 = y v6 = x2
+  text_draw_word_centered
+
+  v0 := 3
+  set_text_color
+
+  i := title_state
+  load v1 - v1
+  title_load_string   # get the string for the state
+  # draw a string
+  v4 := 0
+  v5 := 52
+  v6 := 127
+  # v23 = word v4 = x1 v5 = y v6 = x2
+  text_draw_word_centered
+
+  # draw three items
+  i := title_state
+  load v0 - v0
   ;
