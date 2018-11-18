@@ -595,6 +595,7 @@
 :const SCREEN_dialog 0
 :const SCREEN_title 1
 :const SCREEN_newlevel 2
+:const SCREEN_smallframe 3
 
 
 
@@ -1398,6 +1399,32 @@ jump gameloop
 : nop_func ;     # can be used to fill in unused ptrs in the state table
 
 
+: state_updown_reset
+  i := long state_updown_data v0 := 0 save v0 - v0
+  ;
+
+: state_updown_get
+  i := long state_updown_data load v1 - v1
+  ;
+
+# num_items = v0
+: state_updown_down
+  state_updown_get
+  if v1 == 0 then v1 := v0
+  v1 += -1
+  save v1 - v1
+  ;
+
+# num_items = v0
+: state_updown_up
+  state_updown_get
+  v1 += 1
+  if v1 == v0 then v1 := 0
+  save v1 - v1
+  ;
+
+
+
 # v0 := state num
 : state_switch
   i := long state_table
@@ -1577,19 +1604,17 @@ jump gameloop
 :const TITLE_ITEM_COUNT 4
 
 
-: title_state 0 0
-: title_display
-  i := title_state v0 := 0 save v0 save v0
-  hires
 
+: title_display
+  state_updown_reset
+  hires
   title_draw
 
 #  play_sample_title
   ;
 
 : title_next_state
-  i := title_state
-  load v1 - v1
+  state_updown_get
   if v1 == TITLE_PLAY then v0 := STATE_NEWLEVEL
   if v1 == TITLE_BEASTIARY then v0 := STATE_BEASTIARY
   if v1 == TITLE_ITEMIARY then v0 := STATE_ITEMIARY
@@ -1598,20 +1623,14 @@ jump gameloop
   ;
 
 : title_up
-  i := title_state
-  load v0 - v0
-  if v0 == 0 then v0 := TITLE_ITEM_COUNT
-  v0 += -1
-  save v0 - v0
+  v0 := TITLE_ITEM_COUNT
+  state_updown_up
   title_draw
   ;
 
 : title_down
-  i := title_state
-  load v0 - v0
-  v0 += 1
-  if v0 == TITLE_ITEM_COUNT then v0 := 0
-  save v0 - v0
+  v0 := TITLE_ITEM_COUNT
+  state_updown_up
   title_draw
   ;
 
@@ -1631,8 +1650,7 @@ jump gameloop
   v0 := 1
   set_text_color
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   if v1 == 0 then v1 := TITLE_ITEM_COUNT
   v1 += -1
   title_load_string   # get the string for the state
@@ -1642,8 +1660,7 @@ jump gameloop
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   v1 += 1
   if v1 == TITLE_ITEM_COUNT then v1 := 0
   title_load_string   # get the string for the state
@@ -1657,8 +1674,7 @@ jump gameloop
   v0 := 3
   set_text_color
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   title_load_string   # get the string for the state
   # draw a string
   v4 := 0
@@ -1666,10 +1682,6 @@ jump gameloop
   v6 := 127
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
-
-  # draw three items
-  i := title_state
-  load v0 - v0
   ;
 : credits_state 0
 : credits_display
@@ -1744,6 +1756,9 @@ jump gameloop
 : newlevel_display
   hires
   clear
+  v0 := SCREEN_smallframe
+  screen_draw_screen
+
   v0 := SCREEN_newlevel
   screen_draw_screen
   v0 := 2
@@ -1798,8 +1813,6 @@ jump gameloop
   v6 := 127
   text_draw_word_centered
   ;
-: enemyinfo_state 0 0   # who is talking
-
 
 : enemyinfo_scrollup
   i := text_scroll
@@ -1818,10 +1831,9 @@ jump gameloop
   ;
 
 : enemyinfo_index
-  i := enemyinfo_state
-  load v2 - v2
+  state_updown_get
   i := long enemy_ptrs
-  v0 <<= v2
+  v0 <<= v1
   i += v0
   load v0 - v1
   reg_set_i_v01
@@ -1894,27 +1906,19 @@ jump gameloop
 
 : beastiary_begin
   # Set to beginning of enemy list
-  i := enemyinfo_state
-  v0 := 0
-  save v0 - v0
+  state_updown_reset
   enemyinfo_display
   ;
 
 : beastiary_next_entry
-  i := enemyinfo_state
-  load v0 - v0
-  v0 += 1
-  if v0 == enemy_prefab_count then v0 := 0
-  save v0 - v0
+  v0 := enemy_prefab_count
+  state_updown_up
   enemyinfo_display
   ;
 
 : beastiary_prev_entry
-  i := enemyinfo_state
-  load v0 - v0
-  if v0 == 0 then v0 := enemy_prefab_count
-  v0 += -1
-  save v0 - v0
+  v0 := enemy_prefab_count
+  state_updown_down
   enemyinfo_display
   ;
 
@@ -1922,8 +1926,6 @@ jump gameloop
   v0 := STATE_TITLE
   state_switch
   ;
-: iteminfo_state 0 0   # who is talking
-
 
 : iteminfo_scrollup
   i := text_scroll
@@ -1942,10 +1944,9 @@ jump gameloop
   ;
 
 : iteminfo_index
-  i := iteminfo_state
-  load v2 - v2
+  state_updown_get
   i := long treasure_ptrs
-  v0 <<= v2
+  v0 <<= v1
   i += v0
   load v0 - v1
   reg_set_i_v01
@@ -2018,27 +2019,19 @@ jump gameloop
 
 : itemiary_begin
   # Set to beginning of item list
-  i := iteminfo_state
-  v0 := 0
-  save v0 - v0
+  state_updown_reset
   iteminfo_display
   ;
 
 : itemiary_next_entry
-  i := iteminfo_state
-  load v0 - v0
-  v0 += 1
-  if v0 == treasure_prefab_count then v0 := 0
-  save v0 - v0
+  v0 := treasure_prefab_count
+  state_updown_up
   iteminfo_display
   ;
 
 : itemiary_prev_entry
-  i := iteminfo_state
-  load v0 - v0
-  if v0 == 0 then v0 := treasure_prefab_count
-  v0 += -1
-  save v0 - v0
+  v0 := treasure_prefab_count
+  state_updown_down
   iteminfo_display
   ;
 
@@ -2472,62 +2465,86 @@ entity_offset ENTITY_AI 2
 
 : generate_new_treasure
   ;
-:const screen_dialog 0
+### Render pre-made screens (from screen_data.o8)
+#
+# Format of the screens is a code byte followed by a variable number of data bytes
 
+:calc screen_id_count { 0 }
+:macro screen_id_advance { :calc screen_id_count { screen_id_count + 1 } }
+
+:calc SCREEN_SPRITE { screen_id_count  }
+:calc SCREEN_SPRITE_BYTES { 5 }
+screen_id_advance
+
+:calc SCREEN_WORD { screen_id_count }
+:calc SCREEN_WORD_BYTES { 6 }
+screen_id_advance
+
+:calc SCREEN_WORD_CTR { screen_id_count }
+:calc SCREEN_WORD_CTR_BYTES { 7 }
+screen_id_advance
+
+:calc SCREEN_END { screen_id_count }
+:calc SCREEN_END_BYTES { 0 }
+
+: screen_draw_jumptable
+  jump screen_draw_sprite
+  jump screen_draw_word
+  jump screen_draw_word_center
+  jump screen_draw_end
+
+
+:alias Screen_Bytes v2
+
+## Display a screen, main entrypoint
 # v0 = screen number
 : screen_draw_screen
-  plane 3
   i := long screen_table
   i += v0
   i += v0
   load v0 - v1
-  push v0 v1 2
-: screen_draw_screen_continue
-  reg_set_i_v01
-  load v0 - v4
-  if v0 == 0xFF then jump screen_draw_screen_end
-  vF := 0x80
-  vF &= v0
-  if vF != 0 then jump screen_draw_screen_vrep
-  vF := 0x40
-  vF &= v0
-  if vF != 0 then jump screen_draw_screen_hrep
-  # else this is an Element
-  # v0 = y, v1 = x, v2/3 = address of sprite
+  push v0 v1 2   # Save pointer to screen
 
-  reg_set_i_v23
-  sprite v1 v0 0
+: screen_draw_screen_continue
+  #:breakpoint advance
+  reg_set_i_v01  # i := screen data
+  load v0 - v6   # Largest is 7 bytes
+  v0 <<= v0
+  jump0 screen_draw_jumptable   # Jump into screen element handler
+
 : screen_draw_screen_advance
   pop v0 v1 2
-  math_add_u16_u8imm v0 v1 5
+  #math_add_u16_u8imm v0 v1 5
+  math_add_u16_u8 v0 v1 Screen_Bytes
   push v0 v1 2
   jump screen_draw_screen_continue
-: screen_draw_screen_end
-  pop v0 v1 2
-  ;
 
-: screen_draw_screen_vrep
-#:macro VRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
-  vF := 127
-  v0 &= vF # v0 = y
+
+
+
+: screen_draw_sprite
+  #:breakpoint sprite
+  plane 3
   reg_set_i_v23
-  : vrep_continue
-  sprite v0 v1 0
-  v4 += -1
-  v1 += 16
-  if v4 != 0 then jump vrep_continue
+  sprite v4 v1 0
+
+  Screen_Bytes := SCREEN_SPRITE_BYTES
   jump screen_draw_screen_advance
-: screen_draw_screen_hrep
-#:macro HRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
-  vF := 63
-  v0 &= vF # v0 = x
-  reg_set_i_v23
-  : hrep_continue
-  sprite v1 v0 0
-  v4 += -1
-  v1 += 16
-  if v4 != 0 then jump hrep_continue
+
+: screen_draw_word_center
+  :breakpoint center
+  Screen_Bytes := SCREEN_WORD_CTR_BYTES
   jump screen_draw_screen_advance
+
+: screen_draw_word
+  :breakpoint word
+  Screen_Bytes := SCREEN_WORD_BYTES
+  jump screen_draw_screen_advance
+
+: screen_draw_end
+  #:breakpoint ending
+  pop v0 v1 2   # pop stored location and return
+  ;
 
 :macro ........ { :byte 0 } :macro ....... { :byte 0 } :macro ...... { :byte 0 } :macro ..... { :byte 0 } :macro .... { :byte 0 } :macro ... { :byte 0 } :macro .......X { :byte 1 } :macro ......X. { :byte 2 } :macro ......X { :byte 2 } :macro ......XX { :byte 3 } :macro .....X.. { :byte 4 } :macro .....X. { :byte 4 } :macro .....X { :byte 4 } :macro .....X.X { :byte 5 }
 :macro .....XX. { :byte 6 } :macro .....XX { :byte 6 } :macro .....XXX { :byte 7 } :macro ....X... { :byte 8 } :macro ....X.. { :byte 8 } :macro ....X. { :byte 8 } :macro ....X { :byte 8 } :macro ....X..X { :byte 9 } :macro ....X.X. { :byte 10 } :macro ....X.X { :byte 10 } :macro ....X.XX { :byte 11 } :macro ....XX.. { :byte 12 } :macro ....XX. { :byte 12 } :macro ....XX { :byte 12 } :macro ....XX.X { :byte 13 } :macro ....XXX. { :byte 14 } :macro ....XXX { :byte 14 } :macro ....XXXX { :byte 15 } :macro ...X.... { :byte 16 } :macro ...X... { :byte 16 } :macro ...X.. { :byte 16 } :macro ...X. { :byte 16 } :macro ...X { :byte 16 } :macro ...X...X { :byte 17 } :macro ...X..X. { :byte 18 } :macro ...X..X { :byte 18 } :macro ...X..XX { :byte 19 } :macro ...X.X.. { :byte 20 } :macro ...X.X. { :byte 20 } :macro ...X.X { :byte 20 } :macro ...X.X.X { :byte 21 } :macro ...X.XX. { :byte 22 } :macro ...X.XX { :byte 22 } :macro ...X.XXX { :byte 23 } :macro ...XX... { :byte 24 } :macro ...XX.. { :byte 24 } :macro ...XX. { :byte 24 } :macro ...XX { :byte 24 } :macro ...XX..X { :byte 25 } :macro ...XX.X. { :byte 26 } :macro ...XX.X { :byte 26 } :macro ...XX.XX { :byte 27 } :macro ...XXX.. { :byte 28 } :macro ...XXX. { :byte 28 } :macro ...XXX { :byte 28 } :macro ...XXX.X { :byte 29 } :macro ...XXXX. { :byte 30 } :macro ...XXXX { :byte 30 }
@@ -12623,6 +12640,7 @@ note 0xFF 0
 : charedit_data_age 18 0
 
 
+: state_updown_data 0
 
 
 : sample_data
@@ -13317,137 +13335,6 @@ note 0xFF 0
 
 
 : entity_table_address tobytes entity_table
-## Sprites for Dialog
-: sprite_dialog_UL
-0xE0 0x00 0xA0 0x00 0xFF 0xFF 0x20 0x00
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-: sprite_dialog_UR
-0x00 0x07 0x00 0x05 0xFF 0xFF 0x00 0x04
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-: sprite_dialog_LL
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
-0x20 0x00 0xFF 0xFF 0xA0 0x00 0xE0 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-: sprite_dialog_LR
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
-0x00 0x04 0xFF 0xFF 0x00 0x05 0x00 0x07
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-: sprite_dialog_HLINE
-0xFF 0xFF 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-: sprite_dialog_VLINE
-0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
-0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
-0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
-0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-
-:macro Elem x y spr { :byte y :byte x tobytes spr 0 }
-:macro HRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
-:macro VRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
-:macro ScreenEnd { :byte 0xFF }
-
-
-: screen_frame  Elem 0 0 sprite_dialog_UL
-                Elem 0 48 sprite_dialog_LL
-                Elem 112 0 sprite_dialog_UR
-                Elem 112 48 sprite_dialog_LR
-                HRep 16 2 6 sprite_dialog_HLINE
-                HRep 16 61 6 sprite_dialog_HLINE
-                VRep 2 16 2 sprite_dialog_VLINE
-                VRep 125 16 2 sprite_dialog_VLINE
-                ScreenEnd
-
-: screen_title  Elem 0 0 SPR_portrait_title-parts-00.png
-                Elem 16 0 SPR_portrait_title-parts-01.png
-                Elem 32 0 SPR_portrait_title-parts-02.png
-                Elem 48 0 SPR_portrait_title-parts-03.png
-                Elem 64 0 SPR_portrait_title-parts-04.png
-                Elem 80 0 SPR_portrait_title-parts-05.png
-                Elem 96 0 SPR_portrait_title-parts-06.png
-                Elem 112 0 SPR_portrait_title-parts-07.png
-                Elem 0 16 SPR_portrait_title-parts-08.png
-                Elem 16 16 SPR_portrait_title-parts-09.png
-                Elem 32 16 SPR_portrait_title-parts-10.png
-                Elem 48 16 SPR_portrait_title-parts-11.png
-                Elem 64 16 SPR_portrait_title-parts-12.png
-                Elem 80 16 SPR_portrait_title-parts-13.png
-                Elem 96 16 SPR_portrait_title-parts-14.png
-                Elem 112 16 SPR_portrait_title-parts-15.png
-                Elem 0 32 SPR_portrait_title-parts-16.png
-                Elem 16 32 SPR_portrait_title-parts-17.png
-                Elem 32 32 SPR_portrait_title-parts-18.png
-                Elem 48 32 SPR_portrait_title-parts-19.png
-                Elem 64 32 SPR_portrait_title-parts-20.png
-                Elem 80 32 SPR_portrait_title-parts-21.png
-                Elem 96 32 SPR_portrait_title-parts-22.png
-                Elem 112 32 SPR_portrait_title-parts-23.png
-                Elem 0 48 SPR_portrait_title-parts-24.png
-                Elem 16 48 SPR_portrait_title-parts-25.png
-                Elem 32 48 SPR_portrait_title-parts-26.png
-                Elem 48 48 SPR_portrait_title-parts-27.png
-                Elem 64 48 SPR_portrait_title-parts-28.png
-                Elem 80 48 SPR_portrait_title-parts-29.png
-                Elem 96 48 SPR_portrait_title-parts-30.png
-                Elem 112 48 SPR_portrait_title-parts-31.png
-                ScreenEnd
-
-: screen_newlevel  Elem 16 16 sprite_dialog_UL
-                Elem 16 32 sprite_dialog_LL
-                Elem 96 16 sprite_dialog_UR
-                Elem 96 32 sprite_dialog_LR
-                HRep 32 18 4 sprite_dialog_HLINE
-                HRep 32 45 4 sprite_dialog_HLINE
-                ScreenEnd
-
-
-#Elem 0 48 sprite_dialog_LL
-                #Elem 112 0 sprite_dialog_UR
-                #Elem 112 48 sprite_dialog_LR
-                #HRep 16 2 6 sprite_dialog_HLINE
-                #HRep 16 61 6 sprite_dialog_HLINE
-                #VRep 2 16 2 sprite_dialog_VLINE
-                #VRep 125 16 2 sprite_dialog_VLINE
-                #Elem 5 8 SPR_portrait_enemy4
-                ScreenEnd
-
-
-
-: screen_table
-  tobytes screen_frame
-  tobytes screen_title
-  tobytes screen_newlevel
 ## Input
 :macro input_table_entry function_addr KEY_CODE { tobytes function_addr :byte KEY_CODE }
 :macro input_table_all_keys function_addr {
@@ -13634,6 +13521,176 @@ input_table_end
 : word_Char_Eyes_7_ptr tobytes word_Char_Eyes_7
 
 : word_testthis_ptr tobytes word_testthis
+## Sprites for Dialog
+: sprite_dialog_UL
+0xE0 0x00 0xA0 0x00 0xFF 0xFF 0x20 0x00
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+: sprite_dialog_UR
+0x00 0x07 0x00 0x05 0xFF 0xFF 0x00 0x04
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+: sprite_dialog_LL
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x20 0x00 0x20 0x00 0x20 0x00 0x20 0x00
+0x20 0x00 0xFF 0xFF 0xA0 0x00 0xE0 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+: sprite_dialog_LR
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x04 0x00 0x04 0x00 0x04 0x00 0x04
+0x00 0x04 0xFF 0xFF 0x00 0x05 0x00 0x07
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+: sprite_dialog_HLINE
+0xFF 0xFF 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+: sprite_dialog_VLINE
+0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
+0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
+0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
+0x80 0x00 0x80 0x00 0x80 0x00 0x80 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+
+#:macro ScreenSpr x y spr { :byte y :byte x tobytes spr 0 }
+:macro ScreenSpr x y spr { :byte SCREEN_SPRITE :byte y tobytes spr :byte x }
+
+:macro ScreenWord x y word { :byte SCREEN_WORD :byte x tobytes word :byte y }
+
+:macro ScreenWordCtr x1 x2 y word { :byte SCREEN_WORD_CTR :byte x1 tobytes word :byte x2 :byte y }
+
+:macro ScreenEnd { :byte SCREEN_END }
+
+
+: screen_frame  ScreenSpr 0 0 sprite_dialog_UL
+                ScreenSpr 0 48 sprite_dialog_LL
+                ScreenSpr 112 0 sprite_dialog_UR
+                ScreenSpr 112 48 sprite_dialog_LR
+
+                ScreenSpr 16 2 sprite_dialog_HLINE
+                ScreenSpr 32 2 sprite_dialog_HLINE
+                ScreenSpr 48 2 sprite_dialog_HLINE
+                ScreenSpr 64 2 sprite_dialog_HLINE
+                ScreenSpr 80 2 sprite_dialog_HLINE
+                ScreenSpr 96 2 sprite_dialog_HLINE
+
+                ScreenSpr 16 61 sprite_dialog_HLINE
+                ScreenSpr 32 61 sprite_dialog_HLINE
+                ScreenSpr 48 61 sprite_dialog_HLINE
+                ScreenSpr 64 61 sprite_dialog_HLINE
+                ScreenSpr 80 61 sprite_dialog_HLINE
+                ScreenSpr 96 61 sprite_dialog_HLINE
+
+                ScreenSpr 2 16 sprite_dialog_VLINE
+                ScreenSpr 2 32 sprite_dialog_VLINE
+
+                ScreenSpr 125 16 sprite_dialog_VLINE
+                ScreenSpr 125 32 sprite_dialog_VLINE
+
+                ScreenEnd
+
+
+: screen_title  ScreenSpr 0 0 SPR_portrait_title-parts-00.png
+                ScreenSpr 16 0 SPR_portrait_title-parts-01.png
+                ScreenSpr 32 0 SPR_portrait_title-parts-02.png
+                ScreenSpr 48 0 SPR_portrait_title-parts-03.png
+                ScreenSpr 64 0 SPR_portrait_title-parts-04.png
+                ScreenSpr 80 0 SPR_portrait_title-parts-05.png
+                ScreenSpr 96 0 SPR_portrait_title-parts-06.png
+                ScreenSpr 112 0 SPR_portrait_title-parts-07.png
+                ScreenSpr 0 16 SPR_portrait_title-parts-08.png
+                ScreenSpr 16 16 SPR_portrait_title-parts-09.png
+                ScreenSpr 32 16 SPR_portrait_title-parts-10.png
+                ScreenSpr 48 16 SPR_portrait_title-parts-11.png
+                ScreenSpr 64 16 SPR_portrait_title-parts-12.png
+                ScreenSpr 80 16 SPR_portrait_title-parts-13.png
+                ScreenSpr 96 16 SPR_portrait_title-parts-14.png
+                ScreenSpr 112 16 SPR_portrait_title-parts-15.png
+                ScreenSpr 0 32 SPR_portrait_title-parts-16.png
+                ScreenSpr 16 32 SPR_portrait_title-parts-17.png
+                ScreenSpr 32 32 SPR_portrait_title-parts-18.png
+                ScreenSpr 48 32 SPR_portrait_title-parts-19.png
+                ScreenSpr 64 32 SPR_portrait_title-parts-20.png
+                ScreenSpr 80 32 SPR_portrait_title-parts-21.png
+                ScreenSpr 96 32 SPR_portrait_title-parts-22.png
+                ScreenSpr 112 32 SPR_portrait_title-parts-23.png
+                #ScreenSpr 0 48 SPR_portrait_title-parts-24.png
+                #ScreenSpr 16 48 SPR_portrait_title-parts-25.png
+                #ScreenSpr 32 48 SPR_portrait_title-parts-26.png
+                #ScreenSpr 48 48 SPR_portrait_title-parts-27.png
+                #ScreenSpr 64 48 SPR_portrait_title-parts-28.png
+                #ScreenSpr 80 48 SPR_portrait_title-parts-29.png
+                #ScreenSpr 96 48 SPR_portrait_title-parts-30.png
+                #ScreenSpr 112 48 SPR_portrait_title-parts-31.png
+                ScreenEnd
+
+: screen_smallframe
+  ScreenSpr 16 16 sprite_dialog_UL
+  ScreenSpr 16 32 sprite_dialog_LL
+  ScreenSpr 96 16 sprite_dialog_UR
+  ScreenSpr 96 32 sprite_dialog_LR
+
+  ScreenSpr 32 18 sprite_dialog_HLINE
+  ScreenSpr 48 18 sprite_dialog_HLINE
+  ScreenSpr 64 18 sprite_dialog_HLINE
+  ScreenSpr 80 18 sprite_dialog_HLINE
+
+  ScreenSpr 32 45 sprite_dialog_HLINE
+  ScreenSpr 48 45 sprite_dialog_HLINE
+  ScreenSpr 64 45 sprite_dialog_HLINE
+  ScreenSpr 80 45 sprite_dialog_HLINE
+
+  #ScreenHRep 32 18 4 sprite_dialog_HLINE
+  #ScreenHRep 32 45 4 sprite_dialog_HLINE
+  ScreenEnd
+
+: screen_newlevel
+  ScreenWordCtr  0 127 22 word_New_Level_ptr
+  ScreenEnd
+
+
+#ScreenSpr 0 48 sprite_dialog_LL
+                #ScreenSpr 112 0 sprite_dialog_UR
+                #ScreenSpr 112 48 sprite_dialog_LR
+                #ScreenHRep 16 2 6 sprite_dialog_HLINE
+                #ScreenHRep 16 61 6 sprite_dialog_HLINE
+                #ScreenVRep 2 16 2 sprite_dialog_VLINE
+                #ScreenVRep 125 16 2 sprite_dialog_VLINE
+                #ScreenSpr 5 8 SPR_portrait_enemy4
+                ScreenEnd
+
+
+
+: screen_table
+  tobytes screen_frame
+  tobytes screen_title
+  tobytes screen_newlevel
+  tobytes screen_smallframe
 #dummy data
  : tile-graphic
 	0x00 0x1E 0x7E 0xFE 0x7E 0x1E
