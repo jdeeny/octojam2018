@@ -57,9 +57,9 @@
 #:macro ScreenSpr x y spr { :byte y :byte x tobytes spr 0 }
 :macro ScreenSpr x y spr { :byte SCREEN_SPRITE :byte y tobytes spr :byte x }
 
-:macro ScreenWord x y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
+:macro ScreenWord x y word { :byte SCREEN_WORD :byte x tobytes word :byte y }
 
-:macro ScreenWordCtr x1 x2 y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
+:macro ScreenWordCtr x1 x2 y word { :byte SCREEN_WORD_CTR :byte x1 tobytes word :byte x2 :byte y }
 
 :macro ScreenEnd { :byte SCREEN_END }
 
@@ -126,13 +126,29 @@
                 #ScreenSpr 112 48 SPR_portrait_title-parts-31.png
                 ScreenEnd
 
-: screen_newlevel  ScreenSpr 16 16 sprite_dialog_UL
-                ScreenSpr 16 32 sprite_dialog_LL
-                ScreenSpr 96 16 sprite_dialog_UR
-                ScreenSpr 96 32 sprite_dialog_LR
-                #ScreenHRep 32 18 4 sprite_dialog_HLINE
-                #ScreenHRep 32 45 4 sprite_dialog_HLINE
-                ScreenEnd
+: screen_smallframe
+  ScreenSpr 16 16 sprite_dialog_UL
+  ScreenSpr 16 32 sprite_dialog_LL
+  ScreenSpr 96 16 sprite_dialog_UR
+  ScreenSpr 96 32 sprite_dialog_LR
+
+  ScreenSpr 32 18 sprite_dialog_HLINE
+  ScreenSpr 48 18 sprite_dialog_HLINE
+  ScreenSpr 64 18 sprite_dialog_HLINE
+  ScreenSpr 80 18 sprite_dialog_HLINE
+
+  ScreenSpr 32 45 sprite_dialog_HLINE
+  ScreenSpr 48 45 sprite_dialog_HLINE
+  ScreenSpr 64 45 sprite_dialog_HLINE
+  ScreenSpr 80 45 sprite_dialog_HLINE
+
+  #ScreenHRep 32 18 4 sprite_dialog_HLINE
+  #ScreenHRep 32 45 4 sprite_dialog_HLINE
+  ScreenEnd
+
+: screen_newlevel
+  ScreenWordCtr  0 127 22 word_New_Level_ptr
+  ScreenEnd
 
 
 #ScreenSpr 0 48 sprite_dialog_LL
@@ -151,3 +167,4 @@
   tobytes screen_frame
   tobytes screen_title
   tobytes screen_newlevel
+  tobytes screen_smallframe
