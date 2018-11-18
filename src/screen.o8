@@ -1,3 +1,26 @@
+### Render pre-made screens (from screen_data.o8)
+#
+# Format of the screens is a code byte followed by a variable number of data bytes
+#
+# The lower 3 bits of the code byte indicate how many bytes to consume
+#
+
+# Display 16x16 sprite, &sprite, x, y
+:calc SCREEN_SPRITE { ( 0 << 3 ) | 5 }    # id 0, 5 bytes
+# Display 16x16 sprite in horizontal line, &sprite, x1, y, x2
+:calc SCREEN_HSPRITES { ( 1 << 3 ) | 6 }   # id 1, 6 bytes
+# Display 16x16 sprite in vertical line, &sprite, x, y1, y2
+:calc SCREEN_VSPRITES { ( 2 << 3 ) | 6 }   # id 1, 6 bytes
+# Display word, &&word, color, x, y
+:calc SCREEN_WORD { ( 3 << 3 ) | 6 }   # id 1, 6 bytes
+# Center word, &&word, color, x1, y, x2
+:calc SCREEN_WORD_CTR { ( 4 << 3 ) | 7 }   # id 1, 7 bytes
+# End:  0xFF
+:calc SCREEN_END { 0xFF }
+
+
+
+
 :const screen_dialog 0
 
 # v0 = screen number
