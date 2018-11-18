@@ -9,7 +9,6 @@
 : title_display
   state_updown_reset
   hires
-
   title_draw
 
 #  play_sample_title
