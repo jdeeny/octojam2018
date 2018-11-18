@@ -78,3 +78,29 @@ screen_id_advance
   #:breakpoint ending
   pop v0 v1 2   # pop stored location and return
   ;
+
+
+## Screen navigation information stored in the 'updown' counter
+: screen_updown_reset
+  i := long screen_updown_data v0 := 0 save v0 - v0
+  ;
+
+: screen_updown_get
+  i := long screen_updown_data load v1 - v1
+  ;
+
+# num_items = v0
+: screen_updown_down
+  screen_updown_get
+  if v1 == 0 then v1 := v0
+  v1 += -1
+  save v1 - v1
+  ;
+
+# num_items = v0
+: screen_updown_up
+  screen_updown_get
+  v1 += 1
+  if v1 == v0 then v1 := 0
+  save v1 - v1
+  ;

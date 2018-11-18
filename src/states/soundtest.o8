@@ -1,6 +1,6 @@
 
 : soundiary_begin
-  state_updown_reset
+  screen_updown_reset
 
   #iteminfo_display
   # This is going to be a list, like on titlescreen.
@@ -9,13 +9,13 @@
 
 : soundiary_next_entry
   v0 := sample_count
-  state_updown_up
+  screen_updown_up
   #iteminfo_display
   ;
 
 : soundiary_prev_entry
   v0 := sample_count
-  state_updown_down
+  screen_updown_down
   #iteminfo_display
   ;
 

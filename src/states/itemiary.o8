@@ -8,19 +8,19 @@
 
 : itemiary_begin
   # Set to beginning of item list
-  state_updown_reset
+  screen_updown_reset
   iteminfo_display
   ;
 
 : itemiary_next_entry
   v0 := treasure_prefab_count
-  state_updown_up
+  screen_updown_up
   iteminfo_display
   ;
 
 : itemiary_prev_entry
   v0 := treasure_prefab_count
-  state_updown_down
+  screen_updown_down
   iteminfo_display
   ;
 

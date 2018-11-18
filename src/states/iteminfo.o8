@@ -16,7 +16,7 @@
   ;
 
 : iteminfo_index
-  state_updown_get
+  screen_updown_get
   i := long treasure_ptrs
   v0 <<= v1
   i += v0

@@ -8,7 +8,7 @@
 
 
 : title_display
-  state_updown_reset
+  screen_updown_reset
   hires
   title_draw
 
@@ -16,7 +16,7 @@
   ;
 
 : title_next_state
-  state_updown_get
+  screen_updown_get
   if v1 == TITLE_PLAY then v0 := STATE_NEWLEVEL
   if v1 == TITLE_BEASTIARY then v0 := STATE_BEASTIARY
   if v1 == TITLE_ITEMIARY then v0 := STATE_ITEMIARY
@@ -27,13 +27,13 @@
 
 : title_up
   v0 := TITLE_ITEM_COUNT
-  state_updown_up
+  screen_updown_up
   title_draw
   ;
 
 : title_down
   v0 := TITLE_ITEM_COUNT
-  state_updown_down
+  screen_updown_down
   title_draw
   ;
 
@@ -53,7 +53,7 @@
   v0 := 1
   set_text_color
 
-  state_updown_get
+  screen_updown_get
   if v1 == 0 then v1 := TITLE_ITEM_COUNT
   v1 += -1
   title_load_string   # get the string for the state
@@ -63,7 +63,7 @@
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
 
-  state_updown_get
+  screen_updown_get
   v1 += 1
   if v1 == TITLE_ITEM_COUNT then v1 := 0
   title_load_string   # get the string for the state
@@ -77,7 +77,7 @@
   v0 := 3
   set_text_color
 
-  state_updown_get
+  screen_updown_get
   title_load_string   # get the string for the state
   # draw a string
   v4 := 0

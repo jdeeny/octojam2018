@@ -1,32 +1,6 @@
 : nop_func ;     # can be used to fill in unused ptrs in the state table
 
 
-: state_updown_reset
-  i := long state_updown_data v0 := 0 save v0 - v0
-  ;
-
-: state_updown_get
-  i := long state_updown_data load v1 - v1
-  ;
-
-# num_items = v0
-: state_updown_down
-  state_updown_get
-  if v1 == 0 then v1 := v0
-  v1 += -1
-  save v1 - v1
-  ;
-
-# num_items = v0
-: state_updown_up
-  state_updown_get
-  v1 += 1
-  if v1 == v0 then v1 := 0
-  save v1 - v1
-  ;
-
-
-
 # v0 := state num
 : state_switch
   i := long state_table
