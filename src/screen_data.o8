@@ -57,12 +57,6 @@
 #:macro ScreenSpr x y spr { :byte y :byte x tobytes spr 0 }
 :macro ScreenSpr x y spr { :byte SCREEN_SPRITE :byte y tobytes spr :byte x }
 
-#:macro ScreenHRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
-:macro ScreenHRep x y n spr { :byte SCREEN_HSPRITES :byte x tobytes spr :byte y :byte n }
-
-#:macro ScreenVRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
-:macro ScreenVRep x y n spr { :byte SCREEN_VSPRITES :byte x tobytes spr :byte y :byte n }
-
 :macro ScreenWord x y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
 
 :macro ScreenWordCtr x1 x2 y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
@@ -74,11 +68,29 @@
                 ScreenSpr 0 48 sprite_dialog_LL
                 ScreenSpr 112 0 sprite_dialog_UR
                 ScreenSpr 112 48 sprite_dialog_LR
-                ScreenHRep 16 2 6 sprite_dialog_HLINE
-                ScreenHRep 16 61 6 sprite_dialog_HLINE
-                ScreenVRep 2 16 2 sprite_dialog_VLINE
-                ScreenVRep 125 16 2 sprite_dialog_VLINE
+
+                ScreenSpr 16 2 sprite_dialog_HLINE
+                ScreenSpr 32 2 sprite_dialog_HLINE
+                ScreenSpr 48 2 sprite_dialog_HLINE
+                ScreenSpr 64 2 sprite_dialog_HLINE
+                ScreenSpr 80 2 sprite_dialog_HLINE
+                ScreenSpr 96 2 sprite_dialog_HLINE
+
+                ScreenSpr 16 61 sprite_dialog_HLINE
+                ScreenSpr 32 61 sprite_dialog_HLINE
+                ScreenSpr 48 61 sprite_dialog_HLINE
+                ScreenSpr 64 61 sprite_dialog_HLINE
+                ScreenSpr 80 61 sprite_dialog_HLINE
+                ScreenSpr 96 61 sprite_dialog_HLINE
+
+                ScreenSpr 2 16 sprite_dialog_VLINE
+                ScreenSpr 2 32 sprite_dialog_VLINE
+
+                ScreenSpr 125 16 sprite_dialog_VLINE
+                ScreenSpr 125 32 sprite_dialog_VLINE
+
                 ScreenEnd
+
 
 : screen_title  ScreenSpr 0 0 SPR_portrait_title-parts-00.png
                 ScreenSpr 16 0 SPR_portrait_title-parts-01.png
@@ -118,8 +130,8 @@
                 ScreenSpr 16 32 sprite_dialog_LL
                 ScreenSpr 96 16 sprite_dialog_UR
                 ScreenSpr 96 32 sprite_dialog_LR
-                ScreenHRep 32 18 4 sprite_dialog_HLINE
-                ScreenHRep 32 45 4 sprite_dialog_HLINE
+                #ScreenHRep 32 18 4 sprite_dialog_HLINE
+                #ScreenHRep 32 45 4 sprite_dialog_HLINE
                 ScreenEnd
 
 

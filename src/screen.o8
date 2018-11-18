@@ -9,14 +9,6 @@
 :calc SCREEN_SPRITE_BYTES { 5 }
 screen_id_advance
 
-:calc SCREEN_HSPRITES { screen_id_count }
-:calc SCREEN_HSPRITES_BYTES { 6 }
-screen_id_advance
-
-:calc SCREEN_VSPRITES { screen_id_count }
-:calc SCREEN_VSPRITES_BYTES { 6 }
-screen_id_advance
-
 :calc SCREEN_WORD { screen_id_count }
 :calc SCREEN_WORD_BYTES { 6 }
 screen_id_advance
@@ -28,18 +20,8 @@ screen_id_advance
 :calc SCREEN_END { screen_id_count }
 :calc SCREEN_END_BYTES { 0 }
 
-: screen_draw_bytetable
-  :byte SCREEN_SPRITE_BYTES
-  :byte SCREEN_HSPRITES_BYTES
-  :byte SCREEN_VSPRITES_BYTES
-  :byte SCREEN_WORD_BYTES
-  :byte SCREEN_WORD_CTR_BYTES
-  :byte SCREEN_END_BYTES
-
 : screen_draw_jumptable
   jump screen_draw_sprite
-  jump screen_draw_hrep
-  jump screen_draw_vrep
   jump screen_draw_word
   jump screen_draw_word_center
   jump screen_draw_end
@@ -80,35 +62,6 @@ screen_id_advance
   sprite v4 v1 0
 
   Screen_Bytes := SCREEN_SPRITE_BYTES
-  jump screen_draw_screen_advance
-
-: screen_draw_vrep
-  :breakpoint vrep
-#:macro VRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
-  vF := 127
-  v0 &= vF # v0 = y
-  reg_set_i_v23
-  : vrep_continue
-  sprite v0 v1 0
-  v4 += -1
-  v1 += 16
-  if v4 != 0 then jump vrep_continue
-
-  Screen_Bytes := SCREEN_VSPRITES_BYTES
-  jump screen_draw_screen_advance
-
-: screen_draw_hrep
-  :breakpoint hrep
-#:macro HRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
-  vF := 63
-  v0 &= vF # v0 = x
-  reg_set_i_v23
-  : hrep_continue
-  sprite v1 v0 0
-  v4 += -1
-  v1 += 16
-  if v4 != 0 then jump hrep_continue
-  Screen_Bytes := SCREEN_HSPRITES_BYTES
   jump screen_draw_screen_advance
 
 : screen_draw_word_center
