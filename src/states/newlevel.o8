@@ -27,6 +27,9 @@
 
 : newlevel_next_state
   v5 := STATE_GAMEPLAY
+
+  :breakpoint narration
+
   newlevel_do_narration
 
   v0 := v5
