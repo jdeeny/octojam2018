@@ -55,19 +55,19 @@
 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 
 #:macro ScreenSpr x y spr { :byte y :byte x tobytes spr 0 }
-:macro ScreenSpr x y spr { :byte SCREEN_SPRITE :byte y :byte x tobytes spr 0 }
+:macro ScreenSpr x y spr { :byte SCREEN_SPRITE :byte y tobytes spr :byte x }
 
 #:macro ScreenHRep x y n spr { :byte { 0x40 | y } :byte x tobytes spr :byte n }
-:macro ScreenHRep x y n spr { :byte SCREEN_HSPRITES :byte x :byte y tobytes spr :byte n }
+:macro ScreenHRep x y n spr { :byte SCREEN_HSPRITES :byte x tobytes spr :byte y :byte n }
 
 #:macro ScreenVRep x y n spr { :byte { 0x80 | x } :byte y tobytes spr :byte n }
-:macro ScreenVRep x y n spr { :byte SCREEN_VSPRITES :byte x :byte y tobytes spr :byte n }
+:macro ScreenVRep x y n spr { :byte SCREEN_VSPRITES :byte x tobytes spr :byte y :byte n }
 
-:macro ScreenWord x y word { :byte SCREEN_VSPRITES :byte x :byte y tobytes word }
+:macro ScreenWord x y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
 
-:macro ScreenWordCtr x1 x2 y word { :byte SCREEN_VSPRITES :byte x :byte y tobytes word }
+:macro ScreenWordCtr x1 x2 y word { :byte SCREEN_VSPRITES :byte x tobytes word :byte y }
 
-:macro ScreenEnd { :byte 0xFF }
+:macro ScreenEnd { :byte SCREEN_END }
 
 
 : screen_frame  ScreenSpr 0 0 sprite_dialog_UL
@@ -104,14 +104,14 @@
                 ScreenSpr 80 32 SPR_portrait_title-parts-21.png
                 ScreenSpr 96 32 SPR_portrait_title-parts-22.png
                 ScreenSpr 112 32 SPR_portrait_title-parts-23.png
-                ScreenSpr 0 48 SPR_portrait_title-parts-24.png
-                ScreenSpr 16 48 SPR_portrait_title-parts-25.png
-                ScreenSpr 32 48 SPR_portrait_title-parts-26.png
-                ScreenSpr 48 48 SPR_portrait_title-parts-27.png
-                ScreenSpr 64 48 SPR_portrait_title-parts-28.png
-                ScreenSpr 80 48 SPR_portrait_title-parts-29.png
-                ScreenSpr 96 48 SPR_portrait_title-parts-30.png
-                ScreenSpr 112 48 SPR_portrait_title-parts-31.png
+                #ScreenSpr 0 48 SPR_portrait_title-parts-24.png
+                #ScreenSpr 16 48 SPR_portrait_title-parts-25.png
+                #ScreenSpr 32 48 SPR_portrait_title-parts-26.png
+                #ScreenSpr 48 48 SPR_portrait_title-parts-27.png
+                #ScreenSpr 64 48 SPR_portrait_title-parts-28.png
+                #ScreenSpr 80 48 SPR_portrait_title-parts-29.png
+                #ScreenSpr 96 48 SPR_portrait_title-parts-30.png
+                #ScreenSpr 112 48 SPR_portrait_title-parts-31.png
                 ScreenEnd
 
 : screen_newlevel  ScreenSpr 16 16 sprite_dialog_UL
