@@ -5,9 +5,9 @@
 :const TITLE_ITEM_COUNT 4
 
 
-: title_state 0 0
+
 : title_display
-  i := title_state v0 := 0 save v0 save v0
+  state_updown_reset
   hires
 
   title_draw
@@ -16,8 +16,7 @@
   ;
 
 : title_next_state
-  i := title_state
-  load v1 - v1
+  state_updown_get
   if v1 == TITLE_PLAY then v0 := STATE_NEWLEVEL
   if v1 == TITLE_BEASTIARY then v0 := STATE_BEASTIARY
   if v1 == TITLE_ITEMIARY then v0 := STATE_ITEMIARY
@@ -26,20 +25,14 @@
   ;
 
 : title_up
-  i := title_state
-  load v0 - v0
-  if v0 == 0 then v0 := TITLE_ITEM_COUNT
-  v0 += -1
-  save v0 - v0
+  v0 := TITLE_ITEM_COUNT
+  state_updown_up
   title_draw
   ;
 
 : title_down
-  i := title_state
-  load v0 - v0
-  v0 += 1
-  if v0 == TITLE_ITEM_COUNT then v0 := 0
-  save v0 - v0
+  v0 := TITLE_ITEM_COUNT
+  state_updown_up
   title_draw
   ;
 
@@ -59,8 +52,7 @@
   v0 := 1
   set_text_color
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   if v1 == 0 then v1 := TITLE_ITEM_COUNT
   v1 += -1
   title_load_string   # get the string for the state
@@ -70,8 +62,7 @@
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   v1 += 1
   if v1 == TITLE_ITEM_COUNT then v1 := 0
   title_load_string   # get the string for the state
@@ -85,8 +76,7 @@
   v0 := 3
   set_text_color
 
-  i := title_state
-  load v1 - v1
+  state_updown_get
   title_load_string   # get the string for the state
   # draw a string
   v4 := 0
@@ -94,8 +84,4 @@
   v6 := 127
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
-
-  # draw three items
-  i := title_state
-  load v0 - v0
   ;
