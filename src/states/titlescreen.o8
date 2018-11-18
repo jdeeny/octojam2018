@@ -31,7 +31,7 @@
 
 : title_down
   v0 := TITLE_ITEM_COUNT
-  state_updown_up
+  state_updown_down
   title_draw
   ;
 
@@ -56,7 +56,7 @@
   v1 += -1
   title_load_string   # get the string for the state
   v4 := 0
-  v5 := 46
+  v5 := 58
   v6 := 127
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
@@ -67,7 +67,7 @@
   title_load_string   # get the string for the state
   # draw a string
   v4 := 0
-  v5 := 58
+  v5 := 46
   v6 := 127
   # v23 = word v4 = x1 v5 = y v6 = x2
   text_draw_word_centered
