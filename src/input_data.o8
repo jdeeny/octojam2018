@@ -1,4 +1,47 @@
 ## Input
+
+## Define semantic key names
+
+# Movement, S for rest
+#    W  E
+#  A  S  D
+#   Z  X
+
+
+# +----------+----------+----------+----------+
+# | 1        | 2        | 3        | 4        |
+# |          |          |          |          |
+# |          |          |          |          |
+# +-----------------------------------------------+
+#     | Q        | W        | E        | R        |
+#     |          |   Move   |   Move   |   Back/  |
+#     |          |    NW    |    NE    |  Cancel? |
+#     +---------------------------------------------+
+#       | A        | S        | D        | F        |
+#       |   Move   |   Wait   |   Move   |    OK/   |
+#       |     W    |          |     E    |   Cont.  |
+#       +---------------------------------------------+
+#         | Z        | X        | C        | V        |
+#         |   Move   |   Move   |          |          |
+#         |    SW    |    SE    |          |          |
+#         +----------+----------+----------+----------+
+
+
+
+:const DIGSITE_KEY_NW         OCTO_KEY_W
+:const DIGSITE_KEY_NE         OCTO_KEY_E
+:const DIGSITE_KEY_W          OCTO_KEY_A
+:const DIGSITE_KEY_E          OCTO_KEY_D
+:const DIGSITE_KEY_SW         OCTO_KEY_W
+:const DIGSITE_KEY_SE         OCTO_KEY_E
+
+:const DIGSITE_KEY_WAIT       OCTO_KEY_S
+
+:const DIGSITE_KEY_OK         OCTO_KEY_F
+:const DIGSITE_KEY_BACK       OCTO_KEY_R
+
+
+
 :macro input_table_entry function_addr KEY_CODE { tobytes function_addr :byte KEY_CODE }
 :macro input_table_all_keys function_addr {
   input_table_entry function_addr  0  input_table_entry function_addr  1  input_table_entry function_addr  2  input_table_entry function_addr  3
@@ -7,33 +50,28 @@
   input_table_entry function_addr 12  input_table_entry function_addr 13  input_table_entry function_addr 14  input_table_entry function_addr 15
 }
 :macro input_table_end { :byte 0 :byte 0 :byte INPUT_TABLE_END }
-: input_table
-#input_table_entry   T4_PLAYER_LEFT     OCTO_KEY_A
-#input_table_entry   T4_PLAYER_RIGHT    OCTO_KEY_D
-#input_table_entry   T4_PLAYER_UP       OCTO_KEY_W
-#input_table_entry   T4_PLAYER_DOWN     OCTO_KEY_S
-#input_table_entry   T4_PLAY_MUSIC     OCTO_KEY_1
-#input_table_entry   T4_STOP_MUSIC      OCTO_KEY_2
-input_table_end
 
 : input_table_splash
   input_table_all_keys splash_next_state
   input_table_end
 
 : input_table_title
-  input_table_entry title_up OCTO_KEY_W
-  input_table_entry title_up OCTO_KEY_E
-  input_table_entry title_down OCTO_KEY_Z
-  input_table_entry title_down OCTO_KEY_X
-  input_table_entry title_next_state OCTO_KEY_F
+  input_table_entry     title_up              DIGSITE_KEY_NW
+  input_table_entry     title_up              DIGSITE_KEY_NE
+
+  input_table_entry     title_down            DIGSITE_KEY_SW
+  input_table_entry     title_down            DIGSITE_KEY_SE
+  input_table_entry     title_next_state      DIGSITE_KEY_OK
   input_table_end
 
 : input_table_charedit
-  input_table_entry   charedit_next_item      OCTO_KEY_D
-  input_table_entry   charedit_prev_item      OCTO_KEY_A
-  input_table_entry   charedit_inc            OCTO_KEY_W
-  input_table_entry   charedit_dec            OCTO_KEY_S
-  input_table_entry   charedit_next_state     OCTO_KEY_R
+  input_table_entry   charedit_prev_item      DIGSITE_KEY_W
+  input_table_entry   charedit_next_item      DIGSITE_KEY_E
+  input_table_entry   charedit_inc            DIGSITE_KEY_NW
+  input_table_entry   charedit_inc            DIGSITE_KEY_NE
+  input_table_entry   charedit_dec            DIGSITE_KEY_SW
+  input_table_entry   charedit_dec            DIGSITE_KEY_SE
+  input_table_entry   charedit_next_state     DIGSITE_KEY_OK
   input_table_end
 
 : input_table_gameplay
@@ -41,7 +79,7 @@ input_table_end
   input_table_entry     compo-scroll-left       OCTO_KEY_A
   input_table_entry     compo-scroll-up         OCTO_KEY_W
   input_table_entry     compo-scroll-down       OCTO_KEY_S
-  input_table_entry     gameplay_next_state     OCTO_KEY_F
+  input_table_entry     gameplay_next_state     DIGSITE_KEY_OK
   input_table_end
 
 : input_table_newlevel
@@ -69,11 +107,14 @@ input_table_end
 
 
 : input_table_beastiary
-  input_table_entry enemyinfo_scrollup OCTO_KEY_W
-  input_table_entry enemyinfo_scrolldown OCTO_KEY_S
-  input_table_entry beastiary_next_entry OCTO_KEY_D
-  input_table_entry beastiary_prev_entry OCTO_KEY_A
-  input_table_entry beastiary_next_state OCTO_KEY_F
+  input_table_entry enemyinfo_scrollup DIGSITE_KEY_NW
+  input_table_entry enemyinfo_scrollup DIGSITE_KEY_NE
+  input_table_entry enemyinfo_scrolldown DIGSITE_KEY_SW
+  input_table_entry enemyinfo_scrolldown DIGSITE_KEY_SE
+  input_table_entry beastiary_next_entry DIGSITE_KEY_E
+  input_table_entry beastiary_prev_entry DIGSITE_KEY_W
+  input_table_entry beastiary_next_state DIGSITE_KEY_OK
+  input_table_entry beastiary_next_state DIGSITE_KEY_BACK
   input_table_end
 
 : input_table_iteminfo
@@ -84,12 +125,28 @@ input_table_end
 
 
 : input_table_itemiary
-  input_table_entry iteminfo_scrollup OCTO_KEY_W
-  input_table_entry iteminfo_scrolldown OCTO_KEY_S
-  input_table_entry itemiary_next_entry OCTO_KEY_D
-  input_table_entry itemiary_prev_entry OCTO_KEY_A
-  input_table_entry itemiary_next_state OCTO_KEY_F
+  input_table_entry iteminfo_scrollup DIGSITE_KEY_NW
+  input_table_entry iteminfo_scrollup DIGSITE_KEY_NE
+  input_table_entry iteminfo_scrolldown DIGSITE_KEY_SW
+  input_table_entry iteminfo_scrolldown DIGSITE_KEY_SE
+  input_table_entry itemiary_next_entry DIGSITE_KEY_E
+  input_table_entry itemiary_prev_entry DIGSITE_KEY_W
+  input_table_entry itemiary_next_state DIGSITE_KEY_OK
+  input_table_entry itemiary_next_state DIGSITE_KEY_BACK
   input_table_end
+
+: input_table_soundiary
+  input_table_entry soundiary_prev_entry DIGSITE_KEY_NW
+  input_table_entry soundiary_prev_entry DIGSITE_KEY_NE
+  input_table_entry soundiary_next_entry DIGSITE_KEY_SW
+  input_table_entry soundiary_next_entry DIGSITE_KEY_SE
+  input_table_entry soundiary_next_entry DIGSITE_KEY_E
+  input_table_entry soundiary_prev_entry DIGSITE_KEY_W
+  input_table_entry soundiary_next_state DIGSITE_KEY_BACK
+  input_table_entry soundiary_play_sound DIGSITE_KEY_OK
+  input_table_end
+
+
 
 
 
@@ -121,3 +178,4 @@ input_table_end
   state_table_entry STATE_BEASTIARY     input_table_beastiary   beastiary_begin         nop_func            nop_func
   state_table_entry STATE_ITEMINFO      input_table_iteminfo    iteminfo_display        nop_func            nop_func
   state_table_entry STATE_ITEMIARY      input_table_itemiary    itemiary_begin          nop_func            nop_func
+  state_table_entry STATE_SOUNDIARY     input_table_soundiary   soundiary_begin         nop_func            nop_func

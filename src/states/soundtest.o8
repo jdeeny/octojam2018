@@ -1,0 +1,31 @@
+
+: soundiary_begin
+  state_updown_reset
+
+  #iteminfo_display
+  # This is going to be a list, like on titlescreen.
+  # Should the logic be combined??
+  ;
+
+: soundiary_next_entry
+  v0 := sample_count
+  state_updown_up
+  #iteminfo_display
+  ;
+
+: soundiary_prev_entry
+  v0 := sample_count
+  state_updown_down
+  #iteminfo_display
+  ;
+
+: soundiary_next_state
+  v0 := STATE_TITLE
+  state_switch
+  ;
+
+: soundiary_play_sound
+  ;
+
+: soundiary_display
+  ;
