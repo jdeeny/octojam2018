@@ -7,14 +7,19 @@
 
 # Display 16x16 sprite, &sprite, x, y
 :calc SCREEN_SPRITE { ( 0 << 3 ) | 5 }    # id 0, 5 bytes
-# Display 16x16 sprite in horizontal line, &sprite, x1, y, x2
+
+# Display 16x16 sprite in horizontal line, &sprite, x, y, n
 :calc SCREEN_HSPRITES { ( 1 << 3 ) | 6 }   # id 1, 6 bytes
-# Display 16x16 sprite in vertical line, &sprite, x, y1, y2
+
+# Display 16x16 sprite in vertical line, &sprite, x, y, n
 :calc SCREEN_VSPRITES { ( 2 << 3 ) | 6 }   # id 1, 6 bytes
+
 # Display word, &&word, color, x, y
 :calc SCREEN_WORD { ( 3 << 3 ) | 6 }   # id 1, 6 bytes
+
 # Center word, &&word, color, x1, y, x2
 :calc SCREEN_WORD_CTR { ( 4 << 3 ) | 7 }   # id 1, 7 bytes
+
 # End:  0xFF
 :calc SCREEN_END { 0xFF }
 
