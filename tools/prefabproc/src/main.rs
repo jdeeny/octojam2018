@@ -361,6 +361,18 @@ fn main() {
     text_strings.insert(String::from("Title_Beastiary"), String::from("View the Beastiary"));
     text_strings.insert(String::from("Title_Itemiary"), String::from("View the Treasure Codex"));
     text_strings.insert(String::from("Title_Soundiary"), String::from("Sound Test"));
+
+
+    text_strings.insert(String::from("Soundiary_Cool"), String::from("Cool"));
+    text_strings.insert(String::from("Soundiary_Octojam"), String::from("Octojam"));
+    text_strings.insert(String::from("Soundiary_Five"), String::from("Five"));
+    text_strings.insert(String::from("Soundiary_Title"), String::from("Title"));
+    text_strings.insert(String::from("Soundiary_PhoneHey"), String::from("PhoneHey"));
+    text_strings.insert(String::from("Soundiary_Ruin"), String::from("Ruin"));
+    text_strings.insert(String::from("Soundiary_WelcomeBack"), String::from("WelcomeBack"));
+    text_strings.insert(String::from("Soundiary_Hello"), String::from("Hello"));
+
+
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
     text_strings.insert(String::from("New_Level"), String::from("Now Entering"));
     text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));

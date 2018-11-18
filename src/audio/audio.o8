@@ -87,7 +87,7 @@
   jump play_sample_inner
 
 : play_sample_ruin
-  i := long sample_ruin1.1
+  i := long sample_ruin1
   jump play_sample_inner
 
 : play_sample_welcomeback

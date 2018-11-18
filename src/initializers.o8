@@ -5,6 +5,18 @@
 : word_Title_Beastiary_ptr tobytes word_Title_Beastiary
 : word_Title_Itemiary_ptr tobytes word_Title_Itemiary
 : word_Title_Soundiary_ptr tobytes word_Title_Soundiary
+
+: word_Soundiary_Cool_ptr tobytes word_Soundiary_Cool
+: word_Soundiary_Octojam_ptr tobytes word_Soundiary_Octojam
+: word_Soundiary_Five_ptr tobytes word_Soundiary_Five
+: word_Soundiary_Title_ptr tobytes word_Soundiary_Title
+: word_Soundiary_PhoneHey_ptr tobytes word_Soundiary_PhoneHey
+: word_Soundiary_Ruin_ptr tobytes word_Soundiary_Ruin
+: word_Soundiary_WelcomeBack_ptr tobytes word_Soundiary_WelcomeBack
+: word_Soundiary_Hello_ptr tobytes word_Soundiary_Hello
+
+
+
 : word_Credits_1_ptr tobytes word_Credits_1
 : word_Dialog_Test_ptr tobytes word_heat_shield-desc
 : word_New_Level_ptr tobytes word_New_Level

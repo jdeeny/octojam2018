@@ -4,25 +4,29 @@ GEN:=build/
 # Final Output
 OUTPUT:=$(GEN)octojam2018.o8
 
+
+AUDIO:= src/audio/audio.o8
 STATES:=src/states/charedit.o8 src/states/endscreen.o8 src/states/gameplay.o8 src/states/splash.o8 src/states/titlescreen.o8 src/states/credits.o8 src/states/dialog.o8 src/states/newlevel.o8 src/states/enemyinfo.o8 src/states/beastiary.o8 src/states/iteminfo.o8 src/states/itemiary.o8 src/states/soundtest.o8
+GAMEPLAY:=src/gameplay/gamestate.o8 src/gameplay/ecs.o8 src/gameplay/ai.o8 src/gameplay/logic.o8
+UI:=src/ui/text.o8 src/ui/screen.o8
+UTIL:= src/util/assert.o8 src/util/math.o8 src/util/mem.o8 src/util/stack.o8 src/util/trampoline.o8 src/util/random.o8
+INPUT:=src/input/input.o8
+RENDERER:=src/renderer/renderer.o8
+PREFABS:=src/prefab_data.o8
 
-SRC:=src/config.o8 src/math.o8 src/mem.o8 src/assert.o8 src/stack.o8 src/sample_header.o8 src/sprite_header.o8 src/screen_header.o8 src/ai.o8 src/prefab_header.o8 src/rendererheader.o8  src/state_header.o8 src/trampoline.o8  src/main.o8  src/renderer.o8 src/text.o8  src/gamestate.o8 $(STATES) src/audio.o8 src/input.o8 src/ecs.o8 src/screen.o8 src/font.o8 src/sprite_data.o8 src/data.o8 src/prefab_data.o8 src/input_data.o8 src/sample_data.o8 src/initializers.o8 src/screen_data.o8 src/rendererdata.o8
+HEADERS:=src/config.o8 $(UTIL) src/ui/screen_header.o8 src/audio/sample_header.o8 src/renderer/rendererheader.o8 src/prefab_header.o8 src/states/state_header.o8
+CODE:=src/main.o8 $(AUDIO) $(GAMEPLAY) $(UI) $(INPUT) $(STATES) $(RENDERER)
+FARDATA:=src/ui/font.o8 src/sprite_data.o8 src/data.o8 $(PREFABS) src/audio/sample_data.o8 src/input/input_data.o8 src/states/state_data.o8 src/initializers.o8 src/ui/screen_data.o8 src/renderer/rendererdata.o8
 
-#SRC:=src/config.o8 src/math.o8 src/mem.o8 src/assert.o8 src/stack.o8 src/trampoline.o8 src/main.o8 src/audio.o8 src/tetra.o8 build/tetra_header.o8 src/input.o8 src/ecs.o8 src/dialog.o8 src/data.o8 build/tetra_data.o8 src/input_data.o8 src/font.o8
-#TETRA_SRC:=tetra/base.t4 tetra/test.t4
+SRC:=$(HEADERS) $(CODE) $(FARDATA)
 
 default: gen
 
 .PHONY: $(OUTPUT)
 gen: $(OUTPUT)
 
-#.PHONY: $(TESTOUTPUT)
-#test: $(TESTOUTPUT)
-
-$(OUTPUT): $(SRC) Makefile #$(TETRA_SRC)
+$(OUTPUT): $(SRC) Makefile
 	mkdir -p $(GEN)
-#	cat $(TETRA_SRC) > build/tetra_input.t4
-#	tools/tetrac/target/debug/tetrac
 	cat $(SRC) > $(OUTPUT)
 	xclip -selection clipboard -i $(OUTPUT)
 	echo .

@@ -1,0 +1,27 @@
+
+
+:macro state_table_entry NAME INPUT_TABLE_ADDR ON_ENTRY ONCE_FUNC LOOP_FUNC {
+        #:calc NAME { entry_count } :calc entry_count { entry_count + 1 }
+        : NAME
+        tobytes INPUT_TABLE_ADDR
+        tobytes ON_ENTRY
+        tobytes LOOP_FUNC
+        tobytes ONCE_FUNC
+      }
+
+: state_table
+                #   name of the state,  input_table ptr,        on-entry func,          once-per-frame,     loop-during-frame,
+  state_table_entry STATE_SPLASH        input_table_splash      splash_display          nop_func            nop_func
+  state_table_entry STATE_TITLE         input_table_title       title_display           nop_func            nop_func
+  state_table_entry STATE_CHAREDIT      input_table_charedit    charedit_display        nop_func            nop_func
+  state_table_entry STATE_GAMEPLAY      input_table_gameplay    gameplay_begin          gameplay_once       gameplay_loop
+  state_table_entry STATE_PLAYERINFO    input_table_empty       nop_func                nop_func            nop_func
+  state_table_entry STATE_ENDING        input_table_ending      ending_display          nop_func            nop_func
+  state_table_entry STATE_CREDITS       input_table_credits     credits_display         nop_func            nop_func
+  state_table_entry STATE_DIALOG        input_table_dialog      dialog_display          nop_func            nop_func
+  state_table_entry STATE_NEWLEVEL      input_table_newlevel    newlevel_display        nop_func            nop_func
+  state_table_entry STATE_ENEMYINFO     input_table_enemyinfo   enemyinfo_display       nop_func            nop_func
+  state_table_entry STATE_BEASTIARY     input_table_beastiary   beastiary_begin         nop_func            nop_func
+  state_table_entry STATE_ITEMINFO      input_table_iteminfo    iteminfo_display        nop_func            nop_func
+  state_table_entry STATE_ITEMIARY      input_table_itemiary    itemiary_begin          nop_func            nop_func
+  state_table_entry STATE_SOUNDIARY     input_table_soundiary   soundiary_begin         nop_func            nop_func
