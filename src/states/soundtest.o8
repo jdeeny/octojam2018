@@ -25,6 +25,7 @@
   ;
 
 : soundiary_play_sound
+  play_sample_title
   ;
 
 : soundiary_display

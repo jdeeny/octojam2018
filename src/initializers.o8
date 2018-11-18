@@ -4,6 +4,7 @@
 : word_Title_Begin_ptr tobytes word_Title_Begin
 : word_Title_Beastiary_ptr tobytes word_Title_Beastiary
 : word_Title_Itemiary_ptr tobytes word_Title_Itemiary
+: word_Title_Soundiary_ptr tobytes word_Title_Soundiary
 : word_Credits_1_ptr tobytes word_Credits_1
 : word_Dialog_Test_ptr tobytes word_heat_shield-desc
 : word_New_Level_ptr tobytes word_New_Level

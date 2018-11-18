@@ -360,6 +360,7 @@ fn main() {
     text_strings.insert(String::from("Title_Begin"), String::from("Explore the Site"));
     text_strings.insert(String::from("Title_Beastiary"), String::from("View the Beastiary"));
     text_strings.insert(String::from("Title_Itemiary"), String::from("View the Treasure Codex"));
+    text_strings.insert(String::from("Title_Soundiary"), String::from("Sound Test"));
     text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
     text_strings.insert(String::from("New_Level"), String::from("Now Entering"));
     text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));

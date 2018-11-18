@@ -2,7 +2,8 @@
 :const TITLE_PLAY 1
 :const TITLE_BEASTIARY 2
 :const TITLE_ITEMIARY 3
-:const TITLE_ITEM_COUNT 4
+:const TITLE_SOUNDIARY 4
+:const TITLE_ITEM_COUNT 5
 
 
 
@@ -20,6 +21,7 @@
   if v1 == TITLE_BEASTIARY then v0 := STATE_BEASTIARY
   if v1 == TITLE_ITEMIARY then v0 := STATE_ITEMIARY
   if v1 == TITLE_CREDITS then v0 := STATE_CREDITS
+  if v1 == TITLE_SOUNDIARY then v0 := STATE_SOUNDIARY
   state_switch
   ;
 
