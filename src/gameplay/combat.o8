@@ -15,6 +15,18 @@
 :const combat_ResultFlag_ArmorBlock 0x04
 :const combat_ResultFlag_ArmorBreak 0x08
 
+: combat_test
+  combat_vPower := random 31
+  combat_vBreech := random 16
+  combat_vArmor := random 31
+  combat_vCover := random 3
+  combat_vResult := 0
+  combat_vDamage := 0
+
+  :breakpoint before_combat
+  combat_shot_internal
+  :breakpoint after_combat
+  ;
 
 # "Internal Ballistics" - Deals with Dmg vs Cover, Armor
 # Input: damage, cover, armor
@@ -32,7 +44,8 @@
   if vF != 0 then combat_check_cover
 
   # Check Armor
-  if combat_vArmor != 0 then combat_check_armor
+  if combat_vDamage == 0 then ;   # If cover blocked, don't check armor
+  if combat_vArmor != 0 then combat_check_armor   # Don't check armor if there isn't any
 
   # At this point, vResult flags have been set, vDamage adjusted
   ;
