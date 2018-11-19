@@ -7,7 +7,7 @@ OUTPUT:=$(GEN)octojam2018.o8
 
 AUDIO:= src/audio/audio.o8
 STATES:=src/states/charedit.o8 src/states/endscreen.o8 src/states/gameplay.o8 src/states/splash.o8 src/states/titlescreen.o8 src/states/credits.o8 src/states/dialog.o8 src/states/newlevel.o8 src/states/enemyinfo.o8 src/states/beastiary.o8 src/states/iteminfo.o8 src/states/itemiary.o8 src/states/soundtest.o8
-GAMEPLAY:=src/gameplay/gamestate.o8 src/gameplay/ecs.o8 src/gameplay/ai.o8 src/gameplay/logic.o8
+GAMEPLAY:=src/gameplay/gamestate.o8 src/gameplay/ecs.o8 src/gameplay/ai.o8 src/gameplay/combat.o8
 UI:=src/ui/text.o8 src/ui/screen.o8
 UTIL:= src/util/assert.o8 src/util/math.o8 src/util/mem.o8 src/util/stack.o8 src/util/trampoline.o8 src/util/random.o8
 INPUT:=src/input/input.o8
