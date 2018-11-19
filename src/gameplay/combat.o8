@@ -37,6 +37,9 @@
 # Ouput: result type, damage value
 #        CoverBlock?/Break?, ArmorBlock?/Break?, Damage
 #   vOut = flags; vDmg = damage
+
+# Melee is a special case w/ damage and breech = str + melee bonus; no cover
+# Grenade is a special case w/ no cover
 : combat_shot_internal
   combat_vDamage := combat_vPower   # Initially, the hit does full damage
   combat_vResult := 0               # and result has no flags set
@@ -77,22 +80,4 @@
   ;
 : combat_check_armor_broke
   combat_vResult += combat_ResultFlag_ArmorBreak
-  ;
-
-
-# "Internal Ballistics" - Deals with Dmg vs Cover, Armor
-# Things that aren't pathing, range, ammo, etc
-: combat_melee_internal
-  # No cover in melee
-  # STR + melee bonus
-  # TODO
-  ;
-
-# "Internal Ballistics" - Deals with Dmg vs Cover, Armor
-# Things that aren't pathing, range, ammo, etc
-: combat_grenade_internal
-  # Grenade is exploding now, no timers etc at this point
-  # Full damage adjacent, half damage 2 away
-  # Armor/Cover break
-  # TODO
   ;
