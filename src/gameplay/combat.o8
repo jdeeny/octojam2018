@@ -17,18 +17,21 @@
 
 : combat_test
   combat_vPower := random 31
-  combat_vBreech := random 16
+  combat_vBreech := random 15
   combat_vArmor := random 31
   combat_vCover := random 3
   combat_vResult := 0
   combat_vDamage := 0
 
-  :breakpoint before_combat
+#  :breakpoint before_combat
+  combat_vBreech += combat_vPower
+
   combat_shot_internal
   :breakpoint after_combat
   ;
 
 # "Internal Ballistics" - Deals with Dmg vs Cover, Armor
+# Things that aren't pathing, range, ammo, etc
 # Input: damage, cover, armor
 #   vGunDmg = gun's damage; vCover = cover?; vArmor = armor pts
 # Ouput: result type, damage value
@@ -74,4 +77,22 @@
   ;
 : combat_check_armor_broke
   combat_vResult += combat_ResultFlag_ArmorBreak
+  ;
+
+
+# "Internal Ballistics" - Deals with Dmg vs Cover, Armor
+# Things that aren't pathing, range, ammo, etc
+: combat_melee_internal
+  # No cover in melee
+  # STR + melee bonus
+  # TODO
+  ;
+
+# "Internal Ballistics" - Deals with Dmg vs Cover, Armor
+# Things that aren't pathing, range, ammo, etc
+: combat_grenade_internal
+  # Grenade is exploding now, no timers etc at this point
+  # Full damage adjacent, half damage 2 away
+  # Armor/Cover break
+  # TODO
   ;
