@@ -40,6 +40,34 @@ The code in `src/ui/screen.o8` is a system to display predefined screens that
 consist of text and sprites.
 
 
+
+
+## Assets
+`assets/` contains all of the game assets. These are all 'raw' in that they have
+not been processed for use in the game. For example, images need to be turned
+into byte data before they can be used.
+
+The directory structure is below. I think some of these could stand to be renamed
+or reorganized.
+
+### Enemies
+Images of enemies
+### Fonts
+unused?
+### Images
+Large images (not tiles or portraits)
+### Portraits
+There are 2 heros in here
+### Prefabs
+These are `toml`s with data about biomes, enemies, events, treasure, and weapons
+### Sound
+Sound Effects
+### Terrain
+Terrain tiles
+### Tiles
+One floor tile
+
+
 ## Other Things That Don't Have a Section Yet
 - Graphics
 - Status effects
