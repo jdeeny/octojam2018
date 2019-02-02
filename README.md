@@ -3,6 +3,14 @@ octo jamming in 2018
 
 and 2019
 
+## Colors
+- Background: `#163a5c`
+- Foreground 1: `#212946`
+- Foreground 2: `#6186a9`
+- Blended: `#921b30`
+- Buzzer: `#252a2f`
+- Silence: `#252a2f`
+
 
 ## Game Structure
 The main structure is a game loop. The game loop performs system processing (audio and input)
