@@ -3,6 +3,11 @@ octo jamming in 2018
 
 and 2019
 
+https://docs.google.com/document/d/1tbIDTd7-WUhF7cq_cHdyFZVrbu2oi7mHz6zP2rCyc8I/edit?usp=sharing
+
+
+
+
 ## Colors
 - Background: `#163a5c`
 - Foreground 1: `#212946`
@@ -82,3 +87,8 @@ or reorganized.
 - Weapons and upgrades
 - Skills and abilities
 - Victory condition
+
+
+
+
+## From Google Docs
