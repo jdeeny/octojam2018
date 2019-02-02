@@ -35,6 +35,11 @@ Right now, text is a bit of a mess. The text generator should know about the fon
 so it can embed pixel widths with words. It works but it is walking through each
 word to figure out the length every time it draws it!
 
+## Screen Drawing
+The code in `src/ui/screen.o8` is a system to display predefined screens that
+consist of text and sprites.
+
+
 ## Other Things That Don't Have a Section Yet
 - Graphics
 - Status effects
