@@ -20,9 +20,14 @@ Input is handled in `src/input/input.o8`. Currently, it debounces the input.
 `src/input/input_data.o8` is the table of keys per state. Is this a good way to do
 it? I think it minimizes code space.
 
-
 ## Audio
+Music plays in the background, which means we have 2 frames before we need to be
+filling the buffer again.
 
+Right now SFX blocks, but I don't see why it would have to.
+
+`src/audio/sample_header.o8` is for audio related constants (possible to remove it?)
+`src/audio/sample_data.o8` is the raw data for the sound effects.
 
 
 ## Other Things That Don't Have a Section Yet
