@@ -30,6 +30,11 @@ Right now SFX blocks, but I don't see why it would have to.
 `src/audio/sample_data.o8` is the raw data for the sound effects.
 
 
+## Text
+Right now, text is a bit of a mess. The text generator should know about the font
+so it can embed pixel widths with words. It works but it is walking through each
+word to figure out the length every time it draws it!
+
 ## Other Things That Don't Have a Section Yet
 - Graphics
 - Status effects
