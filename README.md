@@ -48,8 +48,6 @@ The code in `src/ui/screen.o8` is a system to display predefined screens that
 consist of text and sprites.
 
 
-
-
 ## Assets
 `assets/` contains all of the game assets. These are all 'raw' in that they have
 not been processed for use in the game. For example, images need to be turned
@@ -66,6 +64,13 @@ or reorganized.
 - Sound: Sound Effects
 - Terrain: Terrain tiles
 - Tiles: One floor tile
+
+## Gameplay Code
+- `src/gameplay/ai.o8` should have ai code
+- `src/gameplay/combat.o8` calculates the result of combat based on weapon, armor, etc
+- `src/gameplay/ecs.o8` entity management
+- `src/gameplay/gamestate.o8` handles switching gamestates
+
 
 ## Other Things That Don't Have a Section Yet
 - Graphics
