@@ -17,7 +17,8 @@ defined in `src/states/state_data.o8`.
 
 ## Input
 Input is handled in `src/input/input.o8`. Currently, it debounces the input.
-`src/input/input_data.o8` is the table.
+`src/input/input_data.o8` is the table of keys per state. Is this a good way to do
+it? I think it minimizes code space.
 
 
 ## Audio
