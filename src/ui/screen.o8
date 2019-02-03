@@ -1,0 +1,106 @@
+### Render pre-made screens (from screen_data.o8)
+#
+# Format of the screens is a code byte followed by a variable number of data bytes
+
+:calc screen_id_count { 0 }
+:macro screen_id_advance { :calc screen_id_count { screen_id_count + 1 } }
+
+:calc SCREEN_SPRITE { screen_id_count  }
+:calc SCREEN_SPRITE_BYTES { 5 }
+screen_id_advance
+
+:calc SCREEN_WORD { screen_id_count }
+:calc SCREEN_WORD_BYTES { 6 }
+screen_id_advance
+
+:calc SCREEN_WORD_CTR { screen_id_count }
+:calc SCREEN_WORD_CTR_BYTES { 7 }
+screen_id_advance
+
+:calc SCREEN_END { screen_id_count }
+:calc SCREEN_END_BYTES { 0 }
+
+: screen_draw_jumptable
+  jump screen_draw_sprite
+  jump screen_draw_word
+  jump screen_draw_word_center
+  jump screen_draw_end
+
+
+:alias Screen_Bytes v2
+
+## Display a screen, main entrypoint
+# v0 = screen number
+: screen_draw_screen
+  i := long screen_table
+  i += v0
+  i += v0
+  load v0 - v1
+  push v0 v1 2   # Save pointer to screen
+
+: screen_draw_screen_continue
+  #:breakpoint advance
+  reg_set_i_v01  # i := screen data
+  load v0 - v6   # Largest is 7 bytes
+  v0 <<= v0
+  jump0 screen_draw_jumptable   # Jump into screen element handler
+
+: screen_draw_screen_advance
+  pop v0 v1 2
+  #math_add_u16_u8imm v0 v1 5
+  math_add_u16_u8 v0 v1 Screen_Bytes
+  push v0 v1 2
+  jump screen_draw_screen_continue
+
+
+
+
+: screen_draw_sprite
+  #:breakpoint sprite
+  plane 3
+  reg_set_i_v23
+  sprite v4 v1 0
+
+  Screen_Bytes := SCREEN_SPRITE_BYTES
+  jump screen_draw_screen_advance
+
+: screen_draw_word_center
+  :breakpoint center
+  Screen_Bytes := SCREEN_WORD_CTR_BYTES
+  jump screen_draw_screen_advance
+
+: screen_draw_word
+  :breakpoint word
+  Screen_Bytes := SCREEN_WORD_BYTES
+  jump screen_draw_screen_advance
+
+: screen_draw_end
+  #:breakpoint ending
+  pop v0 v1 2   # pop stored location and return
+  ;
+
+
+## Screen navigation information stored in the 'updown' counter
+: screen_updown_reset
+  i := long screen_updown_data v0 := 0 save v0 - v0
+  ;
+
+: screen_updown_get
+  i := long screen_updown_data load v1 - v1
+  ;
+
+# num_items = v0
+: screen_updown_down
+  screen_updown_get
+  if v1 == 0 then v1 := v0
+  v1 += -1
+  save v1 - v1
+  ;
+
+# num_items = v0
+: screen_updown_up
+  screen_updown_get
+  v1 += 1
+  if v1 == v0 then v1 := 0
+  save v1 - v1
+  ;

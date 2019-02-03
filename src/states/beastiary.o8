@@ -8,27 +8,19 @@
 
 : beastiary_begin
   # Set to beginning of enemy list
-  i := enemyinfo_state
-  v0 := 0
-  save v0 - v0
+  screen_updown_reset
   enemyinfo_display
   ;
 
 : beastiary_next_entry
-  i := enemyinfo_state
-  load v0 - v0
-  v0 += 1
-  if v0 == enemy_prefab_count then v0 := 0
-  save v0 - v0
+  v0 := enemy_prefab_count
+  screen_updown_up
   enemyinfo_display
   ;
 
 : beastiary_prev_entry
-  i := enemyinfo_state
-  load v0 - v0
-  if v0 == 0 then v0 := enemy_prefab_count
-  v0 += -1
-  save v0 - v0
+  v0 := enemy_prefab_count
+  screen_updown_down
   enemyinfo_display
   ;
 

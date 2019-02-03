@@ -1,6 +1,9 @@
 : newlevel_display
   hires
   clear
+  v0 := SCREEN_smallframe
+  screen_draw_screen
+
   v0 := SCREEN_newlevel
   screen_draw_screen
   v0 := 2
@@ -27,6 +30,9 @@
 
 : newlevel_next_state
   v5 := STATE_GAMEPLAY
+
+  :breakpoint narration
+
   newlevel_do_narration
 
   v0 := v5

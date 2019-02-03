@@ -1,0 +1,83 @@
+### Game Logic
+
+:alias combat_vPower v5
+:alias combat_vBreech v6      # This is actually breech + power
+:alias combat_vArmor v7
+:alias combat_vCover v8
+:alias combat_vResult v9
+:alias combat_vDamage vA
+
+:const combat_CoverFlag_HasCover 0x01
+:const combat_CoverFlag_Heavy 0x02
+
+:const combat_ResultFlag_CoverBlock 0x01
+:const combat_ResultFlag_CoverBreak 0x02
+:const combat_ResultFlag_ArmorBlock 0x04
+:const combat_ResultFlag_ArmorBreak 0x08
+
+: combat_test
+  combat_vPower := random 31
+  combat_vBreech := random 15
+  combat_vArmor := random 31
+  combat_vCover := random 3
+  combat_vResult := 0
+  combat_vDamage := 0
+
+#  :breakpoint before_combat
+  combat_vBreech += combat_vPower
+
+  combat_shot_internal
+  :breakpoint after_combat
+  ;
+
+# "Internal Ballistics" - Deals with Dmg vs Cover, Armor
+# Things that aren't pathing, range, ammo, etc
+# Input: damage, cover, armor
+#   vGunDmg = gun's damage; vCover = cover?; vArmor = armor pts
+# Ouput: result type, damage value
+#        CoverBlock?/Break?, ArmorBlock?/Break?, Damage
+#   vOut = flags; vDmg = damage
+
+# Melee is a special case w/ damage and breech = str + melee bonus; no cover
+# Grenade is a special case w/ no cover
+: combat_shot_internal
+  combat_vDamage := combat_vPower   # Initially, the hit does full damage
+  combat_vResult := 0               # and result has no flags set
+
+  # If there is cover, check it
+  vF := combat_CoverFlag_HasCover
+  vF &= combat_vCover
+  if vF != 0 then combat_check_cover
+
+  # Check Armor
+  if combat_vDamage == 0 then ;   # If cover blocked, don't check armor
+  if combat_vArmor != 0 then combat_check_armor   # Don't check armor if there isn't any
+
+  # At this point, vResult flags have been set, vDamage adjusted
+  ;
+
+: combat_check_cover
+  v0 := random 31
+  vF := combat_CoverFlag_HasCover
+  vF &= combat_vCover
+  if vF != 0 then v0 := random 63   # Heavy combat is vs 64
+  v0 -= combat_vBreech
+  if vF == 0 then jump combat_check_cover_broke
+  combat_vResult += combat_ResultFlag_CoverBlock
+  combat_vDamage := 0
+  ;
+: combat_check_cover_broke
+  combat_vResult += combat_ResultFlag_CoverBreak
+  ;
+
+: combat_check_armor
+  v0 := random 63
+  v0 -= combat_vBreech
+  if vF == 0 then jump combat_check_armor_broke
+  combat_vResult += combat_ResultFlag_ArmorBlock
+  combat_vDamage -= combat_vArmor
+  if vF == 0 then combat_vDamage := 0   # Clamp to 0 on overflow (This could be 1 to ensure some damage gets done?)
+  ;
+: combat_check_armor_broke
+  combat_vResult += combat_ResultFlag_ArmorBreak
+  ;

@@ -8,27 +8,19 @@
 
 : itemiary_begin
   # Set to beginning of item list
-  i := iteminfo_state
-  v0 := 0
-  save v0 - v0
+  screen_updown_reset
   iteminfo_display
   ;
 
 : itemiary_next_entry
-  i := iteminfo_state
-  load v0 - v0
-  v0 += 1
-  if v0 == treasure_prefab_count then v0 := 0
-  save v0 - v0
+  v0 := treasure_prefab_count
+  screen_updown_up
   iteminfo_display
   ;
 
 : itemiary_prev_entry
-  i := iteminfo_state
-  load v0 - v0
-  if v0 == 0 then v0 := treasure_prefab_count
-  v0 += -1
-  save v0 - v0
+  v0 := treasure_prefab_count
+  screen_updown_down
   iteminfo_display
   ;
 
