@@ -1073,33 +1073,23 @@ entity_offset ENTITY_AI 2
 	#load the iterator & tile width from memory rather than setting it directly
 	#these two values are fixed, though. It's just a faster/smaller way to set them
 	i := long screen-offset load x - v9
-	i := long get-loop-wrap-point i += x
-	load vf - vf
-	i := frame-loop i += vf
-	save v6 - v7
 	i := long frame-buffer
 	: frame-loop
 	loop
-		:macro loopunrolled	{ 
-			sprite x y 6 
-			i += tilewidth 
-			x += 7 
-		}
-		8x loopunrolled 8x loopunrolled
-		loopunrolled 
-		loopunrolled
-		loopunrolled
-		if colcount == 10 then jump draw-tiles-cleanup
-		colcount += 1
-		y += 6
-		if y == 66 then y := 0
-		i += rowoffset
-	again
-	: draw-tiles-cleanup
-	i := long get-loop-wrap-point i += x
-	load vf - vf
-	i := frame-loop i += vf
-	vf := 7 save v8 - v9
+			sprite x y 6
+		rowcount += 1
+		i += tilewidth
+		x += 7
+		if x == 133 then x := 0
+		if rowcount != 19 then jump frame-loop
+			vf := 3 if vf key then :breakpoint draw v0 += 0
+			if colcount == 10 then return
+			rowcount := 0
+			colcount += 1
+		 	y += 6
+			if y == 66 then y := 0
+			i += rowoffset
+		again
 ;
 #end draw-tiles
 
