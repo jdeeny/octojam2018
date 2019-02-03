@@ -334,75 +334,23 @@ fn main() {
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
     let _weapons_string = read_file("../../assets/prefabs/weapons.toml");
 
-//    let attacks: BTreeMap<String, Attack> = toml::from_str(&attacks_string).unwrap();
-/*    println!("\nAttacks:", );
-    for atk in &attacks {
-        println!("{:?}\n", atk);
-    }
-*/
+    let font_string = read_file("../../assets/prefabs/font.toml");
+    let special_strings_string = read_file("../../assets/prefabs/strings.toml");
 
+    let font: BTreeMap<String, String> = toml::from_str(&font_string).unwrap();
     let biomes: BTreeMap<String, Biome> = toml::from_str(&biomes_string).unwrap();
     let enemies: BTreeMap<String, Enemy> = toml::from_str(&enemies_string).unwrap();
     let treasure: BTreeMap<String, Treasure> = toml::from_str(&treasure_string).unwrap();
-//    let weapons: BTreeMap<String, Weapon> = toml::from_str(&weapons_string).unwrap();
-/*    println!("\nWeapons:", );
-    for w in &weapons {
-        println!("{:?}\n", w);
+    let special_strings: BTreeMap<String, String> = toml::from_str(&special_strings_string).unwrap();
+
+    for (name, s) in special_strings {
+        text_strings.insert(name, s);
     }
-*/
 
 
     let mut header_dest = File::create("build/prefab_header.o8").unwrap();
     let mut data_dest = File::create("build/prefab_data.o8").unwrap();
 
-    text_strings.insert(String::from("Title_Title"), String::from("Dig Site 8"));
-    text_strings.insert(String::from("Title_Credits"), String::from("Credits"));
-    text_strings.insert(String::from("Title_Begin"), String::from("Explore the Site"));
-    text_strings.insert(String::from("Title_Beastiary"), String::from("View the Beastiary"));
-    text_strings.insert(String::from("Title_Itemiary"), String::from("View the Treasure Codex"));
-    text_strings.insert(String::from("Title_Soundiary"), String::from("Sound Test"));
-
-
-    text_strings.insert(String::from("Soundiary_Cool"), String::from("Cool"));
-    text_strings.insert(String::from("Soundiary_Octojam"), String::from("Octojam"));
-    text_strings.insert(String::from("Soundiary_Five"), String::from("Five"));
-    text_strings.insert(String::from("Soundiary_Title"), String::from("Title"));
-    text_strings.insert(String::from("Soundiary_PhoneHey"), String::from("PhoneHey"));
-    text_strings.insert(String::from("Soundiary_Ruin"), String::from("Ruin"));
-    text_strings.insert(String::from("Soundiary_WelcomeBack"), String::from("WelcomeBack"));
-    text_strings.insert(String::from("Soundiary_Hello"), String::from("Hello"));
-
-
-    text_strings.insert(String::from("Credits_1"), String::from("Credits Go Here"));
-    text_strings.insert(String::from("New_Level"), String::from("Now Entering"));
-    text_strings.insert(String::from("End_Win_Msg"), String::from("You Win!!"));
-    text_strings.insert(String::from("Char_Name"), String::from("Name:"));
-    text_strings.insert(String::from("Char_Height"), String::from("Height:"));
-    text_strings.insert(String::from("Char_Build"), String::from("Build:"));
-    text_strings.insert(String::from("Char_Eyes"), String::from("Eyes:"));
-
-    text_strings.insert(String::from("Char_Height_0"), String::from("Average"));
-    text_strings.insert(String::from("Char_Height_1"), String::from("Short"));
-    text_strings.insert(String::from("Char_Height_2"), String::from("Above Average"));
-    text_strings.insert(String::from("Char_Height_3"), String::from("Very Tall"));
-
-    text_strings.insert(String::from("Char_Build_0"), String::from("A Little Extra"));
-    text_strings.insert(String::from("Char_Build_1"), String::from("Curvy"));
-    text_strings.insert(String::from("Char_Build_2"), String::from("Full Figured"));
-    text_strings.insert(String::from("Char_Build_3"), String::from("Skinny"));
-    text_strings.insert(String::from("Char_Build_4"), String::from("Average"));
-    text_strings.insert(String::from("Char_Build_5"), String::from("Fit"));
-    text_strings.insert(String::from("Char_Build_6"), String::from("Jacked"));
-    text_strings.insert(String::from("Char_Build_7"), String::from("Rather Not Say"));
-
-    text_strings.insert(String::from("Char_Eyes_0"), String::from("Blue"));
-    text_strings.insert(String::from("Char_Eyes_1"), String::from("Brown"));
-    text_strings.insert(String::from("Char_Eyes_2"), String::from("Green"));
-    text_strings.insert(String::from("Char_Eyes_3"), String::from("Hazel"));
-    text_strings.insert(String::from("Char_Eyes_4"), String::from("Black"));
-    text_strings.insert(String::from("Char_Eyes_5"), String::from("Grey"));
-    text_strings.insert(String::from("Char_Eyes_6"), String::from("Red"));
-    text_strings.insert(String::from("Char_Eyes_7"), String::from("Shifty"));
 
     text_strings.insert(String::from("testthis"), String::from("\"sphinx of black quartz, judge my vow\"? ABCDEF GHIJK LMNOP QRSTU VWXYZ abcd efgh ijkl mnop qrst uvwx yz"));
 
