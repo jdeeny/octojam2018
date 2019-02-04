@@ -22,16 +22,22 @@ impl Treasure {
         return Self { items: treasure };
     }
 
-    pub fn header(&self, out: &Write) {
+    pub fn header(&self, out: &mut Write) {
+        writeln!(out, "## Treasure Header").unwrap();
+        writeln!(out, ":const TREASURE_COUNT {}", self.items.len()).unwrap();
+        writeln!(out, ":const TREASURE_LAST {}", self.items.len() - 1).unwrap();
+        writeln!(out, "## End Treasure Header").unwrap();
 
     }
 
-    pub fn data(&self, out: &Write) {
-
+    pub fn data(&self, out: &mut Write) {
+        writeln!(out, "## Treasure Data").unwrap();
+        writeln!(out, "## End Treasure Data").unwrap();
     }
 
-    pub fn code(&self, out: &Write) {
-
+    pub fn code(&self, out: &mut Write) {
+        writeln!(out, "## Treasure Code").unwrap();
+        writeln!(out, "## End Treasure Code").unwrap();
     }
 
     pub fn process(&mut self) {

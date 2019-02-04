@@ -24,16 +24,21 @@ impl Biomes {
         return Self { biomes: biomes };
     }
 
-    pub fn header(&self, out: &Write) {
-
+    pub fn header(&self, out: &mut Write) {
+        writeln!(out, "## Biome Header").unwrap();
+        writeln!(out, ":const BIOME_COUNT {}", self.biomes.len()).unwrap();
+        writeln!(out, ":const BIOME_LAST {}", self.biomes.len() - 1).unwrap();
+        writeln!(out, "## End Biome Header").unwrap();
     }
 
-    pub fn data(&self, out: &Write) {
-
+    pub fn data(&self, out: &mut Write) {
+        writeln!(out, "## Biome Data").unwrap();
+        writeln!(out, "## End Biome Data").unwrap();
     }
 
-    pub fn code(&self, out: &Write) {
-
+    pub fn code(&self, out: &mut Write) {
+        writeln!(out, "## Biome Code").unwrap();
+        writeln!(out, "## End Biome Code").unwrap();
     }
 
     pub fn process(&mut self) {

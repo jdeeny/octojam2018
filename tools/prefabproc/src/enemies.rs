@@ -29,16 +29,22 @@ impl Enemies {
         return Self { enemies: enemies };
     }
 
-    pub fn header(&self, out: &Write) {
+    pub fn header(&self, out: &mut Write) {
+        writeln!(out, "## Enemy Header").unwrap();
+        writeln!(out, ":const ENEMY_COUNT {}", self.enemies.len()).unwrap();
+        writeln!(out, ":const ENEMY_LAST {}", self.enemies.len() - 1).unwrap();
+        writeln!(out, "## End Enemy Header").unwrap();
 
     }
 
-    pub fn data(&self, out: &Write) {
-
+    pub fn data(&self, out: &mut Write) {
+        writeln!(out, "## Enemy Data").unwrap();
+        writeln!(out, "## End Enemy Data").unwrap();
     }
 
-    pub fn code(&self, out: &Write) {
-
+    pub fn code(&self, out: &mut Write) {
+        writeln!(out, "## Enemy Code").unwrap();
+        writeln!(out, "## End Enemy Code").unwrap();
     }
 
     pub fn process(&mut self) {
@@ -62,10 +68,10 @@ impl Enemies {
 
 /*
 
-fn process_enemy_lists(biomes: &BTreeMap<String, Biome>, _text_strings: &mut HashMap<String, String>, data_out: &mut Write, _header_out: &mut Write) {
-    println!("Processing Biome Enemy Lists");
-    writeln!(data_out, "### Biome Enemy Lists ###").unwrap();
-    for (name, data) in biomes.iter() {
+fn process_enemy_lists(Enemys: &BTreeMap<String, Enemy>, _text_strings: &mut HashMap<String, String>, data_out: &mut Write, _header_out: &mut Write) {
+    println!("Processing Enemy Enemy Lists");
+    writeln!(data_out, "### Enemy Enemy Lists ###").unwrap();
+    for (name, data) in Enemys.iter() {
         write!(data_out, ": enemyset_{} {} ", name, data.enemies.len()).unwrap();
         for e in &data.enemies {
             write!(data_out, "tobytes enemy_{} ", &e).unwrap();
