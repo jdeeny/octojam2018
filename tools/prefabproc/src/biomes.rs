@@ -41,7 +41,20 @@ impl Biomes {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
+        for (name, data) in self.biomes.iter() {
+            if let Some(narration) = &data.narration {
+                let key = format!("narration_{}", &name);
+                dict.insert_phrase(&key, narration);
+            }
+        }
 
+        for (name, data) in self.biomes.iter() {
+            for level in 0..data.levels {
+                let biome_name = format!("{}{}", &name, level);
+                let biome_display = format!("{}  -  {}", &data.name, level + 1);
+                dict.insert_phrase(&format!("Biome_Name_{}", biome_name), &biome_display);
+            }
+        }
     }
 
 }
@@ -108,19 +121,6 @@ fn process_biomes(biomes: &BTreeMap<String, Biome>, _text_strings: &mut HashMap<
 
 fn biomes_make_strings(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, _data_out: &mut Write, _header_out: &mut Write) {
     println!("Processing Biomes");
-    for (name, data) in biomes.iter() {
-        if let Some(narration) = &data.narration {
-            let key = format!("narration_{}", &name);
-            text_strings.insert(key, narration.clone());
-        }
-    }
 
-    for (name, data) in biomes.iter() {
-        for level in 0..data.levels {
-            let biome_name = format!("{}{}", &name, level);
-            let biome_display = format!("{}  -  {}", &data.name, level + 1);
-            text_strings.insert(format!("Biome_Name_{}", biome_name), biome_display);
-        }
-    }
 }
 */

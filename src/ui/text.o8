@@ -1,3 +1,9 @@
+# Glyphs: 0 - 0x7F
+# 0x80 - 0xff = Word or special
+# Specials: colors, random select, ?
+
+
+
 
 : text_state 1
 : text_wrap 0 0 0 # on/off; x1; x2
