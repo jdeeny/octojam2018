@@ -75,7 +75,7 @@ impl Font {
         let mut count = 0;
         writeln!(out, "## Font Header").unwrap();
         for (c, g) in &self.glyphs {
-            writeln!(out, ":macro GLYPH_{} {{ :byte {} }} # Uses: {}", c, count, g.ref_count).unwrap();
+            writeln!(out, ":const G_{} {} # Uses: {}", c, count, g.ref_count).unwrap();
             count += 1;
         }
         writeln!(out, "## End Font Header").unwrap();

@@ -10,7 +10,6 @@ use crate::font::Font;
     Symbol: the base unit of a Phrase: glyphs, words, phrase
 */
 
-
 pub enum Symbol {
     Glyph(char),
     Word(String, usize),
@@ -19,6 +18,7 @@ pub enum Symbol {
 pub struct Entry {
     name: String,
     contents: Vec<Symbol>,
+    px: Option<usize>,
     ref_count: usize,
 }
 
@@ -44,54 +44,51 @@ impl Dictionary {
             phrase.ref_count += 1;
         } else {
             let mut v: Vec<Symbol> = Vec::new();
-            for word in name.split(' ') {
-                v.push(Symbol::Word(String::from(word), self.font.get_width(word)));
-                self.insert_word(word);
+            for w in entry.split_whitespace() {
+                if w.chars().count() > 1 {
+                    v.push(Symbol::Word(String::from(w), self.font.get_width(w)));
+                } else {
+                    v.push(Symbol::Glyph(w.chars().next().unwrap()));
+                }
             }
-            let e = Entry { name: String::from(name), contents: v, ref_count: 1 };
-            self.entries.insert(String::from(name), e);
+            if v.len() == 1 {
+                self.insert_word(name, entry);
+            } else {
+                for w in entry.split_whitespace() {
+                    self.insert_word(w, w);
+                }
+                let e = Entry { name: String::from(name), contents: v, ref_count: 1, px: None };
+                self.entries.insert(String::from(name), e);
+            }
         }
     }
 
-    pub fn insert_word(&mut self, name: &str) {
+    pub fn insert_word(&mut self, name: &str, data: &str) {
         self.font.mark_used(name);
         if let Some(word) = self.entries.get_mut(name) {
             word.ref_count += 1;
         } else {
             let mut v: Vec<Symbol> = Vec::new();
-            v.push(Symbol::Word(String::from(name), self.font.get_width(name)));
-            let e = Entry { name: String::from(name), contents: v, ref_count: 1 };
+            if data.chars().count() > 1 {
+                for c in data.chars() {
+                    v.push(Symbol::Glyph(c));
+                }
+                //v.push(Symbol::Word(String::from(name), self.font.get_width(name)));
+            } else {
+                v.push(Symbol::Glyph(data.chars().next().unwrap()));
+            }
+            let e = Entry { name: String::from(name), contents: v, ref_count: 1, px: Some(self.font.get_width(data)) };
             self.entries.insert(String::from(name), e);
         }
     }
 
-/*    fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: Option<&str>) {
-        if let Some(text) = &text {
-            let mut key: String = String::from(name);
-            if subname.chars().count() > 0 {
-                key.push('-');
-                key.push_str(subname);
-            }
-            self.insert(key, text.to_string());
-        }
-    }*/
-
-/*    fn add_text_string(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: &Option<String>) { // forgive me rust gods
-        if let Some(text) = &text {
-            let mut key: String = String::from(name);
-            if subname.chars().count() > 0 {
-                key.push('-');
-                key.push_str(subname);
-            }
-            self.insert(key, text.to_string());
-        }
-    }*/
 
     pub fn process(&mut self) {
+
+
         /*
             fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, _header_dest: &mut Write) {
                 let mut words = HashMap::<String, Vec<Symbol>>::new();
-                let mut wordvec = Vec::<(String, Vec<Symbol>)>::new();
 
                 for (name, data) in texts {
                     println!("INPUT:    {} {:?}\n", name, data);
@@ -123,24 +120,6 @@ impl Dictionary {
                     }
                 }
 
-
-
-
-                writeln!(data_dest, "### WORDS ###").unwrap().unwrap();
-                for (name, data) in wordvec {
-                    //println!("{:?} -> {:?}", name, data);
-                    write!(data_dest, ": word_{} ", name).unwrap();
-                    for symbol in data.iter() {
-                        match symbol {
-                            Symbol::Letter(c) => { write!(data_dest, ":byte GLYPH_{} ", c).unwrap(); },
-                            Symbol::Word(w) => { write!(data_dest, ":byte GLYPH_ESC_WORD tobytes word_{} ", w).unwrap(); },
-                        }
-                    }
-                    writeln!(data_dest, ":byte GLYPH_ESC_END").unwrap().unwrap();
-                }
-                writeln!(data_dest, "### END WORDS ###").unwrap().unwrap();
-
-            }
         */
 
     }
@@ -149,19 +128,57 @@ impl Dictionary {
     pub fn header(&self, out: &mut Write) {
         self.font.header(out);
         writeln!(out, "## Text Header").unwrap();
+        writeln!(out, ":const G_ESC_WORD {:02X}", 0x80).unwrap();
         writeln!(out, "## End Text Header").unwrap();
     }
 
     pub fn data(&self, out: &mut Write) {
         self.font.data(out);
+
         writeln!(out, "## Text Data").unwrap();
+        for (name, data) in &self.entries {
+            //println!("{:?} -> {:?}", name, data);
+            let px = data.px.unwrap_or(0);
+            write!(out, ": word_{} {{ {} }} ", name, px).unwrap();
+            for symbol in data.contents.iter() {
+                match symbol {
+                    Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
+                    Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
+                    Symbol::Color(c) => { write!(out, "{{ G_ESC_COLOR + {} }}", c).unwrap(); },
+                }
+            }
+            writeln!(out, "{{ GLYPH_ESC_END }}").unwrap();
+        }
         writeln!(out, "## End Text Data").unwrap();
     }
 
     pub fn code(&self, out: &mut Write) {
         self.font.code(out);
+
         writeln!(out, "## Text Code").unwrap();
         writeln!(out, "## End Text Code").unwrap();
     }
 
 }
+
+/*    fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: Option<&str>) {
+        if let Some(text) = &text {
+            let mut key: String = String::from(name);
+            if subname.chars().count() > 0 {
+                key.push('-');
+                key.push_str(subname);
+            }
+            self.insert(key, text.to_string());
+        }
+    }*/
+
+/*    fn add_text_string(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: &Option<String>) { // forgive me rust gods
+        if let Some(text) = &text {
+            let mut key: String = String::from(name);
+            if subname.chars().count() > 0 {
+                key.push('-');
+                key.push_str(subname);
+            }
+            self.insert(key, text.to_string());
+        }
+    }*/
