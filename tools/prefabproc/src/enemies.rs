@@ -37,6 +37,9 @@ impl Enemies {
 
     }
 
+    pub fn code(&self, out: &Write) {
+
+    }
 
     pub fn process(&mut self) {
 

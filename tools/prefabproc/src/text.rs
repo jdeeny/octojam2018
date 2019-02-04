@@ -14,6 +14,9 @@ pub enum Symbol {
     Glyph(char),
     Word(String, usize),
     Color(usize),
+    Sound(String),
+    Portrait(String),
+    Prompt(String),
 }
 pub struct Entry {
     name: String,
@@ -145,6 +148,9 @@ impl Dictionary {
                     Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
                     Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
                     Symbol::Color(c) => { write!(out, "{{ G_ESC_COLOR + {} }}", c).unwrap(); },
+                    Symbol::Sound(_) => { write!(out, "{{ G_ESC_SOUND }}").unwrap(); },
+                    Symbol::Portrait(_) => { write!(out, "{{ G_ESC_PORTRAIT }} ").unwrap(); },
+                    Symbol::Prompt(_) => { write!(out, "{{ G_ESC_PROMPT }}").unwrap(); },
                 }
             }
             writeln!(out, "{{ GLYPH_ESC_END }}").unwrap();
