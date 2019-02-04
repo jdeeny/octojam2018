@@ -95,32 +95,3 @@ impl Biomes {
 
 
 }
-
-
-
-
-
-
-/*
-
-
-fn process_biomes(biomes: &BTreeMap<String, Biome>, _text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
-
-    writeln!(data_out, "### Biomes (Level List) ###").unwrap();
-    writeln!(data_out, ":const word_narration_none 0").unwrap();
-    writeln!(data_out, ": level_state 0").unwrap();
-
-
-
-    writeln!(header_out, ":const level_count {}", count).unwrap();
-    writeln!(header_out, ":const level_last {}", count - 1).unwrap();
-}
-
-
-
-
-fn biomes_make_strings(biomes: &BTreeMap<String, Biome>, text_strings: &mut HashMap<String, String>, _data_out: &mut Write, _header_out: &mut Write) {
-    println!("Processing Biomes");
-
-}
-*/
