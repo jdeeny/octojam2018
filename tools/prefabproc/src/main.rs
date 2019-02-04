@@ -1,4 +1,3 @@
-use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{Read,Write};
 
@@ -11,7 +10,6 @@ mod biomes;
 mod enemies;
 mod treasure;
 mod text;
-
 
 fn read_file(filename: &str) -> String {
     let mut toml_file = File::open(filename).unwrap();
@@ -31,27 +29,25 @@ fn main() {
     let font_string = read_file("../../assets/prefabs/font.toml");
     let special_strings_string = read_file("../../assets/prefabs/strings.toml");
 
-    let font = font::Font::from_toml(&font_string);
+    let mut font = font::Font::from_toml(&font_string);
+    font.mark_used("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
     let biomes = biomes::Biomes::from_toml(&biomes_string);
     let enemies = enemies::Enemies::from_toml(&enemies_string);
     let treasure = treasure::Treasure::from_toml(&treasure_string);
 
-    let mut dict = text::Dictionary::new(font.clone());
+    let mut dict = text::Dictionary::new(font);
     dict.insert_from_toml(&special_strings_string);
-
     enemies.process_strings(&mut dict);
     treasure.process_strings(&mut dict);
     biomes.process_strings(&mut dict);
 
     dict.process();
 
-    font.header(&mut header_dest);
     dict.header(&mut header_dest);
     biomes.header(&mut header_dest);
     enemies.header(&mut header_dest);
     treasure.header(&mut header_dest);
 
-    font.data(&mut data_dest);
     dict.data(&mut data_dest);
     biomes.data(&mut data_dest);
     enemies.data(&mut data_dest);
