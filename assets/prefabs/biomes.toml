@@ -13,7 +13,7 @@ Cool.
 ...
 Look, I haven't really been paying attention. Did you find the treasure yet?
 Come on, I know it's your first job, but it's not that hard.
-Anyway, I've turned my radio back on. Good luck!"""
+Anyway, I've turned my radio back on. {color:red} Good luck! {color:normal}"""
 # short: "Hello?" (worried for self due to neglecting duties as mission control person)
 
 [lab]

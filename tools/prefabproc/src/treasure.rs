@@ -40,6 +40,9 @@ impl Treasure {
 
     pub fn data(&self, out: &mut Write) {
         writeln!(out, "## Treasure Data").unwrap();
+        for (name, data) in self.items.iter() {
+            write!(out, ": treaure_{} 0 0 0 0 0 0 0 0 0 0 0 0", name).unwrap();
+        }
         writeln!(out, "## End Treasure Data").unwrap();
     }
 
