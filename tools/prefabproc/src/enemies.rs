@@ -46,7 +46,12 @@ impl Enemies {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
-
+        for (name, data) in self.enemies.iter() {
+            dict.insert_phrase(&format!("{}-name", name), &data.name);
+            if let Some(desc) = &data.desc {
+                dict.insert_phrase(&format!("{}-desc", name), &desc);
+            }
+        }
     }
 }
 

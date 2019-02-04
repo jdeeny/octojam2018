@@ -39,7 +39,12 @@ impl Treasure {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
-
+        for (name, data) in self.items.iter() {
+            dict.insert_phrase(&format!("{}-name", &name), &data.name);
+            if let Some(desc) = &data.desc {
+                dict.insert_phrase(&format!("{}-desc", name), &desc);
+            }
+        }
     }
 
 }
@@ -105,13 +110,6 @@ fn process_treasure(treasure: &BTreeMap<String, Treasure>, text_strings: &mut Ha
 }
 
 fn treasure_make_strings(treasure: &BTreeMap<String, Treasure>, text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
-    for (name, data) in treasure.iter() {
 
-        add_text(text_strings, name, "name", Some(&data.name));
-        //add_text(text_strings, name, "name", Some(name));
-        add_text_string(text_strings, name, "desc", &data.desc);
-        println!("{:?}", &data.desc);
-
-    }
 }
 */
