@@ -33,6 +33,15 @@ impl Enemies {
         writeln!(out, "## Enemy Header").unwrap();
         writeln!(out, ":const ENEMY_COUNT {}", self.enemies.len()).unwrap();
         writeln!(out, ":const ENEMY_LAST {}", self.enemies.len() - 1).unwrap();
+        writeln!(out, ":const ENEMY.X 0").unwrap();
+        writeln!(out, ":const ENEMY.Y 1").unwrap();
+        writeln!(out, ":const ENEMY.FLAGS 2").unwrap();
+        writeln!(out, ":const ENEMY.SPRITE 3").unwrap();
+        writeln!(out, ":const ENEMY.PORTRAIT 5").unwrap();
+        writeln!(out, ":const ENEMY.DESC 7").unwrap();
+        writeln!(out, ":const ENEMY.AI 9").unwrap();
+        writeln!(out, ":const ENEMY.NAME 11").unwrap();
+        writeln!(out, ":const ENEMY_BYTES 13").unwrap();
         writeln!(out, "## End Enemy Header").unwrap();
 
     }

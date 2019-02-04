@@ -26,8 +26,16 @@ impl Treasure {
         writeln!(out, "## Treasure Header").unwrap();
         writeln!(out, ":const TREASURE_COUNT {}", self.items.len()).unwrap();
         writeln!(out, ":const TREASURE_LAST {}", self.items.len() - 1).unwrap();
+        writeln!(out, ":const TREASURE.X 0").unwrap();
+        writeln!(out, ":const TREASURE.Y 1").unwrap();
+        writeln!(out, ":const TREASURE.FLAGS 2").unwrap();
+        writeln!(out, ":const TREASURE.SPRITE 3").unwrap();
+        writeln!(out, ":const TREASURE.PORTRAIT 5").unwrap();
+        writeln!(out, ":const TREASURE.DESC 7").unwrap();
+        writeln!(out, ":const TREASURE.AI 9").unwrap();
+        writeln!(out, ":const TREASURE.NAME 11").unwrap();
+        writeln!(out, ":const TREASURE_BYTES 13").unwrap();
         writeln!(out, "## End Treasure Header").unwrap();
-
     }
 
     pub fn data(&self, out: &mut Write) {

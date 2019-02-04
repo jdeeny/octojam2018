@@ -32,6 +32,11 @@ impl Biomes {
         writeln!(out, "## Biome Header").unwrap();
         writeln!(out, ":const BIOME_COUNT {}", self.biomes.len()).unwrap();
         writeln!(out, ":const BIOME_LAST {}", self.biomes.len() - 1).unwrap();
+
+        writeln!(out, ":const BIOME.NAME 0").unwrap();
+        writeln!(out, ":const BIOME.NARRATION 2").unwrap();
+        writeln!(out, ":const BIOME.ENEMYSET 4").unwrap();
+        writeln!(out, ":const BIOME.TREASURESET 6").unwrap();
         writeln!(out, "## End Biome Header").unwrap();
     }
 
@@ -52,15 +57,8 @@ impl Biomes {
                 }
                 let level_name = format!("{}{}", &name, &level);
                 let _level_display = format!("{}  -  {}", name, level + 1);
-    //            text_strings.insert(format!("word_Biome_Name_{}", biome_name), biome_display);
                 write!(out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} 0 0\n", level_name, level_name, narration, name).unwrap();
-
             }
-            // tileset - unused for now
-            // create a word for the name
-            // create an enemy set
-            // create a narration event
-            // create a treasure set
         }
 
 
