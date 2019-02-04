@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
 use std::io::Write;
 use toml::Value;
 
+use crate::text::Dictionary;
 
 #[derive(Debug, Deserialize)]
 struct TreasureItem {
@@ -31,6 +32,10 @@ impl Treasure {
 
 
     pub fn process(&mut self) {
+
+    }
+
+    pub fn process_strings(&self, dict: &mut Dictionary) {
 
     }
 

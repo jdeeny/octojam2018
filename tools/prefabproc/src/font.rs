@@ -1,4 +1,6 @@
 use std::collections::BTreeMap;
+use std::io::Write;
+
 
 #[derive(Debug, Deserialize)]
 pub struct Glyph {
@@ -40,5 +42,13 @@ impl Font {
             height = std::cmp::max(height, gheight);
         }
         return Font { glyphs: new_glyphs, height: height }
+    }
+
+    pub fn header(&self, out: &Write) {
+
+    }
+
+    pub fn data(&self, out: &Write) {
+
     }
 }

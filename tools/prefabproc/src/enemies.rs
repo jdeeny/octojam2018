@@ -2,6 +2,8 @@ use std::collections::BTreeMap;
 use std::io::Write;
 use toml::Value;
 
+use crate::text::Dictionary;
+
 #[derive(Debug, Deserialize)]
 struct Enemy {
     name: String,
@@ -40,6 +42,9 @@ impl Enemies {
 
     }
 
+    pub fn process_strings(&self, dict: &mut Dictionary) {
+
+    }
 }
 
 

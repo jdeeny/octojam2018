@@ -1,3 +1,50 @@
+use std::collections::BTreeMap;
+use std::io::Write;
+use toml::Value;
+
+#[derive(Debug, Clone)]
+pub enum Symbol {
+    Letter(char),
+    Word(String),
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Entry {
+    name: String,
+    contents: Vec<String>,
+}
+
+pub struct Dictionary {
+    entries: BTreeMap<String, Entry>,
+}
+
+impl Dictionary {
+    pub fn new() -> Self {
+        return Self { entries: BTreeMap::new() };
+    }
+
+    pub fn insert(&mut self, name: &str, entry: &str) {
+        let mut contents = Vec::new();
+        contents.push(String::from(entry));
+        let entry = Entry{name: String::from(name), contents: contents };
+        self.entries.insert(String::from(name), entry);
+    }
+
+    pub fn header(&self, out: &Write) {
+
+    }
+
+    pub fn data(&self, out: &Write) {
+
+    }
+
+
+    pub fn process(&mut self) {
+
+    }
+
+}
+/*
 
 fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: Option<&str>) {
     if let Some(text) = &text {
@@ -24,11 +71,7 @@ fn add_text_string(text_strings: &mut HashMap<String, String>, name: &str, subna
 }
 
 
-#[derive(Debug, Clone)]
-enum Symbol {
-    Letter(char),
-    Word(String),
-}
+
 
 fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, _header_dest: &mut Write) {
     let mut words = HashMap::<String, Vec<Symbol>>::new();
@@ -82,3 +125,4 @@ fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, _head
     writeln!(data_dest, "### END WORDS ###").unwrap();
 
 }
+*/

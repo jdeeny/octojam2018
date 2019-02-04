@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 use std::io::Write;
 
+use crate::text::Dictionary;
+
 #[derive(Debug, Deserialize)]
 pub struct Biome {
     name: String,
@@ -32,6 +34,10 @@ impl Biomes {
 
 
     pub fn process(&mut self) {
+
+    }
+
+    pub fn process_strings(&self, dict: &mut Dictionary) {
 
     }
 
