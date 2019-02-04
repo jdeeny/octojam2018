@@ -49,27 +49,16 @@ fn main() {
 
     font.header(&mut header_dest);
     dict.header(&mut header_dest);
+    biomes.header(&mut header_dest);
     enemies.header(&mut header_dest);
     treasure.header(&mut header_dest);
 
     font.data(&mut data_dest);
     dict.data(&mut data_dest);
+    biomes.data(&mut data_dest);
     enemies.data(&mut data_dest);
     treasure.data(&mut data_dest);
 
-
-
-/*
-    process_strings(&text_strings, &mut data_dest, &mut header_dest);
-    process_enemies(&enemies, &mut text_strings, &mut data_dest, &mut header_dest);
-    process_treasure(&treasure, &mut text_strings, &mut data_dest, &mut header_dest);
-
-    process_enemy_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
-    process_treasure_lists(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
-
-    process_biomes(&biomes, &mut text_strings, &mut data_dest, &mut header_dest);
-
-*/
     writeln!(data_dest, ": entity_table_address tobytes entity_table").unwrap();
 
 }
