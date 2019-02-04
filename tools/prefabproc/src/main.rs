@@ -35,11 +35,9 @@ fn main() {
     let biomes = biomes::Biomes::from_toml(&biomes_string);
     let enemies = enemies::Enemies::from_toml(&enemies_string);
     let treasure = treasure::Treasure::from_toml(&treasure_string);
-    let special_strings: BTreeMap<String, String> = toml::from_str(&special_strings_string).unwrap();
 
-    let mut dict = text::Dictionary::new();
-
-    for (name, s) in special_strings { dict.insert(&name, &s); }
+    let mut dict = text::Dictionary::new(font.clone());
+    dict.insert_from_toml(&special_strings_string);
 
     enemies.process_strings(&mut dict);
     treasure.process_strings(&mut dict);

@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use std::io::Write;
 
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone)]
 pub struct Glyph {
     name: String,
     data: String,
@@ -10,6 +10,7 @@ pub struct Glyph {
     width: usize,
 }
 
+#[derive(Clone)]
 pub struct Font {
     glyphs: BTreeMap<String, Glyph>,
     height: usize,
