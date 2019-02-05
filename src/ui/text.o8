@@ -46,9 +46,9 @@
     ;
 
 
-:const GLYPH_ESC_CHOICE 0xFD
-:const GLYPH_ESC_WORD 0xFE
-:const GLYPH_ESC_END 0xFF
+:const G_ESC_CHOICE 0xFD
+:const G_ESC_WORD 0xFE
+:const G_ESC_END 0xFF
 
 
 # v23 = word address, v4 = x, v5 = y
@@ -67,8 +67,8 @@
 : text_draw_word_internal
   reg_set_i_v23
   load v0
-  if v0 == GLYPH_ESC_END then jump text_draw_word_end
-  if v0 == GLYPH_ESC_WORD then jump text_draw_word_word
+  if v0 == G_ESC_END then jump text_draw_word_end
+  if v0 == G_ESC_WORD then jump text_draw_word_word
   if text_scroll_state != 0 then jump text_draw_word_internal_skip_draw
   text_draw_glyph
   jump text_draw_word_internal_after_draw
@@ -138,8 +138,8 @@
 : text_measure_word_internal
   reg_set_i_v23
   load v0
-  if v0 == GLYPH_ESC_END then jump text_measure_word_end
-  if v0 == GLYPH_ESC_WORD then jump text_measure_word_word
+  if v0 == G_ESC_END then jump text_measure_word_end
+  if v0 == G_ESC_WORD then jump text_measure_word_word
   vF := vF
   text_measure_glyph
   vF := vF

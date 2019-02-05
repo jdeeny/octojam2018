@@ -160,7 +160,7 @@ impl Dictionary {
                     Symbol::Prompt(prompt) => { write!(out, "{{ G_ESC_PROMPT }} tobytes word_{} ", prompt).unwrap(); },
                 }
             }
-            writeln!(out, "{{ GLYPH_ESC_END }}").unwrap();
+            writeln!(out, "{{ G_ESC_END }}").unwrap();
         }
         writeln!(out, "## End Text Data").unwrap();
     }

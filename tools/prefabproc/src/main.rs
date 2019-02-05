@@ -4,7 +4,6 @@ use std::io::{Read,Write};
 #[macro_use]
 extern crate serde_derive;
 
-
 mod font;
 mod biomes;
 mod enemies;
