@@ -31,7 +31,7 @@
   screen_draw_screen
   iteminfo_index
 
-  v2 := treasure_offset_portrait
+  v2 := TREASURE.PORTRAIT
   i += v2
   load v2 - v3
   reg_set_i_v23
@@ -41,7 +41,7 @@
 
   v0 := 2 set_text_color
   iteminfo_index
-  v2 := treasure_offset_name
+  v2 := TREASURE.NAME
   i += v2
   load v2 - v3
   i := text_wrap
@@ -66,7 +66,7 @@
   #load v2 - v3
 
   iteminfo_index
-  v2 := treasure_offset_desc
+  v2 := TREASURE.DESC
   i += v2
 
   load v2 - v3

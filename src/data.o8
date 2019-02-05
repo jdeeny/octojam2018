@@ -108,7 +108,7 @@ note 0xFF 0
         0x88 0x00 0xF0 0xA8 0x88 0x88
 : splash-five  0xC6 0xC6 0xC6 0xEE 0x7C 0x38 0x10 0x00
 
-: charedit_data :byte GLYPH_A :byte GLYPH_p :byte GLYPH_u :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK :byte GLYPH_BLANK
+: charedit_data :byte G_A :byte G_p :byte G_u :byte G_ESC_SPACE :byte G_ESC_SPACE :byte G_ESC_SPACE :byte G_ESC_SPACE 
 : charedit_data_age 18 0
 
 

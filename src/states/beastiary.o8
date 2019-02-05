@@ -13,13 +13,13 @@
   ;
 
 : beastiary_next_entry
-  v0 := enemy_prefab_count
+  v0 := ENEMY_COUNT
   screen_updown_up
   enemyinfo_display
   ;
 
 : beastiary_prev_entry
-  v0 := enemy_prefab_count
+  v0 := ENEMY_COUNT
   screen_updown_down
   enemyinfo_display
   ;

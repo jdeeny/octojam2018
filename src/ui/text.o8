@@ -46,11 +46,6 @@
     ;
 
 
-:const G_ESC_CHOICE 0xFD
-:const G_ESC_WORD 0xFE
-:const G_ESC_END 0xFF
-
-
 # v23 = word address, v4 = x, v5 = y
 : text_draw_word
   i := text_state

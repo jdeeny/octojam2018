@@ -129,16 +129,16 @@ impl Dictionary {
     pub fn header(&self, out: &mut Write) {
         self.font.header(out);
         writeln!(out, "## Text Header").unwrap();
-        writeln!(out, ":const G_ESC_MASK {:02X}", 0xF8).unwrap();
-        writeln!(out, ":const G_ESC_END {:02X}", 0xFF).unwrap();
-        writeln!(out, ":const G_ESC_WORD {:02X}", 0xFE).unwrap();
-        writeln!(out, ":const G_ESC_SUB {:02X}", 0xFD).unwrap();
-        writeln!(out, ":const G_ESC_SPACE {:02X}", 0xFC).unwrap();
-        writeln!(out, ":const G_ESC_COLOR_MASK {:02X}", 0xFC).unwrap();
-        writeln!(out, ":const G_ESC_COLOR0 {:02X}", 0xF8).unwrap();
-        writeln!(out, ":const G_ESC_COLOR1 {:02X}", 0xF9).unwrap();
-        writeln!(out, ":const G_ESC_COLOR2 {:02X}", 0xFA).unwrap();
-        writeln!(out, ":const G_ESC_COLOR3 {:02X}", 0xFB).unwrap();
+        writeln!(out, ":const G_ESC_MASK 0x{:02X}", 0xF8).unwrap();
+        writeln!(out, ":const G_ESC_END 0x{:02X}", 0xFF).unwrap();
+        writeln!(out, ":const G_ESC_WORD 0x{:02X}", 0xFE).unwrap();
+        writeln!(out, ":const G_ESC_SUB 0x{:02X}", 0xFD).unwrap();
+        writeln!(out, ":const G_ESC_SPACE 0x{:02X}", 0xFC).unwrap();
+        writeln!(out, ":const G_ESC_COLOR_MASK 0x{:02X}", 0xFC).unwrap();
+        writeln!(out, ":const G_ESC_COLOR0 0x{:02X}", 0xF8).unwrap();
+        writeln!(out, ":const G_ESC_COLOR1 0x{:02X}", 0xF9).unwrap();
+        writeln!(out, ":const G_ESC_COLOR2 0x{:02X}", 0xFA).unwrap();
+        writeln!(out, ":const G_ESC_COLOR3 0x{:02X}", 0xFB).unwrap();
         writeln!(out, "## End Text Header").unwrap();
     }
 

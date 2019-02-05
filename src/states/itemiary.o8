@@ -13,13 +13,13 @@
   ;
 
 : itemiary_next_entry
-  v0 := treasure_prefab_count
+  v0 := TREASURE_COUNT
   screen_updown_up
   iteminfo_display
   ;
 
 : itemiary_prev_entry
-  v0 := treasure_prefab_count
+  v0 := TREASURE_COUNT
   screen_updown_down
   iteminfo_display
   ;
