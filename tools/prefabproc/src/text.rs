@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 use std::io::Write;
 
+use suffix::SuffixTable;
+
 use crate::font::Font;
 
 /*
@@ -21,6 +23,7 @@ pub enum Symbol {
 pub struct Entry {
     name: String,
     contents: Vec<Symbol>,
+    raw: String,
     px: Option<usize>,
     ref_count: usize,
 }
@@ -81,7 +84,7 @@ impl Dictionary {
                     }
                 }
 
-                let e = Entry { name: String::from(name), contents: v, ref_count: 1, px: None };
+                let e = Entry { name: String::from(name), raw: String::from(entry), contents: v, ref_count: 1, px: None };
                 self.entries.insert(String::from(name), e);
             }
         }
@@ -101,50 +104,24 @@ impl Dictionary {
             } else {
                 v.push(Symbol::Glyph(data.chars().next().unwrap()));
             }
-            let e = Entry { name: String::from(name), contents: v, ref_count: 1, px: Some(self.font.get_width(data)) };
+            let e = Entry { name: String::from(name), raw: String::from(data), contents: v, ref_count: 1, px: Some(self.font.get_width(data)) };
             self.entries.insert(String::from(name), e);
         }
     }
 
 
     pub fn process(&mut self) {
+        let mut corpus: Vec<SuffixTable> = Vec::new();// String::from("ABC ABCD BCDE DEF");
+        let mut combined = String::new();
+        for (_k, e) in &self.entries {
+            corpus.push(SuffixTable::new(e.raw.clone()));
+            combined.push_str(&e.raw);
+            combined.push('~');
+        }
+        let combined_suffix = SuffixTable::new(&combined);
+        //println!("{:?}", corpus);
+        //println!("{:?}", combined_suffix);
 
-
-        /*
-            fn process_strings(texts: &HashMap<String, String>, data_dest: &mut Write, _header_dest: &mut Write) {
-                let mut words = HashMap::<String, Vec<Symbol>>::new();
-
-                for (name, data) in texts {
-                    println!("INPUT:    {} {:?}\n", name, data);
-                    let mut phrasevec = Vec::<Symbol>::new();
-
-                    for w in data.split_whitespace() {
-
-                        let trimmed = w.trim_matches(|c| c == '{' || c == '}');
-                        if w.chars().count() != trimmed.chars().count() {
-                            println!("Brackets: {} {}", &w, &trimmed);
-                            break;
-                        } else {
-                            let mut svec = Vec::<Symbol>::new();
-                            for letter in w.chars() {
-                                svec.push(Symbol::Letter(letter));
-                            }
-                            if ! words.contains_key(&w.to_string()) {
-                                words.insert(w.to_string(), svec.clone());
-                                wordvec.push((w.to_string(), svec.clone()));
-                            }
-                            phrasevec.push(Symbol::Word(w.to_string()));
-
-                        }
-                    }
-
-                    if ! words.contains_key(&name.to_string()) {
-                        words.insert(name.to_string(), phrasevec.clone());
-                        wordvec.push((name.to_string(), phrasevec.clone()));
-                    }
-                }
-
-        */
 
     }
 
@@ -155,8 +132,8 @@ impl Dictionary {
         writeln!(out, ":const G_ESC_MASK {:02X}", 0xF8).unwrap();
         writeln!(out, ":const G_ESC_END {:02X}", 0xFF).unwrap();
         writeln!(out, ":const G_ESC_WORD {:02X}", 0xFE).unwrap();
-        writeln!(out, ":const G_ESC_UNUSEDA {:02X}", 0xFD).unwrap();
-        writeln!(out, ":const G_ESC_UNUSEDB {:02X}", 0xFC).unwrap();
+        writeln!(out, ":const G_ESC_SUB {:02X}", 0xFD).unwrap();
+        writeln!(out, ":const G_ESC_SPACE {:02X}", 0xFC).unwrap();
         writeln!(out, ":const G_ESC_COLOR_MASK {:02X}", 0xFC).unwrap();
         writeln!(out, ":const G_ESC_COLOR0 {:02X}", 0xF8).unwrap();
         writeln!(out, ":const G_ESC_COLOR1 {:02X}", 0xF9).unwrap();

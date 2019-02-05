@@ -97,6 +97,7 @@ impl Font {
     }
 
     pub fn data(&self, out: &mut Write) {
+        let mut bytes = 0;
         writeln!(out, "## Font Data\n: glyph_data").unwrap();
         for (c, g) in &self.glyphs {
             if g.ref_count > 0 {
@@ -105,12 +106,13 @@ impl Font {
                     let b = g.bytes.get(i).unwrap_or(&0);
                     write!(out, " 0x{:02X}", b).unwrap();
                 }
+                bytes += self.height;
                 writeln!(out, " # {} px", g.width).unwrap();
             } else {
                 writeln!(out, "# glyph_{} Unused", c).unwrap();
             }
         }
-        writeln!(out, "## End Font Data").unwrap();
+        writeln!(out, "## End Font Data  {} bytes", bytes).unwrap();
     }
 
     pub fn code(&self, out: &mut Write) {
