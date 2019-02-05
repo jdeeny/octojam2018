@@ -72,24 +72,43 @@ impl Font {
     }
 
     pub fn header(&self, out: &mut Write) {
-        let mut count = 0;
-        writeln!(out, "## Font Header").unwrap();
+        let mut max = 0;
         for (c, g) in &self.glyphs {
-            writeln!(out, ":const G_{} {} # Uses: {}", c, count, g.ref_count).unwrap();
-            count += 1;
+            max = max.max(g.ref_count);
         }
+        let graphw = 45;
+        let graphmult: f32 = graphw as f32 / max as f32;
+        writeln!(out, "## Font Header").unwrap();
+
+        let mut used = 0;
+        for (c, g) in &self.glyphs {
+            let s;
+            if g.ref_count > 0 {
+                s = format!(":const G_{} {:3}   # Uses: {}", c, used, g.ref_count);
+            } else {
+                s = format!("#const G_{} {:3}   # Uses: {}", c, "", g.ref_count);
+            }
+            let w: usize = (g.ref_count as f32 * graphmult) as usize;
+            writeln!(out, "{:35} [{}{}]", s, "#".repeat(w),  " ".repeat(graphw - w)).unwrap();
+            if g.ref_count > 0 { used += 1 }
+        }
+        writeln!(out, "# {} of {} glyphs in use", used, self.glyphs.len()).unwrap();
         writeln!(out, "## End Font Header").unwrap();
     }
 
     pub fn data(&self, out: &mut Write) {
-        writeln!(out, "## Font Data\n : glyph_data").unwrap();
+        writeln!(out, "## Font Data\n: glyph_data").unwrap();
         for (c, g) in &self.glyphs {
-            write!(out, ": glyph_{} {}", c, g.width).unwrap();
-            for i in 0..self.height {
-                let b = g.bytes.get(i).unwrap_or(&0);
-                write!(out, " 0x{:02X}", b).unwrap();
+            if g.ref_count > 0 {
+                write!(out, ": glyph_{} {}", c, g.width).unwrap();
+                for i in 0..self.height {
+                    let b = g.bytes.get(i).unwrap_or(&0);
+                    write!(out, " 0x{:02X}", b).unwrap();
+                }
+                writeln!(out, " # {} px", g.width).unwrap();
+            } else {
+                writeln!(out, "# glyph_{} Unused", c).unwrap();
             }
-            writeln!(out, " # {} px", g.width).unwrap();
         }
         writeln!(out, "## End Font Data").unwrap();
     }
