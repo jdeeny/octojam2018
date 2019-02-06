@@ -169,9 +169,9 @@ impl Dictionary {
                     match symbol {
                         Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
                         Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
-                        Symbol::Color(c) => { write!(out, "{{ G_ESC_COLOR }} tobytes color_{}", c).unwrap(); },
-                        Symbol::Sound(sound) => { write!(out, "{{ G_ESC_SOUND }} tobytes sfx_{}", sound).unwrap(); },
-                        Symbol::Portrait(portrait) => { write!(out, "{{ G_ESC_PORTRAIT }} tobytes portrait_{} ", portrait).unwrap(); },
+                        Symbol::Color(c) => { /*write!(out, "{{ G_ESC_COLOR }} tobytes color_{}", c).unwrap();*/ },
+                        Symbol::Sound(sound) => { /*write!(out, "{{ G_ESC_SOUND }} tobytes sfx_{}", sound).unwrap();*/ },
+                        Symbol::Portrait(portrait) => { /*write!(out, "{{ G_ESC_PORTRAIT }} tobytes portrait_{} ", portrait).unwrap();*/ },
                         Symbol::Prompt(prompt) => { write!(out, "{{ G_ESC_PROMPT }} tobytes word_{} ", prompt).unwrap(); },
                     }
                 }
