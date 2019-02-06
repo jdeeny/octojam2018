@@ -153,13 +153,11 @@ impl Dictionary {
         writeln!(out, "## Text Data").unwrap();
         while to_output.len() > 0 {
             let name = to_output.pop_front().unwrap();
-            println!("attempt {}", name);
             let data = self.entries.get(&name).unwrap();
             let mut ok = true;
             for s in data.contents.iter() {
                 if let Symbol::Word(w, _) = s {
                     if !complete.contains(w) {
-                        println!("pushback: {}", w);
                         ok = false;
                     }
                 }
