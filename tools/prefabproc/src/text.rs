@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::io::Write;
 
 use suffix::SuffixTable;
@@ -141,23 +141,47 @@ impl Dictionary {
     pub fn data(&self, out: &mut Write) {
         self.font.data(out);
 
+        let mut to_output: VecDeque<String> = VecDeque::new();
+        let mut complete: HashSet<String> = HashSet::new();
+        for (n, _) in &self.entries {
+            to_output.push_back(n.clone());
+        }
+
+
         writeln!(out, "## Text Data").unwrap();
-        for (name, data) in &self.entries {
-            //println!("{:?} -> {:?}", name, data);
-            let px = data.px.unwrap_or(0);
-            write!(out, ": word_{} {{ {} }} ", name, px).unwrap();
-            for symbol in data.contents.iter() {
-                match symbol {
-                    Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
-                    Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
-                    Symbol::Color(c) => { write!(out, "{{ G_ESC_COLOR }} tobytes color_{}", c).unwrap(); },
-                    Symbol::Sound(sound) => { write!(out, "{{ G_ESC_SOUND }} tobytes sfx_{}", sound).unwrap(); },
-                    Symbol::Portrait(portrait) => { write!(out, "{{ G_ESC_PORTRAIT }} tobytes portrait_{} ", portrait).unwrap(); },
-                    Symbol::Prompt(prompt) => { write!(out, "{{ G_ESC_PROMPT }} tobytes word_{} ", prompt).unwrap(); },
+        while to_output.len() > 0 {
+            let name = to_output.pop_front().unwrap();
+            println!("attempt {}", name);
+            let data = self.entries.get(&name).unwrap();
+            let mut ok = true;
+            for s in data.contents.iter() {
+                if let Symbol::Word(w, _) = s {
+                    if !complete.contains(w) {
+                        println!("pushback: {}", w);
+                        ok = false;
+                    }
                 }
             }
-            writeln!(out, "{{ G_ESC_END }}").unwrap();
+            if ok {
+                let px = data.px.unwrap_or(0);
+                write!(out, ": word_{} {{ {} }} ", name, px).unwrap();
+                for symbol in data.contents.iter() {
+                    match symbol {
+                        Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
+                        Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
+                        Symbol::Color(c) => { write!(out, "{{ G_ESC_COLOR }} tobytes color_{}", c).unwrap(); },
+                        Symbol::Sound(sound) => { write!(out, "{{ G_ESC_SOUND }} tobytes sfx_{}", sound).unwrap(); },
+                        Symbol::Portrait(portrait) => { write!(out, "{{ G_ESC_PORTRAIT }} tobytes portrait_{} ", portrait).unwrap(); },
+                        Symbol::Prompt(prompt) => { write!(out, "{{ G_ESC_PROMPT }} tobytes word_{} ", prompt).unwrap(); },
+                    }
+                }
+                writeln!(out, "{{ G_ESC_END }}").unwrap();
+                complete.insert(name);
+            } else {
+                to_output.push_back(name.clone());
+            }
         }
+
         writeln!(out, "## End Text Data").unwrap();
     }
 
