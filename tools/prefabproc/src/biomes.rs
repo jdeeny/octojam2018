@@ -3,6 +3,7 @@ use std::io::Write;
 use std::ops::Add;
 
 use crate::text::Dictionary;
+use crate::datatable::*;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Biome {

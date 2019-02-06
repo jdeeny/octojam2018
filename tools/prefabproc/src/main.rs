@@ -9,6 +9,7 @@ mod biomes;
 mod enemies;
 mod treasure;
 mod text;
+mod datatable;
 
 fn read_file(filename: &str) -> String {
     let mut toml_file = File::open(filename).unwrap();

@@ -182,7 +182,7 @@ impl Dictionary {
             }
         }
 
-        writeln!(out, "## End Text Data").unwrap();
+        writeln!(out, "## End Text Data  {} bytes", self.data_size()).unwrap();
     }
 
     pub fn code(&self, out: &mut Write) {
@@ -192,7 +192,22 @@ impl Dictionary {
         writeln!(out, "## End Text Code").unwrap();
     }
 
-
+    pub fn data_size(&self) -> usize {
+        let mut total = 0;
+        for (n, e) in self.entries.iter() {
+            for symbol in e.contents.iter() {
+                match symbol {
+                    Symbol::Glyph(c) => { total += 1; },
+                    Symbol::Word(w, _) => { total += 3; },
+                    Symbol::Color(c) => { /* total += 1; */ },
+                    Symbol::Sound(sound) => { /* total += 3; */ },
+                    Symbol::Portrait(portrait) => { /* total += 3; */ },
+                    Symbol::Prompt(prompt) => { /* total += 3; */},
+                }
+            }
+        }
+        return total;
+    }
 
     /* pub fn optimize(in: &Dictionary) -> Result<Dictionary, Error> {
         let mut corpus: Vec<SuffixTable> = Vec::new();// String::from("ABC ABCD BCDE DEF");
