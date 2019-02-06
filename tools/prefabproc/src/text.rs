@@ -2,6 +2,9 @@ use std::collections::BTreeMap;
 use std::io::Write;
 
 use suffix::SuffixTable;
+use argmin::prelude::*;
+use argmin::solver::simulatedannealing::{SATempFunc, SimulatedAnnealing};
+
 
 use crate::font::Font;
 
@@ -20,6 +23,7 @@ pub enum Symbol {
     Portrait(String),
     Prompt(String),
 }
+
 pub struct Entry {
     name: String,
     contents: Vec<Symbol>,
@@ -31,7 +35,9 @@ pub struct Entry {
 pub struct Dictionary {
     font: Font,
     entries: BTreeMap<String, Entry>,
+    //input_bytes: usize,
 }
+
 
 impl Dictionary {
     pub fn new(mut font: Font) -> Self {
@@ -111,16 +117,6 @@ impl Dictionary {
 
 
     pub fn process(&mut self) {
-        let mut corpus: Vec<SuffixTable> = Vec::new();// String::from("ABC ABCD BCDE DEF");
-        let mut combined = String::new();
-        for (_k, e) in &self.entries {
-            corpus.push(SuffixTable::new(e.raw.clone()));
-            combined.push_str(&e.raw);
-            combined.push('~');
-        }
-        let combined_suffix = SuffixTable::new(&combined);
-        //println!("{:?}", corpus);
-        //println!("{:?}", combined_suffix);
 
 
     }
@@ -172,26 +168,123 @@ impl Dictionary {
         writeln!(out, "## End Text Code").unwrap();
     }
 
+
+
+    /* pub fn optimize(in: &Dictionary) -> Result<Dictionary, Error> {
+        let mut corpus: Vec<SuffixTable> = Vec::new();// String::from("ABC ABCD BCDE DEF");
+        let mut combined = String::new();
+        for (_k, e) in &self.entries {
+            corpus.push(SuffixTable::new(e.raw.clone()));
+            combined.push_str(&e.raw);
+            combined.push('~');
+        }
+        let combined_suffix = SuffixTable::new(&combined);
+        //println!("{:?}", corpus);
+        //println!("{:?}", combined_suffix);
+
+        // Define cost function
+        //let operator = Rosenbrock::new(1.0, 100.0, lower_bound, upper_bound);
+        // definie inital parameter vector
+        let init_param: Vec<f64> = vec![1.0, 1.2];
+        // Define initial temperature
+        let temp = 15.0;
+        // Set up simulated annealing solver
+        let mut solver = SimulatedAnnealing::new(&operator, init_param, temp)?;
+
+        // Optional: Define temperature function (defaults to `SATempFunc::TemperatureFast`)
+        solver.temp_func(SATempFunc::Boltzmann);
+        solver.add_logger(ArgminSlogLogger::term());    // Optional: Attach a logger
+
+        /////////////////////////
+       // Stopping criteria   //
+       /////////////////////////
+       solver.set_max_iters(1_000);     // Optional: Set maximum number of iterations (defaults to `std::u64::MAX`)
+       solver.set_target_cost(0.0);     // Optional: Set target cost function value (defaults to `std::f64::NEG_INFINITY`)
+       solver.stall_best(100);          // Optional: stop if there was no new best solution after 100 iterations
+       solver.stall_accepted(100);      // Optional: stop if there was no accepted solution after 100 iterations
+
+       /////////////////////////
+       // Reannealing         //
+       /////////////////////////
+       solver.reannealing_fixed(100);   // Optional: Reanneal after 100 iterations (resets temperature to initial temperature)
+       solver.reannealing_accepted(50); // Optional: Reanneal after no accepted solution has been found for 50 iterations
+       solver.reannealing_best(80);     // Optional: Start reannealing after no new best solution has been found for 80 iterations
+
+       /////////////////////////
+       // Run solver          //
+       /////////////////////////
+       solver.run()?;
+       std::thread::sleep(std::time::Duration::from_secs(1));   // Wait a second (lets the logger flush everything before printing again)
+       println!("{:?}", solver.result());
+       Ok(())
+   }*/
+
+
 }
 
-/*    fn add_text(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: Option<&str>) {
-        if let Some(text) = &text {
-            let mut key: String = String::from(name);
-            if subname.chars().count() > 0 {
-                key.push('-');
-                key.push_str(subname);
-            }
-            self.insert(key, text.to_string());
-        }
-    }*/
 
-/*    fn add_text_string(text_strings: &mut HashMap<String, String>, name: &str, subname: &str, text: &Option<String>) { // forgive me rust gods
-        if let Some(text) = &text {
-            let mut key: String = String::from(name);
-            if subname.chars().count() > 0 {
-                key.push('-');
-                key.push_str(subname);
-            }
-            self.insert(key, text.to_string());
+/*#[derive(Clone)]
+struct DictionaryCost {
+    /// Parameter a, usually 1.0
+    a: f64,
+    /// Parameter b, usually 100.0
+    b: f64,
+    /// lower bound
+    lower_bound: Vec<f64>,
+    /// upper bound
+    upper_bound: Vec<f64>,
+    /// Random number generator. We use a `RefCell` here because `ArgminOperator` requires `self`
+    /// to be passed as an immutable reference. `RefCell` gives us interior mutability.
+    rng: RefCell<ThreadRng>,
+}
+
+impl Rosenbrock {
+    /// Constructor
+    pub fn new(a: f64, b: f64, lower_bound: Vec<f64>, upper_bound: Vec<f64>) -> Self {
+        Rosenbrock {
+            a,
+            b,
+            lower_bound,
+            upper_bound,
+            rng: RefCell::new(rand::thread_rng()),
         }
-    }*/
+    }
+}
+
+impl ArgminOperator for Rosenbrock {
+    type Parameters = Vec<f64>;
+    type OperatorOutput = f64;
+    type Hessian = ();
+
+    fn apply(&self, param: &Vec<f64>) -> Result<f64, Error> {
+        Ok(rosenbrock(param, self.a, self.b))
+    }
+
+    /// This function is called by the annealing function
+    fn modify(&self, param: &Vec<f64>, temp: f64) -> Result<Vec<f64>, Error> {
+        let mut param_n = param.clone();
+        // Perform modifications to a degree proportional to the current temperature `temp`.
+        for _ in 0..(temp.floor() as u64 + 1) {
+            // Compute random index of the parameter vector using the supplied random number
+            // generator.
+            let idx = self.rng.borrow_mut().gen_range(0, param.len());
+
+            // Compute random number in [0.01, 0.01].
+            let val = 0.01 * self.rng.borrow_mut().gen_range(-1.0, 1.0);
+
+            // modify previous parameter value at random position `idx` by `val`
+            let tmp = param[idx] + val;
+
+            // check if bounds are violated. If yes, project onto bound.
+            if tmp > self.upper_bound[idx] {
+                param_n[idx] = self.upper_bound[idx];
+            } else if tmp < self.lower_bound[idx] {
+                param_n[idx] = self.lower_bound[idx];
+            } else {
+                param_n[idx] = param[idx] + val;
+            }
+        }
+        Ok(param_n)
+    }
+}
+*/
