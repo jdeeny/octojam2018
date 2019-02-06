@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 use std::io::Write;
+use std::ops::Add;
 
 use crate::text::Dictionary;
 
@@ -30,6 +31,7 @@ impl Biomes {
 
     pub fn header(&self, out: &mut Write) {
         writeln!(out, "## Biome Header").unwrap();
+        writeln!(out, ":const BIOME_NARRATION_NONE 0").unwrap();
         writeln!(out, ":const BIOME_COUNT {}", self.biomes.len()).unwrap();
         writeln!(out, ":const BIOME_LAST {}", self.biomes.len() - 1).unwrap();
 
@@ -55,15 +57,15 @@ impl Biomes {
             for level in 0..data.levels {
                 let narration: String;
                 if level > 0 {
-                    narration = String::from("none");
-                } else if let Some(_n) = data.narration.clone() {
-                    narration = name.to_string();
+                    narration = String::from("BIOME_NARRATION_NONE");
+                } else if let Some(n) = data.narration.clone() {
+                    narration = format!("word_narration_{}", name);
                 } else {
-                    narration = String::from("none");
+                    narration = String::from("BIOME_NARRATION_NONE");
                 }
                 let level_name = format!("{}{}", &name, &level);
                 let _level_display = format!("{}  -  {}", name, level + 1);
-                write!(out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} 0 0\n", level_name, level_name, narration, name).unwrap();
+                write!(out, ": biome_{} tobytes word_Biome_Name_{} tobytes {} tobytes enemyset_{} 0 0\n", level_name, level_name, narration, name).unwrap();
             }
         }
         writeln!(out, "## End Biome Data").unwrap();

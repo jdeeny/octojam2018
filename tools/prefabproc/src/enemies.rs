@@ -48,6 +48,25 @@ impl Enemies {
 
     pub fn data(&self, out: &mut Write) {
         writeln!(out, "## Enemy Data").unwrap();
+        writeln!(out, "### Enemy Prefabs ###").unwrap();
+        for (name, data) in self.enemies.iter() {
+            let x = 0;
+            let y = 0;
+            let flags = 0;
+            let mut ai = String::from("default");
+            if let Some(a) = &data.ai { ai = a.clone();}
+            let sprite = data.art.clone();
+
+            write!(out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name).unwrap();
+            writeln!(out, " # '{}'", name).unwrap();
+        }
+        writeln!(out, "0xFF\n### End Enemy Prefabs ###\n\n").unwrap();
+
+        writeln!(out, "\n: enemy_ptrs\n").unwrap();
+        for  (name, data) in self.enemies.iter() {
+            writeln!(out, "    tobytes enemy_{}", name).unwrap();
+        }
+
         writeln!(out, "## End Enemy Data").unwrap();
     }
 
@@ -77,23 +96,10 @@ impl Enemies {
 
 /*
 
-fn process_enemy_lists(Enemys: &BTreeMap<String, Enemy>, _text_strings: &mut HashMap<String, String>, data_out: &mut Write, _header_out: &mut Write) {
-    println!("Processing Enemy Enemy Lists");
-    writeln!(data_out, "### Enemy Enemy Lists ###").unwrap();
-    for (name, data) in Enemys.iter() {
-        write!(data_out, ": enemyset_{} {} ", name, data.enemies.len()).unwrap();
-        for e in &data.enemies {
-            write!(data_out, "tobytes enemy_{} ", &e).unwrap();
-        }
-        writeln!(data_out, "").unwrap();
-    }
-    writeln!(data_out, "  ### End Enemy Lists ###\n\n").unwrap();
-}
 
 
 
-
-fn enemies_make_strings(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, _data_out: &mut Write, _header_out: &mut Write) {
+fn enemies_make_strings(enemies: &BTreeMap<String, Enemy>, text_strings: &mut HashMap<String, String>, _out: &mut Write, _header_out: &mut Write) {
     for (name, data) in enemies.iter() {
         add_text(text_strings, name, "name", Some(&data.name));
         //add_text(text_strings, name, "name", Some(name));
@@ -103,9 +109,9 @@ fn enemies_make_strings(enemies: &BTreeMap<String, Enemy>, text_strings: &mut Ha
 }
 
 
-fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMap<String, String>, data_out: &mut Write, header_out: &mut Write) {
+fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMap<String, String>, out: &mut Write, header_out: &mut Write) {
     println!("Processing Enemies");
-    writeln!(data_out, "### Enemy Prefabs ###").unwrap();
+    writeln!(out, "### Enemy Prefabs ###").unwrap();
     for (name, data) in enemies.iter() {
         let x = 0;
         let y = 0;
@@ -114,10 +120,10 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMa
         if let Some(a) = &data.ai { ai = a.clone();}
         let sprite = data.art.clone();
 
-        write!(data_out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
-        writeln!(data_out, " # '{}'", name);
+        write!(out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name);
+        writeln!(out, " # '{}'", name);
     }
-    writeln!(data_out, "0xFF\n### End Enemy Prefabs ###\n\n");
+    writeln!(out, "0xFF\n### End Enemy Prefabs ###\n\n");
 
     writeln!(header_out, ":const enemy_prefab_count {}", enemies.keys().count());
     writeln!(header_out, ":const enemy_offset_x 0\n");
@@ -129,9 +135,9 @@ fn process_enemies(enemies: &BTreeMap<String, Enemy>, _text_strings: &mut HashMa
     writeln!(header_out, ":const enemy_offset_ai 9\n");
     writeln!(header_out, ":const enemy_offset_name 11");
     writeln!(header_out, ":const enemy_table_bytes 13");
-    writeln!(data_out, "\n: enemy_ptrs\n");
+    writeln!(out, "\n: enemy_ptrs\n");
     for  (name, data) in enemies.iter() {
-        writeln!(data_out, "    tobytes enemy_{}", name);
+        writeln!(out, "    tobytes enemy_{}", name);
     }
 
 }
