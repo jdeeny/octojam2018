@@ -44,19 +44,19 @@ fn main() {
     dict.process();
 
     dict.header(&mut header_dest);
-    biomes.header(&mut header_dest);
     enemies.header(&mut header_dest);
+    biomes.header(&mut header_dest);
     treasure.header(&mut header_dest);
 
     dict.data(&mut data_dest);
-    biomes.data(&mut data_dest);
     enemies.data(&mut data_dest);
+    biomes.data(&mut data_dest);
     treasure.data(&mut data_dest);
 
     writeln!(data_dest, ": entity_table_address tobytes entity_table").unwrap();
 
     dict.code(&mut code_dest);
-    biomes.code(&mut code_dest);
     enemies.code(&mut code_dest);
+    biomes.code(&mut code_dest);
     treasure.code(&mut code_dest);
 }

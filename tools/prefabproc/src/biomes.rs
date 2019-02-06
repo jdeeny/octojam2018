@@ -42,11 +42,17 @@ impl Biomes {
 
     pub fn data(&self, out: &mut Write) {
         writeln!(out, "## Biome Data").unwrap();
+        for (name, data) in self.biomes.iter() {
+            write!(out, ": enemyset_{} {} ", name, data.enemies.len()).unwrap();
+            for e in &data.enemies {
+                write!(out, "tobytes enemy_{} ", &e).unwrap();
+            }
+            writeln!(out, "").unwrap();
+        }
+
         writeln!(out, ": biome_data").unwrap();
-        let mut count = 0;
         for (name, data) in self.sorted_biomes.iter() {
             for level in 0..data.levels {
-                count += 1;
                 let narration: String;
                 if level > 0 {
                     narration = String::from("none");
@@ -60,8 +66,6 @@ impl Biomes {
                 write!(out, ": biome_{} tobytes word_Biome_Name_{} tobytes word_narration_{} tobytes enemyset_{} 0 0\n", level_name, level_name, narration, name).unwrap();
             }
         }
-
-
         writeln!(out, "## End Biome Data").unwrap();
     }
 

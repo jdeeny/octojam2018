@@ -125,7 +125,7 @@ impl Dictionary {
     pub fn header(&self, out: &mut Write) {
         self.font.header(out);
         writeln!(out, "## Text Header").unwrap();
-        writeln!(out, ":const G_ESC_MASK 0x{:02X}", 0xF8).unwrap();
+        writeln!(out, ":const G_ESC_MASK 0x{:02X}", 0xF0).unwrap();
         writeln!(out, ":const G_ESC_END 0x{:02X}", 0xFF).unwrap();
         writeln!(out, ":const G_ESC_WORD 0x{:02X}", 0xFE).unwrap();
         writeln!(out, ":const G_ESC_SUB 0x{:02X}", 0xFD).unwrap();
@@ -135,6 +135,8 @@ impl Dictionary {
         writeln!(out, ":const G_ESC_COLOR1 0x{:02X}", 0xF9).unwrap();
         writeln!(out, ":const G_ESC_COLOR2 0x{:02X}", 0xFA).unwrap();
         writeln!(out, ":const G_ESC_COLOR3 0x{:02X}", 0xFB).unwrap();
+        writeln!(out, ":const G_ESC_SFX 0x{:02X}", 0xF7).unwrap();
+        writeln!(out, ":const G_ESC_PORTRAIT 0x{:02X}", 0xF6).unwrap();
         writeln!(out, "## End Text Header").unwrap();
     }
 
