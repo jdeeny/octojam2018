@@ -459,22 +459,15 @@
 ## Biome Data
 ## Biomes Data Table  - 9 entries x 8 bytes = 72 bytes
 #  | name | narration | enemyset | treasureset | 
-:ruin TB Ruins0 TB word_narration_{portrait:static}_...
-{sound:hello}_..._Hello?_...
-{portrait:gc}_Hey,_are_you_still_alive?
-Cool.
-...
-Look,_I_haven't_really_been_paying_attention._Did_you_find_the_treasure_yet?
-Come_on,_I_know_it's_your_first_job,_but_it's_not_that_hard.
-Anyway,_I've_turned_my_radio_back_on._{color:red}_Good_luck!_{color:normal} TB word_narration_Ruins TB  
-:ruin TB Ruins1 TB BIOME_NARRATION_NONE TB word_narration_Ruins TB  
-:ruin TB Ruins2 TB BIOME_NARRATION_NONE TB word_narration_Ruins TB  
-:lab TB Lab0 TB word_narration_There's_probably_some_fancy_stuff_in_there._Make_sure_to_bring_it_all_back_with_you! TB word_narration_Lab TB  
-:lab TB Lab1 TB BIOME_NARRATION_NONE TB word_narration_Lab TB  
-:lab TB Lab2 TB BIOME_NARRATION_NONE TB word_narration_Lab TB  
-:power_plant TB Power_Plant0 TB word_narration_They_used_geothermal_energy,_so_you_must_be_close_to_the_end._Good_luck! TB word_narration_Power_Plant TB  
-:power_plant TB Power_Plant1 TB BIOME_NARRATION_NONE TB word_narration_Power_Plant TB  
-:power_plant TB Power_Plant2 TB BIOME_NARRATION_NONE TB word_narration_Power_Plant TB  
+:Ruins0 TB word_Biome_Name_ruin0 TB word_narration_ruin TB word_narration_ruin TB treasureset_ruin 
+:Ruins1 TB word_Biome_Name_ruin1 TB BIOME_NARRATION_NONE TB word_narration_ruin TB treasureset_ruin 
+:Ruins2 TB word_Biome_Name_ruin2 TB BIOME_NARRATION_NONE TB word_narration_ruin TB treasureset_ruin 
+:Lab0 TB word_Biome_Name_lab0 TB word_narration_lab TB word_narration_lab TB treasureset_lab 
+:Lab1 TB word_Biome_Name_lab1 TB BIOME_NARRATION_NONE TB word_narration_lab TB treasureset_lab 
+:Lab2 TB word_Biome_Name_lab2 TB BIOME_NARRATION_NONE TB word_narration_lab TB treasureset_lab 
+:Power Plant0 TB word_Biome_Name_power_plant0 TB word_narration_power_plant TB word_narration_power_plant TB treasureset_power_plant 
+:Power Plant1 TB word_Biome_Name_power_plant1 TB BIOME_NARRATION_NONE TB word_narration_power_plant TB treasureset_power_plant 
+:Power Plant2 TB word_Biome_Name_power_plant2 TB BIOME_NARRATION_NONE TB word_narration_power_plant TB treasureset_power_plant 
 
 ## End Biome Data
 

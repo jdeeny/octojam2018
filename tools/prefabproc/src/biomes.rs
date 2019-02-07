@@ -38,14 +38,16 @@ impl Biomes {
         sorted_biomes.sort_by_key(|x| x.1.order );
 
         for (n, b) in &sorted_biomes {
-            let mut narration_str = format!("word_narration_{}", &b.narration.clone().unwrap());
+            let mut narration_str = format!("word_narration_{}", &n);
             for level in 0 .. b.levels {
                 //let name_str = format!("word_Biome_Name_{}", b.name);
-                let enemyset = format!("word_narration_{}", &b.name);
+                let enemyset = format!("word_narration_{}", &n);
                 let level_name = format!("{}{}", &b.name, level);
+                let name_str = format!("word_Biome_Name_{}{}", &n, level);
+                let treasureset = format!("treasureset_{}", &n);
                 if level > 0 { narration_str = String::from("BIOME_NARRATION_NONE") }
-                let row: Vec<Data> = vec!(Data::Label(level_name), Data::Label(narration_str.clone()), Data::Label(enemyset), Data::Label("".into()));
-                dt.add(&n, row);
+                let row: Vec<Data> = vec!(Data::Label(name_str), Data::Label(narration_str.clone()), Data::Label(enemyset), Data::Label(treasureset));
+                dt.add(&level_name, row);
             }
         }
 
