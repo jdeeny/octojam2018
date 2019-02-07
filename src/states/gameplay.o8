@@ -55,7 +55,7 @@ recompose-whole-screen
   v1 += 1
   save v1 - v1
   v0 := STATE_NEWLEVEL
-  if v1 == BIOME_COUNT then v0 := STATE_ENDING
+  if v1 == BIOMES_COUNT then v0 := STATE_ENDING
   vF := vF
   :breakpoint v1=newlevelnum
   state_switch

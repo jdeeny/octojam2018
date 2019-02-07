@@ -92,7 +92,7 @@ impl Biomes {
 
     pub fn code(&self, out: &mut Write) {
         writeln!(out, "## Biome Code").unwrap();
-        write!(out, "{}", self.biomes.octo_code());
+        write!(out, "{}", self.biomes.octo_code()).unwrap();
         writeln!(out, "## End Biome Code").unwrap();
     }
 

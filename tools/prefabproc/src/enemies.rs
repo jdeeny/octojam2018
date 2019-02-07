@@ -3,6 +3,7 @@ use std::io::Write;
 use toml::Value;
 
 use crate::text::Dictionary;
+use crate::datatable::*;
 
 #[derive(Debug, Deserialize)]
 struct Enemy {
@@ -12,7 +13,7 @@ struct Enemy {
     ac: Option<usize>,
     ammo: Option<usize>,
     reload: Option<usize>,
-    ai: Option<String>,
+    ai: String,
     speed: Option<usize>,
     treasure: Option<Vec<Value>>,
     attacks: Option<Vec<Value>>,
@@ -20,16 +21,43 @@ struct Enemy {
 }
 
 pub struct Enemies {
-    enemies: BTreeMap<String, Enemy>,
+    enemies: DataTable,
+    input: BTreeMap<String, Enemy>,
 }
 
 impl Enemies {
     pub fn from_toml(toml_str: &str) -> Self {
+        let cols = vec!(
+            ("x".into(), DataKind::Byte),
+            ("y".into(), DataKind::Byte),
+            ("flags".into(), DataKind::Label),
+            ("sprite".into(), DataKind::Label),
+            ("portrait".into(), DataKind::Label),
+            ("desc".into(), DataKind::Label),
+            ("ai".into(), DataKind::Label),
+            ("name".into(), DataKind::Label),
+        );
+
         let enemies: BTreeMap<String, Enemy> = toml::from_str(toml_str).unwrap();
-        return Self { enemies: enemies };
+        let mut dt = DataTable::new("Enemies", &cols);
+
+        for (n, b) in &enemies {
+            let row: Vec<Data> = vec!(Data::Byte(0), Data::Byte(0), Data::Byte(0),
+                Data::Label(format!("SPR_{}", &b.art)), Data::Label(format!("SPR_portrait_{}", &b.art)),
+                Data::Label(format!("word_{}-desc", &n)),
+                Data::Label(format!("ai_{}", &b.ai)),
+                Data::Label(format!("word_{}-name", &n)),
+            );
+            dt.add(&n, row);
+        }
+
+        return Self { enemies: dt, input: enemies };
     }
 
     pub fn header(&self, out: &mut Write) {
+        writeln!(out, "\n## Enemy Constants").unwrap();
+        writeln!(out, "{}", self.enemies.octo_header()).unwrap();
+
         writeln!(out, "## Enemy Header").unwrap();
         writeln!(out, ":const ENEMY_COUNT {}", self.enemies.len()).unwrap();
         writeln!(out, ":const ENEMY_LAST {}", self.enemies.len() - 1).unwrap();
@@ -47,15 +75,14 @@ impl Enemies {
     }
 
     pub fn data(&self, out: &mut Write) {
-        writeln!(out, "## Enemy Data").unwrap();
+    /*    writeln!(out, "## Enemy Data").unwrap();
         writeln!(out, "### Enemy Prefabs ###").unwrap();
-        for (name, data) in self.enemies.iter() {
+        for (name, data) in self.input.iter() {
             let x = 0;
             let y = 0;
             let flags = 0;
-            let mut ai = String::from("default");
-            if let Some(a) = &data.ai { ai = a.clone();}
-            let sprite = data.art.clone();
+            let ai = &data.ai.clone();
+            let sprite = &data.art.clone();
 
             write!(out, ": enemy_{} {} {} {} tobytes SPR_{} tobytes SPR_portrait_{} tobytes word_{}-desc tobytes ai_{} tobytes word_{}-name", name, x, y, flags, sprite, sprite, name, ai, name).unwrap();
             writeln!(out, " # '{}'", name).unwrap();
@@ -63,11 +90,17 @@ impl Enemies {
         writeln!(out, "0xFF\n### End Enemy Prefabs ###\n\n").unwrap();
 
         writeln!(out, "\n: enemy_ptrs\n").unwrap();
-        for  (name, data) in self.enemies.iter() {
+        for  (name, data) in self.input.iter() {
             writeln!(out, "    tobytes enemy_{}", name).unwrap();
         }
 
         writeln!(out, "## End Enemy Data").unwrap();
+
+*/
+        writeln!(out, "\n## Enemy Data").unwrap();
+        writeln!(out, "{}", self.enemies.octo_data()).unwrap();
+        writeln!(out, "## End Enemy Data").unwrap();
+
     }
 
     pub fn code(&self, out: &mut Write) {
@@ -80,7 +113,7 @@ impl Enemies {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
-        for (name, data) in self.enemies.iter() {
+        for (name, data) in self.input.iter() {
             dict.insert_phrase(&format!("{}-name", name), &data.name);
             if let Some(desc) = &data.desc {
                 dict.insert_phrase(&format!("{}-desc", name), &desc);

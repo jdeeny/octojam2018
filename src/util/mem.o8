@@ -5,6 +5,7 @@
 :macro hilo value { :calc hi { value >> 8 } :calc lo { value & 0xFF } }
 
 :macro tobytes value { hilo value :byte hi :byte lo }
+:macro TB value { tobytes value }
 
 # Set I = address in registers
 

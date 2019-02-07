@@ -8,7 +8,7 @@
 # glyph_) Unused
 # glyph_+ Unused
 : glyph_, 3 0x00 0x00 0x00 0x00 0xC0 0x80 0x00 # 3 px
-: glyph_- 5 0x00 0x00 0xF0 0x00 0x00 0x00 0x00 # 5 px
+# glyph_- Unused
 : glyph_. 3 0x00 0x00 0x00 0xC0 0xC0 0x00 0x00 # 3 px
 # glyph_/ Unused
 : glyph_0 5 0xE0 0xE0 0xE0 0xC0 0xE0 0x00 0x00 # 5 px
@@ -78,43 +78,20 @@
 : glyph_x 4 0x00 0xC0 0x80 0x80 0xC0 0x00 0x00 # 4 px
 : glyph_y 5 0x00 0x00 0xC0 0xE0 0x80 0xE0 0x00 # 5 px
 : glyph_z 5 0x00 0xF0 0x80 0x80 0xF0 0x00 0x00 # 5 px
-## End Font Data  490 bytes
+## End Font Data  483 bytes
 ## Text Data
 : word_... { 9 } { G_. } { G_. } { G_. } { G_ESC_END }
 : word_Above { 27 } { G_A } { G_b } { G_o } { G_v } { G_e } { G_ESC_END }
-: word_Accelerator { 47 } { G_A } { G_c } { G_c } { G_e } { G_l } { G_e } { G_r } { G_a } { G_t } { G_o } { G_r } { G_ESC_END }
-: word_All { 12 } { G_A } { G_l } { G_l } { G_ESC_END }
-: word_Ancient { 31 } { G_A } { G_n } { G_c } { G_i } { G_e } { G_n } { G_t } { G_ESC_END }
 : word_Anyway, { 35 } { G_A } { G_n } { G_y } { G_w } { G_a } { G_y } { G_, } { G_ESC_END }
-: word_Apparently, { 49 } { G_A } { G_p } { G_p } { G_a } { G_r } { G_e } { G_n } { G_t } { G_l } { G_y } { G_, } { G_ESC_END }
-: word_Artificial { 36 } { G_A } { G_r } { G_t } { G_i } { G_f } { G_i } { G_c } { G_i } { G_a } { G_l } { G_ESC_END }
 : word_Assistant { 35 } { G_A } { G_s } { G_s } { G_i } { G_s } { G_t } { G_a } { G_n } { G_t } { G_ESC_END }
 : word_Average { 35 } { G_A } { G_v } { G_e } { G_r } { G_a } { G_g } { G_e } { G_ESC_END }
-: word_Back { 18 } { G_B } { G_a } { G_c } { G_k } { G_ESC_END }
-: word_Banach-Tarski { 57 } { G_B } { G_a } { G_n } { G_a } { G_c } { G_h } { G_- } { G_T } { G_a } { G_r } { G_s } { G_k } { G_i } { G_ESC_END }
 : word_Beastiary { 37 } { G_B } { G_e } { G_a } { G_s } { G_t } { G_i } { G_a } { G_r } { G_y } { G_ESC_END }
-: word_Before { 28 } { G_B } { G_e } { G_f } { G_o } { G_r } { G_e } { G_ESC_END }
-: word_Biome_Name_lab0 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_1 } { G_ESC_END }
-: word_Biome_Name_lab1 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_2 } { G_ESC_END }
-: word_Biome_Name_lab2 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_3 } { G_ESC_END }
-: word_Biome_Name_power_plant0 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_1 } { G_ESC_END }
-: word_Biome_Name_power_plant1 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_2 } { G_ESC_END }
-: word_Biome_Name_power_plant2 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_3 } { G_ESC_END }
-: word_Biome_Name_ruin0 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_1 } { G_ESC_END }
-: word_Biome_Name_ruin1 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_2 } { G_ESC_END }
-: word_Biome_Name_ruin2 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_3 } { G_ESC_END }
-: word_Blood { 23 } { G_B } { G_l } { G_o } { G_o } { G_d } { G_ESC_END }
-: word_Bullet { 25 } { G_B } { G_u } { G_l } { G_l } { G_e } { G_t } { G_ESC_END }
-: word_Cells { 19 } { G_C } { G_e } { G_l } { G_l } { G_s } { G_ESC_END }
 : word_Char_Build { 22 } { G_B } { G_u } { G_i } { G_l } { G_d } { G_: } { G_ESC_END }
-: word_Char_Build_0 { 0 } { G_A } { G_ESC_WORD } tobytes word_Little { G_ESC_WORD } tobytes word_Extra { G_ESC_END }
 : word_Char_Build_1 { 24 } { G_C } { G_u } { G_r } { G_v } { G_y } { G_ESC_END }
-: word_Char_Build_2 { 0 } { G_ESC_WORD } tobytes word_Full { G_ESC_WORD } tobytes word_Figured { G_ESC_END }
 : word_Char_Build_3 { 26 } { G_S } { G_k } { G_i } { G_n } { G_n } { G_y } { G_ESC_END }
 : word_Char_Build_4 { 35 } { G_A } { G_v } { G_e } { G_r } { G_a } { G_g } { G_e } { G_ESC_END }
 : word_Char_Build_5 { 11 } { G_F } { G_i } { G_t } { G_ESC_END }
 : word_Char_Build_6 { 28 } { G_J } { G_a } { G_c } { G_k } { G_e } { G_d } { G_ESC_END }
-: word_Char_Build_7 { 0 } { G_ESC_WORD } tobytes word_Rather { G_ESC_WORD } tobytes word_Not { G_ESC_WORD } tobytes word_Say { G_ESC_END }
 : word_Char_Eyes { 20 } { G_E } { G_y } { G_e } { G_s } { G_: } { G_ESC_END }
 : word_Char_Eyes_0 { 18 } { G_B } { G_l } { G_u } { G_e } { G_ESC_END }
 : word_Char_Eyes_1 { 24 } { G_B } { G_r } { G_o } { G_w } { G_n } { G_ESC_END }
@@ -128,30 +105,18 @@
 : word_Char_Height_0 { 35 } { G_A } { G_v } { G_e } { G_r } { G_a } { G_g } { G_e } { G_ESC_END }
 : word_Char_Height_1 { 22 } { G_S } { G_h } { G_o } { G_r } { G_t } { G_ESC_END }
 : word_Char_Height_2 { 0 } { G_ESC_WORD } tobytes word_Above { G_ESC_WORD } tobytes word_Average { G_ESC_END }
-: word_Char_Height_3 { 0 } { G_ESC_WORD } tobytes word_Very { G_ESC_WORD } tobytes word_Tall { G_ESC_END }
 : word_Char_Name { 24 } { G_N } { G_a } { G_m } { G_e } { G_: } { G_ESC_END }
 : word_Codex { 24 } { G_C } { G_o } { G_d } { G_e } { G_x } { G_ESC_END }
 : word_Come { 21 } { G_C } { G_o } { G_m } { G_e } { G_ESC_END }
 : word_Cool. { 21 } { G_C } { G_o } { G_o } { G_l } { G_. } { G_ESC_END }
-: word_Creates { 30 } { G_C } { G_r } { G_e } { G_a } { G_t } { G_e } { G_s } { G_ESC_END }
 : word_Credits { 27 } { G_C } { G_r } { G_e } { G_d } { G_i } { G_t } { G_s } { G_ESC_END }
-: word_Credits_1 { 0 } { G_ESC_WORD } tobytes word_Credits { G_ESC_WORD } tobytes word_Go { G_ESC_WORD } tobytes word_Here { G_ESC_END }
-: word_Crickets { 30 } { G_C } { G_r } { G_i } { G_c } { G_k } { G_e } { G_t } { G_s } { G_ESC_END }
-: word_Dampener { 39 } { G_D } { G_a } { G_m } { G_p } { G_e } { G_n } { G_e } { G_r } { G_ESC_END }
 : word_Did { 12 } { G_D } { G_i } { G_d } { G_ESC_END }
 : word_Dig { 12 } { G_D } { G_i } { G_g } { G_ESC_END }
-: word_Doesn't { 29 } { G_D } { G_o } { G_e } { G_s } { G_n } { G_' } { G_t } { G_ESC_END }
 : word_Don't { 21 } { G_D } { G_o } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_Electrical { 38 } { G_E } { G_l } { G_e } { G_c } { G_t } { G_r } { G_i } { G_c } { G_a } { G_l } { G_ESC_END }
-: word_End_Win_Msg { 0 } { G_ESC_WORD } tobytes word_You { G_ESC_WORD } tobytes word_Win!! { G_ESC_END }
-: word_Enlargener { 44 } { G_E } { G_n } { G_l } { G_a } { G_r } { G_g } { G_e } { G_n } { G_e } { G_r } { G_ESC_END }
 : word_Entering { 34 } { G_E } { G_n } { G_t } { G_e } { G_r } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_Explore { 30 } { G_E } { G_x } { G_p } { G_l } { G_o } { G_r } { G_e } { G_ESC_END }
 : word_Extra { 21 } { G_E } { G_x } { G_t } { G_r } { G_a } { G_ESC_END }
-: word_Field { 20 } { G_F } { G_i } { G_e } { G_l } { G_d } { G_ESC_END }
 : word_Figured { 30 } { G_F } { G_i } { G_g } { G_u } { G_r } { G_e } { G_d } { G_ESC_END }
-: word_Flute { 22 } { G_F } { G_l } { G_u } { G_t } { G_e } { G_ESC_END }
-: word_For { 13 } { G_F } { G_o } { G_r } { G_ESC_END }
 : word_Full { 16 } { G_F } { G_u } { G_l } { G_l } { G_ESC_END }
 : word_Go { 10 } { G_G } { G_o } { G_ESC_END }
 : word_Good { 20 } { G_G } { G_o } { G_o } { G_d } { G_ESC_END }
@@ -160,27 +125,19 @@
 : word_Hey, { 18 } { G_H } { G_e } { G_y } { G_, } { G_ESC_END }
 : word_I've { 17 } { G_I } { G_' } { G_v } { G_e } { G_ESC_END }
 : word_If { 9 } { G_I } { G_f } { G_ESC_END }
-: word_Instead { 31 } { G_I } { G_n } { G_s } { G_t } { G_e } { G_a } { G_d } { G_ESC_END }
 : word_It { 8 } { G_I } { G_t } { G_ESC_END }
 : word_It's { 13 } { G_I } { G_t } { G_' } { G_s } { G_ESC_END }
-: word_Jar { 13 } { G_J } { G_a } { G_r } { G_ESC_END }
 : word_Lab { 15 } { G_L } { G_a } { G_b } { G_ESC_END }
 : word_Little { 23 } { G_L } { G_i } { G_t } { G_t } { G_l } { G_e } { G_ESC_END }
 : word_Look, { 22 } { G_L } { G_o } { G_o } { G_k } { G_, } { G_ESC_END }
-: word_Magnet { 30 } { G_M } { G_a } { G_g } { G_n } { G_e } { G_t } { G_ESC_END }
 : word_Make { 20 } { G_M } { G_a } { G_k } { G_e } { G_ESC_END }
 : word_Maybe { 26 } { G_M } { G_a } { G_y } { G_b } { G_e } { G_ESC_END }
 : word_Melee { 24 } { G_M } { G_e } { G_l } { G_e } { G_e } { G_ESC_END }
 : word_Mobile { 26 } { G_M } { G_o } { G_b } { G_i } { G_l } { G_e } { G_ESC_END }
 : word_Modified { 35 } { G_M } { G_o } { G_d } { G_i } { G_f } { G_i } { G_e } { G_d } { G_ESC_END }
-: word_New_Level { 0 } { G_ESC_WORD } tobytes word_Now { G_ESC_WORD } tobytes word_Entering { G_ESC_END }
 : word_Not { 15 } { G_N } { G_o } { G_t } { G_ESC_END }
 : word_Now { 17 } { G_N } { G_o } { G_w } { G_ESC_END }
-: word_Octo { 18 } { G_O } { G_c } { G_t } { G_o } { G_ESC_END }
-: word_Oh, { 13 } { G_O } { G_h } { G_, } { G_ESC_END }
-: word_Pants { 22 } { G_P } { G_a } { G_n } { G_t } { G_s } { G_ESC_END }
 : word_People { 28 } { G_P } { G_e } { G_o } { G_p } { G_l } { G_e } { G_ESC_END }
-: word_Piper's { 25 } { G_P } { G_i } { G_p } { G_e } { G_r } { G_' } { G_s } { G_ESC_END }
 : word_Pistol { 22 } { G_P } { G_i } { G_s } { G_t } { G_o } { G_l } { G_ESC_END }
 : word_Plant { 22 } { G_P } { G_l } { G_a } { G_n } { G_t } { G_ESC_END }
 : word_Power { 24 } { G_P } { G_o } { G_w } { G_e } { G_r } { G_ESC_END }
@@ -189,16 +146,11 @@
 : word_Research { 35 } { G_R } { G_e } { G_s } { G_e } { G_a } { G_r } { G_c } { G_h } { G_ESC_END }
 : word_Robotic { 30 } { G_R } { G_o } { G_b } { G_o } { G_t } { G_i } { G_c } { G_ESC_END }
 : word_Robots { 27 } { G_R } { G_o } { G_b } { G_o } { G_t } { G_s } { G_ESC_END }
-: word_Rocket { 27 } { G_R } { G_o } { G_c } { G_k } { G_e } { G_t } { G_ESC_END }
 : word_Ruins { 20 } { G_R } { G_u } { G_i } { G_n } { G_s } { G_ESC_END }
 : word_Say { 15 } { G_S } { G_a } { G_y } { G_ESC_END }
 : word_Science { 30 } { G_S } { G_c } { G_i } { G_e } { G_n } { G_c } { G_e } { G_ESC_END }
 : word_Security { 33 } { G_S } { G_e } { G_c } { G_u } { G_r } { G_i } { G_t } { G_y } { G_ESC_END }
-: word_Seems { 24 } { G_S } { G_e } { G_e } { G_m } { G_s } { G_ESC_END }
-: word_Shield { 25 } { G_S } { G_h } { G_i } { G_e } { G_l } { G_d } { G_ESC_END }
-: word_Shoes { 23 } { G_S } { G_h } { G_o } { G_e } { G_s } { G_ESC_END }
 : word_Site { 16 } { G_S } { G_i } { G_t } { G_e } { G_ESC_END }
-: word_Somehow, { 40 } { G_S } { G_o } { G_m } { G_e } { G_h } { G_o } { G_w } { G_, } { G_ESC_END }
 : word_Sound { 25 } { G_S } { G_o } { G_u } { G_n } { G_d } { G_ESC_END }
 : word_Soundiary_Cool { 18 } { G_C } { G_o } { G_o } { G_l } { G_ESC_END }
 : word_Soundiary_Five { 18 } { G_F } { G_i } { G_v } { G_e } { G_ESC_END }
@@ -213,393 +165,210 @@
 : word_The { 16 } { G_T } { G_h } { G_e } { G_ESC_END }
 : word_Their { 21 } { G_T } { G_h } { G_e } { G_i } { G_r } { G_ESC_END }
 : word_There's { 29 } { G_T } { G_h } { G_e } { G_r } { G_e } { G_' } { G_s } { G_ESC_END }
-: word_Thermal { 33 } { G_T } { G_h } { G_e } { G_r } { G_m } { G_a } { G_l } { G_ESC_END }
 : word_These { 24 } { G_T } { G_h } { G_e } { G_s } { G_e } { G_ESC_END }
 : word_They { 21 } { G_T } { G_h } { G_e } { G_y } { G_ESC_END }
 : word_This { 16 } { G_T } { G_h } { G_i } { G_s } { G_ESC_END }
-: word_Title_Beastiary { 0 } { G_ESC_WORD } tobytes word_View { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Beastiary { G_ESC_END }
-: word_Title_Begin { 0 } { G_ESC_WORD } tobytes word_Explore { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Site { G_ESC_END }
 : word_Title_Credits { 27 } { G_C } { G_r } { G_e } { G_d } { G_i } { G_t } { G_s } { G_ESC_END }
-: word_Title_Itemiary { 0 } { G_ESC_WORD } tobytes word_View { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Treasure { G_ESC_WORD } tobytes word_Codex { G_ESC_END }
 : word_Title_Soundiary { 0 } { G_ESC_WORD } tobytes word_Sound { G_ESC_WORD } tobytes word_Test { G_ESC_END }
 : word_Title_Title { 0 } { G_ESC_WORD } tobytes word_Dig { G_ESC_WORD } tobytes word_Site { G_8 } { G_ESC_END }
-: word_To { 11 } { G_T } { G_o } { G_ESC_END }
 : word_Treasure { 35 } { G_T } { G_r } { G_e } { G_a } { G_s } { G_u } { G_r } { G_e } { G_ESC_END }
 : word_Turret { 26 } { G_T } { G_u } { G_r } { G_r } { G_e } { G_t } { G_ESC_END }
-: word_Using { 21 } { G_U } { G_s } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_Very { 19 } { G_V } { G_e } { G_r } { G_y } { G_ESC_END }
 : word_View { 19 } { G_V } { G_i } { G_e } { G_w } { G_ESC_END }
-: word_Void { 18 } { G_V } { G_o } { G_i } { G_d } { G_ESC_END }
-: word_What { 20 } { G_W } { G_h } { G_a } { G_t } { G_ESC_END }
 : word_Who { 16 } { G_W } { G_h } { G_o } { G_ESC_END }
-: word_Why { 16 } { G_W } { G_h } { G_y } { G_ESC_END }
 : word_Win!! { 17 } { G_W } { G_i } { G_n } { G_! } { G_! } { G_ESC_END }
 : word_You { 16 } { G_Y } { G_o } { G_u } { G_ESC_END }
-: word_able { 18 } { G_a } { G_b } { G_l } { G_e } { G_ESC_END }
-: word_accelerator-desc { 0 } { G_ESC_WORD } tobytes word_Doesn't { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_kinda { G_ESC_WORD } tobytes word_remind { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_accelerators { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_put { G_ESC_WORD } tobytes word_on { G_ESC_WORD } tobytes word_toy { G_ESC_WORD } tobytes word_car { G_ESC_WORD } tobytes word_tracks...? { G_ESC_END }
-: word_accelerator-name { 0 } { G_ESC_WORD } tobytes word_Bullet { G_ESC_WORD } tobytes word_Accelerator { G_ESC_END }
-: word_accelerators { 49 } { G_a } { G_c } { G_c } { G_e } { G_l } { G_e } { G_r } { G_a } { G_t } { G_o } { G_r } { G_s } { G_ESC_END }
 : word_accurate. { 38 } { G_a } { G_c } { G_c } { G_u } { G_r } { G_a } { G_t } { G_e } { G_. } { G_ESC_END }
-: word_actually { 34 } { G_a } { G_c } { G_t } { G_u } { G_a } { G_l } { G_l } { G_y } { G_ESC_END }
-: word_advanced, { 43 } { G_a } { G_d } { G_v } { G_a } { G_n } { G_c } { G_e } { G_d } { G_, } { G_ESC_END }
 : word_air { 10 } { G_a } { G_i } { G_r } { G_ESC_END }
 : word_airguns. { 31 } { G_a } { G_i } { G_r } { G_g } { G_u } { G_n } { G_s } { G_. } { G_ESC_END }
 : word_alive? { 25 } { G_a } { G_l } { G_i } { G_v } { G_e } { G_? } { G_ESC_END }
 : word_all { 11 } { G_a } { G_l } { G_l } { G_ESC_END }
 : word_also { 16 } { G_a } { G_l } { G_s } { G_o } { G_ESC_END }
 : word_an { 10 } { G_a } { G_n } { G_ESC_END }
-: word_ancient { 30 } { G_a } { G_n } { G_c } { G_i } { G_e } { G_n } { G_t } { G_ESC_END }
 : word_and { 15 } { G_a } { G_n } { G_d } { G_ESC_END }
-: word_antishovel-desc { 0 } { G_ESC_WORD } tobytes word_What { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_even { G_ESC_WORD } tobytes word_for? { G_ESC_WORD } tobytes word_Why { G_ESC_WORD } tobytes word_would { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_ever { G_ESC_WORD } tobytes word_need { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_summon { G_a } { G_ESC_WORD } tobytes word_cubic { G_ESC_WORD } tobytes word_meter { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_dirt? { G_ESC_END }
-: word_antishovel-name { 51 } { G_A } { G_n } { G_t } { G_i } { G_- } { G_S } { G_h } { G_o } { G_v } { G_e } { G_l } { G_ESC_END }
-: word_anymore. { 37 } { G_a } { G_n } { G_y } { G_m } { G_o } { G_r } { G_e } { G_. } { G_ESC_END }
 : word_anymore? { 38 } { G_a } { G_n } { G_y } { G_m } { G_o } { G_r } { G_e } { G_? } { G_ESC_END }
 : word_are { 13 } { G_a } { G_r } { G_e } { G_ESC_END }
 : word_areas { 21 } { G_a } { G_r } { G_e } { G_a } { G_s } { G_ESC_END }
 : word_aren't { 24 } { G_a } { G_r } { G_e } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_around { 28 } { G_a } { G_r } { G_o } { G_u } { G_n } { G_d } { G_ESC_END }
 : word_as { 8 } { G_a } { G_s } { G_ESC_END }
 : word_assigned { 33 } { G_a } { G_s } { G_s } { G_i } { G_g } { G_n } { G_e } { G_d } { G_ESC_END }
 : word_assistant { 34 } { G_a } { G_s } { G_s } { G_i } { G_s } { G_t } { G_a } { G_n } { G_t } { G_ESC_END }
 : word_assistants { 37 } { G_a } { G_s } { G_s } { G_i } { G_s } { G_t } { G_a } { G_n } { G_t } { G_s } { G_ESC_END }
-: word_at { 9 } { G_a } { G_t } { G_ESC_END }
 : word_attention. { 42 } { G_a } { G_t } { G_t } { G_e } { G_n } { G_t } { G_i } { G_o } { G_n } { G_. } { G_ESC_END }
-: word_avoid { 23 } { G_a } { G_v } { G_o } { G_i } { G_d } { G_ESC_END }
 : word_away { 21 } { G_a } { G_w } { G_a } { G_y } { G_ESC_END }
 : word_back { 18 } { G_b } { G_a } { G_c } { G_k } { G_ESC_END }
 : word_be { 10 } { G_b } { G_e } { G_ESC_END }
 : word_because { 32 } { G_b } { G_e } { G_c } { G_a } { G_u } { G_s } { G_e } { G_ESC_END }
-: word_become { 30 } { G_b } { G_e } { G_c } { G_o } { G_m } { G_e } { G_ESC_END }
 : word_been { 20 } { G_b } { G_e } { G_e } { G_n } { G_ESC_END }
-: word_benefits, { 37 } { G_b } { G_e } { G_n } { G_e } { G_f } { G_i } { G_t } { G_s } { G_, } { G_ESC_END }
 : word_bigger { 25 } { G_b } { G_i } { G_g } { G_g } { G_e } { G_r } { G_ESC_END }
-: word_blamed { 29 } { G_b } { G_l } { G_a } { G_m } { G_e } { G_d } { G_ESC_END }
-: word_blood { 23 } { G_b } { G_l } { G_o } { G_o } { G_d } { G_ESC_END }
-: word_bottom! { 31 } { G_b } { G_o } { G_t } { G_t } { G_o } { G_m } { G_! } { G_ESC_END }
-: word_brave { 24 } { G_b } { G_r } { G_a } { G_v } { G_e } { G_ESC_END }
 : word_bring { 20 } { G_b } { G_r } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_build { 20 } { G_b } { G_u } { G_i } { G_l } { G_d } { G_ESC_END }
-: word_buildings { 35 } { G_b } { G_u } { G_i } { G_l } { G_d } { G_i } { G_n } { G_g } { G_s } { G_ESC_END }
 : word_built { 19 } { G_b } { G_u } { G_i } { G_l } { G_t } { G_ESC_END }
-: word_bullet-related { 60 } { G_b } { G_u } { G_l } { G_l } { G_e } { G_t } { G_- } { G_r } { G_e } { G_l } { G_a } { G_t } { G_e } { G_d } { G_ESC_END }
 : word_bullets { 28 } { G_b } { G_u } { G_l } { G_l } { G_e } { G_t } { G_s } { G_ESC_END }
-: word_bullets. { 31 } { G_b } { G_u } { G_l } { G_l } { G_e } { G_t } { G_s } { G_. } { G_ESC_END }
 : word_but { 14 } { G_b } { G_u } { G_t } { G_ESC_END }
-: word_by { 10 } { G_b } { G_y } { G_ESC_END }
 : word_can { 14 } { G_c } { G_a } { G_n } { G_ESC_END }
-: word_car { 12 } { G_c } { G_a } { G_r } { G_ESC_END }
-: word_central { 29 } { G_c } { G_e } { G_n } { G_t } { G_r } { G_a } { G_l } { G_ESC_END }
 : word_chunks { 26 } { G_c } { G_h } { G_u } { G_n } { G_k } { G_s } { G_ESC_END }
-: word_clock { 20 } { G_c } { G_l } { G_o } { G_c } { G_k } { G_ESC_END }
 : word_close { 20 } { G_c } { G_l } { G_o } { G_s } { G_e } { G_ESC_END }
-: word_come { 20 } { G_c } { G_o } { G_m } { G_e } { G_ESC_END }
 : word_comes { 23 } { G_c } { G_o } { G_m } { G_e } { G_s } { G_ESC_END }
-: word_controlled { 42 } { G_c } { G_o } { G_n } { G_t } { G_r } { G_o } { G_l } { G_l } { G_e } { G_d } { G_ESC_END }
 : word_convenient { 46 } { G_c } { G_o } { G_n } { G_v } { G_e } { G_n } { G_i } { G_e } { G_n } { G_t } { G_ESC_END }
 : word_corrupted { 39 } { G_c } { G_o } { G_r } { G_r } { G_u } { G_p } { G_t } { G_e } { G_d } { G_ESC_END }
-: word_could { 22 } { G_c } { G_o } { G_u } { G_l } { G_d } { G_ESC_END }
 : word_couldn't { 33 } { G_c } { G_o } { G_u } { G_l } { G_d } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_count { 23 } { G_c } { G_o } { G_u } { G_n } { G_t } { G_ESC_END }
 : word_cover, { 26 } { G_c } { G_o } { G_v } { G_e } { G_r } { G_, } { G_ESC_END }
-: word_crickets-desc { 0 } { G_ESC_WORD } tobytes word_Instead { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_janitors, { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_must've { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_swarms { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_tiny { G_ESC_WORD } tobytes word_robots. { G_ESC_END }
-: word_crickets-name { 0 } { G_ESC_WORD } tobytes word_Jar { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_Crickets { G_ESC_END }
-: word_cubic { 20 } { G_c } { G_u } { G_b } { G_i } { G_c } { G_ESC_END }
-: word_dampener-desc { 0 } { G_ESC_WORD } tobytes word_To { G_ESC_WORD } tobytes word_avoid { G_ESC_WORD } tobytes word_getting { G_ESC_WORD } tobytes word_electrocuted, { G_ESC_WORD } tobytes word_workers { G_ESC_WORD } tobytes word_here { G_ESC_WORD } tobytes word_would { G_ESC_WORD } tobytes word_use { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_neutralize { G_ESC_WORD } tobytes word_electromagnetic { G_ESC_WORD } tobytes word_fields. { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Oh, { G_I } { G_ESC_WORD } tobytes word_should { G_ESC_WORD } tobytes word_have { G_ESC_WORD } tobytes word_blamed { G_ESC_WORD } tobytes word_my { G_ESC_WORD } tobytes word_radio { G_ESC_WORD } tobytes word_silence { G_ESC_WORD } tobytes word_earlier { G_ESC_WORD } tobytes word_on { G_ESC_WORD } tobytes word_something { G_ESC_WORD } tobytes word_like { G_ESC_WORD } tobytes word_this... { G_ESC_END }
-: word_dampener-name { 0 } { G_ESC_WORD } tobytes word_Electrical { G_ESC_WORD } tobytes word_Dampener { G_ESC_END }
 : word_deactivated { 50 } { G_d } { G_e } { G_a } { G_c } { G_t } { G_i } { G_v } { G_a } { G_t } { G_e } { G_d } { G_ESC_END }
 : word_decay { 24 } { G_d } { G_e } { G_c } { G_a } { G_y } { G_ESC_END }
-: word_deeper { 28 } { G_d } { G_e } { G_e } { G_p } { G_e } { G_r } { G_ESC_END }
 : word_deliver { 29 } { G_d } { G_e } { G_l } { G_i } { G_v } { G_e } { G_r } { G_ESC_END }
 : word_designed { 35 } { G_d } { G_e } { G_s } { G_i } { G_g } { G_n } { G_e } { G_d } { G_ESC_END }
 : word_deter? { 26 } { G_d } { G_e } { G_t } { G_e } { G_r } { G_? } { G_ESC_END }
 : word_did { 12 } { G_d } { G_i } { G_d } { G_ESC_END }
 : word_digging { 29 } { G_d } { G_i } { G_g } { G_g } { G_i } { G_n } { G_g } { G_ESC_END }
-: word_dirt? { 18 } { G_d } { G_i } { G_r } { G_t } { G_? } { G_ESC_END }
 : word_do { 10 } { G_d } { G_o } { G_ESC_END }
 : word_doesn't { 29 } { G_d } { G_o } { G_e } { G_s } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_dog-desc { 0 } { G_ESC_WORD } tobytes word_Their { G_ESC_WORD } tobytes word_name { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_Octo { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_my { G_ESC_WORD } tobytes word_friend. { G_ESC_WORD } tobytes word_Don't { G_ESC_WORD } tobytes word_come { G_ESC_WORD } tobytes word_back { G_ESC_WORD } tobytes word_if { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_lose { G_ESC_WORD } tobytes word_them. { G_ESC_END }
-: word_dog-name { 18 } { G_O } { G_c } { G_t } { G_o } { G_ESC_END }
 : word_don't { 21 } { G_d } { G_o } { G_n } { G_' } { G_t } { G_ESC_END }
 : word_droid { 20 } { G_d } { G_r } { G_o } { G_i } { G_d } { G_ESC_END }
 : word_droids { 23 } { G_d } { G_r } { G_o } { G_i } { G_d } { G_s } { G_ESC_END }
-: word_duplicate { 38 } { G_d } { G_u } { G_p } { G_l } { G_i } { G_c } { G_a } { G_t } { G_e } { G_ESC_END }
-: word_earlier { 26 } { G_e } { G_a } { G_r } { G_l } { G_i } { G_e } { G_r } { G_ESC_END }
 : word_earlier. { 29 } { G_e } { G_a } { G_r } { G_l } { G_i } { G_e } { G_r } { G_. } { G_ESC_END }
 : word_easily { 23 } { G_e } { G_a } { G_s } { G_i } { G_l } { G_y } { G_ESC_END }
 : word_electricians { 45 } { G_e } { G_l } { G_e } { G_c } { G_t } { G_r } { G_i } { G_c } { G_i } { G_a } { G_n } { G_s } { G_ESC_END }
-: word_electrocuted, { 55 } { G_e } { G_l } { G_e } { G_c } { G_t } { G_r } { G_o } { G_c } { G_u } { G_t } { G_e } { G_d } { G_, } { G_ESC_END }
 : word_electrocution { 54 } { G_e } { G_l } { G_e } { G_c } { G_t } { G_r } { G_o } { G_c } { G_u } { G_t } { G_i } { G_o } { G_n } { G_ESC_END }
-: word_electromagnetic { 65 } { G_e } { G_l } { G_e } { G_c } { G_t } { G_r } { G_o } { G_m } { G_a } { G_g } { G_n } { G_e } { G_t } { G_i } { G_c } { G_ESC_END }
 : word_end. { 18 } { G_e } { G_n } { G_d } { G_. } { G_ESC_END }
 : word_energy, { 31 } { G_e } { G_n } { G_e } { G_r } { G_g } { G_y } { G_, } { G_ESC_END }
-: word_enlargener-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_feel { G_ESC_WORD } tobytes word_like { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_focused { G_ESC_WORD } tobytes word_too { G_ESC_WORD } tobytes word_much { G_ESC_WORD } tobytes word_on { G_ESC_WORD } tobytes word_bullet-related { G_ESC_WORD } tobytes word_technology. { G_ESC_WORD } tobytes word_Maybe { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_just { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_facility...? { G_ESC_END }
-: word_enlargener-name { 0 } { G_ESC_WORD } tobytes word_Bullet { G_ESC_WORD } tobytes word_Enlargener { G_ESC_END }
 : word_enough { 30 } { G_e } { G_n } { G_o } { G_u } { G_g } { G_h } { G_ESC_END }
-: word_even { 21 } { G_e } { G_v } { G_e } { G_n } { G_ESC_END }
-: word_ever { 19 } { G_e } { G_v } { G_e } { G_r } { G_ESC_END }
 : word_everything. { 48 } { G_e } { G_v } { G_e } { G_r } { G_y } { G_t } { G_h } { G_i } { G_n } { G_g } { G_. } { G_ESC_END }
-: word_exoskeleton-desc { 0 } { G_ESC_WORD } tobytes word_For { G_ESC_WORD } tobytes word_some { G_ESC_WORD } tobytes word_reason, { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_were { G_ESC_WORD } tobytes word_designed { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_could { G_ESC_WORD } tobytes word_put { G_ESC_WORD } tobytes word_two { G_ESC_WORD } tobytes word_together { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_make { G_a } { G_ESC_WORD } tobytes word_stronger { G_ESC_WORD } tobytes word_one. { G_ESC_END }
-: word_exoskeleton-name { 48 } { G_E } { G_x } { G_o } { G_s } { G_k } { G_e } { G_l } { G_e } { G_t } { G_o } { G_n } { G_ESC_END }
-: word_facility...? { 43 } { G_f } { G_a } { G_c } { G_i } { G_l } { G_i } { G_t } { G_y } { G_. } { G_. } { G_. } { G_? } { G_ESC_END }
 : word_fancy { 24 } { G_f } { G_a } { G_n } { G_c } { G_y } { G_ESC_END }
 : word_fatal. { 25 } { G_f } { G_a } { G_t } { G_a } { G_l } { G_. } { G_ESC_END }
-: word_feel { 18 } { G_f } { G_e } { G_e } { G_l } { G_ESC_END }
 : word_few { 16 } { G_f } { G_e } { G_w } { G_ESC_END }
-: word_field { 20 } { G_f } { G_i } { G_e } { G_l } { G_d } { G_ESC_END }
-: word_fields. { 26 } { G_f } { G_i } { G_e } { G_l } { G_d } { G_s } { G_. } { G_ESC_END }
 : word_find { 17 } { G_f } { G_i } { G_n } { G_d } { G_ESC_END }
 : word_fine. { 20 } { G_f } { G_i } { G_n } { G_e } { G_. } { G_ESC_END }
 : word_fire { 15 } { G_f } { G_i } { G_r } { G_e } { G_ESC_END }
 : word_first { 17 } { G_f } { G_i } { G_r } { G_s } { G_t } { G_ESC_END }
 : word_fix { 11 } { G_f } { G_i } { G_x } { G_ESC_END }
 : word_flank { 22 } { G_f } { G_l } { G_a } { G_n } { G_k } { G_ESC_END }
-: word_flute-desc { 0 } { G_ESC_WORD } tobytes word_Back { G_ESC_WORD } tobytes word_then, { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_controlled { G_ESC_WORD } tobytes word_machines { G_ESC_WORD } tobytes word_by { G_ESC_WORD } tobytes word_playing { G_ESC_WORD } tobytes word_notes { G_ESC_WORD } tobytes word_on { G_a } { G_ESC_WORD } tobytes word_flute. { G_ESC_WORD } tobytes word_Ancient { G_ESC_WORD } tobytes word_hackers { G_ESC_WORD } tobytes word_must've { G_ESC_WORD } tobytes word_been { G_ESC_WORD } tobytes word_good { G_ESC_WORD } tobytes word_at { G_ESC_WORD } tobytes word_whistling. { G_ESC_END }
-: word_flute-name { 0 } { G_ESC_WORD } tobytes word_Piper's { G_ESC_WORD } tobytes word_Flute { G_ESC_END }
-: word_flute. { 25 } { G_f } { G_l } { G_u } { G_t } { G_e } { G_. } { G_ESC_END }
-: word_focused { 32 } { G_f } { G_o } { G_c } { G_u } { G_s } { G_e } { G_d } { G_ESC_END }
 : word_for { 13 } { G_f } { G_o } { G_r } { G_ESC_END }
-: word_for, { 16 } { G_f } { G_o } { G_r } { G_, } { G_ESC_END }
-: word_for? { 17 } { G_f } { G_o } { G_r } { G_? } { G_ESC_END }
-: word_found { 25 } { G_f } { G_o } { G_u } { G_n } { G_d } { G_ESC_END }
-: word_friend. { 28 } { G_f } { G_r } { G_i } { G_e } { G_n } { G_d } { G_. } { G_ESC_END }
 : word_from { 19 } { G_f } { G_r } { G_o } { G_m } { G_ESC_END }
-: word_fully { 21 } { G_f } { G_u } { G_l } { G_l } { G_y } { G_ESC_END }
 : word_gave { 21 } { G_g } { G_a } { G_v } { G_e } { G_ESC_END }
 : word_geothermal { 46 } { G_g } { G_e } { G_o } { G_t } { G_h } { G_e } { G_r } { G_m } { G_a } { G_l } { G_ESC_END }
 : word_get { 14 } { G_g } { G_e } { G_t } { G_ESC_END }
-: word_getting { 30 } { G_g } { G_e } { G_t } { G_t } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_go { 10 } { G_g } { G_o } { G_ESC_END }
 : word_gone { 20 } { G_g } { G_o } { G_n } { G_e } { G_ESC_END }
-: word_good { 20 } { G_g } { G_o } { G_o } { G_d } { G_ESC_END }
 : word_greater { 30 } { G_g } { G_r } { G_e } { G_a } { G_t } { G_e } { G_r } { G_ESC_END }
 : word_gun { 15 } { G_g } { G_u } { G_n } { G_ESC_END }
 : word_guys { 18 } { G_g } { G_u } { G_y } { G_s } { G_ESC_END }
-: word_hackers { 29 } { G_h } { G_a } { G_c } { G_k } { G_e } { G_r } { G_s } { G_ESC_END }
 : word_handle { 28 } { G_h } { G_a } { G_n } { G_d } { G_l } { G_e } { G_ESC_END }
 : word_hard. { 21 } { G_h } { G_a } { G_r } { G_d } { G_. } { G_ESC_END }
 : word_has { 13 } { G_h } { G_a } { G_s } { G_ESC_END }
 : word_have { 21 } { G_h } { G_a } { G_v } { G_e } { G_ESC_END }
 : word_haven't { 32 } { G_h } { G_a } { G_v } { G_e } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_heat_shield-desc { 0 } { G_ESC_WORD } tobytes word_Before { G_ESC_WORD } tobytes word_modern { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_found { G_ESC_WORD } tobytes word_out { G_ESC_WORD } tobytes word_what { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_for, { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_thought { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_some { G_ESC_WORD } tobytes word_sort { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_shield. { G_ESC_WORD } tobytes word_It's { G_ESC_WORD } tobytes word_actually { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_melting { G_ESC_WORD } tobytes word_through { G_ESC_WORD } tobytes word_rock. { G_ESC_WORD } tobytes word_If { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_walls { G_ESC_WORD } tobytes word_here { G_ESC_WORD } tobytes word_weren't { G_ESC_WORD } tobytes word_made { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_advanced, { G_ESC_WORD } tobytes word_ancient { G_ESC_WORD } tobytes word_materials, { G_ESC_WORD } tobytes word_you'd { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_able { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_just { G_ESC_WORD } tobytes word_melt { G_ESC_WORD } tobytes word_your { G_ESC_WORD } tobytes word_way { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_bottom! { G_ESC_END }
-: word_heat_shield-name { 0 } { G_ESC_WORD } tobytes word_Thermal { G_ESC_WORD } tobytes word_Shield { G_ESC_END }
-: word_here { 18 } { G_h } { G_e } { G_r } { G_e } { G_ESC_END }
 : word_here. { 21 } { G_h } { G_e } { G_r } { G_e } { G_. } { G_ESC_END }
 : word_hissing { 25 } { G_h } { G_i } { G_s } { G_s } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_hostile, { 30 } { G_h } { G_o } { G_s } { G_t } { G_i } { G_l } { G_e } { G_, } { G_ESC_END }
 : word_how { 16 } { G_h } { G_o } { G_w } { G_ESC_END }
-: word_hurt { 17 } { G_h } { G_u } { G_r } { G_t } { G_ESC_END }
 : word_if { 7 } { G_i } { G_f } { G_ESC_END }
 : word_in { 7 } { G_i } { G_n } { G_ESC_END }
 : word_instead. { 32 } { G_i } { G_n } { G_s } { G_t } { G_e } { G_a } { G_d } { G_. } { G_ESC_END }
-: word_invented { 37 } { G_i } { G_n } { G_v } { G_e } { G_n } { G_t } { G_e } { G_d } { G_ESC_END }
 : word_is { 5 } { G_i } { G_s } { G_ESC_END }
 : word_it { 6 } { G_i } { G_t } { G_ESC_END }
 : word_it's { 11 } { G_i } { G_t } { G_' } { G_s } { G_ESC_END }
 : word_it, { 9 } { G_i } { G_t } { G_, } { G_ESC_END }
-: word_janitors, { 35 } { G_j } { G_a } { G_n } { G_i } { G_t } { G_o } { G_r } { G_s } { G_, } { G_ESC_END }
 : word_job, { 18 } { G_j } { G_o } { G_b } { G_, } { G_ESC_END }
 : word_just { 17 } { G_j } { G_u } { G_s } { G_t } { G_ESC_END }
-: word_kinda { 21 } { G_k } { G_i } { G_n } { G_d } { G_a } { G_ESC_END }
 : word_know { 20 } { G_k } { G_n } { G_o } { G_w } { G_ESC_END }
 : word_lab { 13 } { G_l } { G_a } { G_b } { G_ESC_END }
-: word_lab-scientist-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_do { G_ESC_WORD } tobytes word_lab { G_ESC_WORD } tobytes word_assistant { G_ESC_WORD } tobytes word_work. { G_ESC_WORD } tobytes word_Science { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_few { G_ESC_WORD } tobytes word_areas { G_ESC_WORD } tobytes word_where { G_ESC_WORD } tobytes word_robots { G_ESC_WORD } tobytes word_couldn't { G_ESC_WORD } tobytes word_do { G_ESC_WORD } tobytes word_everything. { G_ESC_END }
 : word_lab-scientist-name { 0 } { G_ESC_WORD } tobytes word_Lab { G_ESC_WORD } tobytes word_Assistant { G_ESC_END }
-: word_lab-turret-desc { 0 } { G_A } { G_ESC_WORD } tobytes word_prototype { G_ESC_WORD } tobytes word_version { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_quick { G_ESC_WORD } tobytes word_turrets { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_earlier. { G_ESC_WORD } tobytes word_It's { G_ESC_WORD } tobytes word_sturdier { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_can { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_more, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_as { G_ESC_WORD } tobytes word_accurate. { G_ESC_END }
 : word_lab-turret-name { 0 } { G_ESC_WORD } tobytes word_Prototype { G_ESC_WORD } tobytes word_Turret { G_ESC_END }
-: word_lab-wall-desc { 0 } { G_ESC_WORD } tobytes word_The { G_ESC_WORD } tobytes word_risk { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_greater { G_ESC_WORD } tobytes word_in { G_a } { G_ESC_WORD } tobytes word_laboratory, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_upgraded { G_ESC_WORD } tobytes word_versions { G_ESC_WORD } tobytes word_here. { G_ESC_END }
 : word_lab-wall-name { 32 } { G_F } { G_i } { G_r } { G_e } { G_w } { G_a } { G_l } { G_l } { G_ESC_END }
 : word_laboratory, { 46 } { G_l } { G_a } { G_b } { G_o } { G_r } { G_a } { G_t } { G_o } { G_r } { G_y } { G_, } { G_ESC_END }
 : word_laboratory. { 46 } { G_l } { G_a } { G_b } { G_o } { G_r } { G_a } { G_t } { G_o } { G_r } { G_y } { G_. } { G_ESC_END }
-: word_less. { 17 } { G_l } { G_e } { G_s } { G_s } { G_. } { G_ESC_END }
 : word_let { 12 } { G_l } { G_e } { G_t } { G_ESC_END }
-: word_like { 14 } { G_l } { G_i } { G_k } { G_e } { G_ESC_END }
-: word_little { 21 } { G_l } { G_i } { G_t } { G_t } { G_l } { G_e } { G_ESC_END }
-: word_lose { 16 } { G_l } { G_o } { G_s } { G_e } { G_ESC_END }
 : word_luck! { 18 } { G_l } { G_u } { G_c } { G_k } { G_! } { G_ESC_END }
-: word_machines { 35 } { G_m } { G_a } { G_c } { G_h } { G_i } { G_n } { G_e } { G_s } { G_ESC_END }
-: word_made { 21 } { G_m } { G_a } { G_d } { G_e } { G_ESC_END }
-: word_made. { 24 } { G_m } { G_a } { G_d } { G_e } { G_. } { G_ESC_END }
-: word_magnet_shield-desc { 0 } { G_ESC_WORD } tobytes word_Creates { G_a } { G_ESC_WORD } tobytes word_strong { G_ESC_WORD } tobytes word_magnetic { G_ESC_WORD } tobytes word_field { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_repels { G_ESC_WORD } tobytes word_metal. { G_ESC_WORD } tobytes word_It { G_ESC_WORD } tobytes word_probably { G_ESC_WORD } tobytes word_won't { G_ESC_WORD } tobytes word_hurt { G_ESC_WORD } tobytes word_you. { G_ESC_END }
-: word_magnet_shield-name { 0 } { G_ESC_WORD } tobytes word_Magnet { G_ESC_WORD } tobytes word_Shield { G_ESC_END }
-: word_magnetic { 36 } { G_m } { G_a } { G_g } { G_n } { G_e } { G_t } { G_i } { G_c } { G_ESC_END }
 : word_make { 20 } { G_m } { G_a } { G_k } { G_e } { G_ESC_END }
-: word_makes { 23 } { G_m } { G_a } { G_k } { G_e } { G_s } { G_ESC_END }
-: word_materials, { 39 } { G_m } { G_a } { G_t } { G_e } { G_r } { G_i } { G_a } { G_l } { G_s } { G_, } { G_ESC_END }
-: word_matter, { 30 } { G_m } { G_a } { G_t } { G_t } { G_e } { G_r } { G_, } { G_ESC_END }
-: word_melt { 18 } { G_m } { G_e } { G_l } { G_t } { G_ESC_END }
-: word_melting { 30 } { G_m } { G_e } { G_l } { G_t } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_metal. { 26 } { G_m } { G_e } { G_t } { G_a } { G_l } { G_. } { G_ESC_END }
-: word_meter { 23 } { G_m } { G_e } { G_t } { G_e } { G_r } { G_ESC_END }
 : word_model { 24 } { G_m } { G_o } { G_d } { G_e } { G_l } { G_ESC_END }
-: word_modern { 29 } { G_m } { G_o } { G_d } { G_e } { G_r } { G_n } { G_ESC_END }
-: word_more { 19 } { G_m } { G_o } { G_r } { G_e } { G_ESC_END }
 : word_more, { 22 } { G_m } { G_o } { G_r } { G_e } { G_, } { G_ESC_END }
-: word_much { 20 } { G_m } { G_u } { G_c } { G_h } { G_ESC_END }
 : word_must { 18 } { G_m } { G_u } { G_s } { G_t } { G_ESC_END }
-: word_must've { 31 } { G_m } { G_u } { G_s } { G_t } { G_' } { G_v } { G_e } { G_ESC_END }
 : word_my { 11 } { G_m } { G_y } { G_ESC_END }
-: word_name { 21 } { G_n } { G_a } { G_m } { G_e } { G_ESC_END }
-: word_nano_blood-desc { 0 } { G_ESC_WORD } tobytes word_For { G_ESC_WORD } tobytes word_those { G_ESC_WORD } tobytes word_who { G_ESC_WORD } tobytes word_weren't { G_ESC_WORD } tobytes word_brave { G_ESC_WORD } tobytes word_enough { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_become { G_ESC_WORD } tobytes word_fully { G_ESC_WORD } tobytes word_robotic, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_who { G_ESC_WORD } tobytes word_still { G_ESC_WORD } tobytes word_wanted { G_ESC_WORD } tobytes word_some { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_benefits, { G_ESC_WORD } tobytes word_replacement { G_ESC_WORD } tobytes word_blood { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_made. { G_ESC_WORD } tobytes word_Seems { G_a } { G_ESC_WORD } tobytes word_little { G_ESC_WORD } tobytes word_uncomfortable, { G_ESC_WORD } tobytes word_though... { G_ESC_END }
-: word_nano_blood-name { 0 } { G_ESC_WORD } tobytes word_Artificial { G_ESC_WORD } tobytes word_Blood { G_ESC_WORD } tobytes word_Cells { G_ESC_END }
-: word_narration_lab { 0 } { G_ESC_WORD } tobytes word_There's { G_ESC_WORD } tobytes word_probably { G_ESC_WORD } tobytes word_some { G_ESC_WORD } tobytes word_fancy { G_ESC_WORD } tobytes word_stuff { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_there. { G_ESC_WORD } tobytes word_Make { G_ESC_WORD } tobytes word_sure { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_bring { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_all { G_ESC_WORD } tobytes word_back { G_ESC_WORD } tobytes word_with { G_ESC_WORD } tobytes word_you! { G_ESC_END }
-: word_narration_power_plant { 0 } { G_ESC_WORD } tobytes word_They { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_geothermal { G_ESC_WORD } tobytes word_energy, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_must { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_close { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_end. { G_ESC_WORD } tobytes word_Good { G_ESC_WORD } tobytes word_luck! { G_ESC_END }
-: word_narration_ruin { 0 } { G_ESC_PORTRAIT } tobytes portrait_static { G_ESC_WORD } tobytes word_... { G_ESC_SOUND } tobytes sfx_hello{ G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Hello? { G_ESC_WORD } tobytes word_... { G_ESC_PORTRAIT } tobytes portrait_gc { G_ESC_WORD } tobytes word_Hey, { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_still { G_ESC_WORD } tobytes word_alive? { G_ESC_WORD } tobytes word_Cool. { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Look, { G_I } { G_ESC_WORD } tobytes word_haven't { G_ESC_WORD } tobytes word_really { G_ESC_WORD } tobytes word_been { G_ESC_WORD } tobytes word_paying { G_ESC_WORD } tobytes word_attention. { G_ESC_WORD } tobytes word_Did { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_find { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_treasure { G_ESC_WORD } tobytes word_yet? { G_ESC_WORD } tobytes word_Come { G_ESC_WORD } tobytes word_on, { G_I } { G_ESC_WORD } tobytes word_know { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_your { G_ESC_WORD } tobytes word_first { G_ESC_WORD } tobytes word_job, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_hard. { G_ESC_WORD } tobytes word_Anyway, { G_ESC_WORD } tobytes word_I've { G_ESC_WORD } tobytes word_turned { G_ESC_WORD } tobytes word_my { G_ESC_WORD } tobytes word_radio { G_ESC_WORD } tobytes word_back { G_ESC_WORD } tobytes word_on. { G_ESC_COLOR } tobytes color_red{ G_ESC_WORD } tobytes word_Good { G_ESC_WORD } tobytes word_luck! { G_ESC_COLOR } tobytes color_normal{ G_ESC_END }
 : word_need { 20 } { G_n } { G_e } { G_e } { G_d } { G_ESC_END }
 : word_needed { 30 } { G_n } { G_e } { G_e } { G_d } { G_e } { G_d } { G_ESC_END }
-: word_neutralize { 42 } { G_n } { G_e } { G_u } { G_t } { G_r } { G_a } { G_l } { G_i } { G_z } { G_e } { G_ESC_END }
-: word_normally { 35 } { G_n } { G_o } { G_r } { G_m } { G_a } { G_l } { G_l } { G_y } { G_ESC_END }
 : word_not { 14 } { G_n } { G_o } { G_t } { G_ESC_END }
-: word_notes { 22 } { G_n } { G_o } { G_t } { G_e } { G_s } { G_ESC_END }
 : word_of { 10 } { G_o } { G_f } { G_ESC_END }
-: word_on { 10 } { G_o } { G_n } { G_ESC_END }
 : word_on, { 13 } { G_o } { G_n } { G_, } { G_ESC_END }
 : word_on. { 13 } { G_o } { G_n } { G_. } { G_ESC_END }
 : word_one { 15 } { G_o } { G_n } { G_e } { G_ESC_END }
 : word_one, { 18 } { G_o } { G_n } { G_e } { G_, } { G_ESC_END }
-: word_one. { 18 } { G_o } { G_n } { G_e } { G_. } { G_ESC_END }
 : word_originally { 38 } { G_o } { G_r } { G_i } { G_g } { G_i } { G_n } { G_a } { G_l } { G_l } { G_y } { G_ESC_END }
 : word_other { 22 } { G_o } { G_t } { G_h } { G_e } { G_r } { G_ESC_END }
-: word_out { 14 } { G_o } { G_u } { G_t } { G_ESC_END }
-: word_overclock-desc { 0 } { G_ESC_WORD } tobytes word_All { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_ancient { G_ESC_WORD } tobytes word_buildings { G_ESC_WORD } tobytes word_have { G_a } { G_ESC_WORD } tobytes word_central { G_ESC_WORD } tobytes word_clock { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_robots { G_ESC_WORD } tobytes word_sync { G_ESC_WORD } tobytes word_with. { G_ESC_END }
-: word_overclock-name { 39 } { G_O } { G_v } { G_e } { G_r } { G_c } { G_l } { G_o } { G_c } { G_k } { G_ESC_END }
 : word_packages. { 39 } { G_p } { G_a } { G_c } { G_k } { G_a } { G_g } { G_e } { G_s } { G_. } { G_ESC_END }
 : word_painful... { 39 } { G_p } { G_a } { G_i } { G_n } { G_f } { G_u } { G_l } { G_. } { G_. } { G_. } { G_ESC_END }
-: word_pants { 22 } { G_p } { G_a } { G_n } { G_t } { G_s } { G_ESC_END }
 : word_paying { 27 } { G_p } { G_a } { G_y } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_people { 28 } { G_p } { G_e } { G_o } { G_p } { G_l } { G_e } { G_ESC_END }
 : word_pet. { 17 } { G_p } { G_e } { G_t } { G_. } { G_ESC_END }
 : word_pistol. { 25 } { G_p } { G_i } { G_s } { G_t } { G_o } { G_l } { G_. } { G_ESC_END }
 : word_planned { 33 } { G_p } { G_l } { G_a } { G_n } { G_n } { G_e } { G_d } { G_ESC_END }
-: word_playing { 30 } { G_p } { G_l } { G_a } { G_y } { G_i } { G_n } { G_g } { G_ESC_END }
-: word_pockets { 30 } { G_p } { G_o } { G_c } { G_k } { G_e } { G_t } { G_s } { G_ESC_END }
-: word_possible { 31 } { G_p } { G_o } { G_s } { G_s } { G_i } { G_b } { G_l } { G_e } { G_ESC_END }
-: word_possible. { 34 } { G_p } { G_o } { G_s } { G_s } { G_i } { G_b } { G_l } { G_e } { G_. } { G_ESC_END }
-: word_power-electrician-desc { 0 } { G_ESC_WORD } tobytes word_Robotic { G_ESC_WORD } tobytes word_electricians { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_convenient { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_situations { G_ESC_WORD } tobytes word_where { G_ESC_WORD } tobytes word_electrocution { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_fatal. { G_ESC_END }
 : word_power-electrician-name { 42 } { G_E } { G_l } { G_e } { G_c } { G_t } { G_r } { G_i } { G_c } { G_i } { G_a } { G_n } { G_ESC_END }
 : word_pressure { 32 } { G_p } { G_r } { G_e } { G_s } { G_s } { G_u } { G_r } { G_e } { G_ESC_END }
-: word_pressurized { 44 } { G_p } { G_r } { G_e } { G_s } { G_s } { G_u } { G_r } { G_i } { G_z } { G_e } { G_d } { G_ESC_END }
 : word_pretty { 26 } { G_p } { G_r } { G_e } { G_t } { G_t } { G_y } { G_ESC_END }
 : word_probably { 36 } { G_p } { G_r } { G_o } { G_b } { G_a } { G_b } { G_l } { G_y } { G_ESC_END }
 : word_properly. { 37 } { G_p } { G_r } { G_o } { G_p } { G_e } { G_r } { G_l } { G_y } { G_. } { G_ESC_END }
 : word_prototype { 41 } { G_p } { G_r } { G_o } { G_t } { G_o } { G_t } { G_y } { G_p } { G_e } { G_ESC_END }
-: word_put { 14 } { G_p } { G_u } { G_t } { G_ESC_END }
 : word_quick { 20 } { G_q } { G_u } { G_i } { G_c } { G_k } { G_ESC_END }
 : word_radio { 20 } { G_r } { G_a } { G_d } { G_i } { G_o } { G_ESC_END }
 : word_really { 24 } { G_r } { G_e } { G_a } { G_l } { G_l } { G_y } { G_ESC_END }
-: word_reason, { 29 } { G_r } { G_e } { G_a } { G_s } { G_o } { G_n } { G_, } { G_ESC_END }
 : word_recycled { 34 } { G_r } { G_e } { G_c } { G_y } { G_c } { G_l } { G_e } { G_d } { G_ESC_END }
 : word_releasing { 36 } { G_r } { G_e } { G_l } { G_e } { G_a } { G_s } { G_i } { G_n } { G_g } { G_ESC_END }
-: word_reload { 26 } { G_r } { G_e } { G_l } { G_o } { G_a } { G_d } { G_ESC_END }
-: word_remind { 26 } { G_r } { G_e } { G_m } { G_i } { G_n } { G_d } { G_ESC_END }
-: word_repels { 24 } { G_r } { G_e } { G_p } { G_e } { G_l } { G_s } { G_ESC_END }
-: word_replacement { 50 } { G_r } { G_e } { G_p } { G_l } { G_a } { G_c } { G_e } { G_m } { G_e } { G_n } { G_t } { G_ESC_END }
 : word_risk { 12 } { G_r } { G_i } { G_s } { G_k } { G_ESC_END }
-: word_robotic, { 31 } { G_r } { G_o } { G_b } { G_o } { G_t } { G_i } { G_c } { G_, } { G_ESC_END }
 : word_robots { 25 } { G_r } { G_o } { G_b } { G_o } { G_t } { G_s } { G_ESC_END }
 : word_robots, { 28 } { G_r } { G_o } { G_b } { G_o } { G_t } { G_s } { G_, } { G_ESC_END }
-: word_robots. { 28 } { G_r } { G_o } { G_b } { G_o } { G_t } { G_s } { G_. } { G_ESC_END }
 : word_robots... { 34 } { G_r } { G_o } { G_b } { G_o } { G_t } { G_s } { G_. } { G_. } { G_. } { G_ESC_END }
-: word_rock. { 19 } { G_r } { G_o } { G_c } { G_k } { G_. } { G_ESC_END }
-: word_rocket_shoes-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_don't { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_shoes { G_ESC_WORD } tobytes word_with { G_ESC_WORD } tobytes word_pressurized { G_ESC_WORD } tobytes word_air { G_ESC_WORD } tobytes word_tanks { G_ESC_WORD } tobytes word_taped { G_ESC_WORD } tobytes word_on { G_ESC_WORD } tobytes word_really { G_ESC_WORD } tobytes word_count { G_ESC_WORD } tobytes word_as { G_ESC_WORD } tobytes word_treasure. { G_ESC_END }
-: word_rocket_shoes-name { 0 } { G_ESC_WORD } tobytes word_Rocket { G_ESC_WORD } tobytes word_Shoes { G_ESC_END }
-: word_ruin-dog-desc { 0 } { G_ESC_WORD } tobytes word_If { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_find { G_a } { G_ESC_WORD } tobytes word_deactivated { G_ESC_WORD } tobytes word_one, { G_ESC_WORD } tobytes word_make { G_ESC_WORD } tobytes word_sure { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_take { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_with { G_ESC_WORD } tobytes word_you; { G_ESC_WORD } tobytes word_we { G_ESC_WORD } tobytes word_really { G_ESC_WORD } tobytes word_need { G_a } { G_ESC_WORD } tobytes word_pet. { G_ESC_END }
 : word_ruin-dog-name { 15 } { G_D } { G_o } { G_g } { G_ESC_END }
-: word_ruin-mechanic-desc { 0 } { G_ESC_WORD } tobytes word_Robots { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_fix { G_ESC_WORD } tobytes word_other { G_ESC_WORD } tobytes word_robots... { G_ESC_WORD } tobytes word_Maybe { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_who { G_ESC_WORD } tobytes word_built { G_ESC_WORD } tobytes word_them { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_gone { G_ESC_WORD } tobytes word_because { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_weren't { G_ESC_WORD } tobytes word_needed { G_ESC_WORD } tobytes word_anymore? { G_ESC_END }
 : word_ruin-mechanic-name { 36 } { G_M } { G_e } { G_c } { G_h } { G_a } { G_n } { G_i } { G_c } { G_ESC_END }
-: word_ruin-messenger-desc { 0 } { G_ESC_WORD } tobytes word_People { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_use { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_deliver { G_ESC_WORD } tobytes word_packages. { G_ESC_WORD } tobytes word_They { G_ESC_WORD } tobytes word_aren't { G_ESC_WORD } tobytes word_hostile, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_tend { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_get { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_way. { G_ESC_END }
 : word_ruin-messenger-name { 40 } { G_M } { G_e } { G_s } { G_s } { G_e } { G_n } { G_g } { G_e } { G_r } { G_ESC_END }
-: word_ruin-scientist-desc { 0 } { G_ESC_WORD } tobytes word_Research { G_ESC_WORD } tobytes word_assistants { G_ESC_WORD } tobytes word_sometimes { G_ESC_WORD } tobytes word_wander { G_ESC_WORD } tobytes word_away { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_assigned { G_ESC_WORD } tobytes word_laboratory. { G_ESC_END }
 : word_ruin-scientist-name { 0 } { G_ESC_WORD } tobytes word_Lab { G_ESC_WORD } tobytes word_Assistant { G_ESC_END }
-: word_ruin-security1-desc { 0 } { G_ESC_WORD } tobytes word_Who { G_ESC_WORD } tobytes word_did { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_build { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_deter? { G_I } { G_ESC_WORD } tobytes word_don't { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_planned { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_us { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_go { G_ESC_WORD } tobytes word_digging { G_ESC_WORD } tobytes word_up { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_stuff. { G_ESC_END }
 : word_ruin-security1-name { 0 } { G_ESC_WORD } tobytes word_Melee { G_ESC_WORD } tobytes word_Security { G_ESC_END }
-: word_ruin-security2-desc { 0 } { G_ESC_WORD } tobytes word_This { G_ESC_WORD } tobytes word_model { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_security { G_ESC_WORD } tobytes word_droid { G_ESC_WORD } tobytes word_has { G_ESC_WORD } tobytes word_an { G_ESC_WORD } tobytes word_air { G_ESC_WORD } tobytes word_pistol. { G_ESC_WORD } tobytes word_It's { G_ESC_WORD } tobytes word_smart { G_ESC_WORD } tobytes word_enough { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_seek { G_ESC_WORD } tobytes word_cover, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_shoot { G_ESC_WORD } tobytes word_properly. { G_ESC_END }
 : word_ruin-security2-name { 0 } { G_ESC_WORD } tobytes word_Pistol { G_ESC_WORD } tobytes word_Security { G_ESC_END }
-: word_ruin-security3-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_someone { G_ESC_WORD } tobytes word_took { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_gun { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_standard { G_ESC_WORD } tobytes word_model { G_ESC_WORD } tobytes word_droids { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_gave { G_ESC_WORD } tobytes word_it { G_a } { G_ESC_WORD } tobytes word_bigger { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_instead. { G_ESC_WORD } tobytes word_It { G_ESC_WORD } tobytes word_doesn't { G_ESC_WORD } tobytes word_seem { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_know { G_ESC_WORD } tobytes word_how { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_handle { G_ESC_WORD } tobytes word_it, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_you'll { G_ESC_WORD } tobytes word_probably { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_fine. { G_ESC_END }
 : word_ruin-security3-name { 0 } { G_ESC_WORD } tobytes word_Modified { G_ESC_WORD } tobytes word_Security { G_ESC_END }
-: word_ruin-sentry-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_were { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_as { G_ESC_WORD } tobytes word_surveillance { G_ESC_WORD } tobytes word_robots, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_seems { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_years { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_decay { G_ESC_WORD } tobytes word_have { G_ESC_WORD } tobytes word_corrupted { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_systems. { G_ESC_END }
 : word_ruin-sentry-name { 27 } { G_S } { G_e } { G_n } { G_t } { G_r } { G_y } { G_ESC_END }
-: word_ruin-speed_turret-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_guys { G_ESC_WORD } tobytes word_try { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_flank { G_ESC_WORD } tobytes word_you. { G_ESC_WORD } tobytes word_Don't { G_ESC_WORD } tobytes word_let { G_ESC_WORD } tobytes word_them! { G_ESC_WORD } tobytes word_Their { G_ESC_WORD } tobytes word_bullets { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_pretty { G_ESC_WORD } tobytes word_painful... { G_ESC_END }
 : word_ruin-speed_turret-name { 0 } { G_ESC_WORD } tobytes word_Mobile { G_ESC_WORD } tobytes word_Turret { G_ESC_END }
-: word_ruin-turret-desc { 0 } { G_ESC_WORD } tobytes word_The { G_ESC_WORD } tobytes word_hissing { G_ESC_WORD } tobytes word_sound { G_ESC_WORD } tobytes word_comes { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_pressure { G_ESC_WORD } tobytes word_releasing { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_airguns. { G_ESC_WORD } tobytes word_It { G_ESC_WORD } tobytes word_seems { G_ESC_WORD } tobytes word_bullets { G_ESC_WORD } tobytes word_can { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_recycled { G_ESC_WORD } tobytes word_pretty { G_ESC_WORD } tobytes word_easily { G_ESC_WORD } tobytes word_if { G_ESC_WORD } tobytes word_they're { G_ESC_WORD } tobytes word_just { G_ESC_WORD } tobytes word_chunks { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_metal. { G_ESC_END }
 : word_ruin-turret-name { 26 } { G_T } { G_u } { G_r } { G_r } { G_e } { G_t } { G_ESC_END }
-: word_ruin-wall-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_were { G_ESC_WORD } tobytes word_originally { G_ESC_WORD } tobytes word_designed { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_suppression, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_also { G_ESC_WORD } tobytes word_worked { G_ESC_WORD } tobytes word_well { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_suppression. { G_ESC_END }
 : word_ruin-wall-name { 32 } { G_F } { G_i } { G_r } { G_e } { G_w } { G_a } { G_l } { G_l } { G_ESC_END }
 : word_security { 31 } { G_s } { G_e } { G_c } { G_u } { G_r } { G_i } { G_t } { G_y } { G_ESC_END }
 : word_seek { 17 } { G_s } { G_e } { G_e } { G_k } { G_ESC_END }
 : word_seem { 19 } { G_s } { G_e } { G_e } { G_m } { G_ESC_END }
 : word_seems { 22 } { G_s } { G_e } { G_e } { G_m } { G_s } { G_ESC_END }
-: word_shield. { 26 } { G_s } { G_h } { G_i } { G_e } { G_l } { G_d } { G_. } { G_ESC_END }
-: word_shoes { 21 } { G_s } { G_h } { G_o } { G_e } { G_s } { G_ESC_END }
 : word_shoot { 22 } { G_s } { G_h } { G_o } { G_o } { G_t } { G_ESC_END }
-: word_should { 26 } { G_s } { G_h } { G_o } { G_u } { G_l } { G_d } { G_ESC_END }
-: word_silence { 27 } { G_s } { G_i } { G_l } { G_e } { G_n } { G_c } { G_e } { G_ESC_END }
 : word_situations { 38 } { G_s } { G_i } { G_t } { G_u } { G_a } { G_t } { G_i } { G_o } { G_n } { G_s } { G_ESC_END }
 : word_smart { 21 } { G_s } { G_m } { G_a } { G_r } { G_t } { G_ESC_END }
 : word_so { 8 } { G_s } { G_o } { G_ESC_END }
 : word_some { 19 } { G_s } { G_o } { G_m } { G_e } { G_ESC_END }
 : word_someone { 34 } { G_s } { G_o } { G_m } { G_e } { G_o } { G_n } { G_e } { G_ESC_END }
-: word_something { 40 } { G_s } { G_o } { G_m } { G_e } { G_t } { G_h } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_sometimes { 39 } { G_s } { G_o } { G_m } { G_e } { G_t } { G_i } { G_m } { G_e } { G_s } { G_ESC_END }
-: word_sort { 15 } { G_s } { G_o } { G_r } { G_t } { G_ESC_END }
 : word_sound { 23 } { G_s } { G_o } { G_u } { G_n } { G_d } { G_ESC_END }
-: word_space-bending { 59 } { G_s } { G_p } { G_a } { G_c } { G_e } { G_- } { G_b } { G_e } { G_n } { G_d } { G_i } { G_n } { G_g } { G_ESC_END }
 : word_standard { 35 } { G_s } { G_t } { G_a } { G_n } { G_d } { G_a } { G_r } { G_d } { G_ESC_END }
 : word_still { 15 } { G_s } { G_t } { G_i } { G_l } { G_l } { G_ESC_END }
-: word_strong { 25 } { G_s } { G_t } { G_r } { G_o } { G_n } { G_g } { G_ESC_END }
-: word_stronger { 33 } { G_s } { G_t } { G_r } { G_o } { G_n } { G_g } { G_e } { G_r } { G_ESC_END }
 : word_stuff { 22 } { G_s } { G_t } { G_u } { G_f } { G_f } { G_ESC_END }
 : word_stuff. { 25 } { G_s } { G_t } { G_u } { G_f } { G_f } { G_. } { G_ESC_END }
 : word_sturdier { 30 } { G_s } { G_t } { G_u } { G_r } { G_d } { G_i } { G_e } { G_r } { G_ESC_END }
-: word_summon { 30 } { G_s } { G_u } { G_m } { G_m } { G_o } { G_n } { G_ESC_END }
 : word_suppression, { 47 } { G_s } { G_u } { G_p } { G_p } { G_r } { G_e } { G_s } { G_s } { G_i } { G_o } { G_n } { G_, } { G_ESC_END }
 : word_suppression. { 47 } { G_s } { G_u } { G_p } { G_p } { G_r } { G_e } { G_s } { G_s } { G_i } { G_o } { G_n } { G_. } { G_ESC_END }
 : word_sure { 16 } { G_s } { G_u } { G_r } { G_e } { G_ESC_END }
 : word_surveillance { 49 } { G_s } { G_u } { G_r } { G_v } { G_e } { G_i } { G_l } { G_l } { G_a } { G_n } { G_c } { G_e } { G_ESC_END }
-: word_swarms { 26 } { G_s } { G_w } { G_a } { G_r } { G_m } { G_s } { G_ESC_END }
-: word_sync { 17 } { G_s } { G_y } { G_n } { G_c } { G_ESC_END }
 : word_systems. { 32 } { G_s } { G_y } { G_s } { G_t } { G_e } { G_m } { G_s } { G_. } { G_ESC_END }
 : word_take { 18 } { G_t } { G_a } { G_k } { G_e } { G_ESC_END }
-: word_tanks { 21 } { G_t } { G_a } { G_n } { G_k } { G_s } { G_ESC_END }
-: word_taped { 24 } { G_t } { G_a } { G_p } { G_e } { G_d } { G_ESC_END }
-: word_tarski_field-desc { 0 } { G_ESC_WORD } tobytes word_Apparently, { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_possible { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_duplicate { G_ESC_WORD } tobytes word_matter, { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_who { G_ESC_WORD } tobytes word_invented { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_technology { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_make { G_ESC_WORD } tobytes word_more { G_ESC_WORD } tobytes word_bullets. { G_ESC_WORD } tobytes word_Maybe { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_why { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_aren't { G_ESC_WORD } tobytes word_around { G_ESC_WORD } tobytes word_anymore. { G_ESC_END }
-: word_tarski_field-name { 0 } { G_ESC_WORD } tobytes word_Banach-Tarski { G_ESC_WORD } tobytes word_Field { G_ESC_END }
-: word_technology { 46 } { G_t } { G_e } { G_c } { G_h } { G_n } { G_o } { G_l } { G_o } { G_g } { G_y } { G_ESC_END }
-: word_technology, { 49 } { G_t } { G_e } { G_c } { G_h } { G_n } { G_o } { G_l } { G_o } { G_g } { G_y } { G_, } { G_ESC_END }
-: word_technology. { 49 } { G_t } { G_e } { G_c } { G_h } { G_n } { G_o } { G_l } { G_o } { G_g } { G_y } { G_. } { G_ESC_END }
 : word_tend { 19 } { G_t } { G_e } { G_n } { G_d } { G_ESC_END }
-: word_than { 19 } { G_t } { G_h } { G_a } { G_n } { G_ESC_END }
 : word_that { 18 } { G_t } { G_h } { G_a } { G_t } { G_ESC_END }
 : word_the { 14 } { G_t } { G_h } { G_e } { G_ESC_END }
 : word_their { 19 } { G_t } { G_h } { G_e } { G_i } { G_r } { G_ESC_END }
 : word_them { 20 } { G_t } { G_h } { G_e } { G_m } { G_ESC_END }
 : word_them! { 22 } { G_t } { G_h } { G_e } { G_m } { G_! } { G_ESC_END }
-: word_them. { 23 } { G_t } { G_h } { G_e } { G_m } { G_. } { G_ESC_END }
-: word_then, { 22 } { G_t } { G_h } { G_e } { G_n } { G_, } { G_ESC_END }
 : word_there. { 25 } { G_t } { G_h } { G_e } { G_r } { G_e } { G_. } { G_ESC_END }
 : word_these { 22 } { G_t } { G_h } { G_e } { G_s } { G_e } { G_ESC_END }
 : word_they { 19 } { G_t } { G_h } { G_e } { G_y } { G_ESC_END }
 : word_they're { 29 } { G_t } { G_h } { G_e } { G_y } { G_' } { G_r } { G_e } { G_ESC_END }
 : word_think { 20 } { G_t } { G_h } { G_i } { G_n } { G_k } { G_ESC_END }
-: word_this { 14 } { G_t } { G_h } { G_i } { G_s } { G_ESC_END }
-: word_this... { 23 } { G_t } { G_h } { G_i } { G_s } { G_. } { G_. } { G_. } { G_ESC_END }
-: word_those { 22 } { G_t } { G_h } { G_o } { G_s } { G_e } { G_ESC_END }
-: word_though... { 38 } { G_t } { G_h } { G_o } { G_u } { G_g } { G_h } { G_. } { G_. } { G_. } { G_ESC_END }
-: word_thought { 33 } { G_t } { G_h } { G_o } { G_u } { G_g } { G_h } { G_t } { G_ESC_END }
-: word_through { 32 } { G_t } { G_h } { G_r } { G_o } { G_u } { G_g } { G_h } { G_ESC_END }
-: word_tiny { 16 } { G_t } { G_i } { G_n } { G_y } { G_ESC_END }
 : word_to { 9 } { G_t } { G_o } { G_ESC_END }
-: word_together { 36 } { G_t } { G_o } { G_g } { G_e } { G_t } { G_h } { G_e } { G_r } { G_ESC_END }
-: word_too { 14 } { G_t } { G_o } { G_o } { G_ESC_END }
 : word_took { 18 } { G_t } { G_o } { G_o } { G_k } { G_ESC_END }
-: word_toy { 14 } { G_t } { G_o } { G_y } { G_ESC_END }
-: word_tracks...? { 36 } { G_t } { G_r } { G_a } { G_c } { G_k } { G_s } { G_. } { G_. } { G_. } { G_? } { G_ESC_END }
 : word_treasure { 33 } { G_t } { G_r } { G_e } { G_a } { G_s } { G_u } { G_r } { G_e } { G_ESC_END }
-: word_treasure. { 36 } { G_t } { G_r } { G_e } { G_a } { G_s } { G_u } { G_r } { G_e } { G_. } { G_ESC_END }
 : word_try { 12 } { G_t } { G_r } { G_y } { G_ESC_END }
 : word_turned { 27 } { G_t } { G_u } { G_r } { G_n } { G_e } { G_d } { G_ESC_END }
 : word_turrets { 27 } { G_t } { G_u } { G_r } { G_r } { G_e } { G_t } { G_s } { G_ESC_END }
-: word_two { 15 } { G_t } { G_w } { G_o } { G_ESC_END }
-: word_uncomfortable, { 63 } { G_u } { G_n } { G_c } { G_o } { G_m } { G_f } { G_o } { G_r } { G_t } { G_a } { G_b } { G_l } { G_e } { G_, } { G_ESC_END }
 : word_up { 10 } { G_u } { G_p } { G_ESC_END }
 : word_upgraded { 38 } { G_u } { G_p } { G_g } { G_r } { G_a } { G_d } { G_e } { G_d } { G_ESC_END }
 : word_us { 8 } { G_u } { G_s } { G_ESC_END }
@@ -607,54 +376,126 @@
 : word_used { 18 } { G_u } { G_s } { G_e } { G_d } { G_ESC_END }
 : word_version { 29 } { G_v } { G_e } { G_r } { G_s } { G_i } { G_o } { G_n } { G_ESC_END }
 : word_versions { 32 } { G_v } { G_e } { G_r } { G_s } { G_i } { G_o } { G_n } { G_s } { G_ESC_END }
-: word_void_pants-desc { 0 } { G_ESC_WORD } tobytes word_Using { G_ESC_WORD } tobytes word_space-bending { G_ESC_WORD } tobytes word_technology, { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_pants { G_ESC_WORD } tobytes word_have { G_ESC_WORD } tobytes word_deeper { G_ESC_WORD } tobytes word_pockets { G_ESC_WORD } tobytes word_than { G_ESC_WORD } tobytes word_would { G_ESC_WORD } tobytes word_normally { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_possible. { G_ESC_WORD } tobytes word_Somehow, { G_ESC_WORD } tobytes word_this { G_ESC_WORD } tobytes word_makes { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_have { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_reload { G_ESC_WORD } tobytes word_less. { G_ESC_END }
-: word_void_pants-name { 0 } { G_ESC_WORD } tobytes word_Void { G_ESC_WORD } tobytes word_Pants { G_ESC_END }
-: word_walls { 20 } { G_w } { G_a } { G_l } { G_l } { G_s } { G_ESC_END }
 : word_wander { 29 } { G_w } { G_a } { G_n } { G_d } { G_e } { G_r } { G_ESC_END }
-: word_wanted { 30 } { G_w } { G_a } { G_n } { G_t } { G_e } { G_d } { G_ESC_END }
 : word_was { 14 } { G_w } { G_a } { G_s } { G_ESC_END }
-: word_way { 16 } { G_w } { G_a } { G_y } { G_ESC_END }
 : word_way. { 19 } { G_w } { G_a } { G_y } { G_. } { G_ESC_END }
 : word_we { 11 } { G_w } { G_e } { G_ESC_END }
 : word_well { 17 } { G_w } { G_e } { G_l } { G_l } { G_ESC_END }
 : word_were { 19 } { G_w } { G_e } { G_r } { G_e } { G_ESC_END }
 : word_weren't { 30 } { G_w } { G_e } { G_r } { G_e } { G_n } { G_' } { G_t } { G_ESC_END }
-: word_what { 20 } { G_w } { G_h } { G_a } { G_t } { G_ESC_END }
 : word_where { 24 } { G_w } { G_h } { G_e } { G_r } { G_e } { G_ESC_END }
-: word_whistling. { 38 } { G_w } { G_h } { G_i } { G_s } { G_t } { G_l } { G_i } { G_n } { G_g } { G_. } { G_ESC_END }
 : word_who { 16 } { G_w } { G_h } { G_o } { G_ESC_END }
-: word_why { 16 } { G_w } { G_h } { G_y } { G_ESC_END }
 : word_with { 17 } { G_w } { G_i } { G_t } { G_h } { G_ESC_END }
-: word_with. { 20 } { G_w } { G_i } { G_t } { G_h } { G_. } { G_ESC_END }
-: word_won't { 22 } { G_w } { G_o } { G_n } { G_' } { G_t } { G_ESC_END }
 : word_work. { 21 } { G_w } { G_o } { G_r } { G_k } { G_. } { G_ESC_END }
 : word_worked { 28 } { G_w } { G_o } { G_r } { G_k } { G_e } { G_d } { G_ESC_END }
-: word_workers { 29 } { G_w } { G_o } { G_r } { G_k } { G_e } { G_r } { G_s } { G_ESC_END }
-: word_would { 24 } { G_w } { G_o } { G_u } { G_l } { G_d } { G_ESC_END }
 : word_years { 21 } { G_y } { G_e } { G_a } { G_r } { G_s } { G_ESC_END }
 : word_yet? { 18 } { G_y } { G_e } { G_t } { G_? } { G_ESC_END }
 : word_you { 15 } { G_y } { G_o } { G_u } { G_ESC_END }
 : word_you! { 17 } { G_y } { G_o } { G_u } { G_! } { G_ESC_END }
-: word_you'd { 22 } { G_y } { G_o } { G_u } { G_' } { G_d } { G_ESC_END }
 : word_you'll { 23 } { G_y } { G_o } { G_u } { G_' } { G_l } { G_l } { G_ESC_END }
 : word_you. { 18 } { G_y } { G_o } { G_u } { G_. } { G_ESC_END }
 : word_you; { 18 } { G_y } { G_o } { G_u } { G_; } { G_ESC_END }
 : word_your { 18 } { G_y } { G_o } { G_u } { G_r } { G_ESC_END }
-## End Text Data
-## Biome Data
-: biome_data
-: biome_ruin0 tobytes word_Biome_Name_ruin0 tobytes word_narration_ruin tobytes enemyset_ruin 0 0
-: biome_ruin1 tobytes word_Biome_Name_ruin1 tobytes word_narration_none tobytes enemyset_ruin 0 0
-: biome_ruin2 tobytes word_Biome_Name_ruin2 tobytes word_narration_none tobytes enemyset_ruin 0 0
-: biome_lab0 tobytes word_Biome_Name_lab0 tobytes word_narration_lab tobytes enemyset_lab 0 0
-: biome_lab1 tobytes word_Biome_Name_lab1 tobytes word_narration_none tobytes enemyset_lab 0 0
-: biome_lab2 tobytes word_Biome_Name_lab2 tobytes word_narration_none tobytes enemyset_lab 0 0
-: biome_power_plant0 tobytes word_Biome_Name_power_plant0 tobytes word_narration_power_plant tobytes enemyset_power_plant 0 0
-: biome_power_plant1 tobytes word_Biome_Name_power_plant1 tobytes word_narration_none tobytes enemyset_power_plant 0 0
-: biome_power_plant2 tobytes word_Biome_Name_power_plant2 tobytes word_narration_none tobytes enemyset_power_plant 0 0
-## End Biome Data
+: word_Biome_Name_lab0 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_1 } { G_ESC_END }
+: word_Biome_Name_lab1 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_2 } { G_ESC_END }
+: word_Biome_Name_lab2 { 0 } { G_ESC_WORD } tobytes word_Lab { G_- } { G_3 } { G_ESC_END }
+: word_Biome_Name_power_plant0 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_1 } { G_ESC_END }
+: word_Biome_Name_power_plant1 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_2 } { G_ESC_END }
+: word_Biome_Name_power_plant2 { 0 } { G_ESC_WORD } tobytes word_Power { G_ESC_WORD } tobytes word_Plant { G_- } { G_3 } { G_ESC_END }
+: word_Biome_Name_ruin0 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_1 } { G_ESC_END }
+: word_Biome_Name_ruin1 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_2 } { G_ESC_END }
+: word_Biome_Name_ruin2 { 0 } { G_ESC_WORD } tobytes word_Ruins { G_- } { G_3 } { G_ESC_END }
+: word_Char_Build_0 { 0 } { G_A } { G_ESC_WORD } tobytes word_Little { G_ESC_WORD } tobytes word_Extra { G_ESC_END }
+: word_Char_Build_2 { 0 } { G_ESC_WORD } tobytes word_Full { G_ESC_WORD } tobytes word_Figured { G_ESC_END }
+: word_Char_Build_7 { 0 } { G_ESC_WORD } tobytes word_Rather { G_ESC_WORD } tobytes word_Not { G_ESC_WORD } tobytes word_Say { G_ESC_END }
+: word_Char_Height_3 { 0 } { G_ESC_WORD } tobytes word_Very { G_ESC_WORD } tobytes word_Tall { G_ESC_END }
+: word_Credits_1 { 0 } { G_ESC_WORD } tobytes word_Credits { G_ESC_WORD } tobytes word_Go { G_ESC_WORD } tobytes word_Here { G_ESC_END }
+: word_End_Win_Msg { 0 } { G_ESC_WORD } tobytes word_You { G_ESC_WORD } tobytes word_Win!! { G_ESC_END }
+: word_New_Level { 0 } { G_ESC_WORD } tobytes word_Now { G_ESC_WORD } tobytes word_Entering { G_ESC_END }
+: word_Title_Beastiary { 0 } { G_ESC_WORD } tobytes word_View { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Beastiary { G_ESC_END }
+: word_Title_Begin { 0 } { G_ESC_WORD } tobytes word_Explore { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Site { G_ESC_END }
+: word_Title_Itemiary { 0 } { G_ESC_WORD } tobytes word_View { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_Treasure { G_ESC_WORD } tobytes word_Codex { G_ESC_END }
+: word_lab-scientist-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_do { G_ESC_WORD } tobytes word_lab { G_ESC_WORD } tobytes word_assistant { G_ESC_WORD } tobytes word_work. { G_ESC_WORD } tobytes word_Science { G_ESC_WORD } tobytes word_was { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_few { G_ESC_WORD } tobytes word_areas { G_ESC_WORD } tobytes word_where { G_ESC_WORD } tobytes word_robots { G_ESC_WORD } tobytes word_couldn't { G_ESC_WORD } tobytes word_do { G_ESC_WORD } tobytes word_everything. { G_ESC_END }
+: word_lab-turret-desc { 0 } { G_A } { G_ESC_WORD } tobytes word_prototype { G_ESC_WORD } tobytes word_version { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_quick { G_ESC_WORD } tobytes word_turrets { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_earlier. { G_ESC_WORD } tobytes word_It's { G_ESC_WORD } tobytes word_sturdier { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_can { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_more, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_as { G_ESC_WORD } tobytes word_accurate. { G_ESC_END }
+: word_lab-wall-desc { 0 } { G_ESC_WORD } tobytes word_The { G_ESC_WORD } tobytes word_risk { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_greater { G_ESC_WORD } tobytes word_in { G_a } { G_ESC_WORD } tobytes word_laboratory, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_upgraded { G_ESC_WORD } tobytes word_versions { G_ESC_WORD } tobytes word_here. { G_ESC_END }
+: word_narration_lab { 0 } { G_ESC_WORD } tobytes word_There's { G_ESC_WORD } tobytes word_probably { G_ESC_WORD } tobytes word_some { G_ESC_WORD } tobytes word_fancy { G_ESC_WORD } tobytes word_stuff { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_there. { G_ESC_WORD } tobytes word_Make { G_ESC_WORD } tobytes word_sure { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_bring { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_all { G_ESC_WORD } tobytes word_back { G_ESC_WORD } tobytes word_with { G_ESC_WORD } tobytes word_you! { G_ESC_END }
+: word_narration_power_plant { 0 } { G_ESC_WORD } tobytes word_They { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_geothermal { G_ESC_WORD } tobytes word_energy, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_must { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_close { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_end. { G_ESC_WORD } tobytes word_Good { G_ESC_WORD } tobytes word_luck! { G_ESC_END }
+: word_narration_ruin { 0 } { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Hello? { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Hey, { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_still { G_ESC_WORD } tobytes word_alive? { G_ESC_WORD } tobytes word_Cool. { G_ESC_WORD } tobytes word_... { G_ESC_WORD } tobytes word_Look, { G_I } { G_ESC_WORD } tobytes word_haven't { G_ESC_WORD } tobytes word_really { G_ESC_WORD } tobytes word_been { G_ESC_WORD } tobytes word_paying { G_ESC_WORD } tobytes word_attention. { G_ESC_WORD } tobytes word_Did { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_find { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_treasure { G_ESC_WORD } tobytes word_yet? { G_ESC_WORD } tobytes word_Come { G_ESC_WORD } tobytes word_on, { G_I } { G_ESC_WORD } tobytes word_know { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_your { G_ESC_WORD } tobytes word_first { G_ESC_WORD } tobytes word_job, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it's { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_hard. { G_ESC_WORD } tobytes word_Anyway, { G_ESC_WORD } tobytes word_I've { G_ESC_WORD } tobytes word_turned { G_ESC_WORD } tobytes word_my { G_ESC_WORD } tobytes word_radio { G_ESC_WORD } tobytes word_back { G_ESC_WORD } tobytes word_on. { G_ESC_WORD } tobytes word_Good { G_ESC_WORD } tobytes word_luck! { G_ESC_END }
+: word_power-electrician-desc { 0 } { G_ESC_WORD } tobytes word_Robotic { G_ESC_WORD } tobytes word_electricians { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_convenient { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_situations { G_ESC_WORD } tobytes word_where { G_ESC_WORD } tobytes word_electrocution { G_ESC_WORD } tobytes word_is { G_ESC_WORD } tobytes word_fatal. { G_ESC_END }
+: word_ruin-dog-desc { 0 } { G_ESC_WORD } tobytes word_If { G_ESC_WORD } tobytes word_you { G_ESC_WORD } tobytes word_find { G_a } { G_ESC_WORD } tobytes word_deactivated { G_ESC_WORD } tobytes word_one, { G_ESC_WORD } tobytes word_make { G_ESC_WORD } tobytes word_sure { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_take { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_with { G_ESC_WORD } tobytes word_you; { G_ESC_WORD } tobytes word_we { G_ESC_WORD } tobytes word_really { G_ESC_WORD } tobytes word_need { G_a } { G_ESC_WORD } tobytes word_pet. { G_ESC_END }
+: word_ruin-mechanic-desc { 0 } { G_ESC_WORD } tobytes word_Robots { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_fix { G_ESC_WORD } tobytes word_other { G_ESC_WORD } tobytes word_robots... { G_ESC_WORD } tobytes word_Maybe { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_who { G_ESC_WORD } tobytes word_built { G_ESC_WORD } tobytes word_them { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_gone { G_ESC_WORD } tobytes word_because { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_weren't { G_ESC_WORD } tobytes word_needed { G_ESC_WORD } tobytes word_anymore? { G_ESC_END }
+: word_ruin-messenger-desc { 0 } { G_ESC_WORD } tobytes word_People { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_use { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_deliver { G_ESC_WORD } tobytes word_packages. { G_ESC_WORD } tobytes word_They { G_ESC_WORD } tobytes word_aren't { G_ESC_WORD } tobytes word_hostile, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_tend { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_get { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_way. { G_ESC_END }
+: word_ruin-scientist-desc { 0 } { G_ESC_WORD } tobytes word_Research { G_ESC_WORD } tobytes word_assistants { G_ESC_WORD } tobytes word_sometimes { G_ESC_WORD } tobytes word_wander { G_ESC_WORD } tobytes word_away { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_assigned { G_ESC_WORD } tobytes word_laboratory. { G_ESC_END }
+: word_ruin-security1-desc { 0 } { G_ESC_WORD } tobytes word_Who { G_ESC_WORD } tobytes word_did { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_build { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_deter? { G_I } { G_ESC_WORD } tobytes word_don't { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_planned { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_us { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_go { G_ESC_WORD } tobytes word_digging { G_ESC_WORD } tobytes word_up { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_stuff. { G_ESC_END }
+: word_ruin-security2-desc { 0 } { G_ESC_WORD } tobytes word_This { G_ESC_WORD } tobytes word_model { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_security { G_ESC_WORD } tobytes word_droid { G_ESC_WORD } tobytes word_has { G_ESC_WORD } tobytes word_an { G_ESC_WORD } tobytes word_air { G_ESC_WORD } tobytes word_pistol. { G_ESC_WORD } tobytes word_It's { G_ESC_WORD } tobytes word_smart { G_ESC_WORD } tobytes word_enough { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_seek { G_ESC_WORD } tobytes word_cover, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_not { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_shoot { G_ESC_WORD } tobytes word_properly. { G_ESC_END }
+: word_ruin-security3-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_someone { G_ESC_WORD } tobytes word_took { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_gun { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_the { G_ESC_WORD } tobytes word_standard { G_ESC_WORD } tobytes word_model { G_ESC_WORD } tobytes word_droids { G_ESC_WORD } tobytes word_and { G_ESC_WORD } tobytes word_gave { G_ESC_WORD } tobytes word_it { G_a } { G_ESC_WORD } tobytes word_bigger { G_ESC_WORD } tobytes word_one { G_ESC_WORD } tobytes word_instead. { G_ESC_WORD } tobytes word_It { G_ESC_WORD } tobytes word_doesn't { G_ESC_WORD } tobytes word_seem { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_know { G_ESC_WORD } tobytes word_how { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_handle { G_ESC_WORD } tobytes word_it, { G_ESC_WORD } tobytes word_so { G_ESC_WORD } tobytes word_you'll { G_ESC_WORD } tobytes word_probably { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_fine. { G_ESC_END }
+: word_ruin-sentry-desc { 0 } { G_I } { G_ESC_WORD } tobytes word_think { G_ESC_WORD } tobytes word_these { G_ESC_WORD } tobytes word_were { G_ESC_WORD } tobytes word_used { G_ESC_WORD } tobytes word_as { G_ESC_WORD } tobytes word_surveillance { G_ESC_WORD } tobytes word_robots, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_it { G_ESC_WORD } tobytes word_seems { G_ESC_WORD } tobytes word_that { G_ESC_WORD } tobytes word_years { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_decay { G_ESC_WORD } tobytes word_have { G_ESC_WORD } tobytes word_corrupted { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_systems. { G_ESC_END }
+: word_ruin-speed_turret-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_guys { G_ESC_WORD } tobytes word_try { G_ESC_WORD } tobytes word_to { G_ESC_WORD } tobytes word_flank { G_ESC_WORD } tobytes word_you. { G_ESC_WORD } tobytes word_Don't { G_ESC_WORD } tobytes word_let { G_ESC_WORD } tobytes word_them! { G_ESC_WORD } tobytes word_Their { G_ESC_WORD } tobytes word_bullets { G_ESC_WORD } tobytes word_are { G_ESC_WORD } tobytes word_pretty { G_ESC_WORD } tobytes word_painful... { G_ESC_END }
+: word_ruin-turret-desc { 0 } { G_ESC_WORD } tobytes word_The { G_ESC_WORD } tobytes word_hissing { G_ESC_WORD } tobytes word_sound { G_ESC_WORD } tobytes word_comes { G_ESC_WORD } tobytes word_from { G_ESC_WORD } tobytes word_pressure { G_ESC_WORD } tobytes word_releasing { G_ESC_WORD } tobytes word_in { G_ESC_WORD } tobytes word_their { G_ESC_WORD } tobytes word_airguns. { G_ESC_WORD } tobytes word_It { G_ESC_WORD } tobytes word_seems { G_ESC_WORD } tobytes word_bullets { G_ESC_WORD } tobytes word_can { G_ESC_WORD } tobytes word_be { G_ESC_WORD } tobytes word_recycled { G_ESC_WORD } tobytes word_pretty { G_ESC_WORD } tobytes word_easily { G_ESC_WORD } tobytes word_if { G_ESC_WORD } tobytes word_they're { G_ESC_WORD } tobytes word_just { G_ESC_WORD } tobytes word_chunks { G_ESC_WORD } tobytes word_of { G_ESC_WORD } tobytes word_metal. { G_ESC_END }
+: word_ruin-wall-desc { 0 } { G_ESC_WORD } tobytes word_These { G_ESC_WORD } tobytes word_were { G_ESC_WORD } tobytes word_originally { G_ESC_WORD } tobytes word_designed { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_fire { G_ESC_WORD } tobytes word_suppression, { G_ESC_WORD } tobytes word_but { G_ESC_WORD } tobytes word_they { G_ESC_WORD } tobytes word_also { G_ESC_WORD } tobytes word_worked { G_ESC_WORD } tobytes word_well { G_ESC_WORD } tobytes word_for { G_ESC_WORD } tobytes word_people { G_ESC_WORD } tobytes word_suppression. { G_ESC_END }
+## End Text Data  2896 bytes
+
 ## Enemy Data
+## Enemies Data Table  - 15 entries x 14 bytes = 210 bytes
+#  | x | y | flags | sprite | portrait | desc | ai | name | 
+:lab-scientist { 0 } { 0 } { 0 } TB SPR_enemy7 TB SPR_portrait_enemy7 TB word_lab-scientist-desc TB ai_melee_smart TB word_lab-scientist-name 
+:lab-turret { 0 } { 0 } { 0 } TB SPR_enemy9 TB SPR_portrait_enemy9 TB word_lab-turret-desc TB ai_flank TB word_lab-turret-name 
+:lab-wall { 0 } { 0 } { 0 } TB SPR_enemy6 TB SPR_portrait_enemy6 TB word_lab-wall-desc TB ai_melee TB word_lab-wall-name 
+:power-electrician { 0 } { 0 } { 0 } TB SPR_enemy1 TB SPR_portrait_enemy1 TB word_power-electrician-desc TB ai_melee_smart TB word_power-electrician-name 
+:ruin-dog { 0 } { 0 } { 0 } TB SPR_enemy11 TB SPR_portrait_enemy11 TB word_ruin-dog-desc TB ai_melee TB word_ruin-dog-name 
+:ruin-mechanic { 0 } { 0 } { 0 } TB SPR_enemy1 TB SPR_portrait_enemy1 TB word_ruin-mechanic-desc TB ai_melee_smart TB word_ruin-mechanic-name 
+:ruin-messenger { 0 } { 0 } { 0 } TB SPR_enemy5 TB SPR_portrait_enemy5 TB word_ruin-messenger-desc TB ai_wander TB word_ruin-messenger-name 
+:ruin-scientist { 0 } { 0 } { 0 } TB SPR_enemy7 TB SPR_portrait_enemy7 TB word_ruin-scientist-desc TB ai_melee_smart TB word_ruin-scientist-name 
+:ruin-security1 { 0 } { 0 } { 0 } TB SPR_enemy2 TB SPR_portrait_enemy2 TB word_ruin-security1-desc TB ai_melee_smart TB word_ruin-security1-name 
+:ruin-security2 { 0 } { 0 } { 0 } TB SPR_enemy3 TB SPR_portrait_enemy3 TB word_ruin-security2-desc TB ai_cover TB word_ruin-security2-name 
+:ruin-security3 { 0 } { 0 } { 0 } TB SPR_enemy4 TB SPR_portrait_enemy4 TB word_ruin-security3-desc TB ai_cover TB word_ruin-security3-name 
+:ruin-sentry { 0 } { 0 } { 0 } TB SPR_enemy8 TB SPR_portrait_enemy8 TB word_ruin-sentry-desc TB ai_melee TB word_ruin-sentry-name 
+:ruin-speed_turret { 0 } { 0 } { 0 } TB SPR_enemy9 TB SPR_portrait_enemy9 TB word_ruin-speed_turret-desc TB ai_flank TB word_ruin-speed_turret-name 
+:ruin-turret { 0 } { 0 } { 0 } TB SPR_enemy10 TB SPR_portrait_enemy10 TB word_ruin-turret-desc TB ai_turret TB word_ruin-turret-name 
+:ruin-wall { 0 } { 0 } { 0 } TB SPR_enemy6 TB SPR_portrait_enemy6 TB word_ruin-wall-desc TB ai_melee TB word_ruin-wall-name 
+
 ## End Enemy Data
+
+## Biome Data
+## Biomes Data Table  - 9 entries x 8 bytes = 72 bytes
+#  | name | narration | enemyset | treasureset | 
+:ruin TB Ruins0 TB word_narration_{portrait:static}_...
+{sound:hello}_..._Hello?_...
+{portrait:gc}_Hey,_are_you_still_alive?
+Cool.
+...
+Look,_I_haven't_really_been_paying_attention._Did_you_find_the_treasure_yet?
+Come_on,_I_know_it's_your_first_job,_but_it's_not_that_hard.
+Anyway,_I've_turned_my_radio_back_on._{color:red}_Good_luck!_{color:normal} TB word_narration_Ruins TB  
+:ruin TB Ruins1 TB BIOME_NARRATION_NONE TB word_narration_Ruins TB  
+:ruin TB Ruins2 TB BIOME_NARRATION_NONE TB word_narration_Ruins TB  
+:lab TB Lab0 TB word_narration_There's_probably_some_fancy_stuff_in_there._Make_sure_to_bring_it_all_back_with_you! TB word_narration_Lab TB  
+:lab TB Lab1 TB BIOME_NARRATION_NONE TB word_narration_Lab TB  
+:lab TB Lab2 TB BIOME_NARRATION_NONE TB word_narration_Lab TB  
+:power_plant TB Power_Plant0 TB word_narration_They_used_geothermal_energy,_so_you_must_be_close_to_the_end._Good_luck! TB word_narration_Power_Plant TB  
+:power_plant TB Power_Plant1 TB BIOME_NARRATION_NONE TB word_narration_Power_Plant TB  
+:power_plant TB Power_Plant2 TB BIOME_NARRATION_NONE TB word_narration_Power_Plant TB  
+
+## End Biome Data
+
 ## Treasure Data
-: treaure_accelerator 0 0 0 0 0 0 0 0 0 0 0 0: treaure_antishovel 0 0 0 0 0 0 0 0 0 0 0 0: treaure_crickets 0 0 0 0 0 0 0 0 0 0 0 0: treaure_dampener 0 0 0 0 0 0 0 0 0 0 0 0: treaure_dog 0 0 0 0 0 0 0 0 0 0 0 0: treaure_enlargener 0 0 0 0 0 0 0 0 0 0 0 0: treaure_exoskeleton 0 0 0 0 0 0 0 0 0 0 0 0: treaure_flute 0 0 0 0 0 0 0 0 0 0 0 0: treaure_heat_shield 0 0 0 0 0 0 0 0 0 0 0 0: treaure_magnet_shield 0 0 0 0 0 0 0 0 0 0 0 0: treaure_nano_blood 0 0 0 0 0 0 0 0 0 0 0 0: treaure_overclock 0 0 0 0 0 0 0 0 0 0 0 0: treaure_rocket_shoes 0 0 0 0 0 0 0 0 0 0 0 0: treaure_tarski_field 0 0 0 0 0 0 0 0 0 0 0 0: treaure_void_pants 0 0 0 0 0 0 0 0 0 0 0 0## End Treasure Data
+## Treasure Data Table  - 15 entries x 14 bytes = 210 bytes
+#  | x | y | flags | sprite | portrait | desc | ai | name | 
+:accelerator { 0 } { 0 } { 0 } TB SPR_accelerator TB SPR_portrait_accelerator TB word_accelerator-desc TB ai_treasure TB word_accelerator-name 
+:antishovel { 0 } { 0 } { 0 } TB SPR_antishovel TB SPR_portrait_antishovel TB word_antishovel-desc TB ai_treasure TB word_antishovel-name 
+:crickets { 0 } { 0 } { 0 } TB SPR_crickets TB SPR_portrait_crickets TB word_crickets-desc TB ai_treasure TB word_crickets-name 
+:dampener { 0 } { 0 } { 0 } TB SPR_dampener TB SPR_portrait_dampener TB word_dampener-desc TB ai_treasure TB word_dampener-name 
+:dog { 0 } { 0 } { 0 } TB SPR_enemy11 TB SPR_portrait_enemy11 TB word_dog-desc TB ai_treasure TB word_dog-name 
+:enlargener { 0 } { 0 } { 0 } TB SPR_enlargener TB SPR_portrait_enlargener TB word_enlargener-desc TB ai_treasure TB word_enlargener-name 
+:exoskeleton { 0 } { 0 } { 0 } TB SPR_exoskeleton TB SPR_portrait_exoskeleton TB word_exoskeleton-desc TB ai_treasure TB word_exoskeleton-name 
+:flute { 0 } { 0 } { 0 } TB SPR_flute TB SPR_portrait_flute TB word_flute-desc TB ai_treasure TB word_flute-name 
+:heat_shield { 0 } { 0 } { 0 } TB SPR_heat_shield TB SPR_portrait_heat_shield TB word_heat_shield-desc TB ai_treasure TB word_heat_shield-name 
+:magnet_shield { 0 } { 0 } { 0 } TB SPR_magnet_shield TB SPR_portrait_magnet_shield TB word_magnet_shield-desc TB ai_treasure TB word_magnet_shield-name 
+:nano_blood { 0 } { 0 } { 0 } TB SPR_nano_blood TB SPR_portrait_nano_blood TB word_nano_blood-desc TB ai_treasure TB word_nano_blood-name 
+:overclock { 0 } { 0 } { 0 } TB SPR_overclock TB SPR_portrait_overclock TB word_overclock-desc TB ai_treasure TB word_overclock-name 
+:rocket_shoes { 0 } { 0 } { 0 } TB SPR_rocket_shoes TB SPR_portrait_rocket_shoes TB word_rocket_shoes-desc TB ai_treasure TB word_rocket_shoes-name 
+:tarski_field { 0 } { 0 } { 0 } TB SPR_tarski_field TB SPR_portrait_tarski_field TB word_tarski_field-desc TB ai_treasure TB word_tarski_field-name 
+:void_pants { 0 } { 0 } { 0 } TB SPR_void_pants TB SPR_portrait_void_pants TB word_void_pants-desc TB ai_treasure TB word_void_pants-name 
+
+## End Treasure Data
 : entity_table_address tobytes entity_table
