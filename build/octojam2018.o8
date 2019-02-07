@@ -651,16 +651,16 @@
   32x m 32x m 32x m 32x m
 }
 ## Font Header
-:const G_!   0   # Uses: 5          [                                             ]
+:const G_!   0   # Uses: 7          [                                             ]
 #const G_"       # Uses: 0          [                                             ]
 #const G_$       # Uses: 0          [                                             ]
 #const G_%       # Uses: 0          [                                             ]
-:const G_'   1   # Uses: 28         [##                                           ]
+:const G_'   1   # Uses: 29         [##                                           ]
 #const G_)       # Uses: 0          [                                             ]
 #const G_+       # Uses: 0          [                                             ]
-:const G_,   2   # Uses: 28         [##                                           ]
+:const G_,   2   # Uses: 29         [##                                           ]
 :const G_-   3   # Uses: 4          [                                             ]
-:const G_.   4   # Uses: 76         [#######                                      ]
+:const G_.   4   # Uses: 78         [#######                                      ]
 #const G_/       # Uses: 0          [                                             ]
 :const G_0   5   # Uses: 2          [                                             ]
 :const G_1   6   # Uses: 1          [                                             ]
@@ -681,20 +681,20 @@
 :const G_D  21   # Uses: 8          [                                             ]
 :const G_E  22   # Uses: 9          [                                             ]
 :const G_F  23   # Uses: 11         [#                                            ]
-:const G_G  24   # Uses: 5          [                                             ]
+:const G_G  24   # Uses: 6          [                                             ]
 :const G_H  25   # Uses: 8          [                                             ]
 :const G_I  26   # Uses: 11         [#                                            ]
 :const G_J  27   # Uses: 3          [                                             ]
 :const G_K  28   # Uses: 1          [                                             ]
-:const G_L  29   # Uses: 5          [                                             ]
-:const G_M  30   # Uses: 10         [                                             ]
+:const G_L  29   # Uses: 8          [                                             ]
+:const G_M  30   # Uses: 11         [#                                            ]
 :const G_N  31   # Uses: 4          [                                             ]
 :const G_O  32   # Uses: 6          [                                             ]
-:const G_P  33   # Uses: 7          [                                             ]
+:const G_P  33   # Uses: 13         [#                                            ]
 :const G_Q  34   # Uses: 1          [                                             ]
 :const G_R  35   # Uses: 11         [#                                            ]
 :const G_S  36   # Uses: 19         [#                                            ]
-:const G_T  37   # Uses: 20         [#                                            ]
+:const G_T  37   # Uses: 22         [##                                           ]
 :const G_U  38   # Uses: 2          [                                             ]
 :const G_V  39   # Uses: 5          [                                             ]
 :const G_W  40   # Uses: 6          [                                             ]
@@ -703,31 +703,31 @@
 :const G_Z  43   # Uses: 1          [                                             ]
 #const G_[       # Uses: 0          [                                             ]
 #const G__       # Uses: 0          [                                             ]
-:const G_a  44   # Uses: 206        [###################                          ]
-:const G_b  45   # Uses: 61         [#####                                        ]
-:const G_c  46   # Uses: 97         [#########                                    ]
-:const G_d  47   # Uses: 117        [###########                                  ]
-:const G_e  48   # Uses: 468        [#############################################]
-:const G_f  49   # Uses: 59         [#####                                        ]
-:const G_g  50   # Uses: 58         [#####                                        ]
-:const G_h  51   # Uses: 143        [#############                                ]
-:const G_i  52   # Uses: 200        [###################                          ]
+:const G_a  44   # Uses: 218        [####################                         ]
+:const G_b  45   # Uses: 69         [######                                       ]
+:const G_c  46   # Uses: 101        [#########                                    ]
+:const G_d  47   # Uses: 120        [###########                                  ]
+:const G_e  48   # Uses: 488        [#############################################]
+:const G_f  49   # Uses: 62         [#####                                        ]
+:const G_g  50   # Uses: 61         [#####                                        ]
+:const G_h  51   # Uses: 149        [#############                                ]
+:const G_i  52   # Uses: 204        [##################                           ]
 :const G_j  53   # Uses: 7          [                                             ]
-:const G_k  54   # Uses: 45         [####                                         ]
-:const G_l  55   # Uses: 168        [################                             ]
-:const G_m  56   # Uses: 70         [######                                       ]
-:const G_n  57   # Uses: 184        [#################                            ]
-:const G_o  58   # Uses: 283        [###########################                  ]
-:const G_p  59   # Uses: 54         [#####                                        ]
+:const G_k  54   # Uses: 48         [####                                         ]
+:const G_l  55   # Uses: 177        [################                             ]
+:const G_m  56   # Uses: 73         [######                                       ]
+:const G_n  57   # Uses: 192        [#################                            ]
+:const G_o  58   # Uses: 297        [###########################                  ]
+:const G_p  59   # Uses: 55         [#####                                        ]
 :const G_q  60   # Uses: 2          [                                             ]
-:const G_r  61   # Uses: 218        [####################                         ]
-:const G_s  62   # Uses: 215        [####################                         ]
-:const G_t  63   # Uses: 332        [###############################              ]
-:const G_u  64   # Uses: 124        [###########                                  ]
+:const G_r  61   # Uses: 228        [#####################                        ]
+:const G_s  62   # Uses: 223        [####################                         ]
+:const G_t  63   # Uses: 344        [###############################              ]
+:const G_u  64   # Uses: 131        [############                                 ]
 :const G_v  65   # Uses: 34         [###                                          ]
-:const G_w  66   # Uses: 53         [#####                                        ]
+:const G_w  66   # Uses: 57         [#####                                        ]
 :const G_x  67   # Uses: 6          [                                             ]
-:const G_y  68   # Uses: 96         [#########                                    ]
+:const G_y  68   # Uses: 102        [#########                                    ]
 :const G_z  69   # Uses: 4          [                                             ]
 # 70 of 78 glyphs in use
 ## End Font Header
@@ -12670,6 +12670,7 @@ note 0xFF 0
 : word_Little 23 :byte G_L :byte G_i :byte G_t :byte G_t :byte G_l :byte G_e :byte G_ESC_END
 : word_Look, 22 :byte G_L :byte G_o :byte G_o :byte G_k :byte G_, :byte G_ESC_END
 : word_Magnet 30 :byte G_M :byte G_a :byte G_g :byte G_n :byte G_e :byte G_t :byte G_ESC_END
+: word_Make 20 :byte G_M :byte G_a :byte G_k :byte G_e :byte G_ESC_END
 : word_Maybe 26 :byte G_M :byte G_a :byte G_y :byte G_b :byte G_e :byte G_ESC_END
 : word_Melee 24 :byte G_M :byte G_e :byte G_l :byte G_e :byte G_e :byte G_ESC_END
 : word_Mobile 26 :byte G_M :byte G_o :byte G_b :byte G_i :byte G_l :byte G_e :byte G_ESC_END
@@ -12682,6 +12683,8 @@ note 0xFF 0
 : word_People 28 :byte G_P :byte G_e :byte G_o :byte G_p :byte G_l :byte G_e :byte G_ESC_END
 : word_Piper's 25 :byte G_P :byte G_i :byte G_p :byte G_e :byte G_r :byte G_' :byte G_s :byte G_ESC_END
 : word_Pistol 22 :byte G_P :byte G_i :byte G_s :byte G_t :byte G_o :byte G_l :byte G_ESC_END
+: word_Plant 22 :byte G_P :byte G_l :byte G_a :byte G_n :byte G_t :byte G_ESC_END
+: word_Power 24 :byte G_P :byte G_o :byte G_w :byte G_e :byte G_r :byte G_ESC_END
 : word_Prototype 41 :byte G_P :byte G_r :byte G_o :byte G_t :byte G_o :byte G_t :byte G_y :byte G_p :byte G_e :byte G_ESC_END
 : word_Rather 27 :byte G_R :byte G_a :byte G_t :byte G_h :byte G_e :byte G_r :byte G_ESC_END
 : word_Research 35 :byte G_R :byte G_e :byte G_s :byte G_e :byte G_a :byte G_r :byte G_c :byte G_h :byte G_ESC_END
@@ -12710,6 +12713,7 @@ note 0xFF 0
 : word_Test 18 :byte G_T :byte G_e :byte G_s :byte G_t :byte G_ESC_END
 : word_The 16 :byte G_T :byte G_h :byte G_e :byte G_ESC_END
 : word_Their 21 :byte G_T :byte G_h :byte G_e :byte G_i :byte G_r :byte G_ESC_END
+: word_There's 29 :byte G_T :byte G_h :byte G_e :byte G_r :byte G_e :byte G_' :byte G_s :byte G_ESC_END
 : word_Thermal 33 :byte G_T :byte G_h :byte G_e :byte G_r :byte G_m :byte G_a :byte G_l :byte G_ESC_END
 : word_These 24 :byte G_T :byte G_h :byte G_e :byte G_s :byte G_e :byte G_ESC_END
 : word_They 21 :byte G_T :byte G_h :byte G_e :byte G_y :byte G_ESC_END
@@ -12738,6 +12742,7 @@ note 0xFF 0
 : word_air 10 :byte G_a :byte G_i :byte G_r :byte G_ESC_END
 : word_airguns. 31 :byte G_a :byte G_i :byte G_r :byte G_g :byte G_u :byte G_n :byte G_s :byte G_. :byte G_ESC_END
 : word_alive? 25 :byte G_a :byte G_l :byte G_i :byte G_v :byte G_e :byte G_? :byte G_ESC_END
+: word_all 11 :byte G_a :byte G_l :byte G_l :byte G_ESC_END
 : word_also 16 :byte G_a :byte G_l :byte G_s :byte G_o :byte G_ESC_END
 : word_an 10 :byte G_a :byte G_n :byte G_ESC_END
 : word_ancient 30 :byte G_a :byte G_n :byte G_c :byte G_i :byte G_e :byte G_n :byte G_t :byte G_ESC_END
@@ -12768,6 +12773,7 @@ note 0xFF 0
 : word_blood 23 :byte G_b :byte G_l :byte G_o :byte G_o :byte G_d :byte G_ESC_END
 : word_bottom! 31 :byte G_b :byte G_o :byte G_t :byte G_t :byte G_o :byte G_m :byte G_! :byte G_ESC_END
 : word_brave 24 :byte G_b :byte G_r :byte G_a :byte G_v :byte G_e :byte G_ESC_END
+: word_bring 20 :byte G_b :byte G_r :byte G_i :byte G_n :byte G_g :byte G_ESC_END
 : word_build 20 :byte G_b :byte G_u :byte G_i :byte G_l :byte G_d :byte G_ESC_END
 : word_buildings 35 :byte G_b :byte G_u :byte G_i :byte G_l :byte G_d :byte G_i :byte G_n :byte G_g :byte G_s :byte G_ESC_END
 : word_built 19 :byte G_b :byte G_u :byte G_i :byte G_l :byte G_t :byte G_ESC_END
@@ -12781,6 +12787,7 @@ note 0xFF 0
 : word_central 29 :byte G_c :byte G_e :byte G_n :byte G_t :byte G_r :byte G_a :byte G_l :byte G_ESC_END
 : word_chunks 26 :byte G_c :byte G_h :byte G_u :byte G_n :byte G_k :byte G_s :byte G_ESC_END
 : word_clock 20 :byte G_c :byte G_l :byte G_o :byte G_c :byte G_k :byte G_ESC_END
+: word_close 20 :byte G_c :byte G_l :byte G_o :byte G_s :byte G_e :byte G_ESC_END
 : word_come 20 :byte G_c :byte G_o :byte G_m :byte G_e :byte G_ESC_END
 : word_comes 23 :byte G_c :byte G_o :byte G_m :byte G_e :byte G_s :byte G_ESC_END
 : word_controlled 42 :byte G_c :byte G_o :byte G_n :byte G_t :byte G_r :byte G_o :byte G_l :byte G_l :byte G_e :byte G_d :byte G_ESC_END
@@ -12815,6 +12822,8 @@ note 0xFF 0
 : word_electrocuted, 55 :byte G_e :byte G_l :byte G_e :byte G_c :byte G_t :byte G_r :byte G_o :byte G_c :byte G_u :byte G_t :byte G_e :byte G_d :byte G_, :byte G_ESC_END
 : word_electrocution 54 :byte G_e :byte G_l :byte G_e :byte G_c :byte G_t :byte G_r :byte G_o :byte G_c :byte G_u :byte G_t :byte G_i :byte G_o :byte G_n :byte G_ESC_END
 : word_electromagnetic 65 :byte G_e :byte G_l :byte G_e :byte G_c :byte G_t :byte G_r :byte G_o :byte G_m :byte G_a :byte G_g :byte G_n :byte G_e :byte G_t :byte G_i :byte G_c :byte G_ESC_END
+: word_end. 18 :byte G_e :byte G_n :byte G_d :byte G_. :byte G_ESC_END
+: word_energy, 31 :byte G_e :byte G_n :byte G_e :byte G_r :byte G_g :byte G_y :byte G_, :byte G_ESC_END
 : word_enlargener-name 0 :byte G_ESC_WORD tobytes word_Bullet :byte G_ESC_WORD tobytes word_Enlargener :byte G_ESC_END
 : word_enough 30 :byte G_e :byte G_n :byte G_o :byte G_u :byte G_g :byte G_h :byte G_ESC_END
 : word_even 21 :byte G_e :byte G_v :byte G_e :byte G_n :byte G_ESC_END
@@ -12822,6 +12831,7 @@ note 0xFF 0
 : word_everything. 48 :byte G_e :byte G_v :byte G_e :byte G_r :byte G_y :byte G_t :byte G_h :byte G_i :byte G_n :byte G_g :byte G_. :byte G_ESC_END
 : word_exoskeleton-name 48 :byte G_E :byte G_x :byte G_o :byte G_s :byte G_k :byte G_e :byte G_l :byte G_e :byte G_t :byte G_o :byte G_n :byte G_ESC_END
 : word_facility...? 43 :byte G_f :byte G_a :byte G_c :byte G_i :byte G_l :byte G_i :byte G_t :byte G_y :byte G_. :byte G_. :byte G_. :byte G_? :byte G_ESC_END
+: word_fancy 24 :byte G_f :byte G_a :byte G_n :byte G_c :byte G_y :byte G_ESC_END
 : word_fatal. 25 :byte G_f :byte G_a :byte G_t :byte G_a :byte G_l :byte G_. :byte G_ESC_END
 : word_feel 18 :byte G_f :byte G_e :byte G_e :byte G_l :byte G_ESC_END
 : word_few 16 :byte G_f :byte G_e :byte G_w :byte G_ESC_END
@@ -12844,6 +12854,7 @@ note 0xFF 0
 : word_from 19 :byte G_f :byte G_r :byte G_o :byte G_m :byte G_ESC_END
 : word_fully 21 :byte G_f :byte G_u :byte G_l :byte G_l :byte G_y :byte G_ESC_END
 : word_gave 21 :byte G_g :byte G_a :byte G_v :byte G_e :byte G_ESC_END
+: word_geothermal 46 :byte G_g :byte G_e :byte G_o :byte G_t :byte G_h :byte G_e :byte G_r :byte G_m :byte G_a :byte G_l :byte G_ESC_END
 : word_get 14 :byte G_g :byte G_e :byte G_t :byte G_ESC_END
 : word_getting 30 :byte G_g :byte G_e :byte G_t :byte G_t :byte G_i :byte G_n :byte G_g :byte G_ESC_END
 : word_go 10 :byte G_g :byte G_o :byte G_ESC_END
@@ -12908,6 +12919,7 @@ note 0xFF 0
 : word_more 19 :byte G_m :byte G_o :byte G_r :byte G_e :byte G_ESC_END
 : word_more, 22 :byte G_m :byte G_o :byte G_r :byte G_e :byte G_, :byte G_ESC_END
 : word_much 20 :byte G_m :byte G_u :byte G_c :byte G_h :byte G_ESC_END
+: word_must 18 :byte G_m :byte G_u :byte G_s :byte G_t :byte G_ESC_END
 : word_must've 31 :byte G_m :byte G_u :byte G_s :byte G_t :byte G_' :byte G_v :byte G_e :byte G_ESC_END
 : word_my 11 :byte G_m :byte G_y :byte G_ESC_END
 : word_name 21 :byte G_n :byte G_a :byte G_m :byte G_e :byte G_ESC_END
@@ -13001,6 +13013,7 @@ note 0xFF 0
 : word_still 15 :byte G_s :byte G_t :byte G_i :byte G_l :byte G_l :byte G_ESC_END
 : word_strong 25 :byte G_s :byte G_t :byte G_r :byte G_o :byte G_n :byte G_g :byte G_ESC_END
 : word_stronger 33 :byte G_s :byte G_t :byte G_r :byte G_o :byte G_n :byte G_g :byte G_e :byte G_r :byte G_ESC_END
+: word_stuff 22 :byte G_s :byte G_t :byte G_u :byte G_f :byte G_f :byte G_ESC_END
 : word_stuff. 25 :byte G_s :byte G_t :byte G_u :byte G_f :byte G_f :byte G_. :byte G_ESC_END
 : word_sturdier 30 :byte G_s :byte G_t :byte G_u :byte G_r :byte G_d :byte G_i :byte G_e :byte G_r :byte G_ESC_END
 : word_summon 30 :byte G_s :byte G_u :byte G_m :byte G_m :byte G_o :byte G_n :byte G_ESC_END
@@ -13027,6 +13040,7 @@ note 0xFF 0
 : word_them! 22 :byte G_t :byte G_h :byte G_e :byte G_m :byte G_! :byte G_ESC_END
 : word_them. 23 :byte G_t :byte G_h :byte G_e :byte G_m :byte G_. :byte G_ESC_END
 : word_then, 22 :byte G_t :byte G_h :byte G_e :byte G_n :byte G_, :byte G_ESC_END
+: word_there. 25 :byte G_t :byte G_h :byte G_e :byte G_r :byte G_e :byte G_. :byte G_ESC_END
 : word_these 22 :byte G_t :byte G_h :byte G_e :byte G_s :byte G_e :byte G_ESC_END
 : word_they 19 :byte G_t :byte G_h :byte G_e :byte G_y :byte G_ESC_END
 : word_they're 29 :byte G_t :byte G_h :byte G_e :byte G_y :byte G_' :byte G_r :byte G_e :byte G_ESC_END
@@ -13084,11 +13098,18 @@ note 0xFF 0
 : word_years 21 :byte G_y :byte G_e :byte G_a :byte G_r :byte G_s :byte G_ESC_END
 : word_yet? 18 :byte G_y :byte G_e :byte G_t :byte G_? :byte G_ESC_END
 : word_you 15 :byte G_y :byte G_o :byte G_u :byte G_ESC_END
+: word_you! 17 :byte G_y :byte G_o :byte G_u :byte G_! :byte G_ESC_END
 : word_you'd 22 :byte G_y :byte G_o :byte G_u :byte G_' :byte G_d :byte G_ESC_END
 : word_you'll 23 :byte G_y :byte G_o :byte G_u :byte G_' :byte G_l :byte G_l :byte G_ESC_END
 : word_you. 18 :byte G_y :byte G_o :byte G_u :byte G_. :byte G_ESC_END
 : word_you; 18 :byte G_y :byte G_o :byte G_u :byte G_; :byte G_ESC_END
 : word_your 18 :byte G_y :byte G_o :byte G_u :byte G_r :byte G_ESC_END
+: word_Biome_Name_lab0 0 :byte G_ESC_WORD tobytes word_Lab :byte G_- :byte G_1 :byte G_ESC_END
+: word_Biome_Name_lab1 0 :byte G_ESC_WORD tobytes word_Lab :byte G_- :byte G_2 :byte G_ESC_END
+: word_Biome_Name_lab2 0 :byte G_ESC_WORD tobytes word_Lab :byte G_- :byte G_3 :byte G_ESC_END
+: word_Biome_Name_power_plant0 0 :byte G_ESC_WORD tobytes word_Power :byte G_ESC_WORD tobytes word_Plant :byte G_- :byte G_1 :byte G_ESC_END
+: word_Biome_Name_power_plant1 0 :byte G_ESC_WORD tobytes word_Power :byte G_ESC_WORD tobytes word_Plant :byte G_- :byte G_2 :byte G_ESC_END
+: word_Biome_Name_power_plant2 0 :byte G_ESC_WORD tobytes word_Power :byte G_ESC_WORD tobytes word_Plant :byte G_- :byte G_3 :byte G_ESC_END
 : word_Biome_Name_ruin0 0 :byte G_ESC_WORD tobytes word_Ruins :byte G_- :byte G_1 :byte G_ESC_END
 : word_Biome_Name_ruin1 0 :byte G_ESC_WORD tobytes word_Ruins :byte G_- :byte G_2 :byte G_ESC_END
 : word_Biome_Name_ruin2 0 :byte G_ESC_WORD tobytes word_Ruins :byte G_- :byte G_3 :byte G_ESC_END
@@ -13117,6 +13138,8 @@ note 0xFF 0
 : word_lab-wall-desc 0 :byte G_ESC_WORD tobytes word_The :byte G_ESC_WORD tobytes word_risk :byte G_ESC_WORD tobytes word_of :byte G_ESC_WORD tobytes word_fire :byte G_ESC_WORD tobytes word_is :byte G_ESC_WORD tobytes word_greater :byte G_ESC_WORD tobytes word_in :byte G_a :byte G_ESC_WORD tobytes word_laboratory, :byte G_ESC_WORD tobytes word_so :byte G_ESC_WORD tobytes word_they :byte G_ESC_WORD tobytes word_used :byte G_ESC_WORD tobytes word_upgraded :byte G_ESC_WORD tobytes word_versions :byte G_ESC_WORD tobytes word_here. :byte G_ESC_END
 : word_magnet_shield-desc 0 :byte G_ESC_WORD tobytes word_Creates :byte G_a :byte G_ESC_WORD tobytes word_strong :byte G_ESC_WORD tobytes word_magnetic :byte G_ESC_WORD tobytes word_field :byte G_ESC_WORD tobytes word_that :byte G_ESC_WORD tobytes word_repels :byte G_ESC_WORD tobytes word_metal. :byte G_ESC_WORD tobytes word_It :byte G_ESC_WORD tobytes word_probably :byte G_ESC_WORD tobytes word_won't :byte G_ESC_WORD tobytes word_hurt :byte G_ESC_WORD tobytes word_you. :byte G_ESC_END
 : word_nano_blood-desc 0 :byte G_ESC_WORD tobytes word_For :byte G_ESC_WORD tobytes word_those :byte G_ESC_WORD tobytes word_who :byte G_ESC_WORD tobytes word_weren't :byte G_ESC_WORD tobytes word_brave :byte G_ESC_WORD tobytes word_enough :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_become :byte G_ESC_WORD tobytes word_fully :byte G_ESC_WORD tobytes word_robotic, :byte G_ESC_WORD tobytes word_but :byte G_ESC_WORD tobytes word_who :byte G_ESC_WORD tobytes word_still :byte G_ESC_WORD tobytes word_wanted :byte G_ESC_WORD tobytes word_some :byte G_ESC_WORD tobytes word_of :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_benefits, :byte G_ESC_WORD tobytes word_replacement :byte G_ESC_WORD tobytes word_blood :byte G_ESC_WORD tobytes word_was :byte G_ESC_WORD tobytes word_made. :byte G_ESC_WORD tobytes word_Seems :byte G_a :byte G_ESC_WORD tobytes word_little :byte G_ESC_WORD tobytes word_uncomfortable, :byte G_ESC_WORD tobytes word_though... :byte G_ESC_END
+: word_narration_lab 0 :byte G_ESC_WORD tobytes word_There's :byte G_ESC_WORD tobytes word_probably :byte G_ESC_WORD tobytes word_some :byte G_ESC_WORD tobytes word_fancy :byte G_ESC_WORD tobytes word_stuff :byte G_ESC_WORD tobytes word_in :byte G_ESC_WORD tobytes word_there. :byte G_ESC_WORD tobytes word_Make :byte G_ESC_WORD tobytes word_sure :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_bring :byte G_ESC_WORD tobytes word_it :byte G_ESC_WORD tobytes word_all :byte G_ESC_WORD tobytes word_back :byte G_ESC_WORD tobytes word_with :byte G_ESC_WORD tobytes word_you! :byte G_ESC_END
+: word_narration_power_plant 0 :byte G_ESC_WORD tobytes word_They :byte G_ESC_WORD tobytes word_used :byte G_ESC_WORD tobytes word_geothermal :byte G_ESC_WORD tobytes word_energy, :byte G_ESC_WORD tobytes word_so :byte G_ESC_WORD tobytes word_you :byte G_ESC_WORD tobytes word_must :byte G_ESC_WORD tobytes word_be :byte G_ESC_WORD tobytes word_close :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_end. :byte G_ESC_WORD tobytes word_Good :byte G_ESC_WORD tobytes word_luck! :byte G_ESC_END
 : word_narration_ruin 0 :byte G_ESC_WORD tobytes word_... :byte G_ESC_WORD tobytes word_... :byte G_ESC_WORD tobytes word_Hello? :byte G_ESC_WORD tobytes word_... :byte G_ESC_WORD tobytes word_Hey, :byte G_ESC_WORD tobytes word_are :byte G_ESC_WORD tobytes word_you :byte G_ESC_WORD tobytes word_still :byte G_ESC_WORD tobytes word_alive? :byte G_ESC_WORD tobytes word_Cool. :byte G_ESC_WORD tobytes word_... :byte G_ESC_WORD tobytes word_Look, :byte G_I :byte G_ESC_WORD tobytes word_haven't :byte G_ESC_WORD tobytes word_really :byte G_ESC_WORD tobytes word_been :byte G_ESC_WORD tobytes word_paying :byte G_ESC_WORD tobytes word_attention. :byte G_ESC_WORD tobytes word_Did :byte G_ESC_WORD tobytes word_you :byte G_ESC_WORD tobytes word_find :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_treasure :byte G_ESC_WORD tobytes word_yet? :byte G_ESC_WORD tobytes word_Come :byte G_ESC_WORD tobytes word_on, :byte G_I :byte G_ESC_WORD tobytes word_know :byte G_ESC_WORD tobytes word_it's :byte G_ESC_WORD tobytes word_your :byte G_ESC_WORD tobytes word_first :byte G_ESC_WORD tobytes word_job, :byte G_ESC_WORD tobytes word_but :byte G_ESC_WORD tobytes word_it's :byte G_ESC_WORD tobytes word_not :byte G_ESC_WORD tobytes word_that :byte G_ESC_WORD tobytes word_hard. :byte G_ESC_WORD tobytes word_Anyway, :byte G_ESC_WORD tobytes word_I've :byte G_ESC_WORD tobytes word_turned :byte G_ESC_WORD tobytes word_my :byte G_ESC_WORD tobytes word_radio :byte G_ESC_WORD tobytes word_back :byte G_ESC_WORD tobytes word_on. :byte G_ESC_WORD tobytes word_Good :byte G_ESC_WORD tobytes word_luck! :byte G_ESC_END
 : word_overclock-desc 0 :byte G_ESC_WORD tobytes word_All :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_ancient :byte G_ESC_WORD tobytes word_buildings :byte G_ESC_WORD tobytes word_have :byte G_a :byte G_ESC_WORD tobytes word_central :byte G_ESC_WORD tobytes word_clock :byte G_ESC_WORD tobytes word_that :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_robots :byte G_ESC_WORD tobytes word_sync :byte G_ESC_WORD tobytes word_with. :byte G_ESC_END
 : word_power-electrician-desc 0 :byte G_ESC_WORD tobytes word_Robotic :byte G_ESC_WORD tobytes word_electricians :byte G_ESC_WORD tobytes word_are :byte G_ESC_WORD tobytes word_convenient :byte G_ESC_WORD tobytes word_in :byte G_ESC_WORD tobytes word_situations :byte G_ESC_WORD tobytes word_where :byte G_ESC_WORD tobytes word_electrocution :byte G_ESC_WORD tobytes word_is :byte G_ESC_WORD tobytes word_fatal. :byte G_ESC_END
@@ -13134,7 +13157,7 @@ note 0xFF 0
 : word_ruin-wall-desc 0 :byte G_ESC_WORD tobytes word_These :byte G_ESC_WORD tobytes word_were :byte G_ESC_WORD tobytes word_originally :byte G_ESC_WORD tobytes word_designed :byte G_ESC_WORD tobytes word_for :byte G_ESC_WORD tobytes word_fire :byte G_ESC_WORD tobytes word_suppression, :byte G_ESC_WORD tobytes word_but :byte G_ESC_WORD tobytes word_they :byte G_ESC_WORD tobytes word_also :byte G_ESC_WORD tobytes word_worked :byte G_ESC_WORD tobytes word_well :byte G_ESC_WORD tobytes word_for :byte G_ESC_WORD tobytes word_people :byte G_ESC_WORD tobytes word_suppression. :byte G_ESC_END
 : word_tarski_field-desc 0 :byte G_ESC_WORD tobytes word_Apparently, :byte G_ESC_WORD tobytes word_it's :byte G_ESC_WORD tobytes word_possible :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_duplicate :byte G_ESC_WORD tobytes word_matter, :byte G_ESC_WORD tobytes word_and :byte G_ESC_WORD tobytes word_the :byte G_ESC_WORD tobytes word_people :byte G_ESC_WORD tobytes word_who :byte G_ESC_WORD tobytes word_invented :byte G_ESC_WORD tobytes word_this :byte G_ESC_WORD tobytes word_technology :byte G_ESC_WORD tobytes word_used :byte G_ESC_WORD tobytes word_it :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_make :byte G_ESC_WORD tobytes word_more :byte G_ESC_WORD tobytes word_bullets. :byte G_ESC_WORD tobytes word_Maybe :byte G_ESC_WORD tobytes word_this :byte G_ESC_WORD tobytes word_is :byte G_ESC_WORD tobytes word_why :byte G_ESC_WORD tobytes word_they :byte G_ESC_WORD tobytes word_aren't :byte G_ESC_WORD tobytes word_around :byte G_ESC_WORD tobytes word_anymore. :byte G_ESC_END
 : word_void_pants-desc 0 :byte G_ESC_WORD tobytes word_Using :byte G_ESC_WORD tobytes word_space-bending :byte G_ESC_WORD tobytes word_technology, :byte G_ESC_WORD tobytes word_these :byte G_ESC_WORD tobytes word_pants :byte G_ESC_WORD tobytes word_have :byte G_ESC_WORD tobytes word_deeper :byte G_ESC_WORD tobytes word_pockets :byte G_ESC_WORD tobytes word_than :byte G_ESC_WORD tobytes word_would :byte G_ESC_WORD tobytes word_normally :byte G_ESC_WORD tobytes word_be :byte G_ESC_WORD tobytes word_possible. :byte G_ESC_WORD tobytes word_Somehow, :byte G_ESC_WORD tobytes word_this :byte G_ESC_WORD tobytes word_makes :byte G_ESC_WORD tobytes word_you :byte G_ESC_WORD tobytes word_have :byte G_ESC_WORD tobytes word_to :byte G_ESC_WORD tobytes word_reload :byte G_ESC_WORD tobytes word_less. :byte G_ESC_END
-## End Text Data  4785 bytes
+## End Text Data  4993 bytes
 
 ## Enemy Data
 ## Enemies Data Table  - 15 entries x 14 bytes = 210 bytes
@@ -13217,11 +13240,19 @@ note 0xFF 0
 ## Biome Data
 : level_state 0
 : treasure_list_ruin TB treasure_flute TB treasure_antishovel TB treasure_crickets TB treasure_exoskeleton TB treasure_accelerator 
-## Biomes Data Table  - 3 entries x 8 bytes = 24 bytes
+: treasure_list_lab TB treasure_flute TB treasure_antishovel TB treasure_crickets TB treasure_exoskeleton TB treasure_accelerator TB treasure_enlargener TB treasure_tarski_field TB treasure_void_pants TB treasure_magnet_shield TB treasure_nano_blood TB treasure_rocket_shoes TB treasure_overclock TB treasure_dog 
+: treasure_list_power_plant TB treasure_flute TB treasure_antishovel TB treasure_crickets TB treasure_exoskeleton TB treasure_accelerator TB treasure_enlargener TB treasure_tarski_field TB treasure_void_pants TB treasure_magnet_shield TB treasure_nano_blood TB treasure_rocket_shoes TB treasure_overclock TB treasure_dog TB treasure_heat_shield TB treasure_dampener 
+## Biomes Data Table  - 9 entries x 8 bytes = 72 bytes
 #  | name | narration | enemyset | treasureset | 
 : Ruins0 TB word_Biome_Name_ruin0 TB word_narration_ruin TB word_narration_ruin TB treasure_list_ruin 
 : Ruins1 TB word_Biome_Name_ruin1 TB BIOME_NARRATION_NONE TB word_narration_ruin TB treasure_list_ruin 
 : Ruins2 TB word_Biome_Name_ruin2 TB BIOME_NARRATION_NONE TB word_narration_ruin TB treasure_list_ruin 
+: Lab0 TB word_Biome_Name_lab0 TB word_narration_lab TB word_narration_lab TB treasure_list_lab 
+: Lab1 TB word_Biome_Name_lab1 TB BIOME_NARRATION_NONE TB word_narration_lab TB treasure_list_lab 
+: Lab2 TB word_Biome_Name_lab2 TB BIOME_NARRATION_NONE TB word_narration_lab TB treasure_list_lab 
+: Power_Plant0 TB word_Biome_Name_power_plant0 TB word_narration_power_plant TB word_narration_power_plant TB treasure_list_power_plant 
+: Power_Plant1 TB word_Biome_Name_power_plant1 TB BIOME_NARRATION_NONE TB word_narration_power_plant TB treasure_list_power_plant 
+: Power_Plant2 TB word_Biome_Name_power_plant2 TB BIOME_NARRATION_NONE TB word_narration_power_plant TB treasure_list_power_plant 
 
 ## End Biome Data
 : entity_table_address tobytes entity_table
