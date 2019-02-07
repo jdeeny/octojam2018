@@ -3,6 +3,7 @@ use std::io::Write;
 use toml::Value;
 
 use crate::text::Dictionary;
+use crate::datatable::*;
 
 #[derive(Debug, Deserialize)]
 struct TreasureItem {
@@ -13,42 +14,56 @@ struct TreasureItem {
 }
 
 pub struct Treasure {
-    items: BTreeMap<String, TreasureItem>,
+    treasure: DataTable,
 }
 
 impl Treasure {
     pub fn from_toml(toml_str: &str) -> Self {
+        let cols = vec!(
+            ("x".into(), DataKind::Byte),
+            ("y".into(), DataKind::Byte),
+            ("flags".into(), DataKind::Label),
+            ("sprite".into(), DataKind::Label),
+            ("portrait".into(), DataKind::Label),
+            ("desc".into(), DataKind::Label),
+            ("ai".into(), DataKind::Label),
+            ("name".into(), DataKind::Label),
+        );
+
         let treasure: BTreeMap<String, TreasureItem> = toml::from_str(toml_str).unwrap();
-        return Self { items: treasure };
+        let mut dt = DataTable::new("Treasure", &cols);
+
+        for (n, b) in &treasure {
+            let row: Vec<Data> = vec!(Data::Byte(0), Data::Byte(0), Data::Byte(0),
+                Data::Label(format!("SPR_{}", b.art)), Data::Label(format!("SPR_portrait_{}", b.art)),
+                Data::Label(format!("word_{}-desc", n)),
+                Data::Label(format!("ai_treasure")),
+                Data::Label(format!("word_{}-name", n)),
+            );
+            dt.add(&n, row);
+        }
+
+        return Self { treasure: dt };
     }
 
     pub fn header(&self, out: &mut Write) {
-        writeln!(out, "## Treasure Header").unwrap();
-        writeln!(out, ":const TREASURE_COUNT {}", self.items.len()).unwrap();
-        writeln!(out, ":const TREASURE_LAST {}", self.items.len() - 1).unwrap();
-        writeln!(out, ":const TREASURE.X 0").unwrap();
-        writeln!(out, ":const TREASURE.Y 1").unwrap();
-        writeln!(out, ":const TREASURE.FLAGS 2").unwrap();
-        writeln!(out, ":const TREASURE.SPRITE 3").unwrap();
-        writeln!(out, ":const TREASURE.PORTRAIT 5").unwrap();
-        writeln!(out, ":const TREASURE.DESC 7").unwrap();
-        writeln!(out, ":const TREASURE.AI 9").unwrap();
-        writeln!(out, ":const TREASURE.NAME 11").unwrap();
-        writeln!(out, ":const TREASURE_BYTES 13").unwrap();
-        writeln!(out, "## End Treasure Header").unwrap();
+        writeln!(out, "\n## Treasure Constants").unwrap();
+        writeln!(out, "{}", self.treasure.octo_header()).unwrap();
     }
 
     pub fn data(&self, out: &mut Write) {
-        writeln!(out, "## Treasure Data").unwrap();
+        writeln!(out, "\n## Treasure Data").unwrap();
+        writeln!(out, "{}", self.treasure.octo_data()).unwrap();
+        writeln!(out, "## End Treasure Data").unwrap();
+
+        /*writeln!(out, "## Treasure Data").unwrap();
         for (name, data) in self.items.iter() {
             write!(out, ": treaure_{} 0 0 0 0 0 0 0 0 0 0 0 0", name).unwrap();
         }
-        writeln!(out, "## End Treasure Data").unwrap();
+        writeln!(out, "## End Treasure Data").unwrap();*/
     }
 
     pub fn code(&self, out: &mut Write) {
-        writeln!(out, "## Treasure Code").unwrap();
-        writeln!(out, "## End Treasure Code").unwrap();
     }
 
     pub fn process(&mut self) {
@@ -56,12 +71,12 @@ impl Treasure {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
-        for (name, data) in self.items.iter() {
+        /*for (name, data) in self.items.iter() {
             dict.insert_phrase(&format!("{}-name", &name), &data.name);
             if let Some(desc) = &data.desc {
                 dict.insert_phrase(&format!("{}-desc", name), &desc);
             }
-        }
+        }*/
     }
 
 }
