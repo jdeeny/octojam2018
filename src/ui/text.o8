@@ -29,7 +29,7 @@
 
 
 : text_draw_glyph
-    i := long font_table
+    i := long glyph_data
     i += text_id
     i += text_id
     load v2 - v3 # load address of glyph
@@ -159,7 +159,7 @@
   ;
 
 : text_measure_glyph
-  i := long font_table
+  i := long glyph_data
   i += text_id
   i += text_id
   load v2 - v3 # load address of glyph

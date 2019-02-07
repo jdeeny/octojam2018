@@ -16,7 +16,7 @@
   i := long enemy_ptrs
   load v0 - v1
   reg_set_i_v01
-  v2 := ENEMY.PORTRAIT
+  v2 := ENEMIES.PORTRAIT
   i += v2
   load v2 - v3
   reg_set_i_v23
@@ -28,7 +28,7 @@
   i := long enemy_ptrs
   load v0 - v1
   reg_set_i_v01
-  v2 := ENEMY.NAME
+  v2 := ENEMIES.NAME
   i += v2
   load v2 - v3
   text_x := 22
@@ -42,7 +42,7 @@
   i := long enemy_ptrs
   load v0 - v1
   reg_set_i_v01
-  v2 := ENEMY.DESC
+  v2 := ENEMIES.DESC
   i += v2
   load v2 - v3
   text_x := 22

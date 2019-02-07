@@ -61,6 +61,7 @@ impl Biomes {
 
     pub fn data(&self, out: &mut Write) {
         writeln!(out, "\n## Biome Data").unwrap();
+        writeln!(out, ": level_state 0").unwrap();
         for (n, b) in &self.sorted_biomes {
             write!(out, ": treasure_list_{} ", n).unwrap();
             for t in &b.treasure {

@@ -48,7 +48,7 @@ impl Enemies {
                 Data::Label(format!("ai_{}", &b.ai)),
                 Data::Label(format!("word_{}-name", &n)),
             );
-            dt.add(&n, row);
+            dt.add(&format!("enemy_{}",n), row);
         }
 
         return Self { enemies: dt, input: enemies };
@@ -57,21 +57,6 @@ impl Enemies {
     pub fn header(&self, out: &mut Write) {
         writeln!(out, "\n## Enemy Constants").unwrap();
         writeln!(out, "{}", self.enemies.octo_header()).unwrap();
-
-        writeln!(out, "## Enemy Header").unwrap();
-        writeln!(out, ":const ENEMY_COUNT {}", self.enemies.len()).unwrap();
-        writeln!(out, ":const ENEMY_LAST {}", self.enemies.len() - 1).unwrap();
-        writeln!(out, ":const ENEMY.X 0").unwrap();
-        writeln!(out, ":const ENEMY.Y 1").unwrap();
-        writeln!(out, ":const ENEMY.FLAGS 2").unwrap();
-        writeln!(out, ":const ENEMY.SPRITE 3").unwrap();
-        writeln!(out, ":const ENEMY.PORTRAIT 5").unwrap();
-        writeln!(out, ":const ENEMY.DESC 7").unwrap();
-        writeln!(out, ":const ENEMY.AI 9").unwrap();
-        writeln!(out, ":const ENEMY.NAME 11").unwrap();
-        writeln!(out, ":const ENEMY_BYTES 13").unwrap();
-        writeln!(out, "## End Enemy Header").unwrap();
-
     }
 
     pub fn data(&self, out: &mut Write) {
@@ -100,6 +85,11 @@ impl Enemies {
         writeln!(out, "\n## Enemy Data").unwrap();
         writeln!(out, "{}", self.enemies.octo_data()).unwrap();
         writeln!(out, "## End Enemy Data").unwrap();
+
+        writeln!(out, "\n: enemy_ptrs\n").unwrap();
+        for (n, _) in &self.input {
+            writeln!(out, "    tobytes enemy_{}", n).unwrap();
+        }
 
     }
 

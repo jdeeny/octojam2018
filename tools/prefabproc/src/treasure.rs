@@ -57,11 +57,10 @@ impl Treasure {
         writeln!(out, "{}", self.treasure.octo_data()).unwrap();
         writeln!(out, "## End Treasure Data").unwrap();
 
-        /*writeln!(out, "## Treasure Data").unwrap();
-        for (name, data) in self.items.iter() {
-            write!(out, ": treaure_{} 0 0 0 0 0 0 0 0 0 0 0 0", name).unwrap();
+        writeln!(out, "\n: treasure_ptrs\n").unwrap();
+        for  (name, data) in self.input.iter() {
+            writeln!(out, "    tobytes treasure_{}", name).unwrap();
         }
-        writeln!(out, "## End Treasure Data").unwrap();*/
     }
 
     pub fn code(&self, out: &mut Write) {
