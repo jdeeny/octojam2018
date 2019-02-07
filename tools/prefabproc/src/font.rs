@@ -117,6 +117,7 @@ impl Font {
 
     pub fn code(&self, out: &mut Write) {
         writeln!(out, "## Font Code").unwrap();
+        writeln!(out, ":macro draw_glyph x y {{ sprite x y {} }}", self.height).unwrap();
         writeln!(out, "## End Font Code").unwrap();
     }
 }
