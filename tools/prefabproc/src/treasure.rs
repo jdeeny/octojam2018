@@ -15,6 +15,7 @@ struct TreasureItem {
 
 pub struct Treasure {
     treasure: DataTable,
+    input: BTreeMap<String, TreasureItem>,
 }
 
 impl Treasure {
@@ -40,10 +41,10 @@ impl Treasure {
                 Data::Label(format!("ai_treasure")),
                 Data::Label(format!("word_{}-name", n)),
             );
-            dt.add(&n, row);
+            dt.add(&format!("treasure_{}", n), row);
         }
 
-        return Self { treasure: dt };
+        return Self { treasure: dt, input: treasure };
     }
 
     pub fn header(&self, out: &mut Write) {
@@ -71,12 +72,12 @@ impl Treasure {
     }
 
     pub fn process_strings(&self, dict: &mut Dictionary) {
-        /*for (name, data) in self.items.iter() {
+        for (name, data) in self.input.iter() {
             dict.insert_phrase(&format!("{}-name", &name), &data.name);
             if let Some(desc) = &data.desc {
                 dict.insert_phrase(&format!("{}-desc", name), &desc);
             }
-        }*/
+        }
     }
 
 }

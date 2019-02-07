@@ -74,7 +74,7 @@ impl DataTable {
         }
         s += "\n";
         for row in &self.entries {
-            s += &format!(":{} ", &row.name);
+            s += &format!(": {} ", &row.name);
             for col in &row.data {
                 s += &format!("{} ", &col.to_string());
             }

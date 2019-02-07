@@ -29,12 +29,12 @@ fn main() {
     // Mark some glyphs used so we are sure they can be used in code
     font.mark_used("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
-    let biomes_string = read_file("../../assets/prefabs/biomes.toml");
-    let biomes = biomes::Biomes::from_toml(&biomes_string);
     let enemies_string = read_file("../../assets/prefabs/enemies.toml");
     let enemies = enemies::Enemies::from_toml(&enemies_string);
     let treasure_string = read_file("../../assets/prefabs/treasure.toml");
     let treasure = treasure::Treasure::from_toml(&treasure_string);
+    let biomes_string = read_file("../../assets/prefabs/biomes.toml");
+    let biomes = biomes::Biomes::from_toml(&biomes_string);
 
     let special_strings_string = read_file("../../assets/prefabs/strings.toml");
     let mut dict = text::Dictionary::new(font);
@@ -46,18 +46,18 @@ fn main() {
 
     dict.header(&mut header_dest);
     enemies.header(&mut header_dest);
-    biomes.header(&mut header_dest);
     treasure.header(&mut header_dest);
+    biomes.header(&mut header_dest);
 
     dict.data(&mut data_dest);
     enemies.data(&mut data_dest);
-    biomes.data(&mut data_dest);
     treasure.data(&mut data_dest);
+    biomes.data(&mut data_dest);
 
     writeln!(data_dest, ": entity_table_address tobytes entity_table").unwrap();
 
     dict.code(&mut code_dest);
     enemies.code(&mut code_dest);
-    biomes.code(&mut code_dest);
     treasure.code(&mut code_dest);
+    biomes.code(&mut code_dest);
 }

@@ -22,7 +22,6 @@ pub struct Biomes {
 
 impl Biomes {
     pub fn from_toml(toml_str: &str) -> Self {
-
         let cols = vec!(
             ("name".into(), DataKind::Label),
             ("narration".into(), DataKind::Label),
@@ -42,9 +41,9 @@ impl Biomes {
             for level in 0 .. b.levels {
                 //let name_str = format!("word_Biome_Name_{}", b.name);
                 let enemyset = format!("word_narration_{}", &n);
-                let level_name = format!("{}{}", &b.name, level);
+                let level_name = format!("{}{}", &b.name.replace(" ", "_"), level);
                 let name_str = format!("word_Biome_Name_{}{}", &n, level);
-                let treasureset = format!("treasureset_{}", &n);
+                let treasureset = format!("treasure_list_{}", &n);
                 if level > 0 { narration_str = String::from("BIOME_NARRATION_NONE") }
                 let row: Vec<Data> = vec!(Data::Label(name_str), Data::Label(narration_str.clone()), Data::Label(enemyset), Data::Label(treasureset));
                 dt.add(&level_name, row);
@@ -62,6 +61,13 @@ impl Biomes {
 
     pub fn data(&self, out: &mut Write) {
         writeln!(out, "\n## Biome Data").unwrap();
+        for (n, b) in &self.sorted_biomes {
+            write!(out, ": treasure_list_{} ", n).unwrap();
+            for t in &b.treasure {
+                write!(out, "TB treasure_{} ", t.replace(" ", "_")).unwrap();
+            }
+            writeln!(out, "").unwrap();
+        }
         writeln!(out, "{}", self.biomes.octo_data()).unwrap();
         writeln!(out, "## End Biome Data").unwrap();
     }
