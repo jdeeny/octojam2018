@@ -20,7 +20,7 @@ pub struct DataTable {
 impl Data {
     pub fn to_string(&self) -> String {
         return match self {
-            Data::Byte(b) => format!("{{ {} }}", b),
+            Data::Byte(b) => format!(":byte {}", b),
             Data::Label(l) => format!("TB {}", l.replace(" ", "_")),
         }
     }

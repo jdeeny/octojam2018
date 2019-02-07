@@ -164,18 +164,18 @@ impl Dictionary {
             }
             if ok {
                 let px = data.px.unwrap_or(0);
-                write!(out, ": word_{} {{ {} }} ", name, px).unwrap();
+                write!(out, ": word_{} {} ", name, px).unwrap();
                 for symbol in data.contents.iter() {
                     match symbol {
-                        Symbol::Glyph(c) => { write!(out, "{{ G_{} }} ", c).unwrap(); },
-                        Symbol::Word(w, _) => { write!(out, "{{ G_ESC_WORD }} tobytes word_{} ", w).unwrap(); },
+                        Symbol::Glyph(c) => { write!(out, ":byte G_{} ", c).unwrap(); },
+                        Symbol::Word(w, _) => { write!(out, ":byte G_ESC_WORD tobytes word_{} ", w).unwrap(); },
                         Symbol::Color(c) => { /*write!(out, "{{ G_ESC_COLOR }} tobytes color_{}", c).unwrap();*/ },
                         Symbol::Sound(sound) => { /*write!(out, "{{ G_ESC_SOUND }} tobytes sfx_{}", sound).unwrap();*/ },
                         Symbol::Portrait(portrait) => { /*write!(out, "{{ G_ESC_PORTRAIT }} tobytes portrait_{} ", portrait).unwrap();*/ },
-                        Symbol::Prompt(prompt) => { write!(out, "{{ G_ESC_PROMPT }} tobytes word_{} ", prompt).unwrap(); },
+                        Symbol::Prompt(prompt) => { write!(out, ":byte G_ESC_PROMPT tobytes word_{} ", prompt).unwrap(); },
                     }
                 }
-                writeln!(out, "{{ G_ESC_END }}").unwrap();
+                writeln!(out, ":byte G_ESC_END").unwrap();
                 complete.insert(name);
             } else {
                 to_output.push_back(name.clone());
