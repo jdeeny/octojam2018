@@ -2,6 +2,118 @@
 # 0x80 - 0xff = Word or special
 # Specials: colors, random select, ?
 
+# Spaced by 2 so it indexes into the jumptable
+:const G_ESC_MASK 0xE0
+:const G_ESC_COLOR0 0xE2
+:const G_ESC_COLOR1 0xE4
+:const G_ESC_COLOR2 0xE6
+:const G_ESC_COLOR3 0xE8
+:const G_ESC_SPACE 0xEA
+:const G_ESC_WORD 0xEC
+:const G_ESC_RANDOM 0xEE
+:const G_ESC_SFX 0xF0
+:const G_ESC_PORTRAIT 0xF2
+:const G_ESC_SUB 0xF4
+:const G_ESC_END 0xF6
+
+: text_jumptable_call
+  jump0 text_jumptable
+: text_jumptable
+  jump _text_glyph
+  jump _text_color0
+  jump _text_color1
+  jump _text_color2
+  jump _text_color3
+  jump _text_space
+  jump _text_subword
+  jump _text_randomchoice
+  jump _text_sfx
+  jump _text_portrait
+  jump _text_substitution
+  jump _text_end
+
+
+# v_text_state is to be loaded/saved all at once
+:alias v_text_state_x v4          # Text output location
+:alias v_text_state_y v5
+:alias v_text_state_left v6       # left and right limits
+:alias v_text_state_right v7
+:alias v_text_state_skip v8       # how many lines to skip at the beginning (scrolling)
+:alias v_text_state_lines v9      # how many lines to draw total
+:macro text_set_loc x y { v_text_state_x := x v_text_state_y := y }
+:macro text_set_wrap left right { v_text_state_left := left v_text_state_right := right }
+:macro text_set_scroll skip lines { v_text_state_skip := skip v_text_state_lines := lines }
+:macro text_state_save { i := long text_state save v_text_state_x - v_text_state_lines }
+:macro text_state_load { i := long text_state load v_text_state_x - v_text_state_lines }
+
+# Temporary
+:alias v_text_advance v0  # number of bytes to advance in stream
+# Loaded when loading the next glyph
+:alias v_text_load_glyph v1
+:alias v_text_load_hi v2
+:alias v_text_load_lo v3
+:macro text_load_glyph { load v_text_load_glyph - v_text_load_lo }
+
+# This will be moved to fardata. Save v_text_state stuff
+: text_state 0 0 0 0 0 0 0 0 0
+
+: _text_glyph
+  fetch_glyph
+  draw_glyph v_text_x v_text_y
+  jump text_next
+: _text_color0
+  # replace the draw func? inside of the draw func?
+  ;
+: _text_color1
+  ;
+: _text_color2
+  ;
+: _text_color3
+  ;
+: _text_space
+  ;
+: _text_subword
+  v_text_advance += 2
+  ;
+: _text_randomchoice
+  # load choices and pick one
+  # adjust address VVV
+  jump text_next
+: _text_sfx
+  # launch sfx
+  v_text_advance += 2
+  jump text_next
+: _text_portrait
+  i := long ui_current_portrait
+  save v_text_load_hi - v_text_load_lo
+  v_text_advance += 2
+  jump text_next
+: _text_substitution
+  # push onto stack
+  v_text_advance += 2
+  jump text_next
+: _text_end
+  # pop stack
+  jump text_next
+
+
+
+
+: text_next
+  v_text_advance := 1
+  call text_jumptable
+  # increase pointer by v_text_advance
+
+# i := word
+: text_draw_word
+: text_draw_word_internal
+  # load the word onto stack & reg
+  text_load_glyph # load character
+  jump text_jumptable
+: text_draw_word_continue
+
+
+
 
 
 
@@ -27,20 +139,23 @@
 :alias text_wrap_x1 vB
 :alias text_wrap_x2 vC
 
-fetch_glyph_impl text_id v1 v0
+fetch_glyph_impl text_id v3 v2
 
 : text_draw_glyph
+  :breakpoint glyphaddr
     fetch_glyph
     load v2 - v3 # load address of glyph
+    :breakpoint glyphaddr
     reg_set_i_v23
     load v0 # load width
 
     plane 1
-    if text_color == 1 then sprite text_x text_y 6
-    if text_color == 3 then sprite text_x text_y 6
+
+    if text_color == 1 then draw_glyph text_x text_y
+    if text_color == 3 then draw_glyph text_x text_y
     plane 2
-    if text_color == 2 then sprite text_x text_y 6
-    if text_color == 3 then sprite text_x text_y 6
+    if text_color == 2 then draw_glyph text_x text_y
+    if text_color == 3 then draw_glyph text_x text_y
     text_x += text_glyph_width
     ;
 
@@ -60,6 +175,7 @@ fetch_glyph_impl text_id v1 v0
 
 : text_draw_word_internal
   reg_set_i_v23
+  load v0
   load v0
   if v0 == G_ESC_END then jump text_draw_word_end
   if v0 == G_ESC_WORD then jump text_draw_word_word
