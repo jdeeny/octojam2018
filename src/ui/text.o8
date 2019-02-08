@@ -14,10 +14,9 @@
 :const G_ESC_SFX 0xF0
 :const G_ESC_PORTRAIT 0xF2
 :const G_ESC_SUB 0xF4
-:const G_ESC_END 0xF6
+:const G_ESC_PROMPT 0xF6
+:const G_ESC_END 0xF8
 
-: text_jumptable_call
-  jump0 text_jumptable
 : text_jumptable
   jump _text_glyph
   jump _text_color0
@@ -30,6 +29,7 @@
   jump _text_sfx
   jump _text_portrait
   jump _text_substitution
+  jump _text_prompt
   jump _text_end
 
 
@@ -60,43 +60,40 @@
 : _text_glyph
   fetch_glyph
   draw_glyph v_text_x v_text_y
-  jump text_next
+  jump text_draw_word_continue
 : _text_color0
-  # replace the draw func? inside of the draw func?
-  ;
+  jump text_draw_word_continue
 : _text_color1
-  ;
+  jump text_draw_word_continue
 : _text_color2
-  ;
+  jump text_draw_word_continue
 : _text_color3
-  ;
+  jump text_draw_word_continue
 : _text_space
-  ;
+  jump text_draw_word_continue
 : _text_subword
   v_text_advance += 2
-  ;
+  jump text_draw_word_continue
 : _text_randomchoice
   # load choices and pick one
   # adjust address VVV
-  jump text_next
+  jump text_draw_word_continue
 : _text_sfx
   # launch sfx
   v_text_advance += 2
-  jump text_next
+  jump text_draw_word_continue
 : _text_portrait
   i := long ui_current_portrait
   save v_text_load_hi - v_text_load_lo
   v_text_advance += 2
-  jump text_next
+  jump text_draw_word_continue
 : _text_substitution
   # push onto stack
   v_text_advance += 2
-  jump text_next
+  jump text_draw_word_continue
 : _text_end
   # pop stack
-  jump text_next
-
-
+  jump text_draw_word_continue
 
 
 : text_next
