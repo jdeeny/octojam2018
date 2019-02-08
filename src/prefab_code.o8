@@ -1,10 +1,19 @@
 ## Font Code
+
+# Draw glyph with id `n` at location x, y. x and y must be registers
+:macro draw_glyph x y { sprite x y 7 }
+
+# Sets `i` = the address of glyph `id`
+# fetch-glyph requires a pair of adjacent registers for reg-hi and reg-lo (v1, v0 or v5, v4 for example)
+:macro fetch_glyph_macro id reg-hi reg-lo { i := long glyph_data i += id load reg-lo - reg-hi i := fetch_glyph_target save reg-hi - reg-lo 0xF0 0x00 : fetch_glyph_target 0x00 0x00 }
+
+# Creates the `fetch-glyph` function
+:macro fetch_glyph_impl id reg-hi reg-lo { : fetch_glyph fetch_glyph_macro id reg-hi reg-lo ; }
+
 ## End Font Code
 ## Text Code
 ## End Text Code
-## Biome Code
-## End Biome Code
 ## Enemy Code
 ## End Enemy Code
-## Treasure Code
-## End Treasure Code
+## Biome Code
+## End Biome Code

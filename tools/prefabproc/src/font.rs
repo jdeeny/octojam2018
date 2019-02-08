@@ -15,6 +15,7 @@ pub struct Glyph {
 pub struct Font {
     glyphs: BTreeMap<char, Glyph>,
     height: usize,
+    id_doubling: bool,
 }
 
 impl Font {
@@ -46,7 +47,7 @@ impl Font {
             new_glyphs.insert(name.chars().next().unwrap(), Glyph{name: name.to_string(), data: g, bytes: bytes, width: width, ref_count: 0 });
             height = std::cmp::max(height, gheight);
         }
-        return Font { glyphs: new_glyphs, height: height }
+        return Font { glyphs: new_glyphs, height: height, id_doubling: true }
     }
 
     pub fn mark_used(&mut self, word: &str) {
@@ -84,7 +85,8 @@ impl Font {
         for (c, g) in &self.glyphs {
             let s;
             if g.ref_count > 0 {
-                s = format!(":const G_{} {:3}   # Uses: {}", c, used, g.ref_count);
+                let char_id = if self.id_doubling { used * 2 } else { used };
+                s = format!(":const G_{} {:3}   # Uses: {}", c, char_id, g.ref_count);
             } else {
                 s = format!("#const G_{} {:3}   # Uses: {}", c, "", g.ref_count);
             }
@@ -106,18 +108,41 @@ impl Font {
                     let b = g.bytes.get(i).unwrap_or(&0);
                     write!(out, " 0x{:02X}", b).unwrap();
                 }
-                bytes += self.height;
+                bytes += self.height + 1;
                 writeln!(out, " # {} px", g.width).unwrap();
             } else {
                 writeln!(out, "# glyph_{} Unused", c).unwrap();
             }
         }
-        writeln!(out, "## End Font Data  {} bytes", bytes).unwrap();
+        writeln!(out, "## Font Index\n: glyph_index").unwrap();
+        let mut count = 0;
+        for (c, g) in &self.glyphs {
+            if g.ref_count > 0 {
+                write!(out, "TB glyph_{} ", c).unwrap();
+                count += 1;
+                bytes += 2;
+            }
+            if count % 8 == 0 { writeln!(out, "").unwrap(); }
+        }
+
+        writeln!(out, "\n## End Font Data  {} bytes", bytes).unwrap();
     }
 
     pub fn code(&self, out: &mut Write) {
         writeln!(out, "## Font Code").unwrap();
-        writeln!(out, ":macro draw_glyph x y {{ sprite x y {} }}", self.height).unwrap();
-        writeln!(out, "## End Font Code").unwrap();
+        writeln!(out, "\n# Draw glyph with id `n` at location x, y. x and y must be registers\n\
+                        :macro draw_glyph x y {{ sprite x y {} }}", self.height).unwrap();
+        write!(out, "\n# Sets `i` = the address of glyph `id`\n\
+                        # fetch-glyph requires a pair of adjacent registers for reg-hi and reg-lo (v1, v0 or v5, v4 for example)\n\
+                        :macro fetch_glyph_macro id reg-hi reg-lo {{ i := long glyph_data i += id ").unwrap();
+        if self.id_doubling == false { writeln!(out, "i += id ").unwrap(); }
+        writeln!(out, "load reg-lo - reg-hi \
+                        i := fetch_glyph_target save reg-hi - reg-lo 0xF0 0x00 : fetch_glyph_target 0x00 0x00 }}"
+                ).unwrap();
+
+        writeln!(out, "\n# Creates the `fetch-glyph` function\n\
+                        :macro fetch_glyph_impl id reg-hi reg-lo {{ : fetch_glyph fetch_glyph_macro id reg-hi reg-lo ; }}").unwrap();
+
+        writeln!(out, "\n## End Font Code").unwrap();
     }
 }

@@ -655,80 +655,80 @@
 #const G_"       # Uses: 0          [                                             ]
 #const G_$       # Uses: 0          [                                             ]
 #const G_%       # Uses: 0          [                                             ]
-:const G_'   1   # Uses: 29         [##                                           ]
+:const G_'   2   # Uses: 29         [##                                           ]
 #const G_)       # Uses: 0          [                                             ]
 #const G_+       # Uses: 0          [                                             ]
-:const G_,   2   # Uses: 29         [##                                           ]
-:const G_-   3   # Uses: 4          [                                             ]
-:const G_.   4   # Uses: 78         [#######                                      ]
+:const G_,   4   # Uses: 29         [##                                           ]
+:const G_-   6   # Uses: 4          [                                             ]
+:const G_.   8   # Uses: 78         [#######                                      ]
 #const G_/       # Uses: 0          [                                             ]
-:const G_0   5   # Uses: 2          [                                             ]
-:const G_1   6   # Uses: 1          [                                             ]
-:const G_2   7   # Uses: 1          [                                             ]
-:const G_3   8   # Uses: 1          [                                             ]
-:const G_4   9   # Uses: 1          [                                             ]
-:const G_5  10   # Uses: 1          [                                             ]
-:const G_6  11   # Uses: 1          [                                             ]
-:const G_7  12   # Uses: 1          [                                             ]
-:const G_8  13   # Uses: 1          [                                             ]
-:const G_9  14   # Uses: 1          [                                             ]
-:const G_:  15   # Uses: 4          [                                             ]
-:const G_;  16   # Uses: 1          [                                             ]
-:const G_?  17   # Uses: 9          [                                             ]
-:const G_A  18   # Uses: 14         [#                                            ]
-:const G_B  19   # Uses: 13         [#                                            ]
-:const G_C  20   # Uses: 11         [#                                            ]
-:const G_D  21   # Uses: 8          [                                             ]
-:const G_E  22   # Uses: 9          [                                             ]
-:const G_F  23   # Uses: 11         [#                                            ]
-:const G_G  24   # Uses: 6          [                                             ]
-:const G_H  25   # Uses: 8          [                                             ]
-:const G_I  26   # Uses: 11         [#                                            ]
-:const G_J  27   # Uses: 3          [                                             ]
-:const G_K  28   # Uses: 1          [                                             ]
-:const G_L  29   # Uses: 8          [                                             ]
-:const G_M  30   # Uses: 11         [#                                            ]
-:const G_N  31   # Uses: 4          [                                             ]
-:const G_O  32   # Uses: 6          [                                             ]
-:const G_P  33   # Uses: 13         [#                                            ]
-:const G_Q  34   # Uses: 1          [                                             ]
-:const G_R  35   # Uses: 11         [#                                            ]
-:const G_S  36   # Uses: 19         [#                                            ]
-:const G_T  37   # Uses: 22         [##                                           ]
-:const G_U  38   # Uses: 2          [                                             ]
-:const G_V  39   # Uses: 5          [                                             ]
-:const G_W  40   # Uses: 6          [                                             ]
-:const G_X  41   # Uses: 1          [                                             ]
-:const G_Y  42   # Uses: 2          [                                             ]
-:const G_Z  43   # Uses: 1          [                                             ]
+:const G_0  10   # Uses: 2          [                                             ]
+:const G_1  12   # Uses: 1          [                                             ]
+:const G_2  14   # Uses: 1          [                                             ]
+:const G_3  16   # Uses: 1          [                                             ]
+:const G_4  18   # Uses: 1          [                                             ]
+:const G_5  20   # Uses: 1          [                                             ]
+:const G_6  22   # Uses: 1          [                                             ]
+:const G_7  24   # Uses: 1          [                                             ]
+:const G_8  26   # Uses: 1          [                                             ]
+:const G_9  28   # Uses: 1          [                                             ]
+:const G_:  30   # Uses: 4          [                                             ]
+:const G_;  32   # Uses: 1          [                                             ]
+:const G_?  34   # Uses: 9          [                                             ]
+:const G_A  36   # Uses: 14         [#                                            ]
+:const G_B  38   # Uses: 13         [#                                            ]
+:const G_C  40   # Uses: 11         [#                                            ]
+:const G_D  42   # Uses: 8          [                                             ]
+:const G_E  44   # Uses: 9          [                                             ]
+:const G_F  46   # Uses: 11         [#                                            ]
+:const G_G  48   # Uses: 6          [                                             ]
+:const G_H  50   # Uses: 8          [                                             ]
+:const G_I  52   # Uses: 11         [#                                            ]
+:const G_J  54   # Uses: 3          [                                             ]
+:const G_K  56   # Uses: 1          [                                             ]
+:const G_L  58   # Uses: 8          [                                             ]
+:const G_M  60   # Uses: 11         [#                                            ]
+:const G_N  62   # Uses: 4          [                                             ]
+:const G_O  64   # Uses: 6          [                                             ]
+:const G_P  66   # Uses: 13         [#                                            ]
+:const G_Q  68   # Uses: 1          [                                             ]
+:const G_R  70   # Uses: 11         [#                                            ]
+:const G_S  72   # Uses: 19         [#                                            ]
+:const G_T  74   # Uses: 22         [##                                           ]
+:const G_U  76   # Uses: 2          [                                             ]
+:const G_V  78   # Uses: 5          [                                             ]
+:const G_W  80   # Uses: 6          [                                             ]
+:const G_X  82   # Uses: 1          [                                             ]
+:const G_Y  84   # Uses: 2          [                                             ]
+:const G_Z  86   # Uses: 1          [                                             ]
 #const G_[       # Uses: 0          [                                             ]
 #const G__       # Uses: 0          [                                             ]
-:const G_a  44   # Uses: 218        [####################                         ]
-:const G_b  45   # Uses: 69         [######                                       ]
-:const G_c  46   # Uses: 101        [#########                                    ]
-:const G_d  47   # Uses: 120        [###########                                  ]
-:const G_e  48   # Uses: 488        [#############################################]
-:const G_f  49   # Uses: 62         [#####                                        ]
-:const G_g  50   # Uses: 61         [#####                                        ]
-:const G_h  51   # Uses: 149        [#############                                ]
-:const G_i  52   # Uses: 204        [##################                           ]
-:const G_j  53   # Uses: 7          [                                             ]
-:const G_k  54   # Uses: 48         [####                                         ]
-:const G_l  55   # Uses: 177        [################                             ]
-:const G_m  56   # Uses: 73         [######                                       ]
-:const G_n  57   # Uses: 192        [#################                            ]
-:const G_o  58   # Uses: 297        [###########################                  ]
-:const G_p  59   # Uses: 55         [#####                                        ]
-:const G_q  60   # Uses: 2          [                                             ]
-:const G_r  61   # Uses: 228        [#####################                        ]
-:const G_s  62   # Uses: 223        [####################                         ]
-:const G_t  63   # Uses: 344        [###############################              ]
-:const G_u  64   # Uses: 131        [############                                 ]
-:const G_v  65   # Uses: 34         [###                                          ]
-:const G_w  66   # Uses: 57         [#####                                        ]
-:const G_x  67   # Uses: 6          [                                             ]
-:const G_y  68   # Uses: 102        [#########                                    ]
-:const G_z  69   # Uses: 4          [                                             ]
+:const G_a  88   # Uses: 218        [####################                         ]
+:const G_b  90   # Uses: 69         [######                                       ]
+:const G_c  92   # Uses: 101        [#########                                    ]
+:const G_d  94   # Uses: 120        [###########                                  ]
+:const G_e  96   # Uses: 488        [#############################################]
+:const G_f  98   # Uses: 62         [#####                                        ]
+:const G_g 100   # Uses: 61         [#####                                        ]
+:const G_h 102   # Uses: 149        [#############                                ]
+:const G_i 104   # Uses: 204        [##################                           ]
+:const G_j 106   # Uses: 7          [                                             ]
+:const G_k 108   # Uses: 48         [####                                         ]
+:const G_l 110   # Uses: 177        [################                             ]
+:const G_m 112   # Uses: 73         [######                                       ]
+:const G_n 114   # Uses: 192        [#################                            ]
+:const G_o 116   # Uses: 297        [###########################                  ]
+:const G_p 118   # Uses: 55         [#####                                        ]
+:const G_q 120   # Uses: 2          [                                             ]
+:const G_r 122   # Uses: 228        [#####################                        ]
+:const G_s 124   # Uses: 223        [####################                         ]
+:const G_t 126   # Uses: 344        [###############################              ]
+:const G_u 128   # Uses: 131        [############                                 ]
+:const G_v 130   # Uses: 34         [###                                          ]
+:const G_w 132   # Uses: 57         [#####                                        ]
+:const G_x 134   # Uses: 6          [                                             ]
+:const G_y 136   # Uses: 102        [#########                                    ]
+:const G_z 138   # Uses: 4          [                                             ]
 # 70 of 78 glyphs in use
 ## End Font Header
 ## Text Header
@@ -798,6 +798,25 @@
 :const STATE_ITEMINFO 11
 :const STATE_ITEMIARY 12
 :const STATE_SOUNDIARY 13
+## Font Code
+
+# Draw glyph with id `n` at location x, y. x and y must be registers
+:macro draw_glyph x y { sprite x y 7 }
+
+# Sets `i` = the address of glyph `id`
+# fetch-glyph requires a pair of adjacent registers for reg-hi and reg-lo (v1, v0 or v5, v4 for example)
+:macro fetch_glyph_macro id reg-hi reg-lo { i := long glyph_data i += id load reg-lo - reg-hi i := fetch_glyph_target save reg-hi - reg-lo 0xF0 0x00 : fetch_glyph_target 0x00 0x00 }
+
+# Creates the `fetch-glyph` function
+:macro fetch_glyph_impl id reg-hi reg-lo { : fetch_glyph fetch_glyph_macro id reg-hi reg-lo ; }
+
+## End Font Code
+## Text Code
+## End Text Code
+## Enemy Code
+## End Enemy Code
+## Biome Code
+## End Biome Code
 
 : main
   hires
@@ -1378,11 +1397,10 @@ entity_offset ENTITY_AI 2
 :alias text_wrap_x1 vB
 :alias text_wrap_x2 vC
 
+fetch_glyph_impl text_id v1 v0
 
 : text_draw_glyph
-    i := long glyph_data
-    i += text_id
-    i += text_id
+    fetch_glyph
     load v2 - v3 # load address of glyph
     reg_set_i_v23
     load v0 # load width
@@ -12595,7 +12613,18 @@ note 0xFF 0
 : glyph_x 4 0x00 0xC0 0x80 0x80 0xC0 0x00 0x00 # 4 px
 : glyph_y 5 0x00 0x00 0xC0 0xE0 0x80 0xE0 0x00 # 5 px
 : glyph_z 5 0x00 0xF0 0x80 0x80 0xF0 0x00 0x00 # 5 px
-## End Font Data  490 bytes
+## Font Index
+: glyph_index
+TB glyph_! TB glyph_' TB glyph_, TB glyph_- TB glyph_. TB glyph_0 TB glyph_1 TB glyph_2 
+TB glyph_3 TB glyph_4 TB glyph_5 TB glyph_6 TB glyph_7 TB glyph_8 TB glyph_9 TB glyph_: 
+TB glyph_; TB glyph_? TB glyph_A TB glyph_B TB glyph_C TB glyph_D TB glyph_E TB glyph_F 
+TB glyph_G TB glyph_H TB glyph_I TB glyph_J TB glyph_K TB glyph_L TB glyph_M TB glyph_N 
+TB glyph_O TB glyph_P TB glyph_Q TB glyph_R TB glyph_S TB glyph_T TB glyph_U TB glyph_V 
+TB glyph_W TB glyph_X TB glyph_Y TB glyph_Z TB glyph_a TB glyph_b TB glyph_c TB glyph_d 
+TB glyph_e TB glyph_f TB glyph_g TB glyph_h TB glyph_i TB glyph_j TB glyph_k TB glyph_l 
+TB glyph_m TB glyph_n TB glyph_o TB glyph_p TB glyph_q TB glyph_r TB glyph_s TB glyph_t 
+TB glyph_u TB glyph_v TB glyph_w TB glyph_x TB glyph_y TB glyph_z 
+## End Font Data  700 bytes
 ## Text Data
 : word_... 9 :byte G_. :byte G_. :byte G_. :byte G_ESC_END
 : word_Above 27 :byte G_A :byte G_b :byte G_o :byte G_v :byte G_e :byte G_ESC_END

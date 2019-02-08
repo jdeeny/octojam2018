@@ -78,7 +78,18 @@
 : glyph_x 4 0x00 0xC0 0x80 0x80 0xC0 0x00 0x00 # 4 px
 : glyph_y 5 0x00 0x00 0xC0 0xE0 0x80 0xE0 0x00 # 5 px
 : glyph_z 5 0x00 0xF0 0x80 0x80 0xF0 0x00 0x00 # 5 px
-## End Font Data  490 bytes
+## Font Index
+: glyph_index
+TB glyph_! TB glyph_' TB glyph_, TB glyph_- TB glyph_. TB glyph_0 TB glyph_1 TB glyph_2 
+TB glyph_3 TB glyph_4 TB glyph_5 TB glyph_6 TB glyph_7 TB glyph_8 TB glyph_9 TB glyph_: 
+TB glyph_; TB glyph_? TB glyph_A TB glyph_B TB glyph_C TB glyph_D TB glyph_E TB glyph_F 
+TB glyph_G TB glyph_H TB glyph_I TB glyph_J TB glyph_K TB glyph_L TB glyph_M TB glyph_N 
+TB glyph_O TB glyph_P TB glyph_Q TB glyph_R TB glyph_S TB glyph_T TB glyph_U TB glyph_V 
+TB glyph_W TB glyph_X TB glyph_Y TB glyph_Z TB glyph_a TB glyph_b TB glyph_c TB glyph_d 
+TB glyph_e TB glyph_f TB glyph_g TB glyph_h TB glyph_i TB glyph_j TB glyph_k TB glyph_l 
+TB glyph_m TB glyph_n TB glyph_o TB glyph_p TB glyph_q TB glyph_r TB glyph_s TB glyph_t 
+TB glyph_u TB glyph_v TB glyph_w TB glyph_x TB glyph_y TB glyph_z 
+## End Font Data  700 bytes
 ## Text Data
 : word_... 9 :byte G_. :byte G_. :byte G_. :byte G_ESC_END
 : word_Above 27 :byte G_A :byte G_b :byte G_o :byte G_v :byte G_e :byte G_ESC_END

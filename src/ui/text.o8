@@ -27,11 +27,10 @@
 :alias text_wrap_x1 vB
 :alias text_wrap_x2 vC
 
+fetch_glyph_impl text_id v1 v0
 
 : text_draw_glyph
-    i := long glyph_data
-    i += text_id
-    i += text_id
+    fetch_glyph
     load v2 - v3 # load address of glyph
     reg_set_i_v23
     load v0 # load width

@@ -13,7 +13,7 @@ INPUT:=src/input/input.o8
 RENDERER:=src/renderer/renderer.o8
 PREFABS:=src/prefab_data.o8
 
-HEADERS:=src/config.o8 $(UTIL) src/ui/screen_header.o8 src/audio/sample_header.o8 src/renderer/rendererheader.o8 src/prefab_header.o8 src/states/state_header.o8
+HEADERS:=src/config.o8 $(UTIL) src/ui/screen_header.o8 src/audio/sample_header.o8 src/renderer/rendererheader.o8 src/prefab_header.o8 src/states/state_header.o8 src/prefab_code.o8
 CODE:=src/main.o8 $(AUDIO) $(GAMEPLAY) $(UI) $(INPUT) $(STATES) $(RENDERER) src/worldgen.o8
 FARDATA:= src/sprite_data.o8 src/data.o8 $(PREFABS) src/audio/sample_data.o8 src/input/input_data.o8 src/states/state_data.o8 src/initializers.o8 src/ui/screen_data.o8 src/renderer/rendererdata.o8 src/worldgen_data.o8
 

@@ -189,6 +189,10 @@ impl Dictionary {
         self.font.code(out);
 
         writeln!(out, "## Text Code").unwrap();
+
+        // draw word
+        
+
         writeln!(out, "## End Text Code").unwrap();
     }
 
